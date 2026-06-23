@@ -5,8 +5,8 @@
     const dashboardContent = {
         title: 'Dashboard Management',
         sections: [
-            { id: 'overview', title: 'Overview' },
-            { id: 'sub-distributor-dashboard', title: 'Sub-Distributor Dashboard' }
+            { id: 'dashboard-summary', title: 'Dashboard Summary' },
+            { id: 'dashboard-metrics', title: 'Dashboard Metrics' }
         ],
         metrics: [
             {
