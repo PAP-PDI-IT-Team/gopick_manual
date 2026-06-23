@@ -45,7 +45,7 @@
       <div class="manual-page-hero mb-10">
         <span class="manual-page-hero__eyebrow">Manual Page</span>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">Dashboard Management</h1>
-        <p class="mt-3 text-lg text-slate-500 max-w-3xl">Real-time overview of candidate summary, announcements, and current meters.</p>
+        <p class="mt-3 text-lg text-slate-500 max-w-3xl">The dashboard provides a central location to review high-level account activity, meter status, and current operational counts.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -58,20 +58,18 @@
         </aside>
 
         <div class="lg:col-span-4 space-y-8">
-          <section id="dashboard-summary" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Dashboard Summary</h2>
-            <p class="text-sm text-slate-600 leading-relaxed">
-              The dashboard provides a central location to review high-level account activity, meter status, and current operational counts.
-            </p>
-          </section>
-
-          <section id="dashboard-metrics" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Dashboard Metrics</h2>
-            <p class="text-sm text-slate-500 mb-8">
-              The dashboard displays the following operational metrics.
-            </p>
+          <section id="account-monitoring" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+            <h2 class="text-xl font-bold text-slate-900 mb-4">Account Monitoring Section</h2>
+            <p class="text-sm text-slate-500 mb-5">This page displays meter requests, active accounts, expiring accounts, and inactive accounts.</p>
             <div id="dashboardMetrics" class="grid gap-4 grid-cols-1 md:grid-cols-2"></div>
           </section>
+
+          <section id="quick-navigations" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+            <h2 class="text-xl font-bold text-slate-900 mb-4">Quick Navigations</h2>
+            <p class="text-sm text-slate-500 mb-5">The dashboard provides direct links to the most common account and support actions.</p>
+            <div id="dashboardQuickLinks" class="space-y-4"></div>
+          </section>
+
         </div>
       </div>
     </div>
@@ -86,7 +84,7 @@
     </div>
   </footer>
 
-  <script src="assets/js/dataFiller.js?v=20260623-1" defer></script>
+  <script src="assets/js/dataFiller.js?v=20260623-2" defer></script>
   <script src="assets/js/behavior.js?v=20260623-1" defer></script>
   <script src="../../../shared/js/headerSearch.js" defer></script>
 </body>
