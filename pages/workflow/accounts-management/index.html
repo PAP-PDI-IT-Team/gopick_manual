@@ -45,8 +45,8 @@
       <!-- ==================== Page Hero ==================== -->
       <div class="manual-page-hero mb-10">
         <span class="manual-page-hero__eyebrow">Manual Page</span>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">Accounts Management</h1>
-        <p class="mt-3 text-lg text-slate-500 max-w-3xl">Configuration steps for managing the GoPick user and account system.</p>
+        <h1 id="accountsPageTitle" class="text-3xl md:text-4xl font-extrabold text-slate-900">Accounts</h1>
+        <p id="accountsPageDescription" class="mt-3 text-lg text-slate-500 max-w-3xl">Provides Access Control and Management of Accounts of GoPick.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -62,18 +62,6 @@
         <!-- ==================== Content ==================== -->
         <div class="lg:col-span-4 space-y-8">
 
-          <!-- Legend -->
-          <section id="legend" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Legend</h2>
-            <div id="legendContent" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm"></div>
-          </section>
-
-          <!-- Account Rules -->
-          <section id="account-rules" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Account Rules</h2>
-            <div id="accountRules"></div>
-          </section>
-
           <!-- Create Account -->
           <section id="create-account" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
             <h2 class="text-xl font-bold text-slate-900 mb-4">Create Account</h2>
@@ -83,29 +71,38 @@
           <!-- View Accounts -->
           <section id="view-accounts" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
             <h2 class="text-xl font-bold text-slate-900 mb-4">View Accounts</h2>
-            <p class="text-sm text-slate-500 mb-5">From the View Account page, you can navigate to account information, assigned assessments, meter management, other account settings, and users.</p>
-            <div id="viewAccountSteps" class="space-y-4 mb-6"></div>
-            <div id="viewAccountsStatusLegend" class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            
-            <div class="text-xs font-bold uppercase tracking-wider text-brand mb-2">View Accounts</div>
-            <h3 id="view-sections" class="text-base font-bold text-slate-900 mb-4">View: Sections</h3>
-            <div id="viewAccountSections" class="grid gap-4 grid-cols-1"></div>
-            <div id="viewAccountConfigSections" class="grid gap-4 grid-cols-1"></div>
-            <div id="updateAccountSections" class="grid gap-4 grid-cols-1"></div>
+            <div id="viewAccountsContent" class="grid gap-4 grid-cols-1"></div>
           </section>
 
-          <!-- Role Capabilities -->
-          <section id="roles" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Role Capabilities</h2>
-            <p class="text-sm text-slate-500 mb-4">Auto-generated summary of what each role can and cannot do.</p>
-            <div id="roleCapabilities" class="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"></div>
-          </section>
+          <!-- Other Functions -->
+          <section id="other-functions" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+            <h2 class="text-xl font-bold text-slate-900 mb-4">Other Functions</h2>
+            <div id="updateSpecificContent" class="grid gap-4 grid-cols-1 mb-4"></div>
+            <div id="functionSections" class="grid gap-4 grid-cols-1"></div>
 
-          <!-- Configuration Steps -->
-          <section id="access" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Configuration Steps</h2>
-            <p class="text-sm text-slate-500 mb-5">How to view and update role permissions in the Admin portal.</p>
-            <div id="accessSteps" class="space-y-4"></div>
+            <!-- Search -->
+            <section id="search" class="mt-4 rounded-lg border border-slate-100 bg-slate-50 p-5">
+              <h3 class="font-semibold text-slate-900 mb-2">Search</h3>
+              <div id="searchContent"></div>
+            </section>
+
+            <!-- Advance Search -->
+            <section id="advance-search" class="mt-4 rounded-lg border border-slate-100 bg-slate-50 p-5">
+              <h3 class="font-semibold text-slate-900 mb-2">Advance Search</h3>
+              <div id="advance-searchContent"></div>
+            </section>
+
+            <!-- Row Actions -->
+            <section id="row-actions" class="mt-4 rounded-lg border border-slate-100 bg-slate-50 p-5">
+              <h3 class="font-semibold text-slate-900 mb-2">Row Actions</h3>
+              <div id="rowActionsContent" class="grid gap-4 grid-cols-1"></div>
+            </section>
+
+            <!-- Bulk Action -->
+            <section id="bulk-action" class="mt-4 rounded-lg border border-slate-100 bg-slate-50 p-5">
+              <h3 class="font-semibold text-slate-900 mb-2">Bulk Action</h3>
+              <div id="bulkActionContent" class="grid gap-4 grid-cols-1"></div>
+            </section>
           </section>
 
         </div>

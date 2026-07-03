@@ -2,42 +2,65 @@
     'use strict';
 
     var SEARCH_PHRASE_MIN_LENGTH = 2;
+    var NON_NAVIGATION_HEADINGS = [
+        'action / workflow',
+        'access path',
+        'how to use',
+        'how to use:',
+        'how to use',
+        'how to use',
+        'how to',
+        'expected result',
+        'expected results',
+        'rules',
+        'rule',
+        'notes',
+        'notes: dev',
+        'notes: qa',
+        'notes: qa and system user',
+        'notes: optional',
+        'return button',
+        'account configuration dropdown',
+        'sections',
+        'sections:',
+        'format'
+    ];
     var scriptUrl = document.currentScript ? document.currentScript.src : '';
     var docsManifest = [
         {
-            pageTitle: 'Account Management',
+            pageTitle: 'Accounts',
             pageUrl: '../../pages/workflow/accounts-management/index.html',
-            docUrl: '../../docs/account-management.md'
+            docUrl: '../../docs/workflow/account-management.md'
         },
         {
             pageTitle: 'Assessment Management',
             pageUrl: '../../pages/workflow/assessment-management/index.html',
-            docUrl: '../../docs/assessment-management.md'
+            docUrl: '../../docs/workflow/assessment-management.md'
         },
         {
             pageTitle: 'Candidate Management',
             pageUrl: '../../pages/workflow/candidate-management/index.html',
-            docUrl: '../../docs/candidate-management.md'
+            docUrl: '../../docs/workflow/candidate-management.md'
         },
         {
             pageTitle: 'Meters Management',
             pageUrl: '../../pages/workflow/meters-management/index.html',
-            docUrl: '../../docs/meters-management.md'
+            docUrl: '../../docs/workflow/meters-management.md'
         },
         {
             pageTitle: 'Reports Management',
             pageUrl: '../../pages/workflow/reports-management/index.html',
-            docUrl: '../../docs/reports-management.md'
+            docUrl: '../../docs/workflow/reports-management.md'
         },
         {
             pageTitle: 'Roles/Permissions Management',
             pageUrl: '../../pages/workflow/roles-premission-management/index.html',
-            docUrl: '../../docs/roles-permission-management.md'
+            docUrl: '../../docs/workflow/roles-permission-management.md'
         },
         {
             pageTitle: 'Users Management',
             pageUrl: '../../pages/workflow/users-management/index.html',
-            docUrl: '../../docs/users-management.md'
+            docUrl: '../../docs/workflow/users-management.md'
         },
         {
             pageTitle: 'Documentation Standard V2',
@@ -83,6 +106,11 @@
             .trim();
     }
 
+    function isSearchSectionHeading(headingText) {
+        var normalized = String(headingText || '').toLowerCase().trim();
+        return NON_NAVIGATION_HEADINGS.indexOf(normalized) === -1;
+    }
+
     function extractSections(markdown, source) {
         var lines = markdown.split(/\r?\n/);
         var pageTitle = source.pageTitle;
@@ -97,6 +125,13 @@
 
                 if (level === 1) {
                     if (headingText) pageTitle = headingText;
+                    return;
+                }
+
+                if (!isSearchSectionHeading(headingText)) {
+                    if (currentSection && headingText) {
+                        currentSection.textParts.push(headingText);
+                    }
                     return;
                 }
 
@@ -137,22 +172,84 @@
         });
     }
 
+    function cleanHtmlText(html) {
+        return String(html || '')
+            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+            .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function extractHtmlSections(html, source) {
+        var pageTitleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+        var pageTitle = pageTitleMatch ? cleanHtmlText(pageTitleMatch[1]) : source.pageTitle;
+        var sections = [];
+        var sectionPattern = /<section\b[^>]*\bid=["']([^"']+)["'][^>]*>([\s\S]*?)<\/section>/gi;
+        var sectionMatch;
+
+        while ((sectionMatch = sectionPattern.exec(html)) !== null) {
+            var sectionId = sectionMatch[1];
+            var sectionHtml = sectionMatch[2];
+            var headingMatch = sectionHtml.match(/<h[2-6][^>]*>([\s\S]*?)<\/h[2-6]>/i);
+            if (!headingMatch) continue;
+
+            var sectionTitle = cleanHtmlText(headingMatch[1]);
+            if (!sectionTitle || !isSearchSectionHeading(sectionTitle)) continue;
+
+            var body = cleanHtmlText(sectionHtml);
+            sections.push({
+                pageTitle: pageTitle,
+                sectionTitle: sectionTitle,
+                level: 2,
+                url: resolveAssetUrl(source.pageUrl) + '#' + sectionId,
+                body: body,
+                searchText: (pageTitle + ' ' + sectionTitle + ' ' + body).toLowerCase()
+            });
+        }
+
+        return sections;
+    }
+
+    function mergeSearchSections(markdownSections, htmlSections) {
+        var seenUrls = {};
+        return markdownSections.concat(htmlSections).filter(function (section) {
+            if (seenUrls[section.url]) return false;
+            seenUrls[section.url] = true;
+            return true;
+        });
+    }
+
     function loadSearchIndex() {
         if (searchState.loaded) return Promise.resolve(searchState.index);
         if (searchState.loadPromise) return searchState.loadPromise;
 
         searchState.loadPromise = Promise.all(docsManifest.map(function (source) {
-            return fetch(resolveAssetUrl(source.docUrl), { cache: 'no-store' })
+            var markdownRequest = fetch(resolveAssetUrl(source.docUrl), { cache: 'no-store' })
                 .then(function (response) {
                     if (!response.ok) throw new Error('Failed to load ' + source.docUrl);
                     return response.text();
                 })
                 .then(function (markdown) {
                     return extractSections(markdown, source);
-                })
-                .catch(function () {
-                    return [];
                 });
+
+            var pageRequest = fetch(resolveAssetUrl(source.pageUrl), { cache: 'no-store' })
+                .then(function (response) {
+                    if (!response.ok) throw new Error('Failed to load ' + source.pageUrl);
+                    return response.text();
+                })
+                .then(function (html) {
+                    return extractHtmlSections(html, source);
+                });
+
+            return Promise.all([markdownRequest, pageRequest]).then(function (sourceResults) {
+                return mergeSearchSections(sourceResults[0], sourceResults[1]);
+            });
         })).then(function (results) {
             searchState.index = Array.prototype.concat.apply([], results);
             searchState.loaded = true;
@@ -309,6 +406,9 @@
                 if (!elements.input.value.trim()) {
                     elements.status.textContent = 'Type at least ' + SEARCH_PHRASE_MIN_LENGTH + ' characters.';
                 }
+            }).catch(function (error) {
+                console.error(error);
+                elements.status.textContent = 'Search index failed to load. Check the configured documentation paths.';
             });
         }
 
@@ -324,6 +424,10 @@
                 elements.status.textContent = 'Loading search index...';
                 loadSearchIndex().then(function () {
                     renderResults(findMatches(query), elements);
+                }).catch(function (error) {
+                    console.error(error);
+                    elements.results.innerHTML = '';
+                    elements.status.textContent = 'Search index failed to load. Check the configured documentation paths.';
                 });
                 return;
             }
