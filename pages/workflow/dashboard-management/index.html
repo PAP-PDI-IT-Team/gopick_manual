@@ -42,16 +42,14 @@
   <main class="manual-main pt-20 pb-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-      <!-- ==================== Page Hero ==================== -->
       <div class="manual-page-hero mb-10">
         <span class="manual-page-hero__eyebrow">Manual Page</span>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">Dashboard Management</h1>
-        <p class="mt-3 text-lg text-slate-500 max-w-3xl">Real-time overview of candidate summary, announcements, and current meters.</p>
+        <p class="mt-3 text-lg text-slate-500 max-w-3xl">The dashboard provides a central location to review high-level account activity, meter status, and current operational counts.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-        <!-- ==================== Sidebar ==================== -->
         <aside class="hidden lg:block lg:col-span-1">
           <nav class="manual-sidebar-panel sticky top-24 p-5">
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">On this page</h4>
@@ -59,29 +57,17 @@
           </nav>
         </aside>
 
-        <!-- ==================== Content ==================== -->
         <div class="lg:col-span-4 space-y-8">
-
-          <!-- Overview Section -->
-          <section id="overview" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Overview</h2>
-            <div class="prose prose-slate max-w-none">
-              <p class="text-sm text-slate-600 leading-relaxed">
-                The Dashboard provides users with a central location to monitor key performance indicators and account status at a glance.
-              </p>
-            </div>
+          <section id="account-monitoring" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+            <h2 class="text-xl font-bold text-slate-900 mb-4">Account Monitoring Section</h2>
+            <p class="text-sm text-slate-500 mb-5">This page displays meter requests, active accounts, expiring accounts, and inactive accounts.</p>
+            <div id="dashboardMetrics" class="grid gap-4 grid-cols-1 md:grid-cols-2"></div>
           </section>
 
-          <!-- Sub-Distributor Dashboard Section -->
-          <section id="sub-distributor-dashboard" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Sub-Distributor Dashboard</h2>
-            <p class="text-sm text-slate-500 mb-8">
-              The Sub-Distributor dashboard displays critical metrics for managing child accounts and meter usage.
-            </p>
-            
-            <div id="dashboardMetrics" class="grid gap-4 grid-cols-1 md:grid-cols-2">
-              <!-- Metric cards injected by dataFiller.js -->
-            </div>
+          <section id="quick-navigations" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+            <h2 class="text-xl font-bold text-slate-900 mb-4">Quick Navigations</h2>
+            <p class="text-sm text-slate-500 mb-5">The dashboard provides direct links to the most common account and support actions.</p>
+            <div id="dashboardQuickLinks" class="space-y-4"></div>
           </section>
 
         </div>
@@ -89,7 +75,6 @@
     </div>
   </main>
 
-  <!-- ==================== Footer ==================== -->
   <footer class="manual-footer py-6">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
       <div class="text-center">
@@ -99,8 +84,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/dataFiller.js" defer></script>
-  <script src="assets/js/behavior.js" defer></script>
+  <script src="assets/js/dataFiller.js?v=20260623-2" defer></script>
+  <script src="assets/js/behavior.js?v=20260623-1" defer></script>
   <script src="../../../shared/js/headerSearch.js" defer></script>
 </body>
 </html>

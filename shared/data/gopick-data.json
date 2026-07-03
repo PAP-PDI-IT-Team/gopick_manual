@@ -118,7 +118,12 @@
     {
       "title": "Documentation Standard V2",
       "description": "Updated layered standard for workflow manuals, domain governance, and gap registry documentation.",
-      "url": "pages/guides/index.html#documentation-standard"
+      "url": "pages/guides/manual-guides/index.html#documentation-standard"
+    },
+    {
+      "title": "Page Structure v3",
+      "description": "Canonical workflow page structure with one required core and optional sections only when the content requires them.",
+      "url": "pages/guides/page-structure-v3/index.html"
     }
   ],
   "roles": [

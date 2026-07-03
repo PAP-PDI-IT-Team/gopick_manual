@@ -115,6 +115,79 @@
                         ]
                     }
                 ]
+            },
+            {
+                id: 'page-structure-v3',
+                title: 'Page Structure v3',
+                description: 'Canonical workflow page structure with one required core and optional sections only when the content requires them.',
+                bullets: [
+                    'Website counterpart: pages/guides/page-structure-v3/index.html'
+                ],
+                groups: [
+                    {
+                        title: 'Required Core',
+                        items: [
+                            'Module Name',
+                            'Short description of the module or page.',
+                            'Main Feature / Page',
+                            'Action / Workflow',
+                            'Access Path',
+                            'How To Use',
+                            'Rules',
+                            'Expected Result'
+                        ]
+                    },
+                    {
+                        title: 'Optional Sections',
+                        items: [
+                            'Legends',
+                            'Related Pages',
+                            'Nested Feature',
+                            'Notes',
+                            'Access to Other Pages'
+                        ]
+                    },
+                    {
+                        title: 'Structure Rules',
+                        items: [
+                            'Use one canonical layout for all pages.',
+                            'Keep the core structure in the same order every time.',
+                            'Do not create alternate formats for similar content.',
+                            'Add optional sections only when the page content requires them.',
+                            'Do not omit the core sections.'
+                        ]
+                    }
+                ],
+                codeBlocks: [
+                    {
+                        label: 'Canonical structure template',
+                        language: 'md',
+                        code: [
+                            '# Module Name',
+                            '',
+                            'Short description of the module or page.',
+                            '',
+                            '## Main Feature / Page',
+                            '',
+                            'Brief description of the feature or page.',
+                            '',
+                            '### Action / Workflow',
+                            '',
+                            '### Access Path',
+                            '- Actual page navigation path',
+                            '',
+                            '### How To Use',
+                            '1. Actual UI action.',
+                            '2. Actual UI action.',
+                            '',
+                            '> Rules:',
+                            '> - Confirmed validation or restriction.',
+                            '',
+                            '> Expected Result:',
+                            '> - Confirmed visible outcome.'
+                        ].join('\n')
+                    }
+                ]
             }
         ]
     };
@@ -167,14 +240,12 @@
 
     function renderSectionBody(section, target) {
         if (section.bullets && section.bullets.length) target.appendChild(createBulletList(section.bullets));
-
         if (section.groups && section.groups.length) {
             const groupsWrap = document.createElement('div');
             groupsWrap.className = 'space-y-4';
             renderGroups(groupsWrap, section.groups);
             target.appendChild(groupsWrap);
         }
-
         if (section.codeBlocks && section.codeBlocks.length) {
             section.codeBlocks.forEach(function (block) {
                 target.appendChild(createCodeBlock(block));
@@ -190,21 +261,18 @@
             eyebrow.textContent = eyebrowText;
             fragment.appendChild(eyebrow);
         }
-
         const heading = document.createElement(headingLevel === 2 ? 'h2' : 'h3');
         heading.id = section.id;
         heading.className = headingLevel === 2 ? 'text-xl font-bold text-slate-900' : 'text-lg font-bold text-slate-900';
         heading.textContent = section.title;
         heading.setAttribute('tabindex', '-1');
         fragment.appendChild(heading);
-
         if (section.description) {
             const desc = document.createElement('p');
             desc.className = 'text-sm text-slate-500 mt-2 mb-5';
             desc.textContent = section.description;
             fragment.appendChild(desc);
         }
-
         return fragment;
     }
 
@@ -213,17 +281,30 @@
         sectionEl.className = isTopLevel ? 'mb-10' : 'mt-8 border-t border-slate-100 pt-6';
         sectionEl.appendChild(renderSectionHeader(section, headingLevel, eyebrowText));
         renderSectionBody(section, sectionEl);
-
         if (section.children && section.children.length) {
             section.children.forEach(function (child) {
                 sectionEl.appendChild(renderSectionTree(child, Math.min(headingLevel + 1, 3), section.title, false));
             });
         }
-
         return sectionEl;
     }
 
-    function renderAllSections() {
+    function renderSidebar() {
+        const list = document.getElementById('docSidebarList');
+        if (!list) return;
+        list.innerHTML = '';
+        guideContent.sections.forEach(function (section) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.className = 'block text-slate-600 hover:text-brand transition-colors py-1 text-sm';
+            a.href = '#' + section.id;
+            a.textContent = section.title;
+            li.appendChild(a);
+            list.appendChild(li);
+        });
+    }
+
+    function renderContent() {
         const root = document.getElementById('section-render-root');
         if (!root) return;
         root.innerHTML = '';
@@ -232,113 +313,21 @@
         });
     }
 
-    function getSidebarLinkClass(level) {
-        var depth = Math.min(level, 5);
-        var indentClasses = ['', ' pl-3 border-l border-slate-100', ' pl-6 border-l border-slate-100', ' pl-9 border-l border-slate-100', ' pl-12 border-l border-slate-100', ' pl-16 border-l border-slate-100'];
-        var sizeClass = level === 0 ? ' text-sm' : (level < 3 ? ' text-[13px]' : ' text-xs');
-        return 'block text-slate-600 hover:text-brand transition-colors py-1' + sizeClass + indentClasses[depth];
+    function setFooterYear() {
+        const yearSpan = document.getElementById('footerYearSpan');
+        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     }
 
-    function createSidebarItem(section, level) {
-        var li = document.createElement('li');
-        li.className = 'sidebar-item';
-        var a = document.createElement('a');
-        a.className = getSidebarLinkClass(level);
-        a.href = '#' + section.id;
-        a.dataset.target = section.id;
-        a.textContent = section.title;
-        li.appendChild(a);
-
-        if (section.children && section.children.length) {
-            var childList = document.createElement('ul');
-            childList.className = 'sidebar-children hidden mt-1 space-y-1';
-            section.children.forEach(function (child) {
-                childList.appendChild(createSidebarItem(child, level + 1));
-            });
-            li.appendChild(childList);
-        }
-
-        return li;
-    }
-
-    function renderSidebar() {
-        var list = document.getElementById('docSidebarList');
-        if (!list) return;
-        list.innerHTML = '';
-        guideContent.sections.forEach(function (section) {
-            list.appendChild(createSidebarItem(section, 0));
-        });
-    }
-
-    function setSidebarBranch(activeId) {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-        Array.from(sidebar.querySelectorAll('a[data-target]')).forEach(function (link) {
-            link.classList.remove('text-brand', 'font-semibold');
-        });
-        Array.from(sidebar.querySelectorAll('.sidebar-children')).forEach(function (list) {
-            list.classList.add('hidden');
-        });
-
-        var activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
-        if (!activeLink) return;
-        activeLink.classList.add('text-brand', 'font-semibold');
-
-        var item = activeLink.closest('.sidebar-item');
-        while (item) {
-            var ownChildren = item.querySelector(':scope > .sidebar-children');
-            if (ownChildren) ownChildren.classList.remove('hidden');
-            var parentList = item.parentElement;
-            if (parentList && parentList.classList.contains('sidebar-children')) {
-                parentList.classList.remove('hidden');
-                item = parentList.closest('.sidebar-item');
-            } else {
-                item = null;
-            }
-        }
-    }
-
-    function getVisibleSidebarTarget() {
-        var links = Array.from(document.querySelectorAll('#docSidebarList a[data-target]'));
-        var currentId = null;
-        var offset = 120;
-        links.forEach(function (link) {
-            var target = document.getElementById(link.dataset.target);
-            if (target && target.getBoundingClientRect().top <= offset) currentId = link.dataset.target;
-        });
-        return currentId || (links[0] && links[0].dataset.target);
-    }
-
-    function setupSidebarVisibility() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        function updateFromScroll() {
-            var activeId = getVisibleSidebarTarget();
-            if (activeId) setSidebarBranch(activeId);
-        }
-
-        sidebar.querySelectorAll('a[data-target]').forEach(function (link) {
-            link.addEventListener('click', function () {
-                setSidebarBranch(this.dataset.target);
-            });
-        });
-
-        updateFromScroll();
-        window.addEventListener('hashchange', function () { setTimeout(updateFromScroll, 50); });
-        window.addEventListener('scroll', updateFromScroll, { passive: true });
-    }
-
-    function renderAll() {
+    function initPage() {
+        setFooterYear();
         renderSidebar();
-        renderAllSections();
-        setupSidebarVisibility();
+        renderContent();
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', renderAll);
+        document.addEventListener('DOMContentLoaded', initPage);
     } else {
-        renderAll();
+        initPage();
     }
 
     global.__guideContent = guideContent;

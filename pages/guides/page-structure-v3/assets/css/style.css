@@ -1,0 +1,15 @@
+/* Page Structure v3 styles */
+:root {
+    --brand: #e50914;
+}
+
+.code-block {
+    max-width: 100%;
+}
+
+.section-card {
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+}

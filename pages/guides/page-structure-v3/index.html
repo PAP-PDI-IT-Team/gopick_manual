@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Page Structure v3 - GoPick</title>
+  <link rel="stylesheet" href="../../../shared/css/site-shell.css?v=20260429-gradient">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { DEFAULT: '#e50914', light: '#ff2d38', dark: '#b3060f' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="manual-page bg-slate-50 text-slate-800 antialiased">
+  <header class="manual-header fixed top-0 inset-x-0 z-[100] bg-white/95 backdrop-blur border-b border-slate-100" role="banner">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="../../../index.html" class="inline-flex items-center" aria-label="GoPick home">
+        <img src="../../../shared/img/gopick-logo.svg" alt="GoPick Solutions" class="h-10 w-auto">
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
+          <li><a class="hover:text-brand transition-colors" href="../../../index.html">Home</a></li>
+          <li><a class="hover:text-brand transition-colors" href="../../index.html">Guides</a></li>
+          <li><a class="text-brand font-semibold" href="#" aria-current="page">Page Structure v3</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="manual-main pt-20 pb-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="manual-page-hero mb-10">
+        <span class="manual-page-hero__eyebrow">Guide Page</span>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">Page Structure v3</h1>
+        <p class="mt-3 text-lg text-slate-500 max-w-3xl">Canonical workflow page structure with one required core and optional sections only when the content requires them.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <aside class="hidden lg:block lg:col-span-1">
+          <nav id="docSidebar" class="manual-sidebar-panel sticky top-24 p-5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">On this page</h4>
+            <ul id="docSidebarList" class="space-y-2 text-sm"></ul>
+          </nav>
+        </aside>
+
+        <div class="lg:col-span-4 space-y-8">
+          <section id="docsContent" class="manual-reading-surface p-6">
+            <div id="section-render-root"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="manual-footer py-6">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+      <p class="text-slate-400 text-sm">&copy; <span id="footerYearSpan"></span> GoPick - Assessment Center</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/pageStructureV3.js" defer></script>
+</body>
+</html>
