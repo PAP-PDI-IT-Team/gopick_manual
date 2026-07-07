@@ -22,6 +22,9 @@
                                 id: 'upload-manual',
                                 title: 'Upload Manual',
                                 description: 'Can upload Technical Manual, User Guide, and Executive Summary.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Manuals > Upload'] }
+                                ],
                                 steps: [
                                     'Open Resource Center.',
                                     'Select Get Started.',
@@ -30,18 +33,18 @@
                                     'Select the manual type.',
                                     'Upload the file.'
                                 ],
-                                rules: [
-                                    'Existing manual files prompt for overwrite before upload continues.'
-                                ],
                                 expectedResults: [
-                                    'The selected manual type is uploaded.',
-                                    'An overwrite prompt appears when a file already exists.'
-                                ]
+                                    'The selected manual type is uploaded.'
+                                ],
+                                rules: ['500mb max upload']
                             },
                             {
                                 id: 'preview-manual',
                                 title: 'Preview Manual',
                                 description: 'Can preview Technical Manual, User Guide, and Executive Summary.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Manuals > Preview'] }
+                                ],
                                 steps: [
                                     'Open Resource Center.',
                                     'Select Get Started.',
@@ -58,6 +61,9 @@
                                 id: 'check-manual-information',
                                 title: 'Check Manual Information',
                                 description: 'Check information for Technical Manual, User Guide, and Executive Summary.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Manuals'] }
+                                ],
                                 steps: [
                                     'Open Resource Center.',
                                     'Select Get Started.',
@@ -66,6 +72,45 @@
                                 ],
                                 expectedResults: [
                                     'The selected manual information is shown.'
+                                ]
+                            },
+                            {
+                                id: 'overwrite-manual',
+                                title: 'Overwrite Manual',
+                                description: 'Check information for Technical Manual, User Guide, and Executive Summary.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Manuals > Upload'] }
+                                ],
+                                steps: [
+                                    'Open Resource Center.',
+                                    'Select Get Started.',
+                                    'Select Manuals.',
+                                    'Click Upload.',
+                                    'Select the manual type.',
+                                    'Upload the file.',
+                                    'Approve Overwritten modal.'
+                                ],
+                                expectedResults: [
+                                    'The selected manual type is uploaded and overwrite the existing one.'
+                                ],
+                                rules: ['500mb max upload']
+                            },
+                            {
+                                id: 'delete-manual',
+                                title: 'Delete Manual',
+                                description: 'Check information for Technical Manual, User Guide, and Executive Summary.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Manuals > Delete'] }
+                                ],
+                                steps: [
+                                    'Open Resource Center.',
+                                    'Select Get Started.',
+                                    'Select Delete.',
+                                    'Select the manual type.',
+                                    'Select the item to delete.'
+                                ],
+                                expectedResults: [
+                                    'The selected manual information to delete.'
                                 ]
                             }
                         ]
@@ -82,6 +127,9 @@
                                 id: 'upload-video',
                                 title: 'Upload Video',
                                 description: 'Upload video tutorials.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Video Tutorials > Upload'] }
+                                ],
                                 steps: [
                                     'Open Resource Center.',
                                     'Select Get Started.',
@@ -91,12 +139,16 @@
                                 ],
                                 expectedResults: [
                                     'The video file is uploaded.'
-                                ]
+                                ],
+                                rules: ['500mb max upload', '5 mins and HD vid (approx)']
                             },
                             {
                                 id: 'check-video-information',
                                 title: 'Check Video Information',
                                 description: 'Check information for video tutorials.',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Video Tutorials'] }
+                                ],
                                 steps: [
                                     'Open Resource Center.',
                                     'Select Get Started.',
@@ -105,6 +157,22 @@
                                 ],
                                 expectedResults: [
                                     'The selected video information is shown.'
+                                ]
+                            },
+                            {
+                                id: 'delete-video',
+                                title: 'Delete Video',
+                                groups: [
+                                    { title: 'Access Path', items: ['Resource Center > Get Started > Video Tutorials > Delete'] }
+                                ],
+                                steps: [
+                                    'Open Resource Center.',
+                                    'Select Get Started.',
+                                    'Select Delete.',
+                                    'Select the item to delete.'
+                                ],
+                                expectedResults: [
+                                    'The selected Video to delete.'
                                 ]
                             }
                         ]
@@ -119,10 +187,29 @@
                         steps: [
                             'Open Resource Center.',
                             'Select Get Started.',
-                            'Select Assessments.'
+                            'Select Assessments from List.'
                         ],
                         expectedResults: [
                             'Assessment-related content is displayed.'
+                        ]
+                    },
+                    {
+                        id: 'search-assessment-content',
+                        title: 'Search Assessment Content',
+                        description: 'Search behavior applies to the selected assessment type only.',
+                        groups: [
+                            { title: 'Access Path', items: ['Resource Center > Get Started > Assessments List > Search'] }
+                        ],
+                        steps: [
+                            'Navigate to Assessments.',
+                            'Select Type.',
+                            'Search.'
+                        ],
+                        rules: [
+                            'It can only search within the selected type.'
+                        ],
+                        expectedResults: [
+                            'Show search filtering from the list of assessments.'
                         ]
                     },
                     {
@@ -147,6 +234,14 @@
                         description: 'Pending Resource Center content for message inbox access.',
                         groups: [
                             { title: 'Access Path', items: ['Resource Center > Get Started > Message Inbox'] }
+                        ],
+                        steps: [
+                            'Navigate to the Get Started.',
+                            'Select See All Message.',
+                            'It will redirect the page to View Ticket in Help Desk.'
+                        ],
+                        expectedResults: [
+                            'This point to different module page which can view more details in its own manual. Help Desk Module.'
                         ]
                     }
                 ]
@@ -179,6 +274,11 @@
                         groups: [
                             { title: 'Access Path', items: ['Resource Center > Guides & Tutorials > Assessments > Overview'] }
                         ],
+                        steps: [
+                            'Navigate to the site.',
+                            'Select from selection category.',
+                            'Select Overview from the rows of selections.'
+                        ],
                         expectedResults: [
                             'Overview content is displayed.'
                         ]
@@ -190,13 +290,18 @@
                         groups: [
                             { title: 'Access Path', items: ['Resource Center > Guides & Tutorials > Assessments > Video Demo'] }
                         ],
+                        steps: [
+                            'Navigate to the site.',
+                            'Select from selection category.',
+                            'Select View Demo from the rows of selections.'
+                        ],
                         expectedResults: [
                             'Video demo content is displayed.'
                         ]
                     },
                     {
                         id: 'assessment-center-site',
-                        title: 'Assessment Center Site',
+                        title: 'Assessment Center Site (Soon)',
                         description: 'Main assessment hub for browsing assessment-related pages.',
                         groups: [
                             { title: 'Access Path', items: ['Resource Center > Guides & Tutorials > Assessment Center Site'] }
@@ -302,6 +407,10 @@
                 stepsWrap.appendChild(createStepCard(i + 1, step));
             });
             target.appendChild(stepsWrap);
+        }
+
+        if (section.rules && section.rules.length) {
+            target.appendChild(createCallout('Rules', section.rules, 'rules'));
         }
 
         if (section.expectedResults && section.expectedResults.length) {
