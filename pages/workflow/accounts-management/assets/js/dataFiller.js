@@ -3,7 +3,7 @@
 
     var accountsContent = {
         title: 'Accounts',
-        description: 'Provides Access Control and Management of Accounts of GoPick: Dsitributor, Sub Distributor, Account, Sub-Account, Self Registered Account.',
+        description: 'Provides access control and account management for GoPick accounts: Distributor, Sub Distributor, Account, Sub-Account, and Self Registered Account.',
         sections: [
             {
                 id: 'create-account',
@@ -25,24 +25,26 @@
             },
             {
                 id: 'other-functions',
-                title: 'Other Functions',
+                title: 'Other Pages',
                 children: [
+                    { id: 'account-detail', title: 'Account Detail' },
+                    { id: 'update-account', title: 'Update Account' },
                     { id: 'update-specific', title: 'Update Specific' },
                     { id: 'privacy-consent', title: 'Privacy Consent' },
                     { id: 'demographics', title: 'Demographics' },
                     { id: 'assessment-completion-page', title: 'Assessment Completion Page' },
                     { id: 'assessment-center-logo', title: 'Assessment Center Logo' },
                     { id: 'unblock-account', title: 'Unblock Account' },
-                    { id: 'manage', title: 'Manage' },
+                    { id: 'manage-assigned-assessment', title: 'Manage Assigned Assessment' },
                     { id: 'search', title: 'Search' },
-                    { id: 'advance-search', title: 'Advance Search' },
+                    { id: 'advanced-search', title: 'Advanced Search' },
                     {
                         id: 'row-actions',
                         title: 'Row Actions',
                         children: [
-                            { id: 'view-not-archive', title: 'View: Not Archive' },
-                            { id: 'view-archive', title: 'View: Archive' },
-                            { id: 'update', title: 'Update' },
+                            { id: 'view-active-account', title: 'View Active Account' },
+                            { id: 'view-archived-account', title: 'View Archived Account' },
+                            { id: 'update-account-row-action', title: 'Update Account Row Action' },
                             { id: 'archive', title: 'Archive' },
                             { id: 'restore', title: 'Restore' }
                         ]
@@ -60,60 +62,73 @@
             }
         ],
         createAccount: {
-            detail: 'A Submodule directly creates new account using account create wizard.',
+            detail: 'Creates a new account through the account creation wizard.',
             accessPath: 'Accounts > Create Account',
             howToUse: [
-                'Navigate into it.',
-                'Fill in requirements and optionals depends on informations at hand.',
-                'Complete wizard and save.'
+                'Open Accounts.',
+                'Select Create Account.',
+                'Complete Account Information.',
+                'Complete Assign Products.',
+                'Complete Meter Management.',
+                'Complete Other Account Settings.',
+                'Review account details.',
+                'Save the account.'
             ],
-            expected: ['Account will be created based on all configuration added and can be view in View Accounts.'],
+            expected: ['The account is created using the configured information and can be viewed in View Accounts.'],
             notes: [
                 { label: 'Dev', items: ['This module uses 5 layer architecture already but still many uses the legacy architecture.', 'Applied new principles and logged process.'] },
-                { label: 'QA', items: ['Test the max and min values for guard rails.', 'Happy test: Only Required and Filling All.', 'Some inputs are conditional, so check if documented or not.'] }
+                { label: 'QA', items: ['Test minimum and maximum guard rails.', 'Test required-only creation and full-field creation.', 'Some inputs are conditional. Check whether conditional fields are documented.'] }
             ],
             steps: [
                 {
                     id: 'create-account-information',
                     title: 'Account Information',
-                    detail: 'Fill in the required account details.',
+                    detail: 'Collects account identity, parent relationship, contact information, address information, account expiration, and account status.',
                     items: [
-                        'Account Type',
-                        'Parent Account',
-                        'Account Name: Company or organization account name',
-                        'Username',
-                        'Password',
-                        'Confirm Password',
-                        'Primary Contact Name',
-                        'Primary Contact Email',
-                        'Country',
-                        'Business Phone Number',
-                        'Business Address',
-                        'Billing Address: required or set as same as Business Address',
-                        'Expiry Date and Time',
-                        'Actual Account Expiration: +2 Months(default)',
-                        'Status: Active(default)'
+                        {
+                            label: 'Required inputs',
+                            children: [
+                                'Account Type',
+                                'Parent Account',
+                                'Account Name',
+                                'Username',
+                                'Password',
+                                'Confirm Password',
+                                'Primary Contact Name',
+                                'Primary Contact Email',
+                                'Country',
+                                'Business Phone Number',
+                                'Business Address',
+                                'Billing Address or same as Business Address',
+                                'Expiry Date and Time',
+                                'Status'
+                            ]
+                        },
+                        {
+                            label: 'System calculated input',
+                            children: ['Actual Account Expiration']
+                        }
                     ],
                     rules: [
                         {
                             label: 'Validation Guard Rails',
                             children: [
-                                'Account Name, Username, Password, Primary Contact Name, Primary Contact Email: Max of 100 characters.',
-                                'Addresses: max of 250 characters.',
-                                'Phone Number: max of 25 characters.',
-                                'Account Type: You can only select lower than your account type.',
-                                'Password and Confirm Password should match.',
-                                'Billing Address can be similar to Business Address using checkbox toggled or enter manually via input that shows up when checkbox is off.'
+                                'Account Name, Username, Password, Primary Contact Name, and Primary Contact Email have a maximum of 100 characters.',
+                                'Addresses have a maximum of 250 characters.',
+                                'Phone number has a maximum of 25 characters.',
+                                'Account Type can only be lower than the current user account type.',
+                                'Password and Confirm Password must match.',
+                                'Billing Address can be copied from Business Address by toggling the checkbox, or entered manually when the checkbox is off.'
                             ]
                         },
                         {
                             label: 'Account Creation Limit Guard Rails',
                             children: [
-                                'Admin: Bypasses rules of creation limits found in Other Account Settings Page of the account they are creating.',
-                                'Non-Admin: Are limited to the accounts they are able to create found in Other Account Settings Page.',
-                                'Active Accounts: not deactivated, not archived, not deleted, not expired.',
-                                'Expired: Determined by Expiry Date + Actual Account Expiration.',
-                                'Expiry Date & Time cannot be set later than today.'
+                                'Admin users bypass creation limit rules from Other Account Settings.',
+                                'Non-admin users are limited by the account creation limits configured in Other Account Settings.',
+                                'Active accounts are accounts that are not deactivated, archived, deleted, or expired.',
+                                'Expiration is determined by Expiry Date plus Actual Account Expiration.',
+                                'Expiry Date and Time cannot be set later than today.'
                             ]
                         }
                     ]
@@ -121,33 +136,50 @@
                 {
                     id: 'create-assign-products',
                     title: 'Assign Products',
-                    detail: 'Select assessments that Company/Organization can use.',
+                    detail: 'Assigns assessments that the company or organization account can use.',
                     items: [
-                        'Cognitive/Knowledge-based Assessment',
-                        'Competency-based Assessment',
-                        'Survey',
-                        'Behavioral/Personality-Based Assessment',
-                        'Test Battery, a group of assessments bundled together'
+                        {
+                            label: 'Required selection',
+                            children: ['At least one assessment from the available assessment list.']
+                        },
+                        {
+                            label: 'Available assessment groups',
+                            children: [
+                                'Cognitive/Knowledge-based Assessment',
+                                'Competency-based Assessment',
+                                'Survey',
+                                'Behavioral/Personality-Based Assessment',
+                                'Test Battery, a group of assessments bundled together'
+                            ]
+                        }
                     ],
-                    rules: ['At least 1 assessment.']
+                    rules: ['At least one assessment is required.']
                 },
                 {
                     id: 'create-meter-management',
                     title: 'Meter Management',
-                    detail: 'Set Meter Management Type and Meter Balance.',
+                    detail: 'Sets the account meter management type and meter balance.',
                     items: [
-                        'Meter Management Type: Self and Parent Based.',
-                        'Self = Deduct usage from this account.',
-                        'Parent = Deduct usage from Distributor/Sub-Distributor/Client.'
+                        {
+                            label: 'Required inputs',
+                            children: ['Meter management type', 'Meter balance']
+                        },
+                        {
+                            label: 'Meter management options',
+                            children: [
+                                'Self deducts usage from the current account.',
+                                'Parent Based deducts usage from the Distributor, Sub-Distributor, or Client parent account.'
+                            ]
+                        }
                     ],
                     rules: [
                         {
                             label: 'Meter Management Guard Rails',
                             children: [
-                                'Sub-Account has 2 Meter Management Type while the rest are 1 Meter Management Type.',
-                                'Self Mode: Meter balance cannot be 0.',
-                                'Parent Mode: Parent meter balance cannot be 0.',
-                                'Max Meter: 99,999.'
+                                'Sub-Account has two meter management type options. Other account types have one.',
+                                'Self mode meter balance cannot be 0.',
+                                'Parent mode parent meter balance cannot be 0.',
+                                'Maximum meter value is 99,999.'
                             ]
                         }
                     ]
@@ -155,43 +187,63 @@
                 {
                     id: 'create-other-account-settings',
                     title: 'Other Account Settings',
-                    detail: 'Set additional account-related configurations.',
+                    detail: 'Sets account limits, API access, account contacts, billing configuration, and contract configuration.',
                     items: [
-                        'Set User Account limit (autofill, 99)',
-                        'Set Sub-Distributor Limit (autofill, 0)',
-                        'Set Client Limit (autofill, 0)',
-                        'Set Sub-Account Limit (autofill, 0)',
-                        'Set Self Registration Limit (autofill, 0)',
-                        'Set API Access Username',
-                        'Set HRSC Name',
-                        'Set HRSC Email',
-                        'Set Assessment Specialist Name',
-                        'Set Assessment Special Email',
-                        'Set Client Contact Person Name',
-                        'Set Client Usage Recipient Email',
-                        'Set Site Billing Type (Included in Package or With Site Fee)',
-                        'Set Billing Amount (PHP)',
-                        'Contact Type: Volume-based, Contracted Meters disabled, Addendum autofill 0',
-                        'Contact Type: Per Usage, Base Meter autofill 0'
+                        {
+                            label: 'Defaulted inputs',
+                            children: [
+                                'User Account Limit defaults to 99.',
+                                'Sub-Distributor Limit defaults to 0.',
+                                'Client Limit defaults to 0.',
+                                'Sub-Account Limit defaults to 0.',
+                                'Self Registration Limit defaults to 0.'
+                            ]
+                        },
+                        {
+                            label: 'Optional inputs',
+                            children: [
+                                'API Access Username',
+                                'HRSC Name',
+                                'HRSC Email',
+                                'Assessment Specialist Name',
+                                'Assessment Specialist Email',
+                                'Client Contact Person Name',
+                                'Client Contact Person Email',
+                                'Client Usage Recipient Email',
+                                'Site Billing Type',
+                                'Contract Type'
+                            ]
+                        },
+                        {
+                            label: 'Conditional inputs',
+                            children: [
+                                'Sub-Distributor Limit appears only for Distributor accounts.',
+                                'Client Limit appears only for Distributor and Sub-Distributor accounts.',
+                                'Sub-Account Limit appears only for Distributor, Sub-Distributor, and Client accounts.',
+                                'Billing Amount appears only when site billing type is With Site Fee.',
+                                'Addendum and Contracted Meters apply to Volume-based contracts.',
+                                'Base Meter applies to Per Usage contracts.'
+                            ]
+                        }
                     ],
                     rules: [
                         {
                             label: 'Display & Visibility Guard Rails',
                             children: [
-                                'HRSC Name, HRSC Email, Assessment Specialist Name, Assessment Specialist Email, Client Contract Person Name, Client Contract Person Email: Max of 100 characters.',
+                                'HRSC Name, HRSC Email, Assessment Specialist Name, Assessment Specialist Email, Client Contact Person Name, and Client Contact Person Email have a maximum of 100 characters.',
                                 'Sub-Distributor Limit appears only for Distributor accounts.',
                                 'Client Limit appears only for Distributor and Sub-Distributor accounts.',
                                 'Sub-Account Limit appears only for Distributor, Sub-Distributor, and Client accounts.',
-                                'Billing Amount appears only when Set Site Billing Type is With Site Fee.'
+                                'Billing Amount appears only when site billing type is With Site Fee.'
                             ]
                         },
                         {
                             label: 'Data Sync Guard Rails',
                             children: [
-                                'Contracted Meters values are prefilled from the Meter Management section.',
-                                'Addendum value is locked when the selected Meter Type is Parent.',
-                                'Max Limit of Account Limits: 999.',
-                                'Max Value of Addendum, Base Meter and Billing Amount: 999.'
+                                'Contracted Meters is prefilled from Meter Management.',
+                                'Addendum is locked when the selected meter type is parent based.',
+                                'Maximum account limit value is 999.',
+                                'Maximum Addendum, Base Meter, and Billing Amount value is 999.'
                             ]
                         }
                     ]
@@ -199,12 +251,34 @@
                 {
                     id: 'create-review-account-details',
                     title: 'Review Account Details',
-                    detail: 'Able to review Account Information before saving.'
+                    detail: 'Reviews the entered and selected account creation details before saving the account.',
+                    items: [
+                        'Account information.',
+                        'Assigned products.',
+                        'Meter management.',
+                        'Other account settings.'
+                    ],
+                    howToUse: [
+                        'Open the Review Account step.',
+                        'Review the displayed account information.',
+                        'Review assigned products.',
+                        'Review meter management.',
+                        'Review other account settings.',
+                        'Go back to the relevant step when a value needs correction.',
+                        'Save the account when the reviewed details are correct.'
+                    ],
+                    rules: [
+                        'Inputs are optional when they are not indicated as required.',
+                        'Inputs indicated as required must be completed.',
+                        'Conditional inputs appear only when their condition is met.',
+                        'Saving must use the reviewed configuration from the current create account wizard.'
+                    ],
+                    expected: ['The reviewed account details are used when the account is saved.']
                 }
             ]
         },
         viewAccounts: {
-            detail: 'Table list of Accounts, with search, redirection to archived accounts and bulk actions.',
+            detail: 'Displays the active account listing with search, advanced search, archived account navigation, bulk actions, and row actions.',
             legend: [
                 { label: 'Active', detail: 'Active and not yet expired' },
                 { label: 'Deactivated', detail: 'Deactivated' },
@@ -214,7 +288,7 @@
             ],
             actions: [
                 { label: 'Search', href: '#search' },
-                { label: 'Advance Search', href: '#advance-search' },
+                { label: 'Advanced Search', href: '#advanced-search' },
                 {
                     label: 'Bulk Action',
                     href: '#bulk-action',
@@ -227,33 +301,47 @@
                     label: 'Row Actions',
                     href: '#row-actions',
                     children: [
-                        { label: 'View: Not Archive', href: '#view-not-archive' },
-                        { label: 'Update', href: '#update' },
-                        { label: 'Archive', href: '#archive' }
+                        { label: 'View', href: '#view-active-account' },
+                        { label: 'Update Wizard', href: '#update-account' },
+                        { label: 'Archive Specific', href: '#archive' }
+                    ]
+                },
+                {
+                    label: 'View Archived Accounts',
+                    href: '#view-archived-accounts',
+                    children: [
+                        { label: 'Move to the archived accounts page', href: '#view-archived-accounts' }
                     ]
                 }
             ],
             archived: {
                 id: 'view-archived-accounts',
                 title: 'View Archived Accounts',
-                detail: 'Table list of Archived Accounts, with search, redirection to non-accounts and bulk actions.',
+                detail: 'Displays archived accounts with search, advanced search, bulk actions, and row actions.',
                 actions: [
                     { label: 'Search', href: '#search' },
-                    { label: 'Advance Search', href: '#advance-search' },
+                    { label: 'Advanced Search', href: '#advanced-search' },
                     {
                         label: 'Bulk Action',
                         href: '#bulk-action',
                         children: [
-                            { label: 'Archive', href: '#bulk-action-archive' },
-                            { label: 'Retrive', href: '#bulk-action-restore' }
+                            { label: 'Restore', href: '#bulk-action-restore' },
+                            { label: 'Delete', href: '#bulk-action-delete' }
                         ]
                     },
                     {
                         label: 'Row Actions',
                         href: '#row-actions',
                         children: [
-                            { label: 'View: Archive', href: '#view-archive' },
+                            { label: 'View', href: '#view-archived-account' },
                             { label: 'Restore', href: '#restore' }
+                        ]
+                    },
+                    {
+                        label: 'View Account',
+                        href: '#view-accounts',
+                        children: [
+                            { label: 'Move to the active accounts page', href: '#view-accounts' }
                         ]
                     }
                 ]
@@ -262,36 +350,47 @@
         updateSpecific: {
             id: 'update-specific',
             title: 'Update Specific',
-            detail: 'Updating Specific settings of the account. Has variations depends what section it was triggered.',
-            rules: ['Updating own account only opens Account Information Variant.'],
-            accessPath: 'Account > View Accounts > Row Actions: View > Section: Account Information, Assigned Assessments, Meter Management or Other Account Settings > Update Button',
+            detail: 'Updates one account detail section from the account detail page. The available update form depends on the account detail section where the update is triggered.',
+            rules: ['Updating the current user own account only opens the Account Information variant.', 'Password fields are not prefilled.'],
+            accessPath: 'Accounts > View Accounts > Row Actions > View > Section > Update',
             howToUse: [
-                'Navigate into it.',
-                'Each section has its own. Each is prefilled already of the default informations, except password.',
-                'Review Button.',
-                'Save button.'
+                'Open the account detail page.',
+                'Open Account Information, Assigned Assessments, Meter Management, or Other Account Settings.',
+                'Select Update.',
+                'Update the section-specific fields.',
+                'Review changes.',
+                'Save changes.'
             ],
-            expected: ['Update Specific Informations with smallest step.'],
+            expected: ['Only the selected account section is updated.'],
             notes: [{ label: 'QA and System User', items: ['Changes happen only where the section are updating.'] }],
             groups: [
                 {
                     title: 'Account Information',
                     items: [
-                        'Account Type: Cannot be changed.',
-                        'Parent Account: Cannot be changed.',
-                        'Account Name: Cannot be changed.',
-                        'Username',
-                        'Password',
-                        'Confirm Password',
-                        'Primary Contact Name',
-                        'Primary Contact Email',
-                        'Country',
-                        'Business Phone Number',
-                        'Business Address',
-                        'Billing Address: required or set as same as Business Address',
-                        'Expiry Date and Time',
-                        'Actual Account Expiration: +2 Months(default)',
-                        'Status: Active(default): Cannot be changed if updating own account'
+                        {
+                            label: 'Locked inputs',
+                            children: ['Account Type', 'Parent Account', 'Account Name']
+                        },
+                        {
+                            label: 'Editable inputs',
+                            children: [
+                                'Username',
+                                'Password',
+                                'Confirm Password',
+                                'Primary Contact Name',
+                                'Primary Contact Email',
+                                'Country',
+                                'Business Phone Number',
+                                'Business Address',
+                                'Billing Address or same as Business Address',
+                                'Expiry Date and Time',
+                                'Actual Account Expiration'
+                            ]
+                        },
+                        {
+                            label: 'Conditional input',
+                            children: ['Status does not show when editing the current user own account.']
+                        }
                     ],
                     expected: [
                         'Username, Password, Primary Contact Name, Primary Contact Email: Max of 100 characters.',
@@ -304,31 +403,54 @@
                 },
                 {
                     title: 'Assigned Assessments',
-                    items: ['Selected Assessments can adjust each meter consumption.', 'Manage', 'Change Log', 'Update Assessment']
+                    items: [
+                        {
+                            label: 'Editable inputs',
+                            children: ['Selected assessments', 'Assessment meter consumption']
+                        },
+                        {
+                            label: 'Available actions',
+                            children: ['Manage Assigned Assessment', 'Change Log', 'Update Assessment']
+                        }
+                    ]
                 },
                 {
                     title: 'Meter Management',
-                    items: ['Meter Management Type: Deduct usage from this account or Deduct usage from Account.', 'Current Meters / Parent Meter Balance cannot be modified if Meter Management Type is Deduct usage from Account.', 'View Meter Logs'],
-                    expected: ['If Sub-account it will have 2 options: Deduct usage from this account and Deduct usage from Client Account.'],
+                    items: [
+                        {
+                            label: 'Editable inputs',
+                            children: ['Meter Management Type', 'Current Meters', 'Parent Meter Balance']
+                        },
+                        {
+                            label: 'Available actions',
+                            children: ['View Meter Logs']
+                        }
+                    ],
+                    expected: ['Sub-Account has Deduct usage from this account and Deduct usage from Client Account.'],
                     notes: [{ label: 'QA, Dev, System User', items: ['Deduction to self: Deduct usage from this account.', 'Deduct from parent: Deduct usage from Distributor/Sub-Distributor/Client Account.'] }]
                 },
                 {
                     title: 'Other Account Settings',
                     items: [
-                        'User Account Limit by account type.',
-                        'API Access Username',
-                        'HRSC Name',
-                        'HRSC Email',
-                        'Assessment Specialist Name',
-                        'Assessment Specialist Email',
-                        'Client Contact Person Name',
-                        'Client Contact Person Email',
-                        'Site Billing Amount (PHP)(Type)',
-                        'Site Billing Amount (PHP)',
-                        'Contract Type',
-                        'Contract Meters',
-                        'Addendum',
-                        'Base Meter'
+                        {
+                            label: 'Editable inputs',
+                            children: [
+                                'User Account Limit by account type',
+                                'API Access Username',
+                                'HRSC Name',
+                                'HRSC Email',
+                                'Assessment Specialist Name',
+                                'Assessment Specialist Email',
+                                'Client Contact Person Name',
+                                'Client Contact Person Email',
+                                'Site Billing Amount (PHP)(Type)',
+                                'Contract Type'
+                            ]
+                        },
+                        {
+                            label: 'Conditional inputs',
+                            children: ['Site Billing Amount (PHP)', 'Contract Meters', 'Addendum', 'Base Meter']
+                        }
                     ],
                     expected: [
                         'HRSC Name, HRSC Email, Assessment Specialist Name, Assessment Specialist Email, Client Contract Person Name, Client Contract Person Email: Max of 100 characters.',
@@ -338,26 +460,64 @@
                     ]
                 }
             ],
-            securityRule: 'Password are not preinputed: If an organization configures its system to show the old password on screen, it is breaching GDPR Article 32, EU Secure by Design mandates, NIS2, Cyber Resilience Act, and industry compliance frameworks.'
+            securityRule: 'Passwords must not be displayed as old password values.'
         },
         functions: [
             {
+                id: 'account-detail',
+                title: 'Account Detail',
+                detail: 'Displays account information configured during creation and account configuration actions.',
+                accessPath: 'Accounts > View Accounts > Row Actions > View',
+                actions: [
+                    'Return Button',
+                    'Account Configuration Dropdown',
+                    'Account Information Section',
+                    'Assigned Assessments Section',
+                    'Meter Management Section',
+                    'Other Account Settings Section',
+                    'List Of Users Section'
+                ],
+                expected: [
+                    'From an active account detail page, the user returns to View Accounts.',
+                    'From an archived account detail page, the user returns to View Archived Accounts.',
+                    'Parent Meter appears when Metering Management Type is not Deduct usage from this account.',
+                    'Site Billing Amount (PHP) appears when Site Billing Amount (PHP)(Type) is Included in Package.',
+                    'Addendum and Contract Meters appear when Contract Type is Volume-based.',
+                    'Base Meter appears when Contract Type is Per Usage.'
+                ]
+            },
+            {
+                id: 'update-account',
+                title: 'Update Account',
+                detail: 'Updates account settings through the update wizard. This is different from Update Specific, which updates a single account detail section.',
+                accessPath: 'Accounts > View Accounts > Row Actions > Update',
+                howToUse: [
+                    'Open View Accounts.',
+                    'Select Update on a specific account.',
+                    'Complete Update Account Information.',
+                    'Complete Update Assigned Products.',
+                    'Complete Update Meter Management.',
+                    'Complete Update Other Account Settings.',
+                    'Review account details.',
+                    'Save changes.'
+                ],
+                rules: ['Update only appears when the account is not archived and is not the current user own account.']
+            },
+            {
                 id: 'privacy-consent',
                 title: 'Privacy Consent',
-                detail: 'Page to manage update of the consent configurations.',
-                actions: ['Can Change Contents', 'Checkbox for Consent Gather Data Checkbox to Appear', 'Checkbox for Consent Capture Phote to Appear', 'Save Button'],
-                accessPath: 'Account > View Accounts > Row Actions: View > Account Configuration Dropdown > Privacy Consent',
-                howToUse: ['Navigate into it.', 'Update Content View Display and Checkbox display state: Content, Consent Gather Data Checkbox to Appear, Consent Capture Phote to Appear.', 'Save Button.'],
-                rules: ['Confirmed validation or restriction.'],
-                expected: ['Confirmed visible outcome.', 'Update the Privacy Consent Page on Candidate side.'],
-                notes: [{ label: 'Optional', items: ['For who'] }]
+                detail: 'Manages privacy consent content and candidate-side consent checkbox visibility.',
+                actions: ['Consent content', 'Consent Gather Data Checkbox to Appear', 'Consent Capture Photo to Appear', 'Save changes'],
+                accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Privacy Consent',
+                howToUse: ['Open Privacy Consent.', 'Update consent content.', 'Set Consent Gather Data Checkbox to Appear.', 'Set Consent Capture Photo to Appear.', 'Save changes.'],
+                expected: ['Privacy consent content and configured checkboxes are updated on the candidate side.']
             },
             {
                 id: 'demographics',
                 title: 'Demographics',
                 detail: 'Page to manage demographics form.',
                 actions: ['Default Required: First Name, Last Name, Gender, Email, Position Applied', 'Can be toggled: Birthdate, Civil Status, Alternative/Work Email, Phone Number, Educational Attainment, Work Experience, Level of Position Applying For, Course, Priority Course, Region of Residence, Agency Visited, Service Availed, Customer Type, Age, Transaction Type, School', 'Save Button'],
-                accessPath: 'Account > View Accounts > Row Actions: View > Account Configuration Dropdown > Demographics',
+                accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Demographics',
                 howToUse: ['Navigate into it.', 'Update Content View Display via Checkbox what to display.', 'Save Button.'],
                 rules: ['This can be set to not show for the specific account group. Configured by Super Admins.'],
                 expected: ['Update Demographics which data to gather.', 'Can be visible or not; if not visible means account is not allowed to use this function.'],
@@ -368,7 +528,7 @@
                 title: 'Assessment Completion Page',
                 detail: 'Page to manage completion page.',
                 actions: ['Edit Content', 'Save Button'],
-                accessPath: 'Account > View Accounts > Row Actions: View > Account Configuration Dropdown > Assessment Completion Page',
+                accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Assessment Completion Page',
                 howToUse: ['Navigate into it.', 'Pre-filled inputs can be altered: Content.', 'Save button.'],
                 rules: ['This can be set to not show for the specific account group. Configured by Super Admins.'],
                 expected: ['Can be visible or not; if not visible means account is not allowed to use this function.'],
@@ -379,7 +539,7 @@
                 title: 'Assessment Center Logo',
                 detail: 'Page for updating Assessment Center Logo.',
                 actions: ['Upload Logo', 'Save Button'],
-                accessPath: 'Account > View Accounts > Row Actions: View > Account Configuration Dropdown > Assessment Center Logo Page',
+                accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Assessment Center Logo Page',
                 howToUse: ['Navigate into it.', 'Can be pre-filled or none, uploading image will replace it.', 'Upload image.', 'Save button.'],
                 rules: ['This can be set to not show for the specific account group. Configured by Super Admins.'],
                 expected: ['Can be visible or not; if not visible means account is not allowed to use this function.'],
@@ -389,33 +549,36 @@
                 id: 'unblock-account',
                 title: 'Unblock Account',
                 detail: 'Triggered when account is blocked due to multiple attempts to login.',
-                accessPath: 'Account > View Accounts > Row Actions: View > Account Configuration Dropdown > Unblock Account Trigger',
+                accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Unblock Account Trigger',
                 howToUse: ['Navigate into it.', 'Trigger it.'],
                 notes: [{ label: 'QA and System User', items: ['This only appears if account is blocked.'] }]
             },
             {
-                id: 'manage',
-                title: 'Manage',
-                detail: 'Update Specific Assessments Config.',
-                accessPath: 'Account > View Accounts > Row Actions: View > Section: Assigned Assessments > Manage',
-                howToUse: ['Navigate into it.', 'Pre-filled inputs can be altered: Set Max Respondents, Valid Date Start, Valid Date Expiration, Status.', 'Save button.']
+                id: 'manage-assigned-assessment',
+                title: 'Manage Assigned Assessment',
+                detail: 'Updates a specific assigned assessment configuration.',
+                accessPath: 'Accounts > View Accounts > Row Actions > View > Assigned Assessments > Manage',
+                howToUse: ['Open the account detail page.', 'Open Assigned Assessments.', 'Select Manage.', 'Update Set Max Respondents.', 'Update Valid Date Start.', 'Update Valid Date Expiration.', 'Update Status.', 'Save changes.']
             }
         ],
         rowActions: [
             {
-                id: 'view-not-archive',
-                title: 'View: Not Archive',
-                detail: 'View informations of the account configured during creation.',
+                id: 'view-active-account',
+                title: 'View Active Account',
+                detail: 'Opens account detail for an active, non-archived account.',
+                accessPath: 'Accounts > View Accounts > Row Actions > View',
+                howToUse: ['Open View Accounts.', 'Select View on a non-archived account row.'],
                 items: [
-                    'Return Button: Returns User to the list.',
+                    'Return Button: Returns the user to View Accounts.',
                     'Account Configuration Dropdown: Privacy Consent, Demographics, Assessment Completion Page, Assessment Center Logo, Unblock Account.',
-                    'Account Information: Active Badge, Acount Type, Parent Account, Account Name, Username, Password, Confirm Password, Primary Contact Name, Primary Contact Email, Country, Business Phone Number, Business Address, Billing Address, Expiry Date and Time, Actual Account Expiration, Update Specific.',
+                    'Account Information: Active Badge, Account Type, Parent Account, Account Name, Username, Password, Confirm Password, Primary Contact Name, Primary Contact Email, Country, Business Phone Number, Business Address, Billing Address, Expiry Date and Time, Actual Account Expiration, Update Specific.',
                     'Assigned Assessments: shows list of all assessments for the account by categories, with Update Specific, Manage, and Change Log.',
                     'Meter Management: Metering Management Type, Allocated Meter, Parent Meter, Update Specific, View Meter Logs.',
                     'Other Account Settings: account limits, API Access Username, HRSC details, Assessment Specialist details, Client Contact details, Site Billing, Contract Type, Contract Meters, Addendum, Base Meter, Update Specific.',
-                    'List of Users: Table list of Accounts Users under the account selected.'
+                    'List of Users: Table list of account users under the selected account.'
                 ],
                 expected: [
+                    'The active account detail page opens.',
                     'If Metering Management Type is not Deduct usage from this account then Parent Meter appears.',
                     'If Site Billing Amount (PHP)(Type) is Included in package then Site Billing Amount (PHP) appears.',
                     'If Contract Type is Volume-based then Addendum and Contract Meters appears.',
@@ -423,18 +586,21 @@
                 ]
             },
             {
-                id: 'view-archive',
-                title: 'View: Archive',
-                detail: 'View informations of the account configured during creation.',
+                id: 'view-archived-account',
+                title: 'View Archived Account',
+                detail: 'Opens account detail for an archived account.',
+                accessPath: 'Accounts > View Accounts > View Archived Accounts > Row Actions > View',
+                howToUse: ['Open View Archived Accounts.', 'Select View on an archived account row.'],
                 items: [
-                    'Return Button: Returns Archived Accounts to the list.',
-                    'Account Information: Active Badge, Acount Type, Parent Account, Account Name, Username, Password, Confirm Password, Primary Contact Name, Primary Contact Email, Country, Business Phone Number, Business Address, Billing Address, Expiry Date and Time, Actual Account Expiration.',
+                    'Return Button: Returns the user to View Archived Accounts.',
+                    'Account Information: Active Badge, Account Type, Parent Account, Account Name, Username, Password, Confirm Password, Primary Contact Name, Primary Contact Email, Country, Business Phone Number, Business Address, Billing Address, Expiry Date and Time, Actual Account Expiration.',
                     'Assigned Assessments: shows list of all assessments for the account by categories.',
                     'Meter Management: Metering Management Type, Allocated Meter, Parent Meter.',
                     'Other Account Settings: account limits, API Access Username, HRSC details, Assessment Specialist details, Client Contact details, Site Billing, Contract Type, Contract Meters, Addendum, Base Meter.',
-                    'List of Users: Table list of Accounts Users under the account selected.'
+                    'List of Users: Table list of account users under the selected account.'
                 ],
                 expected: [
+                    'The archived account detail page opens.',
                     'If Metering Management Type is not Deduct usage from this account then Parent Meter appears.',
                     'If Site Billing Amount (PHP)(Type) is Included in package then Site Billing Amount (PHP) appears.',
                     'If Contract Type is Volume-based then Addendum and Contract Meters appears.',
@@ -442,9 +608,9 @@
                 ]
             },
             {
-                id: 'update',
-                title: 'Update',
-                detail: 'Update account settings via wizard.',
+                id: 'update-account-row-action',
+                title: 'Update Account Row Action',
+                detail: 'Links to Update Account from an account table row.',
                 items: [
                     {
                         label: 'Account Information',
@@ -499,10 +665,11 @@
                     },
                     'Review Account Details'
                 ],
-                accessPath: 'Accounts > View Accounts',
-                howToUse: ['Navigate in.', 'Update button of specific account.'],
-                rules: ['Only shows when account is not archived and not your own account.'],
+                accessPath: 'Accounts > View Accounts > Row Actions > Update',
+                howToUse: ['Open View Accounts.', 'Select Update on a specific account row.'],
+                rules: ['This only appears when the account is not archived and is not the current user own account.'],
                 expected: [
+                    'The update account wizard opens.',
                     'Username, Password, Primary Contact Name, Primary Contact Email: Max of 100 characters.',
                     'Addresses: max of 250 characters.',
                     'Phone Number: max of 25 characters.',
@@ -517,18 +684,20 @@
             {
                 id: 'archive',
                 title: 'Archive',
-                detail: 'Move the Account to the Archived.',
-                accessPath: 'Accounts > View Accounts',
-                howToUse: ['Navigate in.', 'Archive button of specific account.'],
-                rules: ['Only shows when account is not archived.']
+                detail: 'Moves a non-archived account to archived accounts.',
+                accessPath: 'Accounts > View Accounts > Row Actions > Archive',
+                howToUse: ['Open View Accounts.', 'Select Archive on a specific account row.'],
+                rules: ['This only appears when the account is not archived.'],
+                expected: ['The account is moved to archived accounts.']
             },
             {
                 id: 'restore',
                 title: 'Restore',
-                detail: 'Move back account to the Accounts list.',
-                accessPath: 'Accounts > View Accounts > View Archived Accounts',
-                howToUse: ['Navigate in.', 'Restore button of specific account.'],
-                rules: ['Only shows when account is archived.']
+                detail: 'Moves an archived account back to the account list.',
+                accessPath: 'Accounts > View Accounts > View Archived Accounts > Row Actions > Restore',
+                howToUse: ['Open View Archived Accounts.', 'Select Restore on a specific account row.'],
+                rules: ['This only appears when the account is archived.'],
+                expected: ['The account is restored to the active account list.']
             }
         ],
         searchSections: [
@@ -540,37 +709,41 @@
                 howToUse: ['Navigate in.', 'Input values.', 'Enter.']
             },
             {
-                id: 'advance-search',
-                title: 'Advance Search',
-                detail: 'Search for the contents of the table with configuration using rule.',
-                accessPath: 'Accounts > View Accounts > Advance Search > Add Rule',
-                howToUse: ['Navigate in.', 'Add Rule or Remove Rule.', 'Search Button.']
+                id: 'advanced-search',
+                title: 'Advanced Search',
+                detail: 'Searches account table content using configured rules.',
+                accessPath: 'Accounts > View Accounts > Advanced Search > Add Rule',
+                howToUse: ['Open an account listing table.', 'Open Advanced Search.', 'Add or remove rules.', 'Select Search.'],
+                expected: ['Accounts matching the configured rules are shown in the table.']
             }
         ],
         bulkActions: [
             {
                 id: 'bulk-action-archive',
                 title: 'Bulk Action: Archive',
-                detail: 'Move all accounts that has been selected in checkbox to move to Archive.',
+                detail: 'Moves selected account rows to archived accounts.',
                 accessPath: 'Accounts > View Accounts > Bulk > Archive',
-                howToUse: ['Navigate in.', 'Select Checkboxes of Accounts.', 'Bulk Action.', 'Archive.'],
-                rules: ['If account is logged they should not be able to select their account.']
+                howToUse: ['Open View Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Archive.'],
+                rules: ['The current logged-in account cannot select its own account.'],
+                expected: ['Selected accounts are moved to archived accounts.']
             },
             {
                 id: 'bulk-action-delete',
                 title: 'Bulk Action: Delete',
-                detail: 'Delete all accounts that has been selected in checkbox.',
+                detail: 'Deletes selected account rows.',
                 accessPath: 'Accounts > View Accounts > Bulk > Delete',
-                howToUse: ['Navigate in.', 'Select Checkboxes of Accounts.', 'Bulk Action.', 'Delete.'],
-                rules: ['If account is logged they should not be able to select their account.']
+                howToUse: ['Open View Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Delete.'],
+                rules: ['The current logged-in account cannot select its own account.'],
+                expected: ['Selected accounts are deleted.']
             },
             {
                 id: 'bulk-action-restore',
                 title: 'Bulk Action: Restore',
-                detail: 'Retrive all accounts that has been selected in checkbox.',
-                accessPath: 'Accounts > View Accounts > Bulk > Retrive',
-                howToUse: ['Navigate in.', 'Select Checkboxes of Accounts.', 'Bulk Action.', 'Retrive.'],
-                rules: ['If account is logged they should not be able to select their account.']
+                detail: 'Restores selected archived account rows.',
+                accessPath: 'Accounts > View Accounts > View Archived Accounts > Bulk > Restore',
+                howToUse: ['Open View Archived Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Restore.'],
+                rules: ['The current logged-in account cannot select its own account.'],
+                expected: ['Selected accounts are restored to the active account list.']
             }
         ]
     };
@@ -708,7 +881,7 @@
             li.appendChild(a);
             if (section.children && section.children.length) {
                 var childList = document.createElement('ul');
-                childList.className = 'sidebar-children hidden mt-1 space-y-1';
+                childList.className = 'sidebar-children mt-1 space-y-1';
                 section.children.forEach(function (child) {
                     appendItem(child, level + 1, childList);
                 });
@@ -727,33 +900,15 @@
         if (!sidebar) return;
 
         var links = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'));
-        var childLists = Array.prototype.slice.call(sidebar.querySelectorAll('.sidebar-children'));
 
         links.forEach(function (link) {
             link.classList.remove('active', 'text-brand', 'font-semibold');
-        });
-        childLists.forEach(function (list) {
-            list.classList.add('hidden');
         });
 
         var activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
         if (!activeLink) return;
 
         activeLink.classList.add('active', 'text-brand', 'font-semibold');
-
-        var activeItem = activeLink.closest('.sidebar-item');
-        while (activeItem) {
-            var ownChildren = activeItem.querySelector(':scope > .sidebar-children');
-            if (ownChildren) ownChildren.classList.remove('hidden');
-
-            var parentList = activeItem.parentElement;
-            if (parentList && parentList.classList.contains('sidebar-children')) {
-                parentList.classList.remove('hidden');
-                activeItem = parentList.closest('.sidebar-item');
-            } else {
-                activeItem = null;
-            }
-        }
     }
 
     function getVisibleSidebarTarget() {
@@ -765,10 +920,16 @@
             .filter(Boolean);
 
         var currentId = null;
+        var closestDistance = Number.POSITIVE_INFINITY;
+        var activationOffset = 96;
         targetIds.forEach(function (id) {
             var target = document.getElementById(id);
             if (!target) return;
-            if (target.getBoundingClientRect().top <= 120) currentId = id;
+            var distance = Math.abs(target.getBoundingClientRect().top - activationOffset);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                currentId = id;
+            }
         });
 
         return currentId || targetIds[0] || null;
@@ -779,7 +940,7 @@
         if (!sidebar) return;
 
         function updateFromScroll() {
-            var activeId = getVisibleSidebarTarget() || (location.hash || '').replace('#', '');
+            var activeId = getVisibleSidebarTarget();
             if (activeId) setSidebarBranch(activeId);
         }
 
@@ -800,15 +961,6 @@
         var container = document.getElementById('createAccountSections');
         if (!container) return;
         container.innerHTML = '';
-        accountsContent.createAccount.steps.forEach(function (step, index) {
-            var card = createInfoCard(step);
-            var badge = document.createElement('div');
-            badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
-            badge.textContent = index + 1;
-            card.insertBefore(badge, card.firstChild);
-            container.appendChild(card);
-        });
-
         var summary = createInfoCard({
             id: 'create-account-summary',
             title: 'Access, Usage, and Notes',
@@ -819,6 +971,15 @@
             notes: accountsContent.createAccount.notes
         });
         container.appendChild(summary);
+
+        accountsContent.createAccount.steps.forEach(function (step, index) {
+            var card = createInfoCard(step);
+            var badge = document.createElement('div');
+            badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
+            badge.textContent = index + 1;
+            card.insertBefore(badge, card.firstChild);
+            container.appendChild(card);
+        });
     }
 
     function renderLegend(container, items) {
@@ -850,6 +1011,9 @@
         var container = document.getElementById('updateSpecificContent');
         if (!container) return;
         container.innerHTML = '';
+    }
+
+    function createUpdateSpecificCard() {
         var section = accountsContent.updateSpecific;
         var intro = createInfoCard(section);
         appendText(intro, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Variants');
@@ -857,7 +1021,7 @@
             intro.appendChild(createInfoCard(group, 'nested'));
         });
         intro.appendChild(createBox('Rules', [section.securityRule]));
-        container.appendChild(intro);
+        return intro;
     }
 
     function renderFunctions() {
@@ -866,6 +1030,9 @@
         container.innerHTML = '';
         accountsContent.functions.forEach(function (section) {
             container.appendChild(createInfoCard(section));
+            if (section.id === 'update-account') {
+                container.appendChild(createUpdateSpecificCard());
+            }
         });
     }
 
@@ -915,6 +1082,20 @@
         renderSearchSections();
         renderBulkActions();
         setupSidebarVisibility();
+        scrollToHashTarget();
+    }
+
+    function scrollToHashTarget() {
+        var targetId = (location.hash || '').replace('#', '');
+        if (!targetId) return;
+
+        var target = document.getElementById(targetId);
+        if (!target) return;
+
+        setTimeout(function () {
+            target.scrollIntoView({ block: 'start' });
+            setSidebarBranch(targetId);
+        }, 0);
     }
 
     if (document.readyState === 'loading') {
