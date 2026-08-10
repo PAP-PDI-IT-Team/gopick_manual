@@ -23,14 +23,47 @@
         'account configuration dropdown',
         'sections',
         'sections:',
-        'format'
+        'format',
+        'available types',
+        'available row actions',
+        'page buttons',
+        'available pages',
+        'available actions',
+        'action dropdown',
+        'bulk action',
+        'bulk actions',
+        'required inputs',
+        'optional inputs',
+        'conditional inputs',
+        'candidate schedule required inputs',
+        'candidate schedule optional inputs',
+        'candidate schedule conditional inputs',
+        'data encoding required inputs',
+        'data encoding optional inputs',
+        'editable inputs',
+        'locked inputs',
+        'visible content',
+        'selection groups'
     ];
     var scriptUrl = document.currentScript ? document.currentScript.src : '';
     var docsManifest = [
         {
             pageTitle: 'Accounts',
             pageUrl: '../../pages/workflow/accounts-management/index.html',
-            docUrl: '../../docs/workflow/account-management.md'
+            docUrl: '../../docs/workflow/account-management.md',
+            anchorAliases: {
+                'account-information': 'create-account-information',
+                'assign-products': 'create-assign-products',
+                'meter-management': 'create-meter-management',
+                'other-account-settings': 'create-other-account-settings',
+                'review-account': 'create-review-account-details',
+                'view-account': 'account-detail',
+                'archive-account': 'archive',
+                'restore-account': 'restore',
+                'bulk-archive': 'bulk-action-archive',
+                'bulk-delete': 'bulk-action-delete',
+                'bulk-restore': 'bulk-action-restore'
+            }
         },
         {
             pageTitle: 'Assessment Management',
@@ -40,7 +73,13 @@
         {
             pageTitle: 'Candidate Management',
             pageUrl: '../../pages/workflow/candidate-management/index.html',
-            docUrl: '../../docs/workflow/candidate-management.md'
+            docUrl: '../../docs/workflow/candidate-management.md',
+            anchorAliases: {
+                'delete-candidate-snapshots-permanently': 'delete-snapshots',
+                'delete-candidate': 'delete-candidates',
+                'download-view-reports-of-assessments': 'downloadview-reports-of-assessments',
+                'extend-link-expiration': 'extend-link-expirations'
+            }
         },
         {
             pageTitle: 'Meters Management',
@@ -97,8 +136,16 @@
             .replace(/^-+|-+$/g, '');
     }
 
+    function sectionUrl(source, sectionId) {
+        var resolvedId = source.anchorAliases && source.anchorAliases[sectionId]
+            ? source.anchorAliases[sectionId]
+            : sectionId;
+        return resolveAssetUrl(source.pageUrl) + '#' + resolvedId;
+    }
+
     function cleanMarkdownLine(line) {
         return String(line || '')
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
             .replace(/`([^`]+)`/g, '$1')
             .replace(/\*\*([^*]+)\*\*/g, '$1')
             .replace(/\*([^*]+)\*/g, '$1')
@@ -144,7 +191,7 @@
                     sectionTitle: headingText,
                     level: level,
                     textParts: [],
-                    url: resolveAssetUrl(source.pageUrl) + '#' + slugify(headingText)
+                    url: sectionUrl(source, slugify(headingText))
                 };
                 return;
             }

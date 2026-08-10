@@ -14,3 +14,18 @@ a:focus-visible {
     outline-offset: 2px;
     border-radius: 2px;
 }
+
+.manual-sidebar-panel {
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.manual-sidebar-panel::-webkit-scrollbar {
+    width: 0.45rem;
+}
+
+.manual-sidebar-panel::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.45);
+    border-radius: 999px;
+}

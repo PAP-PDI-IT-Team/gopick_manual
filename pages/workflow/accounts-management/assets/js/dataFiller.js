@@ -67,11 +67,11 @@
             howToUse: [
                 'Open Accounts.',
                 'Select Create Account.',
-                'Complete Account Information.',
-                'Complete Assign Products.',
-                'Complete Meter Management.',
-                'Complete Other Account Settings.',
-                'Review account details.',
+                { label: 'Complete Account Information.', href: '#create-account-information' },
+                { label: 'Complete Assign Products.', href: '#create-assign-products' },
+                { label: 'Complete Meter Management.', href: '#create-meter-management' },
+                { label: 'Complete Other Account Settings.', href: '#create-other-account-settings' },
+                { label: 'Review account details.', href: '#create-review-account-details' },
                 'Save the account.'
             ],
             expected: ['The account is created using the configured information and can be viewed in View Accounts.'],
@@ -286,31 +286,35 @@
                 { label: 'Expired', detail: 'Active, exceeded expiration date and exceeded account expiration extension' },
                 { label: 'Archived', detail: 'Archived account' }
             ],
-            actions: [
-                { label: 'Search', href: '#search' },
-                { label: 'Advanced Search', href: '#advanced-search' },
+            actionGroups: [
                 {
-                    label: 'Bulk Action',
-                    href: '#bulk-action',
-                    children: [
-                        { label: 'Archive', href: '#bulk-action-archive' },
-                        { label: 'Delete', href: '#bulk-action-delete' }
+                    title: 'Available Row Actions',
+                    links: [
+                        {
+                            label: 'Row Actions',
+                            href: '#row-actions',
+                            children: [
+                                { label: 'View', href: '#view-active-account' },
+                                { label: 'Update Wizard', href: '#update-account' },
+                                { label: 'Archive Specific', href: '#archive' }
+                            ]
+                        }
                     ]
                 },
                 {
-                    label: 'Row Actions',
-                    href: '#row-actions',
-                    children: [
-                        { label: 'View', href: '#view-active-account' },
-                        { label: 'Update Wizard', href: '#update-account' },
-                        { label: 'Archive Specific', href: '#archive' }
-                    ]
-                },
-                {
-                    label: 'View Archived Accounts',
-                    href: '#view-archived-accounts',
-                    children: [
-                        { label: 'Move to the archived accounts page', href: '#view-archived-accounts' }
+                    title: 'Page Buttons',
+                    links: [
+                        { label: 'Search', href: '#search' },
+                        { label: 'Advanced Search', href: '#advanced-search' },
+                        { label: 'View Archive', href: '#view-archived-accounts' },
+                        {
+                            label: 'Bulk Actions',
+                            href: '#bulk-action',
+                            children: [
+                                { label: 'Archive', href: '#bulk-action-archive' },
+                                { label: 'Delete', href: '#bulk-action-delete' }
+                            ]
+                        }
                     ]
                 }
             ],
@@ -318,30 +322,34 @@
                 id: 'view-archived-accounts',
                 title: 'View Archived Accounts',
                 detail: 'Displays archived accounts with search, advanced search, bulk actions, and row actions.',
-                actions: [
-                    { label: 'Search', href: '#search' },
-                    { label: 'Advanced Search', href: '#advanced-search' },
+                actionGroups: [
                     {
-                        label: 'Bulk Action',
-                        href: '#bulk-action',
-                        children: [
-                            { label: 'Restore', href: '#bulk-action-restore' },
-                            { label: 'Delete', href: '#bulk-action-delete' }
+                        title: 'Available Row Actions',
+                        links: [
+                            {
+                                label: 'Row Actions',
+                                href: '#row-actions',
+                                children: [
+                                    { label: 'View', href: '#view-active-account' },
+                                    { label: 'Restore', href: '#restore' }
+                                ]
+                            }
                         ]
                     },
                     {
-                        label: 'Row Actions',
-                        href: '#row-actions',
-                        children: [
-                            { label: 'View', href: '#view-archived-account' },
-                            { label: 'Restore', href: '#restore' }
-                        ]
-                    },
-                    {
-                        label: 'View Account',
-                        href: '#view-accounts',
-                        children: [
-                            { label: 'Move to the active accounts page', href: '#view-accounts' }
+                        title: 'Page Buttons',
+                        links: [
+                            { label: 'View Accounts', href: '#view-accounts' },
+                            { label: 'Search', href: '#search' },
+                            { label: 'Advanced Search', href: '#advanced-search' },
+                            {
+                                label: 'Bulk Actions',
+                                href: '#bulk-action',
+                                children: [
+                                    { label: 'Restore', href: '#bulk-action-restore' },
+                                    { label: 'Delete', href: '#bulk-action-delete' }
+                                ]
+                            }
                         ]
                     }
                 ]
@@ -494,10 +502,10 @@
                 howToUse: [
                     'Open View Accounts.',
                     'Select Update on a specific account.',
-                    'Complete Update Account Information.',
-                    'Complete Update Assigned Products.',
-                    'Complete Update Meter Management.',
-                    'Complete Update Other Account Settings.',
+                    { label: 'Complete Update Account Information.', href: '#update-account-information' },
+                    { label: 'Complete Update Assigned Products.', href: '#update-assigned-products' },
+                    { label: 'Complete Update Meter Management.', href: '#update-meter-management' },
+                    { label: 'Complete Update Other Account Settings.', href: '#update-other-account-settings' },
                     'Review account details.',
                     'Save changes.'
                 ],
@@ -765,8 +773,12 @@
             li.className = 'flex gap-2';
             var marker = document.createElement('span');
             marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-            var text = document.createElement('span');
+            var text = item && typeof item !== 'string' && item.href ? document.createElement('a') : document.createElement('span');
             text.textContent = typeof item === 'string' ? item : item.label;
+            if (item && typeof item !== 'string' && item.href) {
+                text.href = item.href;
+                text.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+            }
             li.appendChild(marker);
             li.appendChild(text);
             list.appendChild(li);
@@ -776,7 +788,15 @@
                 nested.className = 'ml-7 mt-2 space-y-1 text-sm text-slate-500';
                 item.children.forEach(function (child) {
                     var childItem = document.createElement('li');
-                    childItem.textContent = child;
+                    if (child && typeof child !== 'string' && child.href) {
+                        var childLink = document.createElement('a');
+                        childLink.href = child.href;
+                        childLink.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+                        childLink.textContent = child.label;
+                        childItem.appendChild(childLink);
+                    } else {
+                        childItem.textContent = child;
+                    }
                     nested.appendChild(childItem);
                 });
                 list.appendChild(nested);
@@ -819,6 +839,13 @@
             });
             appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', hasLinks ? 'Related Features' : 'Controls');
             card.appendChild(hasLinks ? createActionLinkList(section.actions) : createBulletList(section.actions));
+        }
+
+        if (section.actionGroups && section.actionGroups.length) {
+            section.actionGroups.forEach(function (group) {
+                appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
+                card.appendChild(createActionLinkList(group.links || []));
+            });
         }
 
         if (section.items && section.items.length) {
@@ -1002,8 +1029,10 @@
         appendText(container, 'p', 'text-sm text-slate-600 leading-relaxed', accountsContent.viewAccounts.detail);
         appendText(container, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Legends');
         renderLegend(container, accountsContent.viewAccounts.legend);
-        appendText(container, 'p', 'mt-6 text-xs font-bold uppercase tracking-wider text-slate-400', 'Related Features');
-        container.appendChild(createActionLinkList(accountsContent.viewAccounts.actions));
+        accountsContent.viewAccounts.actionGroups.forEach(function (group) {
+            appendText(container, 'p', 'mt-6 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
+            container.appendChild(createActionLinkList(group.links || []));
+        });
         container.appendChild(createInfoCard(accountsContent.viewAccounts.archived));
     }
 
@@ -1024,6 +1053,25 @@
         return intro;
     }
 
+    function createUpdateAccountSectionCards() {
+        var titleMap = [
+            { id: 'update-account-information', title: 'Update Account Information' },
+            { id: 'update-assigned-products', title: 'Update Assigned Products' },
+            { id: 'update-meter-management', title: 'Update Meter Management' },
+            { id: 'update-other-account-settings', title: 'Update Other Account Settings' }
+        ];
+
+        return accountsContent.updateSpecific.groups.map(function (group, index) {
+            return createInfoCard({
+                id: titleMap[index].id,
+                title: titleMap[index].title,
+                items: group.items,
+                expected: group.expected,
+                notes: group.notes
+            }, 'nested');
+        });
+    }
+
     function renderFunctions() {
         var container = document.getElementById('functionSections');
         if (!container) return;
@@ -1031,6 +1079,9 @@
         accountsContent.functions.forEach(function (section) {
             container.appendChild(createInfoCard(section));
             if (section.id === 'update-account') {
+                createUpdateAccountSectionCards().forEach(function (card) {
+                    container.appendChild(card);
+                });
                 container.appendChild(createUpdateSpecificCard());
             }
         });

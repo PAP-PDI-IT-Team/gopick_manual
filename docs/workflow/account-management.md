@@ -6,10 +6,6 @@ Provides access control and account management for GoPick accounts: Distributor,
 
 Creates a new account through the account creation wizard.
 
-### Purpose / Scope
-
-Owns the full account creation flow from account details, assigned products, meter configuration, account settings, and final review.
-
 ### Access Path
 
 - `Accounts` > `Create Account`
@@ -36,8 +32,6 @@ Owns the full account creation flow from account details, assigned products, met
 > - QA: Some inputs are conditional. Check whether conditional fields are documented.
 
 ### Account Information
-
-#### Purpose / Scope
 
 Collects account identity, parent relationship, contact information, address information, account expiration, and account status.
 
@@ -75,9 +69,6 @@ Collects account identity, parent relationship, contact information, address inf
 - `Billing Address`
 - `Expiry Date and Time`
 - `Status`
-
-#### System Calculated Inputs
-
 - `Actual Account Expiration`
 
 > Rules:
@@ -97,8 +88,6 @@ Collects account identity, parent relationship, contact information, address inf
 
 ### Assign Products
 
-#### Purpose / Scope
-
 Assigns assessments that the company or organization account can use.
 
 #### How To Use
@@ -106,11 +95,7 @@ Assigns assessments that the company or organization account can use.
 1. Select at least one assessment.
 2. Review selected assessments by category.
 
-#### Required Selection
-
-- At least one assessment.
-
-#### Optional Selection Groups
+#### Selection Groups
 
 - `Cognitive/Knowledge-based Assessment`
 - `Competency-based Assessment`
@@ -129,8 +114,6 @@ Assigns assessments that the company or organization account can use.
 
 ### Meter Management
 
-#### Purpose / Scope
-
 Sets the account meter management type and meter balance.
 
 #### How To Use
@@ -142,10 +125,6 @@ Sets the account meter management type and meter balance.
 
 - `Meter Management Type`
 - `Meter Balance`
-
-#### Conditional Inputs
-
-- `Parent Meter Balance`
 
 > Rules:
 > - Inputs are optional when they are not indicated as required.
@@ -160,8 +139,6 @@ Sets the account meter management type and meter balance.
 > - Maximum meter value is `99,999`.
 
 ### Other Account Settings
-
-#### Purpose / Scope
 
 Sets account limits, API access, account contacts, billing configuration, and contract configuration.
 
@@ -235,10 +212,6 @@ Sets account limits, API access, account contacts, billing configuration, and co
 
 Reviews the entered and selected account creation details before saving the account.
 
-#### Purpose / Scope
-
-Confirms the final account configuration from the create account wizard before the account is created.
-
 #### Visible Content
 
 - Account information.
@@ -269,36 +242,39 @@ Confirms the final account configuration from the create account wizard before t
 
 Displays the active account listing with search, advanced search, archived account navigation, bulk actions, and row actions.
 
-### Purpose / Scope
-
-Owns the active account table and account-level actions available from that table.
-
-### Access Path
-
-- `Accounts` > `View Accounts`
-
-### Available Actions
-
-- [Search](#search)
-- [Advanced Search](#advanced-search)
-- [Bulk Actions](#bulk-actions)
-  - [Archive](#bulk-archive)
-  - [Delete](#bulk-delete)
-- [Row Actions](#row-actions)
-  - [View](#view-active-account)
-  - [Update Wizard](#update-account)
-  - [Archive Specific](#archive-account)
-- [View Archived Accounts](#view-archived-accounts) Move to the Archived Accounts Page
-
 > Legends:
 > - `Active`: Active and not yet expired.
 > - `Deactivated`: Deactivated.
 > - `Expiring`: Active and exceeded expiration date but not account expiration extension.
 > - `Expired`: Active, exceeded expiration date, and exceeded account expiration extension.
 
+### Access Path
+
+- `Accounts` > `View Accounts`
+
+### Available Row Actions
+
+- [Row Actions](#row-actions)
+  - [View](#view-active-account)
+  - [Update Wizard](#update-account)
+  - [Archive Specific](#archive-account)
+
+### Page Buttons
+
+- [Search](#search)
+- [Advanced Search](#advanced-search)
+- [View Archive](#view-archived-accounts)
+- [Bulk Actions](#bulk-actions)
+  - [Archive](#bulk-archive)
+  - [Delete](#bulk-delete)
+
+## Other Pages
 ### View Archived Accounts
 
 Displays archived accounts with search, advanced search, bulk actions, and row actions.
+
+> Legends:
+> - `Archived`: Archived account.
 
 #### Purpose / Scope
 
@@ -308,37 +284,30 @@ Owns the archived account table and actions available only to archived accounts.
 
 - `Accounts` > `View Accounts` > `View Archived Accounts`
 
-#### Available Actions
+#### Available Row Actions
 
+- [Row Actions](#row-actions)
+  - [View](#view-active-account)
+  - [Restore](#restore-account)
+
+#### Page Buttons
+
+- [View Accounts](#view-accounts)
 - [Search](#search)
 - [Advanced Search](#advanced-search)
 - [Bulk Actions](#bulk-actions)
   - [Restore](#bulk-restore)
   - [Delete](#bulk-delete)
-- [Row Actions](#row-actions)
-  - [View](#view-active-account)
-  - [Restore](#restore-account)
-- [View Account](#view-accounts) Move to the Active Accounts Page
 
-> Legends:
-> - `Archived`: Archived account.
-
-## Other Pages
-### Account Detail
+### View Account
 
 Displays account information configured during creation and account configuration actions.
-
-#### Purpose / Scope
-
-Owns the account detail page reached from account row actions. This page exposes account sections and account configuration dropdown entries.
 
 #### Access Path
 
 - `Accounts` > `View Accounts` > `Row Actions` > `View`
 
-#### Return Button
-
-##### Purpose / Scope
+#### Return Button 
 
 Returns the user to the source account listing.
 
@@ -347,14 +316,12 @@ Returns the user to the source account listing.
 1. Select the return button.
 
 > Expected Result:
-> - From an active account detail page, the user returns to `View Accounts`.
-> - From an archived account detail page, the user returns to `View Archived Accounts`.
+> - From an active view account page, the user returns to `View Accounts`.
+> - From an archived view account page, the user returns to `View Archived Accounts`.
 
 #### Account Configuration Dropdown
 
-##### Purpose / Scope
-
-Provides account configuration pages available from the account detail page.
+Provides account configuration pages available from the view account page.
 
 ##### Available Pages
 
@@ -365,8 +332,6 @@ Provides account configuration pages available from the account detail page.
 - [Unblock Account](#unblock-account)
 
 #### Account Information Section
-
-##### Purpose / Scope
 
 Shows identity, parent, contact, address, expiration, and status details for the selected account.
 
@@ -396,8 +361,6 @@ Shows identity, parent, contact, address, expiration, and status details for the
 
 #### Assigned Assessments Section
 
-##### Purpose / Scope
-
 Shows all assessments assigned to the account by category.
 
 ##### Visible Content
@@ -409,8 +372,6 @@ Shows all assessments assigned to the account by category.
 - `Update Assessment`.
 
 #### Meter Management Section
-
-##### Purpose / Scope
 
 Shows account meter mode, allocated meter balance, and parent meter balance when applicable.
 
@@ -426,8 +387,6 @@ Shows account meter mode, allocated meter balance, and parent meter balance when
 > - `Parent Meter` appears when `Metering Management Type` is not `Deduct usage from this account`.
 
 #### Other Account Settings Section
-
-##### Purpose / Scope
 
 Shows account limits, API access, contact information, billing configuration, and contract configuration for the selected account.
 
@@ -462,8 +421,6 @@ Shows account limits, API access, contact information, billing configuration, an
 
 #### List Of Users Section
 
-##### Purpose / Scope
-
 Shows account users under the selected account.
 
 ##### Available Actions
@@ -473,8 +430,6 @@ Shows account users under the selected account.
 ### Account Configuration Pages
 
 #### Privacy Consent
-
-##### Purpose / Scope
 
 Manages privacy consent content and candidate-side consent checkbox visibility.
 
@@ -494,8 +449,6 @@ Manages privacy consent content and candidate-side consent checkbox visibility.
 > - Privacy consent content and configured checkboxes are updated on the candidate side.
 
 #### Demographics
-
-##### Purpose / Scope
 
 Manages which demographic fields appear in the candidate-side demographics form.
 
@@ -523,8 +476,6 @@ Manages which demographic fields appear in the candidate-side demographics form.
 
 #### Assessment Completion Page
 
-##### Purpose / Scope
-
 Manages assessment completion page content.
 
 ##### Access Path
@@ -548,8 +499,6 @@ Manages assessment completion page content.
 > - QA and System User: Always check RBAC for the specific account type.
 
 #### Assessment Center Logo
-
-##### Purpose / Scope
 
 Manages the assessment center logo for the account.
 
@@ -575,8 +524,6 @@ Manages the assessment center logo for the account.
 
 #### Unblock Account
 
-##### Purpose / Scope
-
 Unblocks an account that is blocked due to multiple login attempts.
 
 ##### Access Path
@@ -585,7 +532,7 @@ Unblocks an account that is blocked due to multiple login attempts.
 
 ##### How To Use
 
-1. Open the account detail page.
+1. Open the view account page.
 2. Trigger `Unblock Account`.
 
 > Rules:
@@ -593,11 +540,7 @@ Unblocks an account that is blocked due to multiple login attempts.
 
 ### Update Account
 
-Updates account settings through the update wizard.
-
-#### Purpose / Scope
-
-Owns full account update through the wizard. This is different from [Update Specific](#update-specific), which updates a single account detail section.
+Owns full account update through the wizard. This is different from [Update Specific](#update-specific), which updates a single view account section.
 
 #### Access Path
 
@@ -618,8 +561,6 @@ Owns full account update through the wizard. This is different from [Update Spec
 > - `Update` only appears when the account is not archived and is not the current user's own account.
 
 #### Update Account Information
-
-##### Purpose / Scope
 
 Updates editable account identity, contact, address, expiration, and status fields.
 
@@ -671,16 +612,14 @@ Updates editable account identity, contact, address, expiration, and status fiel
 > - Conditional inputs appear only when their condition is met.
 > - `Account Type`, `Parent Account`, and `Account Name` cannot be changed.
 > - `Username`, `Password`, `Primary Contact Name`, and `Primary Contact Email` have a maximum of 100 characters.
-> - Addresses have a maximum of 250 characters.
-> - Phone number has a maximum of 25 characters.
+> - `Addresses` have a maximum of 250 characters.
+> - `Phone number` has a maximum of 25 characters.
 > - `Password` and `Confirm Password` must match.
 > - `Billing Address` can be copied from `Business Address` by toggling the checkbox, or entered manually when the checkbox is off.
 > - `Expiry Date and Time` cannot be set later than today.
 > - `Status` does not show when editing the current user's own account.
 
 #### Update Assigned Products
-
-##### Purpose / Scope
 
 Updates assigned assessments and assessment meter consumption.
 
@@ -708,8 +647,6 @@ Updates assigned assessments and assessment meter consumption.
 > - Inputs indicated as required must be completed.
 
 #### Update Meter Management
-
-##### Purpose / Scope
 
 Updates account meter management behavior.
 
@@ -742,8 +679,6 @@ Updates account meter management behavior.
 > - QA, Dev, and System User: Deduction from parent means `Deduct usage from Distributor/Sub-Distributor/Client Account`.
 
 #### Update Other Account Settings
-
-##### Purpose / Scope
 
 Updates account limits, API access, contact information, billing configuration, and contract configuration.
 
@@ -803,11 +738,7 @@ Updates account limits, API access, contact information, billing configuration, 
 
 ### Update Specific
 
-Updates one account detail section from the account detail page.
-
-#### Purpose / Scope
-
-Owns section-specific update behavior. The available update form depends on the account detail section where the update is triggered.
+Owns section-specific update behavior. The available update form depends on the view account section where the update is triggered.
 
 #### Access Path
 
@@ -815,7 +746,7 @@ Owns section-specific update behavior. The available update form depends on the 
 
 #### How To Use
 
-1. Open the account detail page.
+1. Open the view account page.
 2. Open `Account Information`, `Assigned Assessments`, `Meter Management`, or `Other Account Settings`.
 3. Select `Update`.
 4. Update the section-specific fields.
@@ -835,11 +766,7 @@ Owns section-specific update behavior. The available update form depends on the 
 
 ### Manage Assigned Assessment
 
-Updates a specific assigned assessment configuration.
-
-#### Purpose / Scope
-
-Owns assigned assessment configuration from the account detail assigned assessments section.
+Owns assigned assessment configuration from the view account assigned assessments section.
 
 #### Access Path
 
@@ -847,7 +774,7 @@ Owns assigned assessment configuration from the account detail assigned assessme
 
 #### How To Use
 
-1. Open the account detail page.
+1. Open the view account page.
 2. Open `Assigned Assessments`.
 3. Select `Manage`.
 4. Update `Set Max Respondents`.
@@ -862,9 +789,7 @@ Owns row action entries shown in account listing tables.
 
 #### View Active Account
 
-##### Purpose / Scope
-
-Opens account detail for an active, non-archived account.
+Opens view account for an active, non-archived account.
 
 ##### Access Path
 
@@ -876,13 +801,11 @@ Opens account detail for an active, non-archived account.
 2. Select `View` on a non-archived account row.
 
 > Expected Result:
-> - The active account detail page opens.
+> - The active view account page opens.
 
 #### View Archived Account
 
-##### Purpose / Scope
-
-Opens account detail for an archived account.
+Opens view account for an archived account.
 
 ##### Access Path
 
@@ -894,11 +817,9 @@ Opens account detail for an archived account.
 2. Select `View` on an archived account row.
 
 > Expected Result:
-> - The archived account detail page opens.
+> - The archived view account page opens.
 
 #### Update Account Row Action
-
-##### Purpose / Scope
 
 Links to [Update Account](#update-account) from an account table row.
 
@@ -919,8 +840,6 @@ Links to [Update Account](#update-account) from an account table row.
 
 #### Archive Account
 
-##### Purpose / Scope
-
 Moves a non-archived account to archived accounts.
 
 ##### Access Path
@@ -939,8 +858,6 @@ Moves a non-archived account to archived accounts.
 > - The account is moved to archived accounts.
 
 #### Restore Account
-
-##### Purpose / Scope
 
 Moves an archived account back to the account list.
 
@@ -965,20 +882,11 @@ Owns account listing actions applied to selected account rows.
 
 #### Bulk Archive
 
-##### Purpose / Scope
-
 Moves selected account rows to archived accounts.
 
 ##### Access Path
 
-- `Accounts` > `View Accounts` > `Bulk` > `Archive`
-
-##### How To Use
-
-1. Open `View Accounts`.
-2. Select account checkboxes.
-3. Open `Bulk`.
-4. Select `Archive`.
+- `Accounts` > `View Accounts` > `Bulk` dropdown > `Archive`
 
 > Rules:
 > - The current logged-in account cannot select its own account.
@@ -988,20 +896,11 @@ Moves selected account rows to archived accounts.
 
 #### Bulk Delete
 
-##### Purpose / Scope
-
 Deletes selected account rows.
 
 ##### Access Path
 
-- `Accounts` > `View Accounts` > `Bulk` > `Delete`
-
-##### How To Use
-
-1. Open `View Accounts`.
-2. Select account checkboxes.
-3. Open `Bulk`.
-4. Select `Delete`.
+- `Accounts` > `View Accounts` > `Bulk` dropdown > `Delete`
 
 > Rules:
 > - The current logged-in account cannot select its own account.
@@ -1011,20 +910,11 @@ Deletes selected account rows.
 
 #### Bulk Restore
 
-##### Purpose / Scope
-
 Restores selected archived account rows.
 
 ##### Access Path
 
-- `Accounts` > `View Accounts` > `View Archived Accounts` > `Bulk` > `Restore`
-
-##### How To Use
-
-1. Open `View Archived Accounts`.
-2. Select account checkboxes.
-3. Open `Bulk`.
-4. Select `Restore`.
+- `Accounts` > `View Accounts` > `View Archived Accounts` > `Bulk` dropdown > `Restore`
 
 > Rules:
 > - The current logged-in account cannot select its own account.
@@ -1037,8 +927,6 @@ Restores selected archived account rows.
 These actions are documented once and linked from account listing areas to avoid repeating the same behavior.
 
 #### Search
-
-##### Purpose / Scope
 
 Searches account table content.
 
@@ -1057,8 +945,6 @@ Searches account table content.
 > - Matching accounts are shown in the table.
 
 #### Advanced Search
-
-##### Purpose / Scope
 
 Searches account table content using configured rules.
 

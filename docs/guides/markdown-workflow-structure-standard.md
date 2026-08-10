@@ -215,6 +215,7 @@ Other workflow file:
 Rules:
 - Define repeated behavior once.
 - Link to the owned section everywhere else.
+- Same-file Markdown links must be converted into website section links so users can move up or down to the owning section.
 - The link target owns the full detail block set.
 - The referencing section should explain only why that link is relevant locally.
 - Do not copy the same instructions into every place that can reach the same behavior.
@@ -420,6 +421,7 @@ Notes: neutral slate callout with audience label when provided.
 
 Rules:
 - Links must stay clickable.
+- Same-page links must navigate to the matching rendered website section, whether the target is above or below the current section.
 - Cross-file references must open the linked page or Markdown target.
 - UI labels from access paths should remain visually distinct.
 - Rules, expected results, and notes must not look like normal body text.
@@ -449,6 +451,16 @@ Available Actions
 
 Then the shared section owns the full instructions.
 
+Same-file Markdown links such as `[View Candidate](#view-candidate)` must be represented in website data as link objects, not plain text:
+
+```js
+links: [
+    { label: 'View Candidate', href: '#view-candidate' }
+]
+```
+
+The rendered page must use those objects as anchors so the user can jump to the referenced section in either direction.
+
 ### Website Conversion Checklist
 
 Before accepting a Markdown-to-website conversion, confirm:
@@ -463,5 +475,6 @@ Before accepting a Markdown-to-website conversion, confirm:
 - Access paths render uniformly.
 - How-to-use steps render as ordered steps.
 - Rules, expected results, and notes render as callouts.
-- Internal and cross-file links remain clickable.
+- Internal same-page links move to the matching rendered section above or below the current section.
+- Cross-file links remain clickable.
 - One content edit has one owning source location.
