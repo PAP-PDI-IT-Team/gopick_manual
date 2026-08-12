@@ -141,7 +141,9 @@ Use this process when reading a Markdown source and transforming its meaning int
 - Every notable human or AI-assisted change must appear under that pull request's version and date before merge.
 - When the pull request boundary is not reliably detectable, append a verified `PR #number` to the version heading. If no PR number exists, use the first commit SHA that actually belongs to the PR.
 - Never use a base commit, unrelated commit, branch name, invented identifier, `pending`, or `TBD` as the PR identifier. Stop and obtain the identifier when it is required but unavailable.
-- Crucial architectural, documentation, workflow, governance, or compatibility decisions require a decision record under `docs/adr/` using the `NNN-abc.md` convention.
+- Create an ADR only for a very important, durable decision with broad or difficult-to-reverse consequences, such as a repository-wide contract, architecture boundary, governance rule, release rule, or compatibility policy.
+- Do not create ADRs for routine implementation choices, minor documentation or presentation decisions, ordinary fixes or maintenance, or every decision made during a pull request.
+- A qualifying ADR uses the `docs/adr/NNN-abc.md` convention. When the threshold is not met, use the versioned changelog for a notable result and the pull request for implementation context.
 - Keep the active changelog at the repository root. Use `docs/old-version/` only when deliberately archiving old changelog versions.
 
 ## Branch, Commit, and Review Rules
