@@ -1,4 +1,4 @@
-// assessment data filler — hold page content in JS and render into HTML
+// assessment data filler - hold page content in JS and render into HTML
 (function (global) {
     'use strict';
 
@@ -12,7 +12,7 @@
                 steps: [
                     { title: 'Open "View Assessments"', detail: 'Locate it in the side panel of the admin portal.' },
                     { title: 'Select an assessment', detail: 'Choose the assessment from the gallery view.' },
-                    { title: 'Open configuration', detail: 'Click the configuration icon — the 3rd button in the top-left button group.' },
+                    { title: 'Open configuration', detail: 'Click the configuration icon - the 3rd button in the top-left button group.' },
                     { title: 'Select "Page Setup"', detail: 'From the dropdown, select Page Setup.' },
                     { title: 'Set timer and randomization', detail: 'Choose which part of the exam will be randomized, enable the timer, and set the specified time limit.' }
                 ]
@@ -24,7 +24,7 @@
                 steps: [
                     { title: 'Open "View Assessments"', detail: 'Locate it in the side panel of the admin portal.' },
                     { title: 'Select an assessment', detail: 'Choose the assessment from the gallery view.' },
-                    { title: 'Open configuration', detail: 'Click the configuration icon — the 3rd button in the top-left button group.' },
+                    { title: 'Open configuration', detail: 'Click the configuration icon - the 3rd button in the top-left button group.' },
                     { title: 'Select "Set Questions"', detail: 'From the dropdown, select Set Questions to manage question-level settings.' },
                     { title: 'Edit question instructions', detail: 'Under each question, fill in instructions and other configurations as needed.' }
                 ]
@@ -37,7 +37,7 @@
                 steps: [
                     { title: 'Open "View Assessments"', detail: 'Locate it in the side panel of the admin portal.' },
                     { title: 'Select an assessment', detail: 'Choose the assessment from the gallery view.' },
-                    { title: 'Open settings', detail: 'Click the settings icon — the 4th button in the top-left button group.' },
+                    { title: 'Open settings', detail: 'Click the settings icon - the 4th button in the top-left button group.' },
                     { title: 'Select "Update"', detail: 'From the dropdown, select Update.' },
                     { title: 'Upload under Assessment Development', detail: 'Below the ASSESSMENT DEVELOPMENT heading, click the upload icon to add or update images.' }
                 ]

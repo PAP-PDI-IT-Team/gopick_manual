@@ -1,4 +1,4 @@
-# GoPick Assessment Center — Application Information
+# GoPick Assessment Center - Application Information
 
 ---
 
@@ -6,7 +6,7 @@
 
 GoPick, also referred to as the Assessment Center, is a web-based platform purpose-built for organizations that need to create, administer, and manage online assessments at scale. It is designed to support the full assessment lifecycle: from building a test library, to scheduling assessments for candidates, to delivering those assessments online, and finally collecting and reporting on results.
 
-The platform is multi-tenant by design, meaning a single installation can serve multiple independent client organizations simultaneously. Each client organization manages its own candidates, assessments, and results without visibility into other clients' data. A hierarchy of user roles — Administrators, Distributors, Client Managers, and Candidates — governs what each person can see and do within the system.
+The platform is multi-tenant by design, meaning a single installation can serve multiple independent client organizations simultaneously. Each client organization manages its own candidates, assessments, and results without visibility into other clients' data. A hierarchy of user roles - Administrators, Distributors, Client Managers, and Candidates - governs what each person can see and do within the system.
 
 GoPick is accessed entirely through a web browser. No software installation is required for end users. There are two separate web interfaces: an administrative portal for managing the system, and a candidate portal where test-takers log in and complete their assigned assessments.
 
@@ -80,7 +80,7 @@ GoPick provides a comprehensive set of features covering the complete online ass
 
 ---
 
-## Website Modules — Detailed Breakdown
+## Website Modules - Detailed Breakdown
 
 GoPick is built around a modular structure. Each major area of functionality is encapsulated in its own module. Below is a detailed description of each module within the admin portal (backend) and the candidate portal (frontend), along with their submodules and specific capabilities.
 
@@ -268,7 +268,7 @@ The Self-Registration module allows candidates to create their own accounts on t
 
 ## User Flows
 
-### Administrator or Client Manager — Day-to-Day Workflow
+### Administrator or Client Manager - Day-to-Day Workflow
 
 An administrator or client manager typically interacts with the system in the following sequence when running an assessment program:
 
@@ -283,7 +283,7 @@ An administrator or client manager typically interacts with the system in the fo
 9. Use **Email Logs** to confirm that notification emails were delivered to candidates.
 10. Use the **Activity Log** to audit any specific events if needed.
 
-### Candidate — Assessment-Taking Workflow
+### Candidate - Assessment-Taking Workflow
 
 A candidate interacts with the platform in the following sequence:
 
