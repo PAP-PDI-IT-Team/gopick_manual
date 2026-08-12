@@ -17,5 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added workflow manuals for accounts, candidates, assessments, meters, reports, the resource center, users, and roles and permissions.
 - Added dashboard, platform overview, meter domain-governance, developer-rule, and manual-authoring documentation.
 - Added shared site navigation and cross-page search for manual pages and sections.
+- Added the GoPick banner to the top of the repository README.
+- Added an AI-assistance disclosure and a correction-request link to the README.
 - Added Markdown sources under `docs/` with corresponding rendered pages and page-local assets under `pages/`.
 - Added repository guidance in `README.md`, contribution constraints in `AGENTS.md`, security reporting guidance in `SECURITY.md`, and licensing terms in `LICENSE.md`.
