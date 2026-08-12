@@ -144,6 +144,21 @@ Use this process when reading a Markdown source and transforming its meaning int
 - Crucial architectural, documentation, workflow, governance, or compatibility decisions require a decision record under `docs/adr/` using the `NNN-abc.md` convention.
 - Keep the active changelog at the repository root. Use `docs/old-version/` only when deliberately archiving old changelog versions.
 
+## Branch, Commit, and Review Rules
+
+- Do not commit contribution work directly to `main`. Use one dedicated `<label>/<intent-summary>` branch per pull request.
+- Branch labels are limited to `feat` for new work and `fix` for changes, repairs, corrections, or alterations to existing work.
+- Write the branch intent summary in lowercase kebab-case with no more than five hyphen-separated words.
+- Commit labels are limited to `feat`, `fix`, or `docs`.
+- Use `docs` for any commit that changes a Markdown (`.md`) file, including additions, corrections, and removals.
+- Use `feat` for a new non-Markdown capability. Use `fix` for every other non-Markdown change, repair, alteration, refactor, maintenance task, or security correction.
+- When one logical commit changes Markdown and non-Markdown files, use `docs`. Split it only when the changes are genuinely independent responsibilities.
+- Format commits as `<label>(<optional-scope>): <imperative summary>`. Keep summaries concise, specific, lowercase after the colon, and without a trailing period.
+- One branch maps to one pull request and one changelog version. Additional commits in the same pull request do not create another version.
+- Every pull request targeting `main` requires approval from at least one reviewer other than the author.
+- Do not merge while requested changes or review conversations remain unresolved.
+- Do not state that a pull request is ready to merge until the peer approval and applicable verification are confirmed.
+
 ## Instruction Maintenance
 
 - Use targeted file globs for project instructions. Do not use `applyTo: "**"`.
