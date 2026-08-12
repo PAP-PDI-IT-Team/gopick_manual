@@ -192,16 +192,18 @@ The root `index.html` owns the home-page shell. Home-page content belongs in `sh
 
 Keep content changes in the JSON owner unless the request explicitly changes structure or behavior. Missing required data must remain an explicit error; do not add silent defaults or hard-coded duplicate content to suppress a failure.
 
-### Record a Crucial Decision
+### Record a Very Important Decision
 
-Create or update an ADR when a contribution makes a crucial architectural, documentation, workflow, governance, or compatibility decision.
+Create or update an ADR only when a contribution makes a very important, durable architectural, documentation, workflow, governance, or compatibility decision with broad or difficult-to-reverse consequences.
+
+The decision must establish or replace a repository-wide contract, affect multiple owners or future pull requests, require coordinated migration if reversed, or preserve context needed to prevent an accidental high-impact reversal.
 
 - Name a new record `docs/adr/NNN-abc.md` using the next sequential number and a three-letter lowercase scope.
 - Include title, status, date, scope, context, decision, and consequences.
 - Retain superseded records and link them to their replacements.
 - Also add a concise changelog entry describing what changed.
 
-Routine corrections and implementation details do not require an ADR. Follow `docs/adr/README.md` for the complete contract.
+Do not create an ADR for routine implementation choices, minor documentation or presentation decisions, bug fixes, content corrections, ordinary maintenance, or every decision discussed in a pull request. Follow `docs/adr/README.md` for the complete threshold.
 
 ### Prepare a Release or Archive an Old Changelog
 
@@ -234,7 +236,7 @@ Do not disclose sensitive security details in a public issue or pull request. Fo
 | Home-page content | `shared/data/gopick-data.json` |
 | Visual tokens and design decisions | `DESIGN.md` |
 | Notable change summary | `CHANGELOG.md` |
-| Crucial decision reasoning | `docs/adr/` |
+| Qualifying high-impact decision reasoning | `docs/adr/` |
 
 Use the narrowest existing owner. Do not create a second source for the same meaning or behavior.
 
@@ -286,7 +288,7 @@ Complete `.github/pull_request_template.md` with:
 - Screenshots or local URLs when presentation changed.
 - Confirmation of Markdown and rendered-page synchronization when applicable.
 - Confirmation of the pull request's semantic version, date, categorized entries, and verified PR identifier when required.
-- The ADR path or a clear explanation that no crucial decision was made.
+- The ADR path when the very-important-decision threshold was met, or confirmation that no qualifying decision was made.
 - Known risks and explicitly scoped follow-up work.
 - Confirmation that at least one peer reviewer other than the author approved the pull request before merge.
 
