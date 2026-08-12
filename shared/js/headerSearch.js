@@ -107,6 +107,11 @@
             docUrl: '../../docs/guides/manual-documentation-standard.md'
         },
         {
+            pageTitle: 'Changelog Versioning',
+            pageUrl: '../../pages/guides/manual-guides/index.html',
+            docUrl: '../../docs/guides/changelog-versioning.md'
+        },
+        {
             pageTitle: 'Resource Center',
             pageUrl: '../../pages/workflow/resource-center/index.html',
             docUrl: '../../docs/workflow/resource-center.md'

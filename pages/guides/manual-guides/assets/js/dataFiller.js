@@ -188,6 +188,141 @@
                         ].join('\n')
                     }
                 ]
+            },
+            {
+                id: 'changelog-versioning',
+                title: 'Changelog Versioning',
+                description: 'How every pull request owns one dated semantic version for all notable human and AI-assisted changes.',
+                children: [
+                    {
+                        id: 'pull-request-release-model',
+                        title: 'Pull Request Release Model',
+                        bullets: [
+                            'Every pull request merged into main is treated as materially released.',
+                            'One new pull request creates exactly one new version.',
+                            'Additional changes in the same pull request update that version without creating another.',
+                            'Every notable human and AI-assisted change must belong to the pull request version before merge.',
+                            'This repository does not use an Unreleased section.'
+                        ]
+                    },
+                    {
+                        id: 'version-heading-format',
+                        title: 'Version Heading Format',
+                        bullets: [
+                            'Use [MAJOR.MINOR.PATCH] - YYYY-MM-DD when the PR boundary is clear.',
+                            'Use [MAJOR.MINOR.PATCH] - YYYY-MM-DD - PR #number when the boundary is ambiguous.',
+                            'If no PR number exists, use the first verified commit SHA that actually belongs to the PR.',
+                            'Never use a base commit, unrelated commit, branch name, invented identifier, pending, TBD, or a placeholder.',
+                            'Stop and obtain a required identifier when it cannot be verified.'
+                        ],
+                        codeBlocks: [
+                            {
+                                label: 'Version heading formats',
+                                language: 'md',
+                                code: [
+                                    '## [1.2.0] - 2026-08-15',
+                                    '',
+                                    '## [1.2.0] - 2026-08-15 - PR #42',
+                                    '',
+                                    '## [1.2.0] - 2026-08-15 - PR abc1234'
+                                ].join('\n')
+                            }
+                        ]
+                    },
+                    {
+                        id: 'version-format',
+                        title: 'Version Format',
+                        description: 'Versions use MAJOR.MINOR.PATCH. Select the version from the highest-impact change in the pull request.',
+                        bullets: [
+                            'A pull request containing fixes and one backward-compatible capability is a minor version, not a patch version.'
+                        ],
+                        children: [
+                            {
+                                id: 'major-version',
+                                title: 'Major Version',
+                                description: 'Increase MAJOR for an incompatible or fundamental change to an established contract. Example: 1.1.0 to 2.0.0.'
+                            },
+                            {
+                                id: 'minor-version',
+                                title: 'Minor Version',
+                                description: 'Increase MINOR for a backward-compatible capability such as a new workflow, feature, PR template, or ADR system. Example: 1.0.0 to 1.1.0.'
+                            },
+                            {
+                                id: 'patch-version',
+                                title: 'Patch Version',
+                                description: 'Increase PATCH for a backward-compatible correction such as repaired documentation, links, formatting, or existing behavior. Example: 1.1.0 to 1.1.1.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'changelog-categories',
+                        title: 'Changelog Categories',
+                        bullets: [
+                            'Added: new capabilities or documentation.',
+                            'Changed: changes to existing behavior or documentation.',
+                            'Deprecated: available behavior or content scheduled for removal.',
+                            'Removed: removed behavior or content.',
+                            'Fixed: corrected defects or inaccurate documentation.',
+                            'Security: security-related corrections.'
+                        ]
+                    },
+                    {
+                        id: 'pull-request-process',
+                        title: 'Pull Request Process',
+                        bullets: [
+                            'Check the latest changelog version and determine whether the work belongs to the same open PR or a new PR.',
+                            'For a new PR, select the next semantic version and create one dated version section.',
+                            'For more work in the same PR, update its existing version section.',
+                            'Record every notable change under the appropriate category.',
+                            'Add a verified PR number or PR commit SHA when the PR boundary is otherwise unclear.',
+                            'Before merge, confirm the version, date, identifier when required, and entries match the PR.'
+                        ],
+                        codeBlocks: [
+                            {
+                                label: 'One PR release record',
+                                language: 'md',
+                                code: [
+                                    '## [1.2.0] - 2026-08-15 - PR #42',
+                                    '',
+                                    '### Added',
+                                    '',
+                                    '- Added a new workflow manual.',
+                                    '',
+                                    '### Fixed',
+                                    '',
+                                    '- Corrected its search target.'
+                                ].join('\n')
+                            }
+                        ]
+                    },
+                    {
+                        id: 'choosing-the-next-version',
+                        title: 'Choosing the Next Version',
+                        bullets: [
+                            'From 1.1.0, a backward-compatible correction becomes 1.1.1.',
+                            'From 1.1.0, a backward-compatible capability becomes 1.2.0.',
+                            'From 1.1.0, an incompatible contract change becomes 2.0.0.'
+                        ]
+                    },
+                    {
+                        id: 'changelog-and-decision-records',
+                        title: 'Changelog and Decision Records',
+                        bullets: [
+                            'CHANGELOG.md records what changed; docs/adr records why a crucial decision was made.',
+                            'Routine corrections normally need only a versioned changelog entry.',
+                            'Crucial architectural, documentation, workflow, governance, or compatibility decisions require a versioned entry and an ADR.'
+                        ]
+                    },
+                    {
+                        id: 'old-changelog-versions',
+                        title: 'Old Changelog Versions',
+                        bullets: [
+                            'Keep the active changelog at the repository root and retain ordinary pull-request releases in it.',
+                            'Use docs/old-version only during intentional archive maintenance.',
+                            'Give archived files explicit version-based names and do not move the active changelog during an ordinary pull request.'
+                        ]
+                    }
+                ]
             }
         ]
     };
