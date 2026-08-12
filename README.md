@@ -161,6 +161,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for repository-specific contribution use 
 
 Read `AGENTS.md`, `CODE_OF_CONDUCT.md`, and the applicable standards under `docs/guides/`. Identify the exact pages, documentation sources, assets, shared behavior, and navigation contracts included in the request. Do not include unrelated cleanup or unapproved architecture changes.
 
+Create one dedicated `<label>/<intent-summary>` branch for the pull request. Use only `feat/` for new work or `fix/` for changes to existing work, followed by a lowercase kebab-case intent of no more than five words. Do not commit contribution work directly to `main`. Use the separate commit-label and message convention defined in `CONTRIBUTING.md`.
+
 ### 2. Verify the current owners
 
 Inspect the current files before editing. Apply each change to its narrowest established owner:
@@ -220,6 +222,8 @@ Complete `.github/pull_request_template.md` with:
 - Known risks and explicitly scoped follow-up work
 
 Do not mark conditional checks as completed when they were not applicable or not performed; explain their status in the pull request.
+
+Before merging to `main`, obtain approval from at least one reviewer other than the pull request author and resolve every requested change and review conversation.
 
 ## Release and changelog archive process
 
