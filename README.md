@@ -203,13 +203,13 @@ Every pull request merged into `main` is treated as materially released. A new p
 
 When the pull request boundary cannot be detected reliably, append a verified `PR #number` to the version heading. If no PR number exists, use the first commit SHA that actually belongs to the PR. Do not use placeholders or unrelated commits.
 
-The changelog records what changed. It does not replace a decision record when a crucial decision was made.
+The changelog records what changed. It does not replace a decision record when the very-important-decision threshold is met.
 
-### 6. Record crucial decisions
+### 6. Record only very important decisions
 
-When the pull request introduces or changes a crucial architectural, documentation, workflow, governance, or compatibility decision, add or update a record under `docs/adr/`.
+Add or update a record under `docs/adr/` only when the pull request introduces or changes a very important, durable architectural, documentation, workflow, governance, or compatibility decision with broad or difficult-to-reverse consequences.
 
-Name a new record `NNN-abc.md`, where `NNN` is the next sequential three-digit number and `abc` is a three-letter lowercase scope. Follow `docs/adr/README.md` and record the status, date, scope, context, decision, and consequences. Routine corrections and implementation details do not require an ADR.
+Name a qualifying record `NNN-abc.md`, where `NNN` is the next sequential three-digit number and `abc` is a three-letter lowercase scope. Follow the threshold in `docs/adr/README.md`. Routine choices, minor documentation or presentation decisions, fixes, maintenance, and decisions limited to one small pull request do not require an ADR.
 
 ### 7. Prepare the pull request
 
@@ -218,7 +218,7 @@ Complete `.github/pull_request_template.md` with:
 - A concise summary and explicit scope
 - Verification commands, results, screenshots, or local URLs
 - Confirmation of the pull request's semantic version, date, categorized entries, and PR identifier when required
-- The ADR path or a clear statement that no crucial decision was made
+- The ADR path when the very-important-decision threshold was met, or confirmation that no qualifying decision was made
 - Known risks and explicitly scoped follow-up work
 
 Do not mark conditional checks as completed when they were not applicable or not performed; explain their status in the pull request.
