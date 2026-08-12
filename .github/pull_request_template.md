@@ -37,3 +37,12 @@ Include screenshots, local URLs, commands, or other evidence supporting the veri
 ## Risks and Follow-up
 
 List known risks or explicitly scoped follow-up work. Write `None` when there are none.
+
+## Peer Review and Merge
+
+- [ ] At least one reviewer other than the pull request author has approved this pull request.
+- [ ] All requested changes and review conversations are resolved.
+- [ ] This pull request targets `main` from a dedicated `feat/<intent-summary>` or `fix/<intent-summary>` branch whose lowercase kebab-case summary contains no more than five words.
+- [ ] The pull request will not be merged until the required approval and applicable verification are complete.
+
+Reviewer:
