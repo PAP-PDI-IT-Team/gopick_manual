@@ -1,4 +1,4 @@
-/* renderer.js — builds the documentation content and sidebar from a structured data model */
+/* renderer.js - builds the documentation content and sidebar from a structured data model */
 (function () {
     'use strict';
 

@@ -36,7 +36,7 @@
 
     function getPermDisplay(permValue) {
         var upperVal = (permValue || '').toUpperCase().trim();
-        if (upperVal === '-' || upperVal === '') return '—';
+        if (upperVal === '-' || upperVal === '') return '-';
         return permValue;
     }
 
@@ -105,7 +105,7 @@
 
             var availableHtml = '<h4 class="text-xs font-semibold text-emerald-700 mb-1">Available</h4><ul class="text-xs text-slate-600 space-y-0.5 mb-3">';
             if (availableList.length === 0) {
-                availableHtml += '<li class="text-slate-300">—</li>';
+                availableHtml += '<li class="text-slate-300">-</li>';
             } else {
                 availableList.forEach(function (funcName) {
                     availableHtml += '<li>• ' + funcName + '</li>';
@@ -115,7 +115,7 @@
 
             var conditionalHtml = '<h4 class="text-xs font-semibold text-amber-700 mb-1">Conditional</h4><ul class="text-xs text-slate-600 space-y-0.5">';
             if (conditionalList.length === 0) {
-                conditionalHtml += '<li class="text-slate-300">—</li>';
+                conditionalHtml += '<li class="text-slate-300">-</li>';
             } else {
                 conditionalList.forEach(function (funcName) {
                     conditionalHtml += '<li>• ' + funcName + '</li>';

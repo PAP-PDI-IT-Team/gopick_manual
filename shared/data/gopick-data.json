@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "GoPick Assessment Center",
-    "subtitle": "The complete browser-based platform for building, scheduling, delivering, and reporting on online assessments — with a focus on clear, detailed candidate reports.",
+    "subtitle": "The complete browser-based platform for building, scheduling, delivering, and reporting on online assessments - with a focus on clear, detailed candidate reports.",
     "ctaText": "Explore the Platform"
   },
   "features": [
@@ -15,7 +15,7 @@
     {
       "index": 2,
       "title": "Account",
-      "description": "Create and manage a full hierarchy of organizational accounts — distributors, clients, sub-accounts — with role-based access control.",
+      "description": "Create and manage a full hierarchy of organizational accounts - distributors, clients, sub-accounts - with role-based access control.",
       "icon": "users",
       "target": "accounts-management"
     },
@@ -159,7 +159,7 @@
     },
     {
       "name": "Email Templates",
-      "description": "Customizable automated emails for registration, assignment notifications, and result delivery — branded per organization."
+      "description": "Customizable automated emails for registration, assignment notifications, and result delivery - branded per organization."
     },
     {
       "name": "Meter & Usage",
@@ -167,14 +167,14 @@
     },
     {
       "name": "Activity Logging",
-      "description": "Full audit trail of logins, assessment completions, and administrative actions — filterable by candidate, account, or date."
+      "description": "Full audit trail of logins, assessment completions, and administrative actions - filterable by candidate, account, or date."
     },
     {
       "name": "Test Security",
       "description": "Ensures that assessment integrity measures include navigation limits, session oversight, and alerts for restricted or suspicious activity."
     }
   ],
-  "about": "GoPick is a browser-based, multi-tenant assessment platform purpose-built for organizations that need to create, administer, and manage online assessments at scale. It supports the full assessment lifecycle — from building item banks, to scheduling and delivering tests, to producing detailed candidate reports. A single installation can serve multiple independent client organizations, each managing their own candidates and results through a role-based hierarchy.",
+  "about": "GoPick is a browser-based, multi-tenant assessment platform purpose-built for organizations that need to create, administer, and manage online assessments at scale. It supports the full assessment lifecycle - from building item banks, to scheduling and delivering tests, to producing detailed candidate reports. A single installation can serve multiple independent client organizations, each managing their own candidates and results through a role-based hierarchy.",
   "access": {
     "admin": {
       "label": "Admin & Manager Portal",

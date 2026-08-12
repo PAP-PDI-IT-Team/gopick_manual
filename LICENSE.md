@@ -1,4 +1,4 @@
-# GoPick Manual — Proprietary License
+# GoPick Manual - Proprietary License
 
 > **Copyright © 2025–Present People Dynamics, Inc.**
 > **All rights reserved.**

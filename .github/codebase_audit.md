@@ -1,4 +1,4 @@
-# GoPick Manual — Codebase Structure & Practices
+# GoPick Manual - Codebase Structure & Practices
 
 ## Project Overview
 
@@ -86,12 +86,12 @@ Every inner page (`pages/<section>/`) follows the same 2-file JS split:
 
 | File | Role |
 |---|---|
-| `assets/js/dataFiller.js` | **Data layer** — holds all page-specific content (RBAC rows, steps, hierarchy text, etc.) as JS objects. Injects into DOM by element ID. Exposes a page-namespaced global (e.g. `accountsDataFiller`). |
-| `assets/js/behavior.js` | **Behavior/UI layer** — builds interactive elements (tables, sidebar links, role cards). Reads from the data layer or from its own constants. Exposes a page-namespaced global (e.g. `accountsBehavior`). |
+| `assets/js/dataFiller.js` | **Data layer** - holds all page-specific content (RBAC rows, steps, hierarchy text, etc.) as JS objects. Injects into DOM by element ID. Exposes a page-namespaced global (e.g. `accountsDataFiller`). |
+| `assets/js/behavior.js` | **Behavior/UI layer** - builds interactive elements (tables, sidebar links, role cards). Reads from the data layer or from its own constants. Exposes a page-namespaced global (e.g. `accountsBehavior`). |
 
 Shared scripts from `shared/js/` are then layered on top:
-- `headerSearch.js` — global search (auto-injects into `<header>`)
-- `manualNav.js` — sidebar mobile drawer
+- `headerSearch.js` - global search (auto-injects into `<header>`)
+- `manualNav.js` - sidebar mobile drawer
 
 ### Home Page Boot Sequence
 
@@ -144,7 +144,7 @@ DESIGN.md is the **single source of truth** for all visual decisions. It uses a 
 **Color use rules:**
 - One red focal point per screen
 - White + slate = primary surface palette
-- Accent colors (indigo, emerald, cyan, amber, violet) only for icons and badges — never as alternate CTAs
+- Accent colors (indigo, emerald, cyan, amber, violet) only for icons and badges - never as alternate CTAs
 - Dark surfaces only in footer and "access" hero sections
 
 ---
@@ -205,10 +205,10 @@ All JS files use the same wrapper:
 ```
 
 ### Naming rules
-- **Global namespace**: prefixed by scope — `sharedDataLoader`, `sharedContentBinder`, `sharedNav`, `accountsBehavior`, `accountsDataFiller`
-- **Functions**: verb-first, intention-revealing — `fillHeroSection`, `populateRbacTable`, `generateRoleCapabilities`, `closeMobileNav`
-- **Constants**: `SNAKE_UPPER_CASE` — `RBAC_DATA`, `ROLE_NAMES`, `SEARCH_PHRASE_MIN_LENGTH`
-- **Variables**: camelCase — `tableBody`, `rowData`, `permValue`
+- **Global namespace**: prefixed by scope - `sharedDataLoader`, `sharedContentBinder`, `sharedNav`, `accountsBehavior`, `accountsDataFiller`
+- **Functions**: verb-first, intention-revealing - `fillHeroSection`, `populateRbacTable`, `generateRoleCapabilities`, `closeMobileNav`
+- **Constants**: `SNAKE_UPPER_CASE` - `RBAC_DATA`, `ROLE_NAMES`, `SEARCH_PHRASE_MIN_LENGTH`
+- **Variables**: camelCase - `tableBody`, `rowData`, `permValue`
 - **No abbreviations** (per dev-rules)
 
 ### DOM manipulation pattern
@@ -232,7 +232,7 @@ if (document.readyState === 'loading') {
 ## Search System
 
 `headerSearch.js` is a **fully self-contained full-text search engine**:
-1. Maintains a `docsManifest` — list of all `{pageTitle, pageUrl, docUrl}` entries
+1. Maintains a `docsManifest` - list of all `{pageTitle, pageUrl, docUrl}` entries
 2. On panel open: fetches each `.md` file from `docs/`, parses headings + body into sections
 3. Scores results: section title match (+6) > page title match (+4) > body match (+2) > starts-with (+1)
 4. Renders top-12 matches as cards with `pageTitle`, `sectionTitle`, and 180-char preview

@@ -1,4 +1,4 @@
-/* sidebar.js — behaviors: collapsible sidebar, active highlight, and scroll sync */
+/* sidebar.js - behaviors: collapsible sidebar, active highlight, and scroll sync */
 (function () {
     'use strict';
 

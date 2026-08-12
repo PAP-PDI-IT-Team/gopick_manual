@@ -5,7 +5,7 @@ applyTo: "index.html", "pages/**", "assets/**", "docs/**"
 version: 1
 ---
 
-# GoPick — Workspace Instructions
+# GoPick - Workspace Instructions
 
 Purpose: Provide lightweight, always-available guidance for making content and frontend changes across this repository.
 
@@ -18,7 +18,7 @@ Local dev:
 
 Conventions:
 - HTML/CSS/JS: primary site files live at the repository root and under `pages/`.
-- Duplicate page copies for section-specific assets are under `pages/*/assets/` — update both copies when changing shared behavior.
+- Duplicate page copies for section-specific assets are under `pages/*/assets/` - update both copies when changing shared behavior.
 - Docs are in `docs/` and use Markdown for non-code content.
 
 PR Checklist:
@@ -43,7 +43,7 @@ If you'd like, I can extend this with example prompts, or add file-scoped instru
 - **Spacing:** Use clear spacing between functions, classes, and logical sections.
 - **Naming:** Use explicit, multi-word names that clearly convey purpose; avoid generic terms.
 - **Single Responsibility:** Each function should follow SOC/SRP (single responsibility / separation of concerns).
-- **File Separation:** Keep JS, CSS, and HTML separated — no inline JS/CSS. Use multiple JS/CSS files for focused tasks and one `script.js`/`style.css` as the root aggregator.
+- **File Separation:** Keep JS, CSS, and HTML separated - no inline JS/CSS. Use multiple JS/CSS files for focused tasks and one `script.js`/`style.css` as the root aggregator.
 - **Shared Assets:** Create shared `assets/js/` and `assets/css/` in the repository root for reusable code/styles.
 - **Abstraction Level:** Keep JS at one level of abstraction per function/module.
 - **CSS Structure:** Prefer nested CSS (using a preprocessor or clear section grouping) and keep styles modular.
