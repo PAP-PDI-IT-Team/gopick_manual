@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Established the GoPick Assessment Center Manual as a browser-based static documentation site.
 - Added a repository code of conduct defining expected behavior, private reporting, and enforcement responsibilities.
+- Added a pull request template for manual additions and corrections, including evidence and verification requirements.
 - Added workflow manuals for accounts, candidates, assessments, meters, reports, the resource center, users, and roles and permissions.
 - Added dashboard, platform overview, meter domain-governance, developer-rule, and manual-authoring documentation.
 - Added shared site navigation and cross-page search for manual pages and sections.
