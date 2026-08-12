@@ -44,6 +44,7 @@ An internet connection is required for the Tailwind CSS CDN used by the pages.
 ```text
 .
 |-- index.html                 Home-page shell
+|-- CONTRIBUTING.md           Contribution use cases and review requirements
 |-- assets/                    Home-page CSS and JavaScript
 |-- shared/
 |   |-- css/                   Shared site-shell styles
@@ -63,9 +64,11 @@ An internet connection is required for the Tailwind CSS CDN used by the pages.
 |   |   `-- <page-name>/       Guide HTML with its own CSS and JavaScript assets
 |   `-- dev-rules/             Rendered developer rules and local assets
 `-- docs/
+    |-- adr/                   Crucial architectural and documentation decisions
     |-- workflow/              Workflow Markdown sources
     |-- domain-governance/     Domain-governance Markdown sources
-    `-- guides/                Documentation structure and authoring standards
+    |-- guides/                Documentation structure and authoring standards
+    `-- old-version/           Changelogs archived during future version maintenance
 ```
 
 ## Content ownership
@@ -150,8 +153,82 @@ This repository is a static website and does not currently contain controllers, 
 - `shared/js/headerSearch.js` provides cross-page search and maps results to page or section URLs.
 - Relative asset paths depend on serving the repository root without changing its directory layout.
 
-## Contribution rules
+## Development and pull request process
 
-Before changing the repository, read `AGENTS.md`, `CODE_OF_CONDUCT.md`, and the standards under `docs/guides/`. Keep changes within the requested scope, preserve existing page patterns, and document only behavior supported by repository or observed evidence.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for repository-specific contribution use cases, ownership rules, verification requirements, and pull request expectations.
 
-Every pull request must update the `Unreleased` section of `CHANGELOG.md` with a concise summary of its notable changes. Group entries under the appropriate Keep a Changelog category: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, or `Security`. When preparing a release, move those entries into a versioned section using the format `## [version] - YYYY-MM-DD`.
+### 1. Confirm the requested scope
+
+Read `AGENTS.md`, `CODE_OF_CONDUCT.md`, and the applicable standards under `docs/guides/`. Identify the exact pages, documentation sources, assets, shared behavior, and navigation contracts included in the request. Do not include unrelated cleanup or unapproved architecture changes.
+
+Create one dedicated `<label>/<intent-summary>` branch for the pull request. Use only `feat/` for new work or `fix/` for changes to existing work, followed by a lowercase kebab-case intent of no more than five words. Do not commit contribution work directly to `main`. Use the separate commit-label and message convention defined in `CONTRIBUTING.md`.
+
+### 2. Verify the current owners
+
+Inspect the current files before editing. Apply each change to its narrowest established owner:
+
+- Documentation meaning: `docs/**/*.md`
+- Rendered page structure: `pages/**/index.html`
+- Page content: page-local `assets/js/dataFiller.js`
+- Page behavior: page-local JavaScript
+- Page presentation: page-local CSS
+- Shared behavior and presentation: `shared/`
+- Home-page content: `shared/data/gopick-data.json`
+- Visual tokens and design decisions: `DESIGN.md`
+
+When documentation meaning changes, synchronize the corresponding rendered page deliberately. Do not treat either representation as an optional copy.
+
+### 3. Implement one explicit flow
+
+Keep the change localized and complete within the touched scope. Preserve existing URLs, section IDs, search targets, relative asset paths, and script load order unless the request explicitly changes them. Do not add silent errors, hidden defaults, undeclared compatibility behavior, or legacy fallback paths.
+
+When a versioned CSS or JavaScript file changes, update every applicable reference using the `?v=YYYYMMDD-description` convention.
+
+### 4. Verify the result
+
+Serve the repository root through a local static server and record the checks performed. As applicable, verify:
+
+- Changed pages render at desktop and mobile widths.
+- Direct page links and section hashes reach the intended content.
+- Shared navigation and search still reach the changed documentation.
+- Keyboard interaction, focus behavior, labels, alternative text, and ARIA state remain correct.
+- Changed CSS and JavaScript pass the applicable lint or format check.
+- Markdown sources and rendered page content remain synchronized.
+
+Do not claim a check passed unless it was actually performed. Explain any required check that remains open.
+
+### 5. Update the changelog
+
+Every pull request merged into `main` is treated as materially released. A new pull request creates exactly one new semantic version and dated section in `CHANGELOG.md`; later changes in that same pull request update the same section. Put every notable human and AI-assisted change under the appropriate category: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, or `Security`.
+
+When the pull request boundary cannot be detected reliably, append a verified `PR #number` to the version heading. If no PR number exists, use the first commit SHA that actually belongs to the PR. Do not use placeholders or unrelated commits.
+
+The changelog records what changed. It does not replace a decision record when the very-important-decision threshold is met.
+
+### 6. Record only very important decisions
+
+Add or update a record under `docs/adr/` only when the pull request introduces or changes a very important, durable architectural, documentation, workflow, governance, or compatibility decision with broad or difficult-to-reverse consequences.
+
+Name a qualifying record `NNN-abc.md`, where `NNN` is the next sequential three-digit number and `abc` is a three-letter lowercase scope. Follow the threshold in `docs/adr/README.md`. Routine choices, minor documentation or presentation decisions, fixes, maintenance, and decisions limited to one small pull request do not require an ADR.
+
+### 7. Prepare the pull request
+
+Complete `.github/pull_request_template.md` with:
+
+- A concise summary and explicit scope
+- Verification commands, results, screenshots, or local URLs
+- Confirmation of the pull request's semantic version, date, categorized entries, and PR identifier when required
+- The ADR path when the very-important-decision threshold was met, or confirmation that no qualifying decision was made
+- Known risks and explicitly scoped follow-up work
+
+Do not mark conditional checks as completed when they were not applicable or not performed; explain their status in the pull request.
+
+Before merging to `main`, obtain approval from at least one reviewer other than the pull request author and resolve every requested change and review conversation.
+
+## Release and changelog archive process
+
+Follow `docs/guides/changelog-versioning.md` when selecting a semantic version and preparing the changelog for release.
+
+There is no `Unreleased` section in this repository. The pull request's dated version section is its release record and must be complete before merge. Keep the active `CHANGELOG.md` at the repository root.
+
+Use `docs/old-version/` only during intentional version maintenance when an older changelog is deliberately archived. Give every archived file an explicit version-based filename, and do not silently copy or move the active changelog during an ordinary pull request.
