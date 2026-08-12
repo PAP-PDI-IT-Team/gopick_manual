@@ -147,3 +147,5 @@ This repository is a static website and does not currently contain controllers, 
 ## Contribution rules
 
 Before changing the repository, read `AGENTS.md` and the standards under `docs/guides/`. Keep changes within the requested scope, preserve existing page patterns, and document only behavior supported by repository or observed evidence.
+
+Every pull request must update the `Unreleased` section of `CHANGELOG.md` with a concise summary of its notable changes. Group entries under the appropriate Keep a Changelog category: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, or `Security`. When preparing a release, move those entries into a versioned section using the format `## [version] - YYYY-MM-DD`.
