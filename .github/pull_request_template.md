@@ -24,9 +24,9 @@ Describe the checks performed and their results.
 - [ ] Every notable human and AI-assisted change is recorded under that version in the appropriate Keep a Changelog category.
 - [ ] The version heading includes a verified PR number or PR commit SHA when the pull request boundary would otherwise be ambiguous.
 - [ ] Relevant `docs/*.md` sources match the rendered page content, when behavior or documentation changed.
-- [ ] A new or updated `docs/adr/NNN-abc.md` records every crucial decision introduced by this pull request, or no crucial decision was made.
+- [ ] A new or updated `docs/adr/NNN-abc.md` records any very important, durable decision with broad or difficult-to-reverse consequences, or this pull request made no decision meeting that threshold.
 
-ADR path or reason one is not required:
+ADR path or confirmation that no qualifying decision was made:
 
 Changelog version and PR identifier, when required:
 
