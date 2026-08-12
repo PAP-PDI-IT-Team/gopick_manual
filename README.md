@@ -1,6 +1,12 @@
+![GoPick Assessment Center Manual](assets/img/readme_banner.png)
+
 # GoPick Assessment Center Manual
 
 GoPick Assessment Center Manual is a static documentation website for GoPick workflows, platform capabilities, domain rules, and documentation standards. The site is built with HTML, CSS, and browser JavaScript, with Tailwind CSS loaded from its CDN.
+
+> NOTE
+>
+> The README banner and portions of the documentation cleanup were created with AI assistance and reviewed before inclusion. If any content is inaccurate, unclear, or needs adjustment, please submit a [Manual Correction request](https://github.com/PAP-PDI-IT-Team/gopick_manual/issues/new?template=manual-correction.md) so it can be reviewed and updated.
 
 ## What is documented
 
