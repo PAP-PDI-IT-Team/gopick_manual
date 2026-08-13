@@ -102,6 +102,11 @@
             docUrl: '../../docs/workflow/users-management.md'
         },
         {
+            pageTitle: 'Advisory Management',
+            pageUrl: '../../pages/workflow/advisory-management/index.html',
+            docUrl: '../../docs/workflow/advisory-management.md'
+        },
+        {
             pageTitle: 'Documentation Standard V2',
             pageUrl: '../../pages/guides/manual-guides/index.html',
             docUrl: '../../docs/guides/manual-documentation-standard.md'
@@ -120,6 +125,11 @@
             pageTitle: 'Meters Governance',
             pageUrl: '../../pages/domain-governance/meters/index.html',
             docUrl: '../../docs/domain-governance/meters.md'
+        },
+        {
+            pageTitle: 'Advisory Domain Governance',
+            pageUrl: '../../pages/domain-governance/advisory/index.html',
+            docUrl: '../../docs/domain-governance/advisory.md'
         }
     ];
 
