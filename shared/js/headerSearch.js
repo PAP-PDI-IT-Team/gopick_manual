@@ -125,11 +125,6 @@
             pageTitle: 'Meters Governance',
             pageUrl: '../../pages/domain-governance/meters/index.html',
             docUrl: '../../docs/domain-governance/meters.md'
-        },
-        {
-            pageTitle: 'Advisory Domain Governance',
-            pageUrl: '../../pages/domain-governance/advisory/index.html',
-            docUrl: '../../docs/domain-governance/advisory.md'
         }
     ];
 

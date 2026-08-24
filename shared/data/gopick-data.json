@@ -89,7 +89,7 @@
     {
       "index": 14,
       "title": "Advisory",
-      "description": "Create and manage announcements with permission-aware actions and account-hierarchy visibility.",
+      "description": "Create, search, view, update, and delete announcements in GoPick.",
       "icon": "clipboard",
       "target": "advisory-management"
     },

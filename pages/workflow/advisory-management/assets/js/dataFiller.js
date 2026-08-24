@@ -1,350 +1,257 @@
 (function (global) {
     'use strict';
 
-    var sections = [
-        {
-            id: 'about-the-advisory-module', title: 'About the Advisory Module',
-            description: 'The Advisory module is GoPick\'s administrator-portal announcement feature. It is used for operational notices, system or policy updates, maintenance messages, and other information users need to see inside GoPick.',
-            paragraphs: ['Visible pages usually use Announcement. Backend routes, code, database records, and technical documentation use Advisory. Both terms refer to the same feature.'],
-            tables: [
-                {
-                    id: 'where-announcements-appear',
-                    title: 'Where Announcements Appear',
-                    columns: ['Location', 'What the user sees', 'Important condition'],
-                    rows: [
-                        ['Advisory > Search Announcement', 'Searchable My announcements and All announcements lists with status, dates, and permitted actions.', 'Requires modAdvisory-actionIndex.'],
-                        ['View Advisory', 'One announcement\'s title, posting period, status, and content.', 'Requires modAdvisory-actionView and visibility authorization.'],
-                        ['Dashboard Announcements', 'Up to two newest active, currently in-date announcements visible to the account hierarchy.', 'The direct detail link still requires view permission.'],
-                        ['Global Advisory modal', 'Active, currently in-date announcements the user has not acknowledged.', 'This legacy modal currently does not apply the normal hierarchy filter.']
-                    ]
-                }
-            ]
-        },
-        {
-            id: 'how-advisory-access-works', title: 'How Advisory Access Works',
-            description: 'Advisory access has two separate controls. Account type alone does not automatically grant the module.',
-            orderedItemsTitle: 'Two Access Controls',
-            orderedItems: [
-                'Permission control: RBAC permissions decide whether a user may list, view, create, update, or delete announcements.',
-                'Visibility control: Account hierarchy decides which announcement creators are visible to the current user.'
-            ],
-            notes: ['A user may have permission to open Search Announcement while All announcements remains limited to creators resolved from that user\'s account lineage.', 'Being able to see an announcement does not automatically allow update or delete.']
-        },
-        {
-            id: 'who-can-create-announcements', title: 'Who Can Create Announcements',
-            description: 'Creating an announcement requires modAdvisory-actionCreate. Deployed RBAC assignments remain authoritative.',
-            tables: [
-                {
-                    id: 'announcement-creation-access',
-                    title: 'Announcement Creation Access',
-                    columns: ['User/account type', 'Creation access', 'What a new user should know'],
-                    rows: [
-                        ['Super Admin IT (super_admin)', 'Expected through default provisioning.', 'Normally has configured Advisory actions; confirm deployed RBAC records.'],
-                        ['Administrator ASD (super_admin_asd)', 'Conditional.', 'Global visibility, but provisioning paths are inconsistent; confirm assigned permissions.'],
-                        ['Distributor (distributor)', 'Permission required.', 'No source-confirmed default Distributor Advisory provisioning was found.'],
-                        ['Sub-distributor (sub_distributor)', 'Permission required.', 'No source-confirmed default Sub-distributor Advisory provisioning was found.'],
-                        ['Client Account (account)', 'Explicit permission required.', 'Default Account module allow-list omits Advisory.'],
-                        ['Sub-account (sub_account)', 'Explicit permission required.', 'Default Sub-account module allow-list omits Advisory.'],
-                        ['Self-registration (self_registration)', 'Explicit permission required.', 'Default Self-registration module allow-list omits Advisory.'],
-                        ['HR Administrator (hr_account)', 'Explicit permission required.', 'Default HR Account allow-list omits Advisory; creator visibility has a known mapping gap.']
-                    ],
-                    notes: ['Administrator ASD is super_admin_asd and is a main super admin.', 'HR Administrator is hr_account and follows the non-super-admin visibility path.']
-                }
-            ],
-            link: { label: 'View the detailed Advisory Module Access Matrix', href: '../../domain-governance/advisory/index.html#advisory-module-access-matrix' }
-        },
-        {
-            id: 'who-can-see-announcements', title: 'Who Can See Announcements',
-            description: 'An announcement normally flows downward only to viewers whose stored account lineage contains the creator account. Main super admins have global visibility.',
-            code: 'Main Super Admins — global visibility\n\nDistributor\n└─ Sub-distributor\n   └─ Client Account\n      └─ Sub-account\n\nSelf-registration may be linked beneath a supported account level.\nHR Administrator is an associated user, not a separate hierarchy level.',
-            tables: [
-                {
-                    id: 'beginner-advisory-visibility',
-                    title: 'Beginner Advisory Visibility Guide',
-                    columns: ['Announcement creator', 'Who normally sees it', 'Who normally does not see it'],
-                    rows: [
-                        ['Main Super Admin', 'Every hierarchy-aware viewer with required permission.', 'Users missing the required action permission.'],
-                        ['Distributor', 'Itself and lower accounts whose stored lineage contains it.', 'Unrelated Distributor branches.'],
-                        ['Sub-distributor', 'Itself and lower accounts whose stored lineage contains it.', 'Parent Distributor, siblings, and unrelated branches.'],
-                        ['Client Account', 'Itself and lower accounts whose stored lineage contains it.', 'Parents, sibling clients, and unrelated branches.'],
-                        ['Sub-account', 'Itself and linked lower accounts whose stored lineage contains it.', 'Parents, sibling Sub-accounts, and unrelated branches.'],
-                        ['Self-registration', 'Itself when its creator user ID is resolved, plus main super admins.', 'Parents, siblings, and unrelated branches.'],
-                        ['HR Administrator', 'Main super admins; other viewers depend on creator-user mapping.', 'Intended lineage may fail to resolve the HR creator.']
-                    ]
-                }
-            ],
-            groups: [{ id: 'simple-examples', title: 'Simple Examples', items: ['A Distributor announcement can flow down its own branch, but not to another Distributor branch.', 'A Client Account announcement can flow down its lineage; its Distributor parent does not automatically see it.', 'A Sub-account announcement can flow to itself and a correctly linked lower Self-registration; its Client parent and siblings do not automatically see it.', 'Main super admins can see all announcements, subject to controller permission.'] }],
-            rules: ['Parents do not automatically see child-created announcements.', 'Sibling accounts and unrelated branches do not see one another.', 'Visibility depends on populated lineage fields and resolving the creator as an account-owner user.'],
-            notes: ['The global unseen-Advisory modal is a known exception and currently does not apply this hierarchy.'],
-            link: { label: 'View the detailed Advisory Visibility Matrix', href: '../../domain-governance/advisory/index.html#advisory-visibility-matrix' }
-        },
-        {
-            id: 'announcement-lifecycle-at-a-glance', title: 'Announcement Lifecycle at a Glance',
-            orderedItemsTitle: 'Lifecycle',
-            orderedItems: [
-                'An authorized user creates an announcement with a title, content, status, posting date, and expiration date.',
-                'Active makes it eligible for delivery; Not active prevents Dashboard and global-modal delivery.',
-                'The current date must be on or between the posting and expiration dates; both boundaries are included.',
-                'The management list can still contain inactive, future, current, and expired records.',
-                'The Dashboard shows at most the two newest active, currently in-date announcements visible under its hierarchy rules.',
-                'The creator or a main super admin with required permission can update or permanently delete the announcement.'
-            ],
-            warnings: ['The global unseen-Advisory modal currently queries all active, in-date announcements without applying the normal hierarchy filter. Treat its audience as a known implementation gap.']
-        },
-        {
-            id: 'create-announcement', title: 'Create Announcement',
-            description: 'Creates an announcement with a title, rich-text content, status, posting date, and expiration date.',
-            paths: [['Advisory', 'Create Announcement']],
-            steps: ['Open Advisory.', 'Select Create Announcement.', 'Enter the title and content.', 'Select the status.', 'Select Date Start and Date End.', 'Select Save.'],
-            groups: [
-                { title: 'Required Inputs', items: ['Title', 'Content', 'Status', 'Date Start', 'Date End'] },
-                { title: 'Defaulted Inputs', items: ['Date Start displays the current date.', 'Date End displays seven days after the current date.'] }
-            ],
-            rules: ['Access requires modAdvisory-actionCreate.', 'Status options are Active and Not active.', 'All five visible inputs are required.', 'Browser date controls have minimum dates, but server-side date-order validation is not implemented.'],
-            results: ['The announcement is saved and View Advisory opens for the new record.']
-        },
-        {
-            id: 'search-announcement', title: 'Search Announcement',
-            description: 'Displays announcements available within the current user\'s visibility scope.',
-            paths: [['Advisory', 'Search Announcement'], ['Dashboard', 'Announcement', 'View All Announcements']],
-            groups: [{ title: 'Visible Content', items: ['Standard and advanced search', 'My announcements and All announcements tabs with counts', 'Title, posting date, expiration date, status, and row actions', 'Status filter and pagination'] }],
-            steps: ['Open Search Announcement.', 'Select My announcements or All announcements.', 'Optionally apply standard search, advanced search, or a status filter.', 'Use pagination when needed.', 'Select an available row action.'],
-            rules: ['Access requires modAdvisory-actionIndex.', 'My announcements is the default tab.', 'Standard search matches Title or Content.', 'Results are ordered by newest record ID first.', 'Actions depend on permission and record ownership.'],
-            results: ['The table shows announcements matching the selected scope and filters.'],
-            children: [
-                { id: 'my-announcements', title: 'My announcements', paths: [['Advisory', 'Search Announcement', 'My announcements']], steps: ['Select My announcements.', 'Review the count and rows.'], rules: ['Only records created by the current user are included.', 'Missing or unsupported created_scope values resolve to this scope.'], results: ['The current user\'s announcements are listed.'] },
-                { id: 'all-announcements', title: 'All announcements', paths: [['Advisory', 'Search Announcement', 'All announcements']], steps: ['Select All announcements.', 'Review the count and rows.'], rules: ['Main super admins can list all records.', 'Other users can list records created by their current-account owner, stored ancestor-account owners, and main super admins.', 'Visibility does not grant update or delete authority.'], results: ['Hierarchy-visible announcements are listed.'], link: { label: 'View the Advisory Visibility Matrix', href: '../../domain-governance/advisory/index.html#advisory-visibility-matrix' } },
-                { id: 'standard-search', title: 'Standard Search', paths: [['Advisory', 'Search Announcement', 'Search']], steps: ['Enter search text.', 'Submit the search.'], results: ['Matching title or stored content rows remain.'] },
-                { id: 'advanced-search', title: 'Advanced Search', paths: [['Advisory', 'Search Announcement', 'Advanced Search']], steps: ['Open Advanced Search.', 'Select Title or Content.', 'Select an operator and enter a value when required.', 'Run the search.'], groups: [{ id: 'available-operators', title: 'Available Operators', items: ['Begins with', 'Contains', 'Ends with', 'Equal', 'Not equal', 'Is empty', 'Is not empty', 'Is null', 'Is not null'] }], rules: ['Conditions use AND.', 'Grouped conditions are disabled.', 'Text matching attempts to ignore HTML tags for begins-with, contains, and ends-with content searches.'], results: ['The table opens with the advanced conditions applied.'] }
-            ]
-        },
-        {
-            id: 'announcement-row-actions', title: 'Announcement Row Actions',
-            description: 'Opens, modifies, or removes an announcement when permission and ownership rules allow.',
-            children: [
-                { id: 'view-advisory', title: 'View Advisory', paths: [['Advisory', 'Search Announcement', 'Actions', 'View Advisory'], ['Dashboard', 'Announcement', 'Announcement title']], steps: ['Select the view icon or an available title.', 'Review the title, dates, status, and content.', 'Select Back.'], rules: ['Direct access requires modAdvisory-actionView.', 'Main super admins can view any record.', 'Other users require hierarchy-visible creator scope.'], results: ['View Advisory opens, or an access error is rendered.'] },
-                { id: 'update-advisory', title: 'Update Advisory', paths: [['Advisory', 'Search Announcement', 'Actions', 'Update Advisory']], steps: ['Select the update icon.', 'Change the fields.', 'Select Save.'], rules: ['Access requires modAdvisory-actionUpdate.', 'Main super admins can update any record.', 'Other users can update only records they created.', 'Modification user and date/time are recorded.'], results: ['The update is saved, a success message is created, and View Advisory opens.'] },
-                { id: 'delete-advisory', title: 'Delete Advisory', paths: [['Advisory', 'Search Announcement', 'Actions', 'Delete Advisory']], steps: ['Select the delete icon.', 'Confirm the deletion prompt.'], rules: ['Access requires modAdvisory-actionDelete.', 'Main super admins can delete any record.', 'Other users can delete only records they created.', 'Delete is permanent; there is no archive state.'], results: ['The record is removed and Search Announcement opens.'] }
-            ]
-        },
-        {
-            id: 'dashboard-announcement-preview', title: 'Dashboard Announcement Preview',
-            description: 'Displays up to two current announcements on the Dashboard.',
-            paths: [['Dashboard', 'Announcement']],
-            steps: ['Review the displayed titles.', 'Select Preview to open content in a modal.', 'Select a title to open View Advisory when permitted.', 'Select View All Announcements when available.'],
-            rules: ['Only Active announcements whose date range includes today are included.', 'At most two newest visible records are shown.', 'View All Announcements requires modAdvisory-actionIndex.', 'Management remains owned by modAdvisory.'],
-            results: ['A preview opens on the Dashboard or the permitted Advisory detail page opens.']
-        },
-        {
-            id: 'authenticated-staging-qa-checklist', title: 'Authenticated Staging QA Checklist',
-            description: 'These checks remain runtime verification items until completed in an authenticated staging session.',
-            steps: [
-                'Verify every Advisory permission and its denied path.',
-                'Create required-only and rich-text announcements and confirm date defaults.',
-                'Test invalid and reversed dates.',
-                'Verify both scope tabs, counts, search modes, status filtering, and pagination.',
-                'Verify creator-only mutation and main-super-admin cross-branch authority.',
-                'Verify descendant visibility and unrelated-branch denial.',
-                'Verify posting-date and expiration-date boundaries.',
-                'Verify Dashboard exclusion of inactive, future, and expired records and its two-record maximum.',
-                'Verify global-modal acknowledgement and immediate redisplay behavior.'
-            ],
-            notes: ['Record user type, permissions, account ID, creator, dates, and observed result.', 'Log deviations in the Advisory Gap Registry.'],
-            link: { label: 'Open Advisory Gap Registry', href: '../../../docs/known-gaps/advisory-gap-registry.md' }
-        }
-    ];
-
-    function addHeading(parent, text, level) {
-        var heading = document.createElement(level > 2 ? 'h3' : 'h2');
-        heading.className = level > 2 ? 'text-lg font-bold text-slate-900' : 'text-2xl font-bold text-slate-900';
-        heading.textContent = text;
-        parent.appendChild(heading);
-    }
-    function addList(parent, title, items, ordered) {
-        if (!items || !items.length) return;
-        var wrap = document.createElement('div'); wrap.className = 'doc-detail';
-        var label = document.createElement('h4'); label.className = 'text-sm font-bold text-slate-700 mb-2'; label.textContent = title; wrap.appendChild(label);
-        var list = document.createElement(ordered ? 'ol' : 'ul'); list.className = (ordered ? 'list-decimal' : 'list-disc') + ' pl-5 space-y-1 text-sm text-slate-600';
-        items.forEach(function (item) { var li = document.createElement('li'); li.textContent = item; list.appendChild(li); });
-        wrap.appendChild(list); parent.appendChild(wrap);
-    }
-    function addPaths(parent, paths) {
-        if (!paths) return;
-        addList(parent, 'Access Path', paths.map(function (path) { return path.join(' > '); }), false);
-    }
-    function addCallout(parent, title, items, modifier) {
-        if (!items || !items.length) return;
-        var box = document.createElement('div'); box.className = 'doc-detail doc-callout' + (modifier ? ' doc-callout--' + modifier : '');
-        var label = document.createElement('h4'); label.className = 'text-sm font-bold text-slate-800 mb-2'; label.textContent = title; box.appendChild(label);
-        var list = document.createElement('ul'); list.className = 'list-disc pl-5 space-y-1 text-sm text-slate-600';
-        items.forEach(function (item) { var li = document.createElement('li'); li.textContent = item; list.appendChild(li); }); box.appendChild(list); parent.appendChild(box);
-    }
-    function renderTable(tableData) {
-        var section = document.createElement('section');
-        section.id = tableData.id;
-        section.className = 'workflow-table-section';
-        var title = document.createElement('h3');
-        title.className = 'text-lg font-bold text-slate-900 mb-3';
-        title.textContent = tableData.title;
-        section.appendChild(title);
-
-        var wrapper = document.createElement('div');
-        wrapper.className = 'workflow-table-wrap';
-        wrapper.setAttribute('role', 'region');
-        wrapper.setAttribute('aria-label', tableData.title);
-        wrapper.setAttribute('tabindex', '0');
-        var table = document.createElement('table');
-        table.className = 'workflow-table';
-        var thead = document.createElement('thead');
-        var headerRow = document.createElement('tr');
-        tableData.columns.forEach(function (column) {
-            var th = document.createElement('th'); th.scope = 'col'; th.textContent = column; headerRow.appendChild(th);
-        });
-        thead.appendChild(headerRow); table.appendChild(thead);
-        var tbody = document.createElement('tbody');
-        tableData.rows.forEach(function (row) {
-            var tr = document.createElement('tr');
-            row.forEach(function (value, index) {
-                var cell = document.createElement(index === 0 ? 'th' : 'td');
-                if (index === 0) cell.scope = 'row';
-                cell.textContent = value; tr.appendChild(cell);
-            });
-            tbody.appendChild(tr);
-        });
-        table.appendChild(tbody); wrapper.appendChild(table); section.appendChild(wrapper);
-        if (tableData.notes) addCallout(section, 'Notes', tableData.notes, 'note');
-        return section;
-    }
-    function renderSection(section, level) {
-        var node = document.createElement('section'); node.id = section.id; node.className = 'doc-section';
-        addHeading(node, section.title, level);
-        if (section.description) { var p = document.createElement('p'); p.className = 'mt-2 text-sm leading-6 text-slate-600'; p.textContent = section.description; node.appendChild(p); }
-        (section.paragraphs || []).forEach(function (text) { var p = document.createElement('p'); p.className = 'mt-3 text-sm leading-6 text-slate-600'; p.textContent = text; node.appendChild(p); });
-        if (section.code) { var pre = document.createElement('pre'); pre.className = 'workflow-hierarchy-code'; pre.textContent = section.code; node.appendChild(pre); }
-        (section.tables || []).forEach(function (tableData) { node.appendChild(renderTable(tableData)); });
-        if (section.orderedItems) addList(node, section.orderedItemsTitle || 'Overview', section.orderedItems, true);
-        addPaths(node, section.paths);
-        if (section.steps) addList(node, 'How To Use', section.steps, true);
-        (section.groups || []).forEach(function (group) {
-            var groupWrap = document.createElement('div');
-            if (group.id) groupWrap.id = group.id;
-            addList(groupWrap, group.title, group.items, false);
-            node.appendChild(groupWrap);
-        });
-        addCallout(node, 'Rules', section.rules);
-        addCallout(node, 'Expected Result', section.results, 'result');
-        addCallout(node, 'Notes', section.notes, 'note');
-        addCallout(node, 'Warning', section.warnings, 'warning');
-        if (section.link) { var a = document.createElement('a'); a.className = 'doc-link inline-block mt-4'; a.href = section.link.href; a.textContent = section.link.label; node.appendChild(a); }
-        (section.children || []).forEach(function (child) { node.appendChild(renderSection(child, level + 1)); });
-        return node;
-    }
-
-    function setActiveSidebarLink(activeId) {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        var links = Array.from(sidebar.querySelectorAll('a[data-target]'));
-        links.forEach(function (link) {
-            var isActive = link.dataset.target === activeId;
-            link.classList.toggle('active', isActive);
-            link.classList.toggle('text-brand', isActive);
-            link.classList.toggle('font-semibold', isActive);
-            if (isActive) {
-                link.setAttribute('aria-current', 'location');
-            } else {
-                link.removeAttribute('aria-current');
+    var advisoryContent = {
+        title: 'Advisory Management',
+        description: 'Creates and manages announcements displayed in GoPick. The application uses Announcement for most visible labels and Advisory for the module name.',
+        sections: [
+            {
+                id: 'create-announcement', title: 'Create Announcement',
+                description: 'Creates an announcement with a title, content, status, posting date, and expiration date.',
+                accessPaths: [['Advisory', 'Create Announcement']],
+                steps: ['Open Advisory.', 'Select Create Announcement.', 'Enter the announcement title and content.', 'Select the status.', 'Select Date Start and Date End.', 'Select Save.'],
+                groups: [
+                    { title: 'Required Inputs', items: ['Title', 'Content', 'Status', 'Date Start', 'Date End'] },
+                    { title: 'Defaulted Inputs', items: ['Date Start displays the current date for a new announcement.', 'Date End displays seven days after the current date for a new announcement.'] }
+                ],
+                rules: ['Status options are Active and Not active.', 'All visible inputs must be completed.', 'The available actions depend on the current user\'s assigned access.'],
+                expectedResults: ['The announcement is saved and opens in View Advisory.'],
+                children: [
+                    {
+                        id: 'format-announcement-content', title: 'Format Announcement Content',
+                        description: 'Resizes and aligns an image that has been inserted into the announcement content editor.',
+                        accessPaths: [['Advisory', 'Create Announcement or Update Advisory', 'Content', 'Inserted image']],
+                        steps: ['Select an inserted image in the Content editor.', 'Drag one of the four visible corner handles to resize the image.', 'Select Left, Center, or Right to align the image.', 'Select outside the image when the formatting is complete.'],
+                        rules: ['Image resizing preserves the image\'s aspect ratio.', 'The image remains within the width of the content editor.', 'The alignment controls appear only while an inserted image is selected.'],
+                        expectedResults: ['The resized and aligned image remains part of the announcement content when the announcement is saved.']
+                    }
+                ]
+            },
+            {
+                id: 'search-announcement', title: 'Search Announcement',
+                description: 'Displays announcements available to the current user and provides search, filtering, pagination, and permitted row actions.',
+                accessPaths: [['Advisory', 'Search Announcement'], ['Dashboard', 'Announcement', 'View All Announcements, when available']],
+                steps: ['Open Search Announcement.', 'Select My announcements or All announcements.', 'Optionally use standard search, advanced search, or the status filter.', 'Use page navigation when the results span multiple pages.', 'Select an available row action.'],
+                groups: [{ title: 'Visible Content', items: ['Standard search input.', 'Advanced search control.', 'My announcements and All announcements tabs with counts.', 'Announcement title, posting date, expiration date, and status.', 'Available row actions.', 'Status filter and page navigation.'] }],
+                rules: ['My announcements is selected by default.', 'Standard search matches the announcement title or content.', 'Announcements are ordered from newest to oldest.', 'Tabs, results, and row actions depend on the current user\'s access and announcement ownership.'],
+                expectedResults: ['The table shows announcements matching the selected tab and filters.'],
+                children: [
+                    {
+                        id: 'my-announcements', title: 'My Announcements',
+                        description: 'Displays announcements created by the current user.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'My announcements']],
+                        steps: ['Select My announcements.', 'Review the displayed count and announcement rows.', 'Select an available row action when needed.'],
+                        rules: ['Announcements created by other users are excluded from this tab.', 'Available row actions depend on the current user\'s assigned access.'],
+                        expectedResults: ['Only announcements created by the current user are displayed.']
+                    },
+                    {
+                        id: 'all-announcements', title: 'All Announcements',
+                        description: 'Displays announcements available to the current user across the permitted account hierarchy.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'All announcements']],
+                        steps: ['Select All announcements.', 'Review the displayed count and announcement rows.', 'Select an available row action when needed.'],
+                        rules: ['Main administrators can see announcements across all account branches when their assigned access permits it.', 'Supported account users see announcements created by their own account, their immediate parent account, and main administrators.', 'Sibling and unrelated accounts are excluded.', 'Announcements created by accounts above the immediate parent are not included automatically.', 'Seeing an announcement does not automatically allow it to be updated or deleted.'],
+                        expectedResults: ['Announcements available within the current user\'s permitted view are displayed.']
+                    },
+                    {
+                        id: 'standard-search', title: 'Standard Search',
+                        description: 'Filters the selected announcement tab by title or content.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'Search']],
+                        steps: ['Enter search text.', 'Submit the search.'],
+                        rules: ['Search is applied to the currently selected announcement tab.', 'Search text is matched against the announcement title or content.'],
+                        expectedResults: ['Only announcements with a matching title or content remain in the table.']
+                    },
+                    {
+                        id: 'advanced-search', title: 'Advanced Search',
+                        description: 'Builds one or more title or content conditions for the selected announcement tab.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'Advanced Search']],
+                        steps: ['Open Advanced Search.', 'Select Title or Content.', 'Select an operator.', 'Enter a value when the selected operator requires one.', 'Run the search.'],
+                        groups: [{ title: 'Available Operators', items: ['Begins with', 'Contains', 'Ends with', 'Equal', 'Not equal', 'Is empty', 'Is not empty', 'Is null', 'Is not null'] }],
+                        rules: ['Multiple conditions are combined using AND.', 'Grouped conditions are not available.', 'Advanced search is applied to the currently selected announcement tab.'],
+                        expectedResults: ['The table shows announcements matching the advanced search conditions.']
+                    }
+                ]
+            },
+            {
+                id: 'announcement-row-actions', title: 'Announcement Row Actions',
+                description: 'Opens, updates, or removes an announcement when the current user\'s access and announcement ownership allow the action.',
+                accessPaths: [['Advisory', 'Search Announcement', 'Actions']],
+                steps: ['Locate an announcement in the table.', 'Open its available actions.', 'Select View Advisory, Update Advisory, or Delete Advisory.'],
+                rules: ['An action appears only when it is available to the current user for the selected announcement.'],
+                expectedResults: ['The selected permitted action opens or is completed.'],
+                children: [
+                    {
+                        id: 'view-advisory', title: 'View Advisory',
+                        description: 'Displays an announcement\'s title, posting period, status, and content.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'Actions', 'View Advisory'], ['Dashboard', 'Announcement', 'Announcement title, when available']],
+                        steps: ['Select the view action or an available announcement title.', 'Review the title, posting date, expiration date, status, and content.', 'Select Back to return to the announcement list.'],
+                        rules: ['Main administrators can view announcements across all account branches when their assigned access permits it.', 'Supported account users can view announcements created by their own account, their immediate parent account, and main administrators.', 'Sibling, unrelated, and higher-than-immediate-parent account announcements are excluded.'],
+                        expectedResults: ['View Advisory opens for the selected announcement.']
+                    },
+                    {
+                        id: 'update-advisory', title: 'Update Advisory',
+                        description: 'Changes an existing announcement.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'Actions', 'Update Advisory']],
+                        steps: ['Select the update action.', 'Change the announcement fields.', 'Select Save.'],
+                        rules: ['Main administrators may update announcements across account branches when their assigned access permits it.', 'Other users may update only announcements they created.'],
+                        expectedResults: ['The changes are saved and the updated announcement opens in View Advisory.']
+                    },
+                    {
+                        id: 'delete-advisory', title: 'Delete Advisory',
+                        description: 'Permanently removes an announcement.',
+                        accessPaths: [['Advisory', 'Search Announcement', 'Actions', 'Delete Advisory']],
+                        steps: ['Select the delete action.', 'Review the confirmation prompt.', 'Confirm the deletion.'],
+                        rules: ['Main administrators may delete announcements across account branches when their assigned access permits it.', 'Other users may delete only announcements they created.', 'Deleted announcements cannot be restored because Advisory has no archive action.'],
+                        expectedResults: ['The announcement is removed and Search Announcement opens.']
+                    }
+                ]
+            },
+            {
+                id: 'dashboard-announcement-preview', title: 'Dashboard Announcement Preview',
+                description: 'Displays a preview of current announcements on the Dashboard.',
+                accessPaths: [['Dashboard', 'Announcement']],
+                steps: ['Open the Dashboard.', 'Review the displayed announcement titles.', 'Select Preview to read an announcement in a modal, when the Dashboard provides that action.', 'Select an available title to open View Advisory.', 'Select View All Announcements to open Search Announcement, when available.'],
+                groups: [{ title: 'Visible Content', items: ['Up to two current announcement titles.', 'Announcement preview action in applicable Dashboard variants.', 'Announcement detail link, when available.', 'View All Announcements, when available.'] }],
+                rules: ['Only Active announcements within their posting and expiration dates are displayed.', 'Posting and expiration dates are included in the display period.', 'At most two of the newest available announcements are displayed.', 'Dashboard variants without Preview open an announcement through its available title link.', 'Detail and list links depend on the current user\'s assigned access.'],
+                expectedResults: ['The selected announcement preview, announcement detail, or full announcement list opens.']
             }
-        });
+        ]
+    };
+
+    function appendHeading(parentElement, headingText, headingLevel) {
+        var headingElement = document.createElement(headingLevel === 2 ? 'h2' : 'h3');
+        headingElement.className = headingLevel === 2 ? 'text-xl font-bold text-slate-900 mb-2' : 'text-lg font-bold text-slate-900 mb-2';
+        headingElement.textContent = headingText;
+        parentElement.appendChild(headingElement);
     }
 
-    function getVisibleSidebarTarget() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return null;
-
-        var links = Array.from(sidebar.querySelectorAll('a[data-target]'));
-        var activeId = null;
-        var activationOffset = 120;
-
-        links.forEach(function (link) {
-            var target = document.getElementById(link.dataset.target);
-            if (target && target.getBoundingClientRect().top <= activationOffset) {
-                activeId = link.dataset.target;
-            }
-        });
-
-        return activeId || (links[0] && links[0].dataset.target) || null;
+    function appendDescription(parentElement, descriptionText) {
+        var paragraphElement = document.createElement('p');
+        paragraphElement.className = 'text-sm leading-6 text-slate-600';
+        paragraphElement.textContent = descriptionText;
+        parentElement.appendChild(paragraphElement);
     }
 
-    function getHashSidebarTarget() {
-        var hashId = window.location.hash.replace(/^#/, '');
-        if (!hashId) return null;
-
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return null;
-
-        var matchingLink = Array.from(sidebar.querySelectorAll('a[data-target]')).find(function (link) {
-            return link.dataset.target === hashId;
+    function appendList(parentElement, listTitle, listItems, ordered) {
+        if (!listItems || !listItems.length) return;
+        var detailElement = document.createElement('div');
+        detailElement.className = 'advisory-detail';
+        var titleElement = document.createElement('h4');
+        titleElement.className = 'text-sm font-bold text-slate-700 mb-2';
+        titleElement.textContent = listTitle;
+        detailElement.appendChild(titleElement);
+        var listElement = document.createElement(ordered ? 'ol' : 'ul');
+        listElement.className = (ordered ? 'list-decimal' : 'list-disc') + ' pl-5 space-y-1 text-sm text-slate-600';
+        listItems.forEach(function (listItem) {
+            var itemElement = document.createElement('li');
+            itemElement.textContent = listItem;
+            listElement.appendChild(itemElement);
         });
-        return matchingLink ? hashId : null;
+        detailElement.appendChild(listElement);
+        parentElement.appendChild(detailElement);
     }
 
-    function setupSidebarActiveState() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        var animationFrameId = null;
-
-        function updateFromScroll() {
-            animationFrameId = null;
-            var activeId = getVisibleSidebarTarget();
-            if (activeId) setActiveSidebarLink(activeId);
-        }
-
-        function scheduleScrollUpdate() {
-            if (animationFrameId !== null) return;
-            animationFrameId = window.requestAnimationFrame(updateFromScroll);
-        }
-
-        function activateHashTarget() {
-            var hashId = getHashSidebarTarget();
-            if (hashId) {
-                setActiveSidebarLink(hashId);
-                return true;
-            }
-            updateFromScroll();
-            return false;
-        }
-
-        sidebar.querySelectorAll('a[data-target]').forEach(function (link) {
-            link.addEventListener('click', function () {
-                setActiveSidebarLink(this.dataset.target);
+    function appendAccessPaths(parentElement, accessPaths) {
+        if (!accessPaths || !accessPaths.length) return;
+        var detailElement = document.createElement('div');
+        detailElement.className = 'advisory-detail';
+        var titleElement = document.createElement('h4');
+        titleElement.className = 'text-sm font-bold text-slate-700 mb-2';
+        titleElement.textContent = 'Access Path';
+        detailElement.appendChild(titleElement);
+        accessPaths.forEach(function (accessPath) {
+            var pathElement = document.createElement('div');
+            pathElement.className = 'advisory-access-path';
+            accessPath.forEach(function (pathLabel, pathIndex) {
+                if (pathIndex > 0) {
+                    var separatorElement = document.createElement('span');
+                    separatorElement.className = 'advisory-access-path__separator';
+                    separatorElement.setAttribute('aria-hidden', 'true');
+                    separatorElement.textContent = '›';
+                    pathElement.appendChild(separatorElement);
+                }
+                var labelElement = document.createElement('span');
+                labelElement.className = 'advisory-access-path__label';
+                labelElement.textContent = pathLabel;
+                pathElement.appendChild(labelElement);
             });
+            detailElement.appendChild(pathElement);
         });
+        parentElement.appendChild(detailElement);
+    }
 
-        window.addEventListener('scroll', scheduleScrollUpdate, { passive: true });
-        window.addEventListener('hashchange', function () {
-            activateHashTarget();
-            window.setTimeout(updateFromScroll, 50);
+    function appendCallout(parentElement, calloutTitle, calloutItems, modifierClass) {
+        if (!calloutItems || !calloutItems.length) return;
+        var calloutElement = document.createElement('div');
+        calloutElement.className = 'advisory-callout' + (modifierClass ? ' advisory-callout--' + modifierClass : '');
+        var titleElement = document.createElement('h4');
+        titleElement.className = 'text-sm font-bold text-slate-800 mb-2';
+        titleElement.textContent = calloutTitle;
+        calloutElement.appendChild(titleElement);
+        var listElement = document.createElement('ul');
+        listElement.className = 'list-disc pl-5 space-y-1 text-sm text-slate-600';
+        calloutItems.forEach(function (calloutItem) {
+            var itemElement = document.createElement('li');
+            itemElement.textContent = calloutItem;
+            listElement.appendChild(itemElement);
         });
+        calloutElement.appendChild(listElement);
+        parentElement.appendChild(calloutElement);
+    }
 
-        if (activateHashTarget()) {
-            window.requestAnimationFrame(function () {
-                var target = document.getElementById(getHashSidebarTarget());
-                if (target) target.scrollIntoView();
-            });
+    function renderSection(sectionData, headingLevel) {
+        var sectionElement = document.createElement('section');
+        sectionElement.id = sectionData.id;
+        sectionElement.className = headingLevel === 2 ? 'advisory-section-card' : 'advisory-child-section';
+        appendHeading(sectionElement, sectionData.title, headingLevel);
+        appendDescription(sectionElement, sectionData.description);
+        appendAccessPaths(sectionElement, sectionData.accessPaths);
+        appendList(sectionElement, 'How To Use', sectionData.steps, true);
+        (sectionData.groups || []).forEach(function (groupData) {
+            appendList(sectionElement, groupData.title, groupData.items, false);
+        });
+        appendCallout(sectionElement, 'Rules', sectionData.rules, 'rules');
+        appendCallout(sectionElement, 'Expected Result', sectionData.expectedResults, 'result');
+        appendCallout(sectionElement, 'Notes', sectionData.notes, 'note');
+        (sectionData.children || []).forEach(function (childSection) {
+            sectionElement.appendChild(renderSection(childSection, headingLevel + 1));
+        });
+        return sectionElement;
+    }
+
+    function appendSidebarItem(parentList, sectionData, nested) {
+        var itemElement = document.createElement('li');
+        var linkElement = document.createElement('a');
+        linkElement.href = '#' + sectionData.id;
+        linkElement.dataset.target = sectionData.id;
+        linkElement.className = 'block text-slate-600 hover:text-brand transition-colors py-1' + (nested ? ' pl-3 text-xs' : '');
+        linkElement.textContent = sectionData.title;
+        itemElement.appendChild(linkElement);
+        parentList.appendChild(itemElement);
+        (sectionData.children || []).forEach(function (childSection) {
+            appendSidebarItem(parentList, childSection, true);
+        });
+    }
+
+    function renderAdvisoryPage() {
+        var titleElement = document.getElementById('advisoryPageTitle');
+        var descriptionElement = document.getElementById('advisoryPageDescription');
+        var contentRoot = document.getElementById('section-render-root');
+        var sidebarList = document.getElementById('docSidebarList');
+        if (!titleElement || !descriptionElement || !contentRoot || !sidebarList) {
+            throw new Error('Advisory page requires its title, description, content root, and sidebar.');
         }
+        titleElement.textContent = advisoryContent.title;
+        descriptionElement.textContent = advisoryContent.description;
+        advisoryContent.sections.forEach(function (sectionData) {
+            contentRoot.appendChild(renderSection(sectionData, 2));
+            appendSidebarItem(sidebarList, sectionData, false);
+        });
     }
 
-    function render() {
-        var root = document.getElementById('section-render-root'); var sidebar = document.getElementById('docSidebarList');
-        if (!root || !sidebar) return;
-        sections.forEach(function (section) {
-            root.appendChild(renderSection(section, 2));
-            var li = document.createElement('li'); var a = document.createElement('a'); a.href = '#' + section.id; a.dataset.target = section.id; a.className = 'block text-slate-600 hover:text-brand transition-colors py-1'; a.textContent = section.title; li.appendChild(a); sidebar.appendChild(li);
-        });
-        setupSidebarActiveState();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderAdvisoryPage);
+    } else {
+        renderAdvisoryPage();
     }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render); else render();
-    global.advisoryWorkflowContent = { sections: sections };
+    global.advisoryWorkflowContent = advisoryContent;
 })(window);

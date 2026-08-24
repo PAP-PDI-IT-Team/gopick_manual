@@ -1,111 +1,10 @@
 # Advisory Management
 
-The Advisory module lets authorized administrator-portal users create and manage announcements. The interface uses **Announcement** for most page labels while the backend module and record type use **Advisory**.
-
-## About the Advisory Module
-
-The Advisory module is GoPick's administrator-portal announcement feature. It is used for operational notices, system or policy updates, maintenance messages, and other information that users need to see inside GoPick.
-
-The visible pages usually use the word **Announcement**. Backend routes, code, the database record, and technical documentation use **Advisory**. Both terms refer to the same feature.
-
-### Where Announcements Appear
-
-| Location | What the user sees | Important condition |
-|---|---|---|
-| `Advisory` > `Search Announcement` | A searchable list with `My announcements`, `All announcements`, status, dates, and permitted row actions. | Requires `modAdvisory-actionIndex`. |
-| `View Advisory` | One announcement's title, posting period, status, and content. | Requires `modAdvisory-actionView` and visibility authorization. |
-| Dashboard `Announcements` | Up to two newest active, currently in-date announcements visible to the account hierarchy. | The direct detail link still requires view permission. |
-| Global Advisory modal | Active, currently in-date announcements that the user has not acknowledged. | This legacy modal currently does not apply the normal hierarchy filter. |
-
-## How Advisory Access Works
-
-Advisory access has two separate controls:
-
-1. **Permission control:** RBAC permissions decide whether a user may list, view, create, update, or delete announcements.
-2. **Visibility control:** Account hierarchy decides which announcement creators are visible to the current user.
-
-Having a particular account type does not automatically grant the Advisory module. A user must have the permission required for the action. Being able to see an announcement also does not automatically allow the user to update or delete it.
-
-> Example:
-> - A Client Account user may have permission to open `Search Announcement`, but `All announcements` still includes only creators resolved from that user's account lineage and main super admins.
-
-## Who Can Create Announcements
-
-Creating an announcement requires `modAdvisory-actionCreate`. The following table summarizes the current source evidence; deployed RBAC assignments must still be confirmed in the running environment.
-
-| User/account type | Creation access | What a new user should know |
-|---|---|---|
-| Super Admin IT (`super_admin`) | Expected through default Super Admin provisioning. | Normally has the configured Advisory actions; deployed RBAC records remain authoritative. |
-| Administrator ASD (`super_admin_asd`) | Conditional. | It has global visibility, but default-role provisioning paths are inconsistent; confirm its assigned permissions. |
-| Distributor (`distributor`) | Permission required. | No source-confirmed default Distributor provisioning for Advisory was found. |
-| Sub-distributor (`sub_distributor`) | Permission required. | No source-confirmed default Sub-distributor provisioning for Advisory was found. |
-| Client Account (`account`) | Explicit permission required. | Advisory is omitted from the default Account module allow-list. |
-| Sub-account (`sub_account`) | Explicit permission required. | Advisory is omitted from the default Sub-account module allow-list. |
-| Self-registration (`self_registration`) | Explicit permission required. | Advisory is omitted from the default Self-registration module allow-list. |
-| HR Administrator (`hr_account`) | Explicit permission required. | Advisory is omitted from the default HR Account module allow-list, and HR-created visibility has a known creator-mapping gap. |
-
-> Notes:
-> - Administrator ASD means `super_admin_asd` and is a main super admin.
-> - HR Administrator means `hr_account` and follows the non-super-admin visibility path.
-> - See the [Advisory Module Access Matrix](../domain-governance/advisory.md#advisory-module-access-matrix) for detailed source evidence.
-
-## Who Can See Announcements
-
-The normal Advisory list, detail page, and Dashboard resolve visibility from the current account and its stored lineage. In simple terms, an announcement flows downward only to viewers whose account lineage contains the creator's account.
-
-```text
-Main Super Admins — global visibility
-
-Distributor
-└─ Sub-distributor
-   └─ Client Account
-      └─ Sub-account
-
-Self-registration may be linked beneath a supported account level.
-HR Administrator is an associated administrative user, not a separate hierarchy level.
-```
-
-| Announcement creator | Who normally sees it | Who normally does not see it |
-|---|---|---|
-| Main Super Admin | Every hierarchy-aware viewer with the required permission. | Users missing the required action permission. |
-| Distributor | The Distributor and lower accounts whose stored lineage contains that Distributor. | Unrelated Distributor branches. |
-| Sub-distributor | The Sub-distributor and lower accounts whose stored lineage contains it. | Its parent Distributor, siblings, and unrelated branches. |
-| Client Account | The Client Account and lower accounts whose stored lineage contains it. | Its parents, sibling clients, and unrelated branches. |
-| Sub-account | The Sub-account and linked lower accounts whose stored lineage contains it. | Its parents, sibling Sub-accounts, and unrelated branches. |
-| Self-registration | Itself when its user ID is resolved from its current account row, plus main super admins. | Parents, siblings, and unrelated branches. |
-| HR Administrator | Main super admins; other viewers are conditional on creator-user mapping. | The intended account lineage may fail to resolve the HR creator. |
-
-### Simple Examples
-
-- A Distributor-created announcement can flow to that Distributor's lower account lineage, but not to another Distributor branch.
-- A Client Account-created announcement can flow to its own lower lineage. Its Distributor parent does not automatically see it.
-- A Sub-account-created announcement can flow to itself and a correctly linked lower Self-registration account. Its Client parent and sibling Sub-accounts do not automatically see it.
-- Main super admins can see all announcements, subject to the relevant controller permission.
-
-> Rules:
-> - Parents do not automatically see announcements created by children.
-> - Sibling accounts and unrelated branches do not see one another's announcements.
-> - Visibility depends on populated account-lineage fields and the creator being resolved as an account owner user.
-
-> Notes:
-> - See the [Advisory Visibility Matrix](../domain-governance/advisory.md#advisory-visibility-matrix) for the detailed implementation mapping and cautions.
-> - The global unseen-Advisory modal is a known exception and currently does not apply this hierarchy.
-
-## Announcement Lifecycle at a Glance
-
-1. An authorized user creates an announcement with a title, content, status, posting date, and expiration date.
-2. `Active` makes the announcement eligible for delivery; `Not active` prevents Dashboard and global-modal delivery.
-3. The current date must be on or between the posting and expiration dates. Both boundary dates are included.
-4. The management list can still contain inactive, future, current, and expired records.
-5. The Dashboard shows at most the two newest active, currently in-date announcements visible under its hierarchy rules.
-6. The creator or a main super admin with the required permission can update or permanently delete the announcement.
-
-> Warning:
-> - The global unseen-Advisory modal currently queries all active, in-date announcements without applying the normal Advisory hierarchy filter. Treat its audience as a known implementation gap.
+Creates and manages announcements displayed in GoPick. The application uses `Announcement` for most visible labels and `Advisory` for the module name.
 
 ## Create Announcement
 
-Creates an announcement with a title, rich-text content, status, posting date, and expiration date.
+Creates an announcement with a title, content, status, posting date, and expiration date.
 
 ### Access Path
 
@@ -115,7 +14,7 @@ Creates an announcement with a title, rich-text content, status, posting date, a
 
 1. Open `Advisory`.
 2. Select `Create Announcement`.
-3. Enter the title and content.
+3. Enter the announcement title and content.
 4. Select the status.
 5. Select `Date Start` and `Date End`.
 6. Select `Save`.
@@ -130,58 +29,78 @@ Creates an announcement with a title, rich-text content, status, posting date, a
 
 ### Defaulted Inputs
 
-- `Date Start` displays the current date on a new announcement.
-- `Date End` displays seven days after the current date on a new announcement.
+- `Date Start` displays the current date for a new announcement.
+- `Date End` displays seven days after the current date for a new announcement.
 
 > Rules:
-> - Access requires `modAdvisory-actionCreate`.
 > - Status options are `Active` and `Not active`.
-> - The current implementation requires all five visible inputs.
-> - The date controls prevent choosing dates before their configured start date in the browser, but the module does not currently validate date order on the server.
+> - All visible inputs must be completed.
+> - The available actions depend on the current user's assigned access.
 
 > Expected Result:
-> - The announcement is saved and the browser opens `View Advisory` for the new record.
+> - The announcement is saved and opens in `View Advisory`.
+
+### Format Announcement Content
+
+Resizes and aligns an image that has been inserted into the announcement content editor.
+
+#### Access Path
+
+- `Advisory` > `Create Announcement` or `Update Advisory` > `Content` > inserted image
+
+#### How To Use
+
+1. Select an inserted image in the `Content` editor.
+2. Drag one of the four visible corner handles to resize the image.
+3. Select `Left`, `Center`, or `Right` to align the image.
+4. Select outside the image when the formatting is complete.
+
+> Rules:
+> - Image resizing preserves the image's aspect ratio.
+> - The image remains within the width of the content editor.
+> - The alignment controls appear only while an inserted image is selected.
+
+> Expected Result:
+> - The resized and aligned image remains part of the announcement content when the announcement is saved.
 
 ## Search Announcement
 
-Displays announcements available within the current user's visibility scope.
+Displays announcements available to the current user and provides search, filtering, pagination, and permitted row actions.
 
 ### Access Path
 
 - `Advisory` > `Search Announcement`
-- `Dashboard` > `Announcement` > `View All Announcements`, when that button is available
+- `Dashboard` > `Announcement` > `View All Announcements`, when available
+
+### How To Use
+
+1. Open `Search Announcement`.
+2. Select `My announcements` or `All announcements`.
+3. Optionally use standard search, advanced search, or the status filter.
+4. Use page navigation when the results span multiple pages.
+5. Select an available row action.
 
 ### Visible Content
 
 - Standard search input.
 - Advanced search control.
 - `My announcements` and `All announcements` tabs with counts.
-- Announcement title, posting date, expiration date, status, and available row actions.
-- Status column filter and page navigation.
-
-### How To Use
-
-1. Open `Search Announcement`.
-2. Select `My announcements` or `All announcements`.
-3. Optionally enter text in the standard search input.
-4. Optionally filter the `Status` column.
-5. Use the page navigation when the result set spans multiple pages.
-6. Select an available row action.
+- Announcement title, posting date, expiration date, and status.
+- Available row actions.
+- Status filter and page navigation.
 
 > Rules:
-> - Access requires `modAdvisory-actionIndex`.
-> - The default tab is `My announcements`.
-> - Standard search matches `Title` or `Content`.
-> - Status filtering maps `Active` to status `1` and `Not active` to status `0`.
-> - Results are ordered by newest record ID first.
-> - Row actions are permission-dependent and may not appear for every user or row.
+> - `My announcements` is selected by default.
+> - Standard search matches the announcement title or content.
+> - Announcements are ordered from newest to oldest.
+> - Tabs, results, and row actions depend on the current user's access and announcement ownership.
 
 > Expected Result:
-> - The table shows announcements matching the selected scope and filters.
+> - The table shows announcements matching the selected tab and filters.
 
-### My announcements
+### My Announcements
 
-Shows records created by the currently authenticated user.
+Displays announcements created by the current user.
 
 #### Access Path
 
@@ -190,18 +109,19 @@ Shows records created by the currently authenticated user.
 #### How To Use
 
 1. Select `My announcements`.
-2. Review the count and matching table rows.
+2. Review the displayed count and announcement rows.
+3. Select an available row action when needed.
 
 > Rules:
-> - This is the default scope when `created_scope` is absent or unsupported.
-> - Other hierarchy-visible announcements are excluded from this tab.
+> - Announcements created by other users are excluded from this tab.
+> - Available row actions depend on the current user's assigned access.
 
 > Expected Result:
-> - Only announcements whose `Created By` value is the current user ID are listed.
+> - Only announcements created by the current user are displayed.
 
-### All announcements
+### All Announcements
 
-Shows every announcement visible to the current user under the implemented Advisory hierarchy rules.
+Displays announcements available to the current user across the permitted account hierarchy.
 
 #### Access Path
 
@@ -210,22 +130,22 @@ Shows every announcement visible to the current user under the implemented Advis
 #### How To Use
 
 1. Select `All announcements`.
-2. Review the count and matching table rows.
+2. Review the displayed count and announcement rows.
+3. Select an available row action when needed.
 
 > Rules:
-> - Main super admins can list all announcement records.
-> - Other users can list announcements created by the owner users of their current account and stored ancestor accounts, plus announcements created by main super admins.
-> - This scope is visibility-based; it does not grant update or delete authority over another creator's record.
-
-> Notes:
-> - See the [Advisory Visibility Matrix](../domain-governance/advisory.md#advisory-visibility-matrix) for the creator-to-viewer account mapping.
+> - Main administrators can see announcements across all account branches when their assigned access permits it.
+> - Supported account users see announcements created by their own account, their immediate parent account, and main administrators.
+> - Sibling and unrelated accounts are excluded.
+> - Announcements created by accounts above the immediate parent are not included automatically.
+> - Seeing an announcement does not automatically allow it to be updated or deleted.
 
 > Expected Result:
-> - The table shows the current user's hierarchy-visible announcements.
+> - Announcements available within the current user's permitted view are displayed.
 
 ### Standard Search
 
-Filters the selected announcement scope by title or content.
+Filters the selected announcement tab by title or content.
 
 #### Access Path
 
@@ -236,12 +156,16 @@ Filters the selected announcement scope by title or content.
 1. Enter search text.
 2. Submit the search.
 
+> Rules:
+> - Search is applied to the currently selected announcement tab.
+> - Search text is matched against the announcement title or content.
+
 > Expected Result:
-> - Rows whose title or stored rich-text content matches the entered text remain in the result set.
+> - Only announcements with a matching title or content remain in the table.
 
 ### Advanced Search
 
-Builds one or more title or content conditions using the advanced query builder.
+Builds one or more title or content conditions for the selected announcement tab.
 
 #### Access Path
 
@@ -251,8 +175,8 @@ Builds one or more title or content conditions using the advanced query builder.
 
 1. Open `Advanced Search`.
 2. Select `Title` or `Content`.
-3. Select an available operator.
-4. Enter a value when the operator requires one.
+3. Select an operator.
+4. Enter a value when the selected operator requires one.
 5. Run the search.
 
 #### Available Operators
@@ -268,39 +192,59 @@ Builds one or more title or content conditions using the advanced query builder.
 - `Is not null`
 
 > Rules:
-> - Advanced conditions use `AND`.
-> - Grouped conditions are not enabled.
-> - Content matching attempts to ignore stored HTML tags for begins-with, contains, and ends-with operations.
+> - Multiple conditions are combined using `AND`.
+> - Grouped conditions are not available.
+> - Advanced search is applied to the currently selected announcement tab.
 
 > Expected Result:
-> - The table opens with the advanced conditions applied to the selected announcement scope.
+> - The table shows announcements matching the advanced search conditions.
 
 ## Announcement Row Actions
 
-Row actions open, modify, or remove an announcement when the required permission and ownership rules allow the action.
+Opens, updates, or removes an announcement when the current user's access and announcement ownership allow the action.
+
+### Access Path
+
+- `Advisory` > `Search Announcement` > `Actions`
+
+### How To Use
+
+1. Locate an announcement in the table.
+2. Open its available actions.
+3. Select `View Advisory`, `Update Advisory`, or `Delete Advisory`.
+
+> Rules:
+> - An action appears only when it is available to the current user for the selected announcement.
+
+> Expected Result:
+> - The selected permitted action opens or is completed.
 
 ### View Advisory
+
+Displays an announcement's title, posting period, status, and content.
 
 #### Access Path
 
 - `Advisory` > `Search Announcement` > `Actions` > `View Advisory`
-- `Dashboard` > `Announcement` > announcement title
+- `Dashboard` > `Announcement` > announcement title, when available
 
 #### How To Use
 
-1. Select the view icon or an available announcement title.
-2. Review its title, posting and expiration dates, status, and content.
+1. Select the view action or an available announcement title.
+2. Review the title, posting date, expiration date, status, and content.
 3. Select `Back` to return to the announcement list.
 
 > Rules:
-> - Direct access requires `modAdvisory-actionView`.
-> - Main super admins can view any announcement.
-> - Other users can view only announcements within their hierarchy-visible creator scope.
+> - Main administrators can view announcements across all account branches when their assigned access permits it.
+> - Supported account users can view announcements created by their own account, their immediate parent account, and main administrators.
+> - Sibling, unrelated, and higher-than-immediate-parent account announcements are excluded.
 
 > Expected Result:
-> - `View Advisory` opens for an authorized record; an access error is rendered when authorization fails.
+> - `View Advisory` opens for the selected announcement.
 
 ### Update Advisory
+
+Changes an existing announcement.
 
 #### Access Path
 
@@ -308,20 +252,20 @@ Row actions open, modify, or remove an announcement when the required permission
 
 #### How To Use
 
-1. Select the update icon.
+1. Select the update action.
 2. Change the announcement fields.
 3. Select `Save`.
 
 > Rules:
-> - Access requires `modAdvisory-actionUpdate`.
-> - Main super admins can update any announcement.
-> - Other users can update only announcements they created.
-> - A successful update records the current user and current date/time as modification metadata.
+> - Main administrators may update announcements across account branches when their assigned access permits it.
+> - Other users may update only announcements they created.
 
 > Expected Result:
-> - The announcement is saved, a success message is created, and `View Advisory` opens.
+> - The changes are saved and the updated announcement opens in `View Advisory`.
 
 ### Delete Advisory
+
+Permanently removes an announcement.
 
 #### Access Path
 
@@ -329,21 +273,21 @@ Row actions open, modify, or remove an announcement when the required permission
 
 #### How To Use
 
-1. Select the delete icon.
-2. Confirm the prompt, `Are you sure you want to delete this advisory?`
+1. Select the delete action.
+2. Review the confirmation prompt.
+3. Confirm the deletion.
 
 > Rules:
-> - Access requires `modAdvisory-actionDelete`.
-> - Main super admins can delete any announcement.
-> - Other users can delete only announcements they created.
-> - The current implementation permanently deletes the record; it does not archive it.
+> - Main administrators may delete announcements across account branches when their assigned access permits it.
+> - Other users may delete only announcements they created.
+> - Deleted announcements cannot be restored because Advisory has no archive action.
 
 > Expected Result:
-> - The record is removed and the browser returns to `Search Announcement`.
+> - The announcement is removed and `Search Announcement` opens.
 
 ## Dashboard Announcement Preview
 
-Displays up to two current announcements on the Dashboard.
+Displays a preview of current announcements on the Dashboard.
 
 ### Access Path
 
@@ -351,40 +295,25 @@ Displays up to two current announcements on the Dashboard.
 
 ### How To Use
 
-1. Review the displayed announcement titles.
-2. Select `Preview` to open the announcement content in a modal.
-3. Select an announcement title to open `View Advisory` when permitted.
-4. Select `View All Announcements` when available to open active announcements in the Advisory list.
+1. Open the Dashboard.
+2. Review the displayed announcement titles.
+3. Select `Preview` to read an announcement in a modal, when the Dashboard provides that action.
+4. Select an available title to open `View Advisory`.
+5. Select `View All Announcements` to open `Search Announcement`, when available.
+
+### Visible Content
+
+- Up to two current announcement titles.
+- Announcement preview action in applicable Dashboard variants.
+- Announcement detail link, when available.
+- `View All Announcements`, when available.
 
 > Rules:
-> - Dashboard results include only `Active` announcements whose posting and expiration dates include the current date.
-> - The Dashboard shows at most the two newest visible records by record ID.
-> - `View All Announcements` appears only when the user has `modAdvisory-actionIndex`.
-> - The Dashboard preview is an integration entry point; announcement management remains owned by the Advisory module.
+> - Only `Active` announcements within their posting and expiration dates are displayed.
+> - Posting and expiration dates are included in the display period.
+> - At most two of the newest available announcements are displayed.
+> - Dashboard variants without `Preview` open an announcement through its available title link.
+> - Detail and list links depend on the current user's assigned access.
 
 > Expected Result:
-> - The selected preview opens without leaving the Dashboard, or the selected title opens the permitted Advisory detail page.
-
-## Authenticated Staging QA Checklist
-
-The following checks require an authenticated staging session and remain runtime verification items until completed.
-
-### How To Use
-
-1. Confirm a user with each Advisory permission can reach its matching page or action.
-2. Confirm a user without each permission receives an access error and does not see unauthorized row actions.
-3. Create announcements using required-only and fully formatted rich-text content.
-4. Confirm the displayed create-date defaults and test invalid or reversed date submissions.
-5. Confirm standard search, every advanced-search operator, status filtering, scope tabs, counts, and pagination.
-6. Confirm an ordinary creator can update and delete their own announcement but not another creator's announcement.
-7. Confirm a main super admin can list, view, update, and delete announcements across account branches.
-8. Confirm a hierarchy descendant sees announcements from its stored account lineage and main super admins.
-9. Confirm an unrelated account branch cannot list or directly view another branch's announcement.
-10. Confirm active-date boundary behavior on the posting date and expiration date.
-11. Confirm inactive, future, and expired announcements do not appear in the Dashboard announcement panel.
-12. Confirm the Dashboard displays at most two announcements and that preview and detail navigation work as documented.
-13. Confirm acknowledging the global Advisory modal records the user as having seen each displayed announcement and prevents immediate redisplay.
-
-> Notes:
-> - Record the tested user type, permissions, current account ID, announcement creator, dates, and observed result for every scenario.
-> - Report behavior that differs from this source-verified baseline in the [Advisory Gap Registry](../known-gaps/advisory-gap-registry.md).
+> - The selected announcement preview, announcement detail, or full announcement list opens.
