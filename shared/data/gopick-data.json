@@ -69,7 +69,9 @@
     {
       "index": 10,
       "title": "Activity Log",
-      "description": "This feature has not been recorded yet. Document details will be added later."
+      "description": "Review user activity records and candidate activity records from ACTIVITY LOGS, including timestamps, screenshots or snapshots, and device details.",
+      "icon": "clipboard",
+      "target": "activity-log-management"
     },
     {
       "index": 11,
