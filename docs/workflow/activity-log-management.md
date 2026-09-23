@@ -25,10 +25,6 @@ Review user activity records and candidate activity records from `ACTIVITY LOGS`
 
 Lists user activity records. Super Admin / Super Admin ASD first see a username list, then open one user’s logs. Distributor sees activity log rows directly.
 
-### Purpose / Scope
-
-Lists user activity records. Super Admin / Super Admin ASD first see a username list, then open one user’s logs. Distributor sees activity log rows directly.
-
 ### Access Path
 
 - `ACTIVITY LOGS` > `User Activities`
@@ -64,17 +60,13 @@ Activity log rows, after `View User Activities`, or on the direct listing for no
 - `Request Value` is a read-only textarea
 - `Module` is shown without the `mod` prefix, with spaces in the remaining name
 
-#### Locked Inputs
+### Locked Inputs
 
 - `Request Value`
 
 ### Search
 
-Filters the User Activities table with `Search...`. Candidate Activities uses the same `Search...` control and has no Advanced Search.
-
-#### Purpose / Scope
-
-Filter the current listing with the `Search...` input.
+Filters the User Activities table with `Search...`. Candidate Activities uses the same `Search...` control and has no Advanced Search. Filter the current listing with the `Search...` input.
 
 #### Access Path
 
@@ -99,11 +91,7 @@ Filter the current listing with the `Search...` input.
 
 ### Advanced Search
 
-Filters User Activities with Advanced Search. This control is only on User Activities, not Candidate Activities.
-
-#### Purpose / Scope
-
-Open Advanced Search and apply field filters to the User Activities table.
+Filters User Activities with Advanced Search. This control is only on User Activities, not Candidate Activities. Open Advanced Search and apply field filters to the User Activities table.
 
 #### Access Path
 
@@ -151,11 +139,7 @@ Operators (same for `Username`, `Module`, `Action`, and `Request Value`):
 
 ### Select Company
 
-Shown on the User Activities listing and the Candidate Activities listing when the signed-in user is Super Admin or Super Admin ASD. Not shown on the per-candidate log table.
-
-#### Purpose / Scope
-
-Reload the current listing for the selected company.
+Shown on the User Activities listing and the Candidate Activities listing when the signed-in user is Super Admin or Super Admin ASD. Not shown on the per-candidate log table. Reload the current listing for the selected company.
 
 #### Access Path
 
@@ -182,11 +166,7 @@ Reload the current listing for the selected company.
 
 ### Date Entered
 
-On User Activities log rows and on [View Candidate Activities](#view-candidate-activities).
-
-#### Purpose / Scope
-
-Filter activity log rows by `Date Entered`.
+On User Activities log rows and on [View Candidate Activities](#view-candidate-activities). Filter activity log rows by `Date Entered`.
 
 #### Access Path
 
@@ -220,11 +200,7 @@ Filter activity log rows by `Date Entered`.
 
 ### View User Activities
 
-Opens that username’s activity log rows.
-
-#### Purpose / Scope
-
-Show that username’s activity rows with `Module`, `Action`, `Request Value`, and `Date Entered`.
+Opens that username’s activity log rows. Show that username’s activity rows with `Module`, `Action`, `Request Value`, and `Date Entered`.
 
 #### Access Path
 
@@ -242,10 +218,6 @@ Show that username’s activity rows with `Module`, `Action`, `Request Value`, a
 > - That username’s activity rows are shown with `Module`, `Action`, `Request Value`, and `Date Entered`.
 
 ## Candidate Activities
-
-Lists candidates with activity, then opens one candidate’s activity log: timestamp, activity, screenshot/snapshot, and device used.
-
-### Purpose / Scope
 
 Lists candidates with activity, then opens one candidate’s activity log: timestamp, activity, screenshot/snapshot, and device used. Extra Candidates-side entry points are documented here as access paths only. The Candidates-side action is owned by [View Candidate Log](candidate-management.md#view-candidate-log).
 
@@ -296,11 +268,7 @@ Empty state for Distributor with zero rows:
 
 ### Scheduled By
 
-Listing only, not on the per-candidate log table.
-
-#### Purpose / Scope
-
-Filter the Candidate Activities listing by scheduler.
+Listing only, not on the per-candidate log table. Filter the Candidate Activities listing by scheduler.
 
 #### Access Path
 
@@ -324,10 +292,6 @@ Filter the Candidate Activities listing by scheduler.
 > - Listing only, not on the per-candidate log table.
 
 ### View Candidate Activities
-
-Shows one candidate’s activity log. Page title stays `Candidate Activities`. Header shows candidate first name + last name, then account name.
-
-#### Purpose / Scope
 
 Shows one candidate’s activity log. Page title stays `Candidate Activities`. Header shows candidate first name + last name, then account name.
 
@@ -382,11 +346,7 @@ Confirmed Activity labels:
 
 #### More Information
 
-Button: `More Information`
-
-##### Purpose / Scope
-
-Show extra fields for an activity row.
+Button: `More Information`. Show extra fields for an activity row.
 
 ##### How To Use
 
@@ -399,8 +359,6 @@ Show extra fields for an activity row.
 - `Action:`
 
 #### Screenshot/Snapshot
-
-##### Purpose / Scope
 
 Open a snapshot from an activity row when one is present.
 
@@ -421,8 +379,6 @@ Open a snapshot from an activity row when one is present.
 
 #### Device Used
 
-##### Purpose / Scope
-
 Show captured device specs on an activity row.
 
 ##### Visible Content
@@ -439,11 +395,7 @@ When missing: `No captured specs`
 
 #### Candidate Activity Report Unavailable
 
-Not a menu item. Visible blocked page if the candidate log cannot load.
-
-##### Purpose / Scope
-
-Show that the candidate activity report cannot be opened.
+Not a menu item. Visible blocked page if the candidate log cannot load. Show that the candidate activity report cannot be opened.
 
 ##### Visible Content
 

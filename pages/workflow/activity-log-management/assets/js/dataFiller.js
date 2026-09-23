@@ -481,15 +481,15 @@
         const isRules = kind === 'rules';
         const isExpected = kind === 'expected';
         wrap.className = isRules
-            ? 'mt-5 rounded-lg border border-amber-100 bg-amber-50 p-5'
+            ? 'mt-4 rounded-lg border border-amber-100 bg-amber-50 p-4'
             : (isExpected
-                ? 'mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-5'
-                : 'mt-5 rounded-lg border border-slate-100 bg-slate-50 p-5');
+                ? 'mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4'
+                : 'mt-4 rounded-lg border border-slate-100 bg-white p-4');
 
         const heading = document.createElement('h3');
         heading.className = isRules
-            ? 'font-semibold text-amber-900 mb-3'
-            : (isExpected ? 'font-semibold text-emerald-900 mb-3' : 'font-semibold text-slate-900 mb-3');
+            ? 'font-semibold text-amber-900 mb-2'
+            : (isExpected ? 'font-semibold text-emerald-900 mb-2' : 'font-semibold text-slate-900 mb-2');
         heading.textContent = title;
 
         wrap.appendChild(heading);
@@ -499,10 +499,10 @@
 
     function createLabeledList(title, items) {
         const wrap = document.createElement('div');
-        wrap.className = 'mt-5 rounded-lg border border-slate-100 bg-slate-50 p-5';
+        wrap.className = 'mt-4 rounded-lg border border-slate-100 bg-white p-4';
 
         const heading = document.createElement('h3');
-        heading.className = 'font-semibold text-slate-900 mb-3';
+        heading.className = 'font-semibold text-slate-900 mb-2';
         heading.textContent = title;
         wrap.appendChild(heading);
         wrap.appendChild(createBulletList(items));
@@ -538,10 +538,10 @@
     function renderGroups(container, groups) {
         groups.forEach(function (group) {
             const wrap = document.createElement('div');
-            wrap.className = 'rounded-lg border border-slate-100 bg-slate-50 p-5';
+            wrap.className = 'rounded-lg border border-slate-100 bg-white p-4';
 
             const heading = document.createElement('h3');
-            heading.className = 'font-semibold text-slate-900 mb-3';
+            heading.className = 'font-semibold text-slate-900 mb-2';
             heading.textContent = group.title;
             wrap.appendChild(heading);
             wrap.appendChild(createBulletList(group.items || []));
@@ -554,6 +554,16 @@
             renderAccessPaths(target, section.accessPaths);
         }
 
+        if (section.steps && section.steps.length) {
+            const stepLabel = document.createElement('p');
+            stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
+            stepLabel.textContent = 'How To Use';
+            target.appendChild(stepLabel);
+            const stepsList = createBulletList(section.steps);
+            stepsList.classList.add('mt-3');
+            target.appendChild(stepsList);
+        }
+
         if (section.links && section.links.length) {
             target.appendChild(createLabeledList('Available Actions', section.links));
         }
@@ -564,19 +574,9 @@
 
         if (section.groups && section.groups.length) {
             const groupsWrap = document.createElement('div');
-            groupsWrap.className = 'space-y-4 mt-5';
+            groupsWrap.className = 'space-y-4 mt-4';
             renderGroups(groupsWrap, section.groups);
             target.appendChild(groupsWrap);
-        }
-
-        if (section.steps && section.steps.length) {
-            const stepLabel = document.createElement('p');
-            stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-            stepLabel.textContent = 'How To Use';
-            target.appendChild(stepLabel);
-            const stepsList = createBulletList(section.steps);
-            stepsList.classList.add('mt-3');
-            target.appendChild(stepsList);
         }
 
         if (section.requiredInputs && section.requiredInputs.length) {
@@ -612,6 +612,48 @@
         }
     }
 
+    function sectionHasDetails(section) {
+        return Boolean(
+            section.description ||
+            (section.accessPaths && section.accessPaths.length) ||
+            (section.steps && section.steps.length) ||
+            (section.links && section.links.length) ||
+            (section.items && section.items.length) ||
+            (section.groups && section.groups.length) ||
+            (section.requiredInputs && section.requiredInputs.length) ||
+            (section.optionalInputs && section.optionalInputs.length) ||
+            (section.conditionalInputs && section.conditionalInputs.length) ||
+            (section.defaultedInputs && section.defaultedInputs.length) ||
+            (section.lockedInputs && section.lockedInputs.length) ||
+            (section.rules && section.rules.length) ||
+            (section.expectedResults && section.expectedResults.length) ||
+            (section.notes && section.notes.length)
+        );
+    }
+
+    function createSectionCard(section, level, titleOverride, includeId) {
+        const card = document.createElement('article');
+        card.className = level === 'nested'
+            ? 'rounded-lg border border-slate-100 bg-white p-4'
+            : 'rounded-lg border border-slate-100 bg-slate-50 p-5';
+        if (includeId) card.id = section.id;
+
+        const title = document.createElement(level === 'nested' ? 'h4' : 'h3');
+        title.className = 'font-semibold text-slate-900 mb-2';
+        title.textContent = titleOverride || section.title;
+        card.appendChild(title);
+
+        if (section.description) {
+            const desc = document.createElement('p');
+            desc.className = 'text-sm text-slate-600 leading-relaxed';
+            desc.textContent = section.description;
+            card.appendChild(desc);
+        }
+
+        renderSectionBody(section, card);
+        return card;
+    }
+
     function renderSectionHeader(section, headingLevel, eyebrowText) {
         const fragment = document.createDocumentFragment();
         if (eyebrowText) {
@@ -639,15 +681,33 @@
         return fragment;
     }
 
-    function renderSectionTree(section, headingLevel, eyebrowText, isTopLevel) {
+    function renderSectionTree(section, headingLevel, isTopLevel, isFirstTopLevel) {
         const sectionEl = document.createElement('section');
-        sectionEl.className = isTopLevel ? 'mb-10' : 'mt-8 border-t border-slate-100 pt-6';
-        sectionEl.appendChild(renderSectionHeader(section, headingLevel, eyebrowText));
-        renderSectionBody(section, sectionEl);
+        sectionEl.className = isTopLevel ? 'mb-10' : 'mt-4';
+
+        if (isTopLevel) {
+            sectionEl.appendChild(renderSectionHeader(section, headingLevel, null));
+        }
+
+        if (sectionHasDetails(section) && isTopLevel) {
+            const cardTitle = section.children && section.children.length ? 'Access, Usage, and Notes' : section.title;
+            const card = createSectionCard(section, 'root', cardTitle, false);
+            if (isFirstTopLevel) {
+                if (activityLogContent.rules && activityLogContent.rules.length) {
+                    card.appendChild(createCallout('Rules', activityLogContent.rules, 'rules'));
+                }
+                if (activityLogContent.notes && activityLogContent.notes.length) {
+                    card.appendChild(createCallout('Notes', activityLogContent.notes, 'notes'));
+                }
+            }
+            sectionEl.appendChild(card);
+        } else if (sectionHasDetails(section)) {
+            sectionEl.appendChild(createSectionCard(section, 'nested', section.title, true));
+        }
 
         if (section.children && section.children.length) {
             section.children.forEach(function (child) {
-                sectionEl.appendChild(renderSectionTree(child, Math.min(headingLevel + 1, 4), section.title, false));
+                sectionEl.appendChild(renderSectionTree(child, Math.min(headingLevel + 1, 4), false, false));
             });
         }
 
@@ -676,16 +736,8 @@
 
         renderLegends(root);
 
-        if (activityLogContent.rules && activityLogContent.rules.length) {
-            root.appendChild(createCallout('Rules', activityLogContent.rules, 'rules'));
-        }
-
-        if (activityLogContent.notes && activityLogContent.notes.length) {
-            root.appendChild(createCallout('Notes', activityLogContent.notes, 'notes'));
-        }
-
-        activityLogContent.sections.forEach(function (section) {
-            root.appendChild(renderSectionTree(section, 2, null, true));
+        activityLogContent.sections.forEach(function (section, index) {
+            root.appendChild(renderSectionTree(section, 2, true, index === 0));
         });
     }
 
