@@ -69,7 +69,7 @@
     {
       "index": 10,
       "title": "Activity Log",
-      "description": "Review user activity records and candidate activity records from ACTIVITY LOGS, including timestamps, screenshots or snapshots, and device details.",
+      "description": "Review user activity records and candidate activity records from Activity Logs, including timestamps, screenshots or snapshots, and device details.",
       "icon": "clipboard",
       "target": "activity-log-management"
     },

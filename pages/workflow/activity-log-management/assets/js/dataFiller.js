@@ -5,17 +5,17 @@
     const activityLogContent = {
         title: 'Activity Log',
         rules: [
-            'The ACTIVITY LOGS menu is hidden when the activity logger function is off.',
+            'The Activity Logs menu is hidden when the activity logger function is off.',
             'User Activities is shown for Super Admin / Super Admin ASD, or Distributor.',
             'Candidate Activities is hidden for Distributor.',
-            'Clicking ACTIVITY LOGS opens User Activities.',
+            'Clicking Activity Logs opens User Activities.',
             'No role can create, update, or delete activity records.',
-            'Left menu is ACTIVITY LOGS with only User Activities and Candidate Activities.',
+            'Left menu is Activity Logs with only User Activities and Candidate Activities.',
             'Listing toolbars have no Create / Update / Delete button.',
             'Row Action is view-only: View User Activities and View Candidate Activities.'
         ],
         notes: [
-            'Site tutorial text on the ACTIVITY LOGS menu: Check candidate activities on this feature.',
+            'Site tutorial text on the Activity Logs menu: Check candidate activities on this feature.',
             'All four listings use the same footer. Default page size is 10. No listing is without a pager.',
             'Per-page label: Rows per page:',
             'Per-page dropdown values: 5, 10, 25, 50, 100, 250, 500, 1000 (numbers only)',
@@ -28,10 +28,10 @@
                 title: 'User Activities',
                 description: 'Lists user activity records. Super Admin / Super Admin ASD first see a username list, then open one user’s logs. Distributor sees activity log rows directly.',
                 accessPaths: [
-                    ['ACTIVITY LOGS', 'User Activities']
+                    ['Activity Logs', 'User Activities']
                 ],
                 steps: [
-                    'Open ACTIVITY LOGS.',
+                    'Open Activity Logs.',
                     'Select User Activities.',
                     { label: 'Super Admin / Super Admin ASD: find a username, then select View User Activities.', href: '#view-user-activities' },
                     'Distributor: review the activity rows on this page.',
@@ -72,8 +72,8 @@
                         title: 'Search',
                         description: 'Filter the current listing with the Search... input. Candidate Activities uses the same Search... control and has no Advanced Search.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'User Activities', 'Search...'],
-                            ['ACTIVITY LOGS', 'Candidate Activities', 'Search...']
+                            ['Activity Logs', 'User Activities', 'Search...'],
+                            ['Activity Logs', 'Candidate Activities', 'Search...']
                         ],
                         steps: [
                             'Enter text in Search....',
@@ -95,7 +95,7 @@
                         title: 'Advanced Search',
                         description: 'Open Advanced Search and apply field filters to the User Activities table. This control is only on User Activities, not Candidate Activities.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'User Activities', 'Advanced Search']
+                            ['Activity Logs', 'User Activities', 'Advanced Search']
                         ],
                         steps: [
                             'Select Advanced Search.',
@@ -144,8 +144,8 @@
                         title: 'Select Company',
                         description: 'Reload the current listing for the selected company. Shown on the User Activities listing and the Candidate Activities listing when the signed-in user is Super Admin or Super Admin ASD. Not shown on the per-candidate log table.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'User Activities', 'Select Company'],
-                            ['ACTIVITY LOGS', 'Candidate Activities', 'Select Company']
+                            ['Activity Logs', 'User Activities', 'Select Company'],
+                            ['Activity Logs', 'Candidate Activities', 'Select Company']
                         ],
                         steps: [
                             'Select a company in Select Company.'
@@ -169,7 +169,7 @@
                         title: 'View User Activities',
                         description: 'Show that username’s activity rows with Module, Action, Request Value, and Date Entered.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'User Activities', 'Row Actions', 'View User Activities']
+                            ['Activity Logs', 'User Activities', 'Row Actions', 'View User Activities']
                         ],
                         steps: [
                             'Open User Activities as Super Admin / Super Admin ASD.',
@@ -187,8 +187,8 @@
                         title: 'Date Entered',
                         description: 'Filter activity log rows by Date Entered. On User Activities log rows and on View Candidate Activities.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'User Activities', 'Date Entered'],
-                            ['ACTIVITY LOGS', 'Candidate Activities', 'Row Actions', 'View Candidate Activities', 'Date Entered']
+                            ['Activity Logs', 'User Activities', 'Date Entered'],
+                            ['Activity Logs', 'Candidate Activities', 'Row Actions', 'View Candidate Activities', 'Date Entered']
                         ],
                         steps: [
                             'Open the Date Entered picker.',
@@ -220,7 +220,7 @@
                 title: 'Candidate Activities',
                 description: 'Lists candidates with activity, then opens one candidate’s activity log: timestamp, activity, screenshot/snapshot, and device used. Extra Candidates-side entry points are documented here as access paths only. The Candidates-side action is owned by View Candidate Log.',
                 accessPaths: [
-                    ['ACTIVITY LOGS', 'Candidate Activities'],
+                    ['Activity Logs', 'Candidate Activities'],
                     ['Candidates', 'View Candidates', 'Settings', 'View Candidate Log'],
                     ['Candidates', 'View Candidate', 'Actions', 'View Candidate Log'],
                     ['Survey listing', 'Settings', 'View Candidate Log'],
@@ -280,7 +280,7 @@
                         title: 'Scheduled By',
                         description: 'Filter the Candidate Activities listing by scheduler. Listing only, not on the per-candidate log table.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'Candidate Activities', 'Scheduled By filter']
+                            ['Activity Logs', 'Candidate Activities', 'Scheduled By filter']
                         ],
                         steps: [
                             'Select a Scheduled By option.'
@@ -302,7 +302,7 @@
                         title: 'View Candidate Activities',
                         description: 'Shows one candidate’s activity log. Page title stays Candidate Activities. Header shows candidate first name + last name, then account name.',
                         accessPaths: [
-                            ['ACTIVITY LOGS', 'Candidate Activities', 'Row Actions', 'View Candidate Activities'],
+                            ['Activity Logs', 'Candidate Activities', 'Row Actions', 'View Candidate Activities'],
                             ['Candidates', 'View Candidates', 'Settings', 'View Candidate Log']
                         ],
                         steps: [
@@ -509,6 +509,23 @@
         return wrap;
     }
 
+    function createActionLinkList(items) {
+        const list = document.createElement('ul');
+        list.className = 'mt-3 ml-4 space-y-2 border-l border-slate-100 pl-4';
+
+        items.forEach(function (item) {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.className = 'block text-sm font-semibold text-brand hover:text-brand-dark transition-colors';
+            link.href = item.href;
+            link.textContent = item.label;
+            listItem.appendChild(link);
+            list.appendChild(listItem);
+        });
+
+        return list;
+    }
+
     function renderAccessPaths(target, accessPaths) {
         const label = document.createElement('p');
         label.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
@@ -517,20 +534,8 @@
 
         accessPaths.forEach(function (pathParts) {
             const row = document.createElement('p');
-            row.className = 'mt-1 mb-2 text-sm text-slate-600 leading-relaxed';
-            pathParts.forEach(function (part, index) {
-                if (index > 0) {
-                    const separator = document.createElement('span');
-                    separator.className = 'mx-1 text-slate-400';
-                    separator.textContent = '>';
-                    row.appendChild(separator);
-                }
-
-                const chip = document.createElement('span');
-                chip.className = 'inline-block rounded bg-slate-100 px-2 py-0.5 font-medium text-slate-700';
-                chip.textContent = part;
-                row.appendChild(chip);
-            });
+            row.className = 'mt-1 text-sm text-slate-600 leading-relaxed';
+            row.textContent = pathParts.join(' > ');
             target.appendChild(row);
         });
     }
@@ -565,7 +570,11 @@
         }
 
         if (section.links && section.links.length) {
-            target.appendChild(createLabeledList('Available Actions', section.links));
+            const label = document.createElement('p');
+            label.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
+            label.textContent = 'Available Actions';
+            target.appendChild(label);
+            target.appendChild(createActionLinkList(section.links));
         }
 
         if (section.items && section.items.length) {
@@ -654,39 +663,23 @@
         return card;
     }
 
-    function renderSectionHeader(section, headingLevel, eyebrowText) {
-        const fragment = document.createDocumentFragment();
-        if (eyebrowText) {
-            const eyebrow = document.createElement('div');
-            eyebrow.className = 'text-xs font-bold uppercase tracking-wider text-brand mb-2';
-            eyebrow.textContent = eyebrowText;
-            fragment.appendChild(eyebrow);
-        }
-
-        const headingTag = headingLevel === 2 ? 'h2' : (headingLevel === 3 ? 'h3' : 'h4');
-        const heading = document.createElement(headingTag);
+    function renderSectionHeader(section) {
+        const heading = document.createElement('h2');
         heading.id = section.id;
-        heading.className = headingLevel === 2 ? 'text-xl font-bold text-slate-900' : (headingLevel === 3 ? 'text-lg font-bold text-slate-900' : 'text-base font-bold text-slate-900');
+        heading.className = 'text-xl font-bold text-slate-900 mb-4';
         heading.textContent = section.title;
         heading.setAttribute('tabindex', '-1');
-        fragment.appendChild(heading);
-
-        if (section.description) {
-            const desc = document.createElement('p');
-            desc.className = 'text-sm text-slate-500 mt-2 mb-5';
-            desc.textContent = section.description;
-            fragment.appendChild(desc);
-        }
-
-        return fragment;
+        return heading;
     }
 
     function renderSectionTree(section, headingLevel, isTopLevel, isFirstTopLevel) {
         const sectionEl = document.createElement('section');
-        sectionEl.className = isTopLevel ? 'mb-10' : 'mt-4';
+        sectionEl.className = isTopLevel
+            ? 'rounded-xl border border-slate-100 bg-white p-6 shadow-sm'
+            : 'mt-4';
 
         if (isTopLevel) {
-            sectionEl.appendChild(renderSectionHeader(section, headingLevel, null));
+            sectionEl.appendChild(renderSectionHeader(section));
         }
 
         if (sectionHasDetails(section) && isTopLevel) {
@@ -741,42 +734,39 @@
         });
     }
 
-    function getSidebarLinkClass(level) {
-        var depth = Math.min(level, 5);
-        var indentClasses = ['', ' pl-3 border-l border-slate-100', ' pl-6 border-l border-slate-100', ' pl-9 border-l border-slate-100', ' pl-12 border-l border-slate-100', ' pl-16 border-l border-slate-100'];
-        var sizeClass = level === 0 ? ' text-sm' : (level < 3 ? ' text-[13px]' : ' text-xs');
-        return 'block text-slate-600 hover:text-brand transition-colors py-1' + sizeClass + indentClasses[depth];
-    }
-
-    function createSidebarItem(section, level) {
-        var li = document.createElement('li');
-        li.className = 'sidebar-item';
-
-        var a = document.createElement('a');
-        a.className = getSidebarLinkClass(level);
-        a.href = '#' + section.id;
-        a.dataset.target = section.id;
-        a.textContent = section.title;
-        li.appendChild(a);
-
-        if (section.children && section.children.length) {
-            var childList = document.createElement('ul');
-            childList.className = 'sidebar-children hidden mt-1 space-y-1';
-            section.children.forEach(function (child) {
-                childList.appendChild(createSidebarItem(child, level + 1));
-            });
-            li.appendChild(childList);
-        }
-
-        return li;
-    }
-
     function renderSidebar() {
         var list = document.getElementById('docSidebarList');
         if (!list) return;
         list.innerHTML = '';
+
+        function appendItem(section, level, parent) {
+            var li = document.createElement('li');
+            li.className = 'sidebar-item';
+            li.dataset.target = section.id;
+            li.dataset.level = String(level);
+
+            var a = document.createElement('a');
+            var indent = level === 0 ? '' : ' pl-' + Math.min(level * 3, 12) + ' border-l border-slate-100';
+            a.className = 'block text-slate-600 hover:text-brand transition-colors py-1' + indent;
+            a.href = '#' + section.id;
+            a.dataset.target = section.id;
+            a.textContent = section.title;
+            li.appendChild(a);
+
+            if (section.children && section.children.length) {
+                var childList = document.createElement('ul');
+                childList.className = 'sidebar-children mt-1 space-y-1';
+                section.children.forEach(function (child) {
+                    appendItem(child, level + 1, childList);
+                });
+                li.appendChild(childList);
+            }
+
+            parent.appendChild(li);
+        }
+
         activityLogContent.sections.forEach(function (section) {
-            list.appendChild(createSidebarItem(section, 0));
+            appendItem(section, 0, list);
         });
     }
 
@@ -784,45 +774,42 @@
         var sidebar = document.getElementById('docSidebarList');
         if (!sidebar) return;
 
-        Array.from(sidebar.querySelectorAll('a[data-target]')).forEach(function (link) {
+        var links = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'));
+
+        links.forEach(function (link) {
             link.classList.remove('active', 'text-brand', 'font-semibold');
-        });
-        Array.from(sidebar.querySelectorAll('.sidebar-children')).forEach(function (list) {
-            list.classList.add('hidden');
         });
 
         var activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
         if (!activeLink) return;
+
         activeLink.classList.add('active', 'text-brand', 'font-semibold');
-
-        var item = activeLink.closest('.sidebar-item');
-        while (item) {
-            var ownChildren = item.querySelector(':scope > .sidebar-children');
-            if (ownChildren) ownChildren.classList.remove('hidden');
-
-            var parentList = item.parentElement;
-            if (parentList && parentList.classList.contains('sidebar-children')) {
-                parentList.classList.remove('hidden');
-                item = parentList.closest('.sidebar-item');
-            } else {
-                item = null;
-            }
-        }
     }
 
     function getVisibleSidebarTarget() {
-        var links = Array.from(document.querySelectorAll('#docSidebarList a[data-target]'));
-        var currentId = null;
-        var offset = 120;
+        var sidebar = document.getElementById('docSidebarList');
+        if (!sidebar) return null;
 
-        links.forEach(function (link) {
-            var target = document.getElementById(link.dataset.target);
-            if (target && target.getBoundingClientRect().top <= offset) {
-                currentId = link.dataset.target;
+        var targetIds = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'))
+            .map(function (link) { return link.dataset.target; })
+            .filter(Boolean);
+
+        var currentId = null;
+        var closestDistance = Number.POSITIVE_INFINITY;
+        var activationOffset = 96;
+
+        targetIds.forEach(function (id) {
+            var target = document.getElementById(id);
+            if (!target) return;
+
+            var distance = Math.abs(target.getBoundingClientRect().top - activationOffset);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                currentId = id;
             }
         });
 
-        return currentId || (links[0] && links[0].dataset.target);
+        return currentId || targetIds[0] || null;
     }
 
     function setupSidebarVisibility() {
@@ -830,7 +817,7 @@
         if (!sidebar) return;
 
         function updateFromScroll() {
-            var activeId = getVisibleSidebarTarget() || (location.hash || '').replace('#', '');
+            var activeId = getVisibleSidebarTarget();
             if (activeId) setSidebarBranch(activeId);
         }
 
@@ -841,7 +828,9 @@
         });
 
         updateFromScroll();
-        window.addEventListener('hashchange', function () { setTimeout(updateFromScroll, 50); });
+        window.addEventListener('hashchange', function () {
+            setTimeout(updateFromScroll, 50);
+        });
         window.addEventListener('scroll', updateFromScroll, { passive: true });
     }
 
@@ -849,6 +838,20 @@
         renderSidebar();
         renderAllSections();
         setupSidebarVisibility();
+        scrollToHashTarget();
+    }
+
+    function scrollToHashTarget() {
+        var targetId = (location.hash || '').replace('#', '');
+        if (!targetId) return;
+
+        var target = document.getElementById(targetId);
+        if (!target) return;
+
+        setTimeout(function () {
+            target.scrollIntoView({ block: 'start' });
+            setSidebarBranch(targetId);
+        }, 0);
     }
 
     if (document.readyState === 'loading') {
