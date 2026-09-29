@@ -10,7 +10,8 @@ body {
 
 @media (max-width: 640px) {
     .advisory-section-card,
-    .advisory-child-section {
+    .advisory-child-section,
+    .advisory-nested-section {
         padding: 1rem;
     }
 }
