@@ -5,6 +5,22 @@ All notable changes to the GoPick Assessment Center Manual will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-08-24
+
+### Added
+
+- Added the Advisory management workflow manual and its rendered page for creating, formatting announcement images, searching, viewing, updating, and deleting announcements.
+
+### Changed
+
+- Aligned the Advisory manual structure, content sequence, navigation, and visual presentation with the established Accounts manual pattern.
+- Applied review feedback by grouping Advisory action pages under Other Pages, folding editor formatting into Create Announcement rules, removing redundant tab access paths and the Dashboard preview section, and linking Dashboard announcements to View Advisory.
+- Presented the Dashboard Advisory navigation as an icon card consistent with the existing quick-navigation cards and retained visible keyboard focus.
+- Distinguished Advisory heading levels, rendered numbered steps and muted square list markers, preserved the Dashboard access-path link, and clarified update and delete permissions against the GoPick application.
+- Documented package-free local serving with Python and an alternate port when port 82 is occupied.
+- Synchronized Advisory visibility and Dashboard guidance with the behavior in GoPick application main commit `af6abcd5d`.
+- Kept Advisory documentation focused on confirmed user-visible management workflows and removed the separate Advisory domain-governance and known-gap documentation.
+
 ## [1.1.0] - 2026-08-12
 
 ### Added

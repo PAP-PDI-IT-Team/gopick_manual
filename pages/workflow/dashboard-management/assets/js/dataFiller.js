@@ -49,7 +49,13 @@
             {
                 title: 'Announcement',
                 items: [
-                    'Latest 2 announcements and each can be clicked'
+                    'Latest 2 announcements and each can be clicked',
+                    {
+                        title: 'View Advisory',
+                        subTitle: 'Navigation Link',
+                        href: '../advisory-management/index.html#view-advisory',
+                        icon: 'announcement'
+                    }
                 ]
             },
             {
@@ -72,6 +78,7 @@
         'plus-user': '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 8h6m-3-3v6M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2a7 7 0 0 0-7 7v1h14v-1a7 7 0 0 0-7-7z"/></svg>',
         'view-account': '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h10"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 14l3 3 4-4"/></svg>',
         'meter-records': '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 20V4h12v16H6z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 8h6M9 12h6M9 16h4"/></svg>',
+        announcement: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 13V9a2 2 0 0 1 2-2h3l7-3v14l-7-3H6a2 2 0 0 1-2-2Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 15v4a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-4m13-7a4 4 0 0 1 0 6"/></svg>',
         'order-meter': '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h10l-1 11H8L7 7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7a3 3 0 0 1 6 0"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11v4m-2-2h4"/></svg>',
         'send-inquiry': '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v10H7l-3 3V5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9h8M8 12h5"/></svg>'
     };
@@ -138,7 +145,7 @@
         container.innerHTML = '';
         dashboardContent.quickLinks.forEach(function (section) {
             const row = document.createElement('div');
-            row.className = section.title === 'Message Inbox'
+            row.className = section.title === 'Message Inbox' || section.title === 'Announcement'
                 ? 'text-sm text-slate-600'
                 : 'rounded-lg border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600';
 
@@ -211,11 +218,55 @@
                 return;
             }
 
+            if (section.title === 'Announcement') {
+                const description = document.createElement('p');
+                description.className = 'mb-3 text-sm text-slate-600';
+                description.textContent = section.items[0];
+                row.appendChild(description);
+
+                const announcementItem = section.items[1];
+                const card = document.createElement('a');
+                card.className = 'p-5 rounded-lg bg-slate-50 border border-slate-100 flex items-start gap-4 transition-all hover:bg-white hover:shadow-md';
+                card.href = announcementItem.href;
+
+                const iconBox = document.createElement('div');
+                iconBox.className = 'w-10 h-10 rounded-lg bg-brand/10 text-brand flex items-center justify-center flex-shrink-0';
+                iconBox.innerHTML = ICON_SVG_MAP[announcementItem.icon] || '';
+
+                const textWrap = document.createElement('div');
+                textWrap.className = 'min-w-0';
+
+                const cardTitle = document.createElement('h3');
+                cardTitle.className = 'text-sm font-bold text-slate-900 leading-tight';
+                cardTitle.textContent = announcementItem.title;
+
+                const subTitle = document.createElement('p');
+                subTitle.className = 'mt-1 text-xs font-medium uppercase tracking-wide text-slate-500';
+                subTitle.textContent = announcementItem.subTitle;
+
+                card.appendChild(iconBox);
+                textWrap.appendChild(cardTitle);
+                textWrap.appendChild(subTitle);
+                card.appendChild(textWrap);
+                row.appendChild(card);
+
+                container.appendChild(row);
+                return;
+            }
+
             const list = document.createElement('ul');
             list.className = 'space-y-1';
             section.items.forEach(function (item) {
                 const li = document.createElement('li');
-                li.textContent = item;
+                if (item && typeof item !== 'string' && item.href) {
+                    const link = document.createElement('a');
+                    link.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+                    link.href = item.href;
+                    link.textContent = item.label;
+                    li.appendChild(link);
+                } else {
+                    li.textContent = item;
+                }
                 list.appendChild(li);
             });
             row.appendChild(list);

@@ -91,7 +91,9 @@
     {
       "index": 14,
       "title": "Advisory",
-      "description": "This feature has not been recorded yet. Document details will be added later."
+      "description": "Create, search, view, update, and delete announcements in GoPick.",
+      "icon": "clipboard",
+      "target": "advisory-management"
     },
     {
       "index": 15,
