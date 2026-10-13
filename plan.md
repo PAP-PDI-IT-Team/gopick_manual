@@ -82,3 +82,78 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 - [x] **6.2. Documentation & Downstream Readiness**
   - [x] Standardized image schema and reusable `GoPickImageRenderer` utility ready for subsequent pages (Meters, Dashboard, Roles/Permissions, Users, Reports).
   - [x] Baseline architecture validated: `dataFiller.js` (data), `contentStore.js` (store/search), `contentRenderer.js` (rendering), `sidebarTracker.js` (scroll spy), `behavior.js` (app orchestration).
+
+---
+
+## Phase 2: Universal UI Uniformity & 5-Tier Architecture Rollout
+
+### 7. Design System & Structural Gating Documentation
+- [ ] **7.1. DESIGN.md Updates**
+  - [ ] Add Image Cards & Visual Placeholders specification (`.manual-image-card`, pending vs. live badges, caption schema, and fallback rules).
+  - [ ] Add 3-part page structure layering guidelines (Data/Store $\rightarrow$ Renderer $\rightarrow$ Navigation/Behavior).
+  - [ ] Document gating criteria for image placeholders: required for major workflow overviews, key sub-modals, action flows, and drawer forms.
+
+---
+
+### 8. Workflow Pages Rollout (5-Tier OOP Modularization & Image Placeholders)
+- [ ] **8.1. Dashboard Management (`pages/workflow/dashboard-management/`)**
+  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Overview, Metric counters, Activity drilldown).
+  - [ ] Create `contentStore.js` (`DashboardStore`).
+  - [ ] Create `contentRenderer.js` (`DashboardRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`DashboardSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`DashboardApp`).
+  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [ ] **8.2. Meters Management (`pages/workflow/meters-management/`)**
+  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Inventory matrix, Transfer/Recharge modal, Logs).
+  - [ ] Create `contentStore.js` (`MetersStore`).
+  - [ ] Create `contentRenderer.js` (`MetersRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`MetersSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`MetersApp`).
+  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [ ] **8.3. Users Management (`pages/workflow/users-management/`)**
+  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Directory table, Add/Edit User modal, Reset password).
+  - [ ] Create `contentStore.js` (`UsersStore`).
+  - [ ] Create `contentRenderer.js` (`UsersRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`UsersSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`UsersApp`).
+  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [ ] **8.4. Roles & Permissions Management (`pages/workflow/roles-premission-management/`)**
+  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Matrix overview, Custom Role creator, Role Assignment).
+  - [ ] Create `contentStore.js` (`RolesPermissionsStore`).
+  - [ ] Create `contentRenderer.js` (`RolesPermissionsRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`RolesPermissionsSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`RolesPermissionsApp` coordinating RBAC table).
+  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [ ] **8.5. Reports Management (`pages/workflow/reports-management/`)**
+  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Catalog & filter builder, Export options, Scheduled config).
+  - [ ] Create `contentStore.js` (`ReportsStore`).
+  - [ ] Create `contentRenderer.js` (`ReportsRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`ReportsSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`ReportsApp`).
+  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [ ] **8.6. Resource Center (`pages/workflow/resource-center/`)**
+  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Library browser, Preview modal, Downloads).
+  - [ ] Create `contentStore.js` (`ResourceCenterStore`).
+  - [ ] Create `contentRenderer.js` (`ResourceCenterRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`ResourceCenterSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`ResourceCenterApp`).
+  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [ ] **8.7. Assessment Management (`pages/workflow/assessment-management/`)**
+  - [ ] Standardize into data dictionary `dataFiller.js` with image placeholders (Catalog, Batteries, Norm groups, Scoring/Delivery).
+  - [ ] Create `contentStore.js` (`AssessmentStore`).
+  - [ ] Create `contentRenderer.js` (`AssessmentRenderer` integrating `GoPickImageRenderer`).
+  - [ ] Create `sidebarTracker.js` (`AssessmentSidebarTracker`).
+  - [ ] Refactor `behavior.js` (`AssessmentApp`).
+  - [ ] Align container markup in `index.html` to `.manual-reading-surface` & wire script tags.
+
+---
+
+### 9. Final QA & Cross-Page Verification
+- [ ] **9.1. Syntax & Error Free Validation**
+  - [ ] Run `node -c` across all newly decomposed JS files.
+- [ ] **9.2. Interactive Behavior & Scroll-Spy Validation**
+  - [ ] Verify 140px scroll-spy offset and active sidebar highlighting across all 7 pages.
+  - [ ] Verify direct URL hash linking (`#section-id`).
+  - [ ] Verify image card placeholders render with uniform badges, borders, and captions.
+- [ ] **9.3. Documentation & Changelog**
+  - [ ] Confirm alignment with `AGENTS.md` and update changelog as required.
