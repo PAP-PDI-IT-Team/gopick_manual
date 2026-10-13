@@ -5,7 +5,6 @@
         var cta = document.getElementById('heroCta');
         if (!cta) return;
         cta.addEventListener('click', function (e) {
-            // default anchor behavior already goes to #features; ensure smooth scroll
             if (cta.getAttribute('href') && cta.getAttribute('href').startsWith('#')) return;
             e.preventDefault();
             var target = document.querySelector('#features');
