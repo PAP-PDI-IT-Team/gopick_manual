@@ -96,13 +96,13 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 8. Workflow Pages Rollout (5-Tier OOP Modularization & Image Placeholders)
-- [ ] **8.1. Dashboard Management (`pages/workflow/dashboard-management/`)**
-  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Overview, Metric counters, Activity drilldown).
-  - [ ] Create `contentStore.js` (`DashboardStore`).
-  - [ ] Create `contentRenderer.js` (`DashboardRenderer` integrating `GoPickImageRenderer`).
-  - [ ] Create `sidebarTracker.js` (`DashboardSidebarTracker`).
-  - [ ] Refactor `behavior.js` (`DashboardApp`).
-  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [x] **8.1. Dashboard Management (`pages/workflow/dashboard-management/`)**
+  - [x] Pure data extraction into `dataFiller.js` with image placeholders (Overview, Metric counters, Activity drilldown).
+  - [x] Create `contentStore.js` (`DashboardStore`).
+  - [x] Create `contentRenderer.js` (`DashboardRenderer` integrating `GoPickImageRenderer`).
+  - [x] Create `sidebarTracker.js` (`DashboardSidebarTracker`).
+  - [x] Refactor `behavior.js` (`DashboardApp`).
+  - [x] Update `index.html` script tags & verify syntax with `node -c`.
 - [ ] **8.2. Meters Management (`pages/workflow/meters-management/`)**
   - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Inventory matrix, Transfer/Recharge modal, Logs).
   - [ ] Create `contentStore.js` (`MetersStore`).
