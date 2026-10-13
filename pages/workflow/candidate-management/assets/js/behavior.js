@@ -1,18 +1,58 @@
-(function () {
+(function (global) {
     'use strict';
 
     function setFooterYear() {
-        var yearSpan = document.getElementById('footerYearSpan');
+        const yearSpan = document.getElementById('footerYearSpan');
         if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     }
 
-    function initCandidatePage() {
-        setFooterYear();
+    class CandidateApp {
+        constructor() {
+            this.content = global.__candidateContent || {};
+            this.store = new global.CandidateContentStore(this.content);
+            this.renderer = new global.CandidateContentRenderer(this.store, global.GoPickImageRenderer);
+            this.sidebar = new global.CandidateSidebarTracker(this.store);
+        }
+
+        scrollToHash() {
+            const id = (location.hash || '').replace('#', '');
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                this.sidebar.setActive(id);
+                this.sidebar.isProgrammaticScroll = true;
+                setTimeout(() => {
+                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    el.focus && el.focus();
+                    setTimeout(() => {
+                        this.sidebar.isProgrammaticScroll = false;
+                    }, 400);
+                }, 30);
+            }
+        }
+
+        init() {
+            setFooterYear();
+            this.renderer.renderAll();
+            this.sidebar.render();
+            this.sidebar.bindListeners();
+
+            if (location.hash) {
+                this.scrollToHash();
+            } else {
+                this.sidebar.updateScrollSpy();
+            }
+        }
     }
 
+    const app = new CandidateApp();
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCandidatePage);
+        document.addEventListener('DOMContentLoaded', () => app.init());
     } else {
-        initCandidatePage();
+        app.init();
     }
-})();
+
+    global.CandidateApp = CandidateApp;
+    global.__candidateApp = app;
+})(window);

@@ -39,12 +39,15 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 3. Baseline Page Harmonization: Candidate Management
-- [ ] **3.1. Template & Layout Alignment**
-  - [ ] Verify [`pages/workflow/candidate-management/index.html`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/candidate-management/index.html) against shared shell tokens and sidebar sticky offset.
-- [ ] **3.2. Data & Renderer Integration**
-  - [ ] Add `createImageOrPlaceholder` helper to [`pages/workflow/candidate-management/assets/js/dataFiller.js`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/candidate-management/assets/js/dataFiller.js).
-  - [ ] Hook `images` parsing into `renderSectionBody`.
-  - [ ] Add initial image/screenshot placeholders to key sections (e.g. Schedule Candidate, Candidate Information, Test Requirements).
+- [x] **3.1. Template & Layout Alignment**
+  - [x] Verify [`pages/workflow/candidate-management/index.html`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/candidate-management/index.html) against shared shell tokens and sidebar sticky offset.
+- [x] **3.2. Data & Renderer Integration**
+  - [x] Add image cards & placeholders integration to Candidate Management.
+  - [x] Hook `images` parsing into section renderer delegating to `GoPickImageRenderer`.
+  - [x] Add initial image/screenshot placeholders to key sections (Schedule Candidate, Candidate Information, Test Requirements).
+- [x] **3.3. Architecture Decomposition & Sidebar Tracker Fix**
+  - [x] Decompose `dataFiller.js` into focused OOP modules (`contentStore.js`, `contentRenderer.js`, `sidebarTracker.js`, `behavior.js`).
+  - [x] Resolve sidebar tracker class conflicts and implement reliable scroll-spy viewport detection.
 
 ---
 
