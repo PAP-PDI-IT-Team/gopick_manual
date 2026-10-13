@@ -131,13 +131,13 @@ This plan establishes layout and visual uniformity across the GoPick manual page
   - [x] Create `sidebarTracker.js` (`ReportsSidebarTracker`).
   - [x] Refactor `behavior.js` (`ReportsApp`).
   - [x] Update `index.html` script tags & verify syntax with `node -c`.
-- [ ] **8.6. Resource Center (`pages/workflow/resource-center/`)**
-  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Library browser, Preview modal, Downloads).
-  - [ ] Create `contentStore.js` (`ResourceCenterStore`).
-  - [ ] Create `contentRenderer.js` (`ResourceCenterRenderer` integrating `GoPickImageRenderer`).
-  - [ ] Create `sidebarTracker.js` (`ResourceCenterSidebarTracker`).
-  - [ ] Refactor `behavior.js` (`ResourceCenterApp`).
-  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [x] **8.6. Resource Center (`pages/workflow/resource-center/`)**
+  - [x] Pure data extraction into `dataFiller.js` with image placeholders (Library browser, Preview modal, Downloads).
+  - [x] Create `contentStore.js` (`ResourceCenterStore`).
+  - [x] Create `contentRenderer.js` (`ResourceCenterRenderer` integrating `GoPickImageRenderer`).
+  - [x] Create `sidebarTracker.js` (`ResourceCenterSidebarTracker`).
+  - [x] Refactor `behavior.js` (`ResourceCenterApp`).
+  - [x] Update `index.html` script tags & verify syntax with `node -c`.
 - [ ] **8.7. Assessment Management (`pages/workflow/assessment-management/`)**
   - [ ] Standardize into data dictionary `dataFiller.js` with image placeholders (Catalog, Batteries, Norm groups, Scoring/Delivery).
   - [ ] Create `contentStore.js` (`AssessmentStore`).
