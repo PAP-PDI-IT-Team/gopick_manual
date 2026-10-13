@@ -7,26 +7,9 @@
             this.imageRenderer = imageRenderer || global.GoPickImageRenderer || null;
         }
 
-        createStepCard(index, text) {
-            const wrap = document.createElement('div');
-            wrap.className = 'flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100';
-
-            const badge = document.createElement('div');
-            badge.className = 'w-9 h-9 rounded-full bg-brand text-white font-bold flex items-center justify-center flex-shrink-0';
-            badge.textContent = index;
-
-            const detail = document.createElement('div');
-            detail.className = 'text-sm text-slate-600 leading-relaxed';
-            detail.textContent = text;
-
-            wrap.appendChild(badge);
-            wrap.appendChild(detail);
-            return wrap;
-        }
-
         createBulletList(items) {
             const list = document.createElement('ul');
-            list.className = 'space-y-2 text-sm text-slate-600 leading-relaxed';
+            list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
             items.forEach(function (item) {
                 const li = document.createElement('li');
                 li.className = 'flex gap-2';
@@ -96,17 +79,11 @@
             }
 
             if (section.steps && section.steps.length) {
-                const stepsTitle = document.createElement('h3');
-                stepsTitle.className = 'mt-5 mb-3 font-semibold text-slate-900';
-                stepsTitle.textContent = 'How To Use';
-                target.appendChild(stepsTitle);
-
-                const stepsWrap = document.createElement('div');
-                stepsWrap.className = 'space-y-4';
-                section.steps.forEach((step, i) => {
-                    stepsWrap.appendChild(this.createStepCard(i + 1, step));
-                });
-                target.appendChild(stepsWrap);
+                const stepLabel = document.createElement('p');
+                stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
+                stepLabel.textContent = 'How To Use';
+                target.appendChild(stepLabel);
+                target.appendChild(this.createBulletList(section.steps));
             }
 
             if (section.warning && section.warning.length) {
