@@ -64,12 +64,14 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 5. Baseline Page Harmonization: Accounts Management
-- [ ] **5.1. Layout & Architecture Alignment**
-  - [ ] Align [`pages/workflow/accounts-management/index.html`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/accounts-management/index.html) reading surface with Candidate & Activity Log standard.
-- [ ] **5.2. Data & Renderer Integration**
-  - [ ] Add `createImageOrPlaceholder` helper to [`pages/workflow/accounts-management/assets/js/dataFiller.js`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/accounts-management/assets/js/dataFiller.js).
-  - [ ] Hook `images` rendering into `createInfoCard` / section renderers.
-  - [ ] Add screenshot placeholders for Create Account, View Accounts, Update Specific, and Row Actions.
+- [x] **5.1. Layout & Architecture Alignment**
+  - [x] Align [`pages/workflow/accounts-management/index.html`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/accounts-management/index.html) reading surface with Candidate & Activity Log standard.
+- [x] **5.2. Data & Renderer Integration**
+  - [x] Hook `images` rendering into `AccountsRenderer` using `GoPickImageRenderer`.
+  - [x] Add screenshot placeholders for Create Account Wizard, View Accounts, Update Specific, and View Active Account.
+- [x] **5.3. Architecture Decomposition & OOP Modularization**
+  - [x] Decompose `dataFiller.js` into focused OOP modules (`contentStore.js`, `contentRenderer.js`, `sidebarTracker.js`, `behavior.js`).
+  - [x] Retain and seamlessly integrate RBAC matrix data and capability cards.
 
 ---
 
