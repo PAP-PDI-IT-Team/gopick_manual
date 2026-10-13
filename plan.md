@@ -7,15 +7,15 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ## Slices & Task Checklist
 
 ### 1. Foundations & Shared Design System Tokens
-- [ ] **1.1. Shared Image & Screenshot Placeholder Styles**
-  - [ ] Add `.manual-image-card` container styles with subtle slate border and rounded corners in [`shared/css/site-shell.css`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/shared/css/site-shell.css).
-  - [ ] Add `.manual-image-card__placeholder` with dashed slate border, light neutral background (`bg-slate-50/50`), hover micro-interaction, and image icon SVG.
-  - [ ] Add `.manual-image-card__header` containing tag/badge (`Screenshot: [Feature/View Name]`) and optional status badge (`Pending Screenshot`).
-  - [ ] Add `.manual-image-card__caption` for description, helper text, and context notes.
-  - [ ] Add `.manual-image-card__img` for rendered screenshots with lazy-loading, rounded corners, and lightbox/zoom readiness.
-- [ ] **1.2. Shared Structural & Component Uniformity Rules**
-  - [ ] Standardize typography scale, callout cards (Rules, Expected Results, Notes, Systems), access paths, and action links in shared styles.
-  - [ ] Ensure consistent page reading surface styling (`.manual-reading-surface`) and section spacing.
+- [x] **1.1. Shared Image & Screenshot Placeholder Styles**
+  - [x] Add `.manual-image-card` container styles with subtle slate border and rounded corners in [`shared/css/site-shell.css`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/shared/css/site-shell.css).
+  - [x] Add `.manual-image-card__placeholder` with dashed slate border, light neutral background (`bg-slate-50/50`), hover micro-interaction, and image icon SVG.
+  - [x] Add `.manual-image-card__header` containing tag/badge (`Screenshot: [Feature/View Name]`) and optional status badge (`Pending Screenshot`).
+  - [x] Add `.manual-image-card__caption` for description, helper text, and context notes.
+  - [x] Add `.manual-image-card__img` for rendered screenshots with lazy-loading, rounded corners, and lightbox/zoom readiness.
+- [x] **1.2. Shared Structural & Component Uniformity Rules**
+  - [x] Standardize typography scale, callout cards (Rules, Expected Results, Notes, Systems), access paths, and action links in shared styles.
+  - [x] Ensure consistent page reading surface styling (`.manual-reading-surface`) and section spacing.
 
 ---
 
