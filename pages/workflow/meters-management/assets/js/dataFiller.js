@@ -1,4 +1,3 @@
-// meters data filler - content derived from docs/meters-management.md
 (function (global) {
     'use strict';
 
@@ -680,17 +679,14 @@
         const container = document.createElement('div');
         container.className = 'mt-6 space-y-4';
 
-        // Context Banner
         const infoBanner = document.createElement('div');
         infoBanner.className = 'rounded-xl border border-sky-100 bg-sky-50/80 p-4 text-xs text-sky-900 leading-relaxed';
         infoBanner.innerHTML = '<strong>Traceability Matrix Guide:</strong> Cross-reference this matrix to diagnose and verify meter balance updates, recipient entity resolutions, and diagnostic logs based on entity lookup states in <code>Storage 1 (accounts.id)</code> and <code>Storage 2 (users.id)</code>. Toggle between standard view, Production mode (<code>SHOW_ERROR=false</code>), and Diagnostic mode (<code>SHOW_ERROR=true</code>).';
         container.appendChild(infoBanner);
 
-        // Controls Bar
         const controlsCard = document.createElement('div');
         controlsCard.className = 'rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-3';
 
-        // Filter Pills & Search Container
         const topRow = document.createElement('div');
         topRow.className = 'flex flex-col md:flex-row md:items-center justify-between gap-3';
 
@@ -729,7 +725,6 @@
 
         topRow.appendChild(filterPillsWrap);
 
-        // Search Input
         const searchInput = document.createElement('input');
         searchInput.type = 'search';
         searchInput.placeholder = 'Filter matrix (e.g. Acme, #105, deleted, Storage 2)...';
@@ -741,7 +736,6 @@
         topRow.appendChild(searchInput);
         controlsCard.appendChild(topRow);
 
-        // Bottom Row: Mode switcher & Count badge
         const bottomRow = document.createElement('div');
         bottomRow.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-200/60 text-xs';
 
@@ -785,7 +779,6 @@
         controlsCard.appendChild(bottomRow);
         container.appendChild(controlsCard);
 
-        // Table Wrapper
         const tableWrap = document.createElement('div');
         tableWrap.className = 'matrix-table-wrap overflow-x-auto rounded-xl border border-slate-200 bg-white';
 
@@ -846,49 +839,41 @@
                 item.remarksDebug
             ).toLowerCase();
 
-            // Col 1: ID
             const tdId = document.createElement('td');
             tdId.className = 'px-3 py-3 font-mono font-semibold text-slate-400 text-center align-top';
             tdId.textContent = item.id;
             tr.appendChild(tdId);
 
-            // Col 2: Type
             const tdType = document.createElement('td');
             tdType.className = 'px-3 py-3 align-top';
             tdType.appendChild(createMatrixTypeBadge(item));
             tr.appendChild(tdType);
 
-            // Col 3: Target State
             const tdTargetState = document.createElement('td');
             tdTargetState.className = 'px-3 py-3 align-top';
             tdTargetState.appendChild(createMatrixStateCell(item.targetState));
             tr.appendChild(tdTargetState);
 
-            // Col 4: Actor State
             const tdActorState = document.createElement('td');
             tdActorState.className = 'px-3 py-3 align-top';
             tdActorState.appendChild(createMatrixStateCell(item.actorState));
             tr.appendChild(tdActorState);
 
-            // Col 5: Target Prod
             const tdTargetProd = document.createElement('td');
             tdTargetProd.className = 'px-3 py-3 align-top col-prod';
             tdTargetProd.appendChild(createMatrixDiagnosticBlock(item.targetProd));
             tr.appendChild(tdTargetProd);
 
-            // Col 6: Target Debug
             const tdTargetDebug = document.createElement('td');
             tdTargetDebug.className = 'px-3 py-3 align-top col-debug';
             tdTargetDebug.appendChild(createMatrixDiagnosticBlock(item.targetDebug));
             tr.appendChild(tdTargetDebug);
 
-            // Col 7: Remarks Prod
             const tdRemarksProd = document.createElement('td');
             tdRemarksProd.className = 'px-3 py-3 align-top col-prod';
             tdRemarksProd.appendChild(createMatrixDiagnosticBlock(item.remarksProd));
             tr.appendChild(tdRemarksProd);
 
-            // Col 8: Remarks Debug
             const tdRemarksDebug = document.createElement('td');
             tdRemarksDebug.className = 'px-3 py-3 align-top col-debug';
             tdRemarksDebug.appendChild(createMatrixDiagnosticBlock(item.remarksDebug));
@@ -898,7 +883,6 @@
             rowElements.push(tr);
         });
 
-        // Empty state row
         const emptyRow = document.createElement('tr');
         emptyRow.className = 'hidden';
         const emptyTd = document.createElement('td');
