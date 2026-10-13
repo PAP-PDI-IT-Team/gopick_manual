@@ -88,10 +88,10 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ## Phase 2: Universal UI Uniformity & 5-Tier Architecture Rollout
 
 ### 7. Design System & Structural Gating Documentation
-- [ ] **7.1. DESIGN.md Updates**
-  - [ ] Add Image Cards & Visual Placeholders specification (`.manual-image-card`, pending vs. live badges, caption schema, and fallback rules).
-  - [ ] Add 3-part page structure layering guidelines (Data/Store $\rightarrow$ Renderer $\rightarrow$ Navigation/Behavior).
-  - [ ] Document gating criteria for image placeholders: required for major workflow overviews, key sub-modals, action flows, and drawer forms.
+- [x] **7.1. DESIGN.md Updates**
+  - [x] Add Image Cards & Visual Placeholders specification (`.manual-image-card`, pending vs. live badges, caption schema, and fallback rules).
+  - [x] Add 3-part page structure layering guidelines (Data/Store $\rightarrow$ Renderer $\rightarrow$ Navigation/Behavior).
+  - [x] Document gating criteria for image placeholders: required for major workflow overviews, key sub-modals, action flows, and drawer forms.
 
 ---
 

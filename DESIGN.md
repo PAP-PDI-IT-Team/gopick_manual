@@ -461,15 +461,50 @@ The global search pattern is a compact white trigger in the header that opens a 
 ### Status and Role Markers
 Role badges and icon panels use tinted color backgrounds with stronger matching foregrounds. These accents help categorization, but the surrounding card and page structure remains neutral so the screen never feels multicolored.
 
-### Tables and Structured Content
-Large data tables use muted slate headers, thin dividers, sticky structural columns, and minimal row striping. Structured content blocks such as hierarchy diagrams, rules, and warnings use subdued tinted surfaces instead of high-contrast alert styling.
+### Image Cards & Visual Placeholders
+Workflow and operational documentation integrates standardized visual screenshot cards (`.manual-image-card`) to anchor instructions to visible user interfaces.
+
+- **Container (`.manual-image-card`)**: Built on a clean white surface with subtle slate border (`border-slate-200`), rounded corners (`12px` / `rounded-xl`), and soft shadow (`shadow-xs`).
+- **Placeholder State (`.manual-image-card__placeholder`)**: Used when a screen capture is awaiting creation. Features a dashed border (`border-2 border-dashed border-slate-300`), muted neutral background (`bg-slate-50/50`), center-aligned camera SVG icon, helper title, and instruction caption. Includes subtle hover elevation (`hover:border-slate-400 hover:bg-slate-50`).
+- **Header Badges**:
+  - Left badge: Identifies view name or feature context (`Screenshot: [View Name]`).
+  - Right status badge: Amber warning pill (`Pending Screenshot` / `bg-amber-50 text-amber-700 border-amber-200`) when uncaptured; green pill (`bg-emerald-50 text-emerald-700 border-emerald-200`) when verified.
+- **Caption Block (`.manual-image-card__caption`)**: Neutral text (`text-slate-600 text-sm`) providing context, highlights, or required fields visible in the screen.
+- **Rendered Image (`.manual-image-card__img`)**: Full-width, lazy-loaded (`loading="lazy"`), rounded image surface with click-to-zoom readiness.
+
+#### Image Gating Criteria
+1. **Required Visual Anchors**:
+   - Every top-level workflow module section overview (e.g. Candidates List, Activity Log Overview, Account Directory).
+   - Core creation wizards, primary scheduling modals, and high-impact multi-step action flows.
+2. **Optional Visual Anchors**:
+   - Secondary detail tabs, single-field filter dropdowns, and text-only confirmation prompts.
+3. **Fallback Policy**:
+   - If an asset is missing or empty (`src: ""`), the interface must render the styled placeholder with the `Pending Screenshot` badge rather than breaking layout or rendering broken image icons.
+
+### Page Structure & 5-Tier OOP Architecture
+Inner workflow and documentation pages follow a strict Separation of Concerns (SoC) decomposed across five discrete layers:
+
+1. **Layer 1: Data Contract (`dataFiller.js`)**:
+   - Pure data dictionary attached to `window.__<module>Content`.
+   - Never interacts with the DOM directly. Defines titles, descriptions, access paths, items, inputs, steps, rules, expected results, notes, links, and `images`.
+2. **Layer 2: Data Store (`contentStore.js`)**:
+   - OOP `class <Module>Store` managing section retrieval, deep search, and ID queries.
+3. **Layer 3: DOM Renderer (`contentRenderer.js`)**:
+   - OOP `class <Module>Renderer` constructing reading surfaces, badge indicators, access path breadcrumbs, callout boxes, and delegating image rendering to `GoPickImageRenderer`.
+4. **Layer 4: Sidebar Tracker (`sidebarTracker.js`)**:
+   - OOP `class <Module>SidebarTracker` generating hierarchical navigation and executing 140px offset scroll-spy tracking.
+5. **Layer 5: Application Orchestrator (`behavior.js`)**:
+   - OOP `class <Module>App` binding store, renderer, and tracker, handling URL hash routing (`#section-id`), and orchestrating any auxiliary widgets (e.g., RBAC tables).
 
 ## Do's and Don'ts
 - Do keep the UI predominantly white and slate, with red as the clear action signal.
 - Do use spacing generously so documentation remains readable and calm.
 - Do rely on borders, tonal separation, and subtle shadows before introducing stronger visual effects.
 - Do keep component corners consistently soft and rectangular.
+- Do render styled placeholders with `Pending Screenshot` badges whenever screenshots are not yet committed.
+- Do maintain strict separation between data, store, renderer, sidebar tracker, and app behavior.
 - Don't turn support accent colors into competing call-to-action colors.
 - Don't fill a screen with multiple red elements of equal importance.
 - Don't use heavy gradients outside hero or dark emphasis sections.
 - Don't make hover states feel jumpy; motion should stay quick, smooth, and understated.
+
