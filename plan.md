@@ -110,13 +110,13 @@ This plan establishes layout and visual uniformity across the GoPick manual page
   - [x] Create `sidebarTracker.js` (`MetersSidebarTracker`).
   - [x] Refactor `behavior.js` (`MetersApp`).
   - [x] Update `index.html` script tags & verify syntax with `node -c`.
-- [ ] **8.3. Users Management (`pages/workflow/users-management/`)**
-  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Directory table, Add/Edit User modal, Reset password).
-  - [ ] Create `contentStore.js` (`UsersStore`).
-  - [ ] Create `contentRenderer.js` (`UsersRenderer` integrating `GoPickImageRenderer`).
-  - [ ] Create `sidebarTracker.js` (`UsersSidebarTracker`).
-  - [ ] Refactor `behavior.js` (`UsersApp`).
-  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [x] **8.3. Users Management (`pages/workflow/users-management/`)**
+  - [x] Pure data extraction into `dataFiller.js` with image placeholders (Directory table, Add/Edit User modal, Reset password).
+  - [x] Create `contentStore.js` (`UsersStore`).
+  - [x] Create `contentRenderer.js` (`UsersRenderer` integrating `GoPickImageRenderer`).
+  - [x] Create `sidebarTracker.js` (`UsersSidebarTracker`).
+  - [x] Refactor `behavior.js` (`UsersApp`).
+  - [x] Update `index.html` script tags & verify syntax with `node -c`.
 - [ ] **8.4. Roles & Permissions Management (`pages/workflow/roles-premission-management/`)**
   - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Matrix overview, Custom Role creator, Role Assignment).
   - [ ] Create `contentStore.js` (`RolesPermissionsStore`).
