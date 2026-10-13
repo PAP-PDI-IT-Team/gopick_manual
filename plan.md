@@ -20,9 +20,9 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 2. Standardized Image/Placeholder Helper Function
-- [ ] **2.1. Reusable Image Rendering Engine**
-  - [ ] Create standardized `createImageOrPlaceholder(imageObj, sectionTitle)` DOM builder method.
-  - [ ] Support explicit image schema:
+- [x] **2.1. Reusable Image Rendering Engine**
+  - [x] Create standardized `createImageOrPlaceholder(imageObj, sectionTitle)` DOM builder method.
+  - [x] Support explicit image schema:
     ```javascript
     images: [
       {
@@ -33,8 +33,8 @@ This plan establishes layout and visual uniformity across the GoPick manual page
       }
     ]
     ```
-  - [ ] Gracefully render the styled dashed placeholder when `src` is empty, missing, or broken.
-  - [ ] Implement optional fallback placeholder rendering for key sections lacking visual diagrams.
+  - [x] Gracefully render the styled dashed placeholder when `src` is empty, missing, or broken.
+  - [x] Implement optional fallback placeholder rendering for key sections lacking visual diagrams.
 
 ---
 
