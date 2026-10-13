@@ -1,4 +1,3 @@
-// users data filler - content derived from docs/users-management.md
 (function (global) {
     'use strict';
 

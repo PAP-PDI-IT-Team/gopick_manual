@@ -1,4 +1,3 @@
-// activity log data filler - content derived from docs/workflow/activity-log-management.md
 (function (global) {
     'use strict';
 

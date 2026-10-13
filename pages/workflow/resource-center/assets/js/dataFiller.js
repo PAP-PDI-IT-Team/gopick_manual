@@ -1,4 +1,3 @@
-// resource center data filler - content derived from docs/workflow/resource-center.md
 (function (global) {
     'use strict';
 

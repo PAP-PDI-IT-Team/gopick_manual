@@ -1,4 +1,3 @@
-// candidate data filler - content derived from docs/candidate-management.md
 (function (global) {
     'use strict';
 

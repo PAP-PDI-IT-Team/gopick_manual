@@ -1,4 +1,3 @@
-// reports data filler - content derived from docs/reports-management.md
 (function (global) {
     'use strict';
 

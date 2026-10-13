@@ -1,4 +1,3 @@
-// dashboard data filler
 (function (global) {
     'use strict';
 

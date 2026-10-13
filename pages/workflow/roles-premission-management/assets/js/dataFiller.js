@@ -1,4 +1,3 @@
-// roles/permissions data filler - renders page navigation and supporting doc content
 (function (global) {
     'use strict';
 
