@@ -26,6 +26,13 @@
                 id: 'user-activities',
                 title: 'User Activities',
                 description: 'Lists user activity records. Super Admin / Super Admin ASD first see a username list, then open one user’s logs. Distributor sees activity log rows directly.',
+                images: [
+                    {
+                        title: 'User Activities Listing Overview',
+                        caption: 'Shows the User Activities table, company selector, and search filters.',
+                        src: null
+                    }
+                ],
                 accessPaths: [
                     ['Activity Logs', 'User Activities']
                 ],
@@ -93,6 +100,13 @@
                         id: 'advanced-search',
                         title: 'Advanced Search',
                         description: 'Open Advanced Search and apply field filters to the User Activities table. This control is only on User Activities, not Candidate Activities.',
+                        images: [
+                            {
+                                title: 'Advanced Search Filter Modal',
+                                caption: 'Modal dialog displaying field filters, operators, and action buttons.',
+                                src: null
+                            }
+                        ],
                         accessPaths: [
                             ['Activity Logs', 'User Activities', 'Advanced Search']
                         ],
@@ -218,6 +232,13 @@
                 id: 'candidate-activities',
                 title: 'Candidate Activities',
                 description: 'Lists candidates with activity, then opens one candidate’s activity log: timestamp, activity, screenshot/snapshot, and device used. Extra Candidates-side entry points are documented here as access paths only. The Candidates-side action is owned by View Candidate Log.',
+                images: [
+                    {
+                        title: 'Candidate Activities Listing Overview',
+                        caption: 'Shows the candidate activity table, filters, and row action triggers.',
+                        src: null
+                    }
+                ],
                 accessPaths: [
                     ['Activity Logs', 'Candidate Activities'],
                     ['Candidates', 'View Candidates', 'Settings', 'View Candidate Log'],
@@ -380,6 +401,13 @@
                                 id: 'screenshot-snapshot',
                                 title: 'Screenshot/Snapshot',
                                 description: 'Open a snapshot from an activity row when one is present.',
+                                images: [
+                                    {
+                                        title: 'Candidate Snapshot Modal View',
+                                        caption: 'Displays the captured candidate webcam photo or proctoring snapshot.',
+                                        src: null
+                                    }
+                                ],
                                 steps: [
                                     'Select the view icon titled View Candidate Snapshots.',
                                     'Review the Candidate Snapshot modal.',
@@ -444,420 +472,6 @@
         ]
     };
 
-    function createListItemContent(item) {
-        if (item && item.href) {
-            const link = document.createElement('a');
-            link.href = item.href;
-            link.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
-            link.textContent = item.label || item.href;
-            return link;
-        }
-
-        const text = document.createElement('span');
-        text.textContent = item && item.label ? item.label : item;
-        return text;
-    }
-
-    function createBulletList(items) {
-        const list = document.createElement('ul');
-        list.className = 'space-y-2 text-sm text-slate-600 leading-relaxed';
-        items.forEach(function (item) {
-            const li = document.createElement('li');
-            li.className = 'flex gap-2';
-
-            const marker = document.createElement('span');
-            marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-
-            li.appendChild(marker);
-            li.appendChild(createListItemContent(item));
-            list.appendChild(li);
-        });
-        return list;
-    }
-
-    function createCallout(title, items, kind) {
-        const wrap = document.createElement('div');
-        const isRules = kind === 'rules';
-        const isExpected = kind === 'expected';
-        wrap.className = isRules
-            ? 'mt-4 rounded-lg border border-amber-100 bg-amber-50 p-4'
-            : (isExpected
-                ? 'mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4'
-                : 'mt-4 rounded-lg border border-slate-100 bg-white p-4');
-
-        const heading = document.createElement('h3');
-        heading.className = isRules
-            ? 'font-semibold text-amber-900 mb-2'
-            : (isExpected ? 'font-semibold text-emerald-900 mb-2' : 'font-semibold text-slate-900 mb-2');
-        heading.textContent = title;
-
-        wrap.appendChild(heading);
-        wrap.appendChild(createBulletList(items));
-        return wrap;
-    }
-
-    function createLabeledList(title, items) {
-        const wrap = document.createElement('div');
-        wrap.className = 'mt-4 rounded-lg border border-slate-100 bg-white p-4';
-
-        const heading = document.createElement('h3');
-        heading.className = 'font-semibold text-slate-900 mb-2';
-        heading.textContent = title;
-        wrap.appendChild(heading);
-        wrap.appendChild(createBulletList(items));
-        return wrap;
-    }
-
-    function createActionLinkList(items) {
-        const list = document.createElement('ul');
-        list.className = 'mt-3 ml-4 space-y-2 border-l border-slate-100 pl-4';
-
-        items.forEach(function (item) {
-            const listItem = document.createElement('li');
-            const link = document.createElement('a');
-            link.className = 'block text-sm font-semibold text-brand hover:text-brand-dark transition-colors';
-            link.href = item.href;
-            link.textContent = item.label;
-            listItem.appendChild(link);
-            list.appendChild(listItem);
-        });
-
-        return list;
-    }
-
-    function renderAccessPaths(target, accessPaths) {
-        const label = document.createElement('p');
-        label.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-        label.textContent = 'Access Path';
-        target.appendChild(label);
-
-        accessPaths.forEach(function (pathParts) {
-            const row = document.createElement('p');
-            row.className = 'mt-1 text-sm text-slate-600 leading-relaxed';
-            row.textContent = pathParts.join(' > ');
-            target.appendChild(row);
-        });
-    }
-
-    function renderGroups(container, groups) {
-        groups.forEach(function (group) {
-            const wrap = document.createElement('div');
-            wrap.className = 'rounded-lg border border-slate-100 bg-white p-4';
-
-            const heading = document.createElement('h3');
-            heading.className = 'font-semibold text-slate-900 mb-2';
-            heading.textContent = group.title;
-            wrap.appendChild(heading);
-            wrap.appendChild(createBulletList(group.items || []));
-            container.appendChild(wrap);
-        });
-    }
-
-    function renderSectionBody(section, target) {
-        if (section.accessPaths && section.accessPaths.length) {
-            renderAccessPaths(target, section.accessPaths);
-        }
-
-        if (section.steps && section.steps.length) {
-            const stepLabel = document.createElement('p');
-            stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-            stepLabel.textContent = 'How To Use';
-            target.appendChild(stepLabel);
-            const stepsList = createBulletList(section.steps);
-            stepsList.classList.add('mt-3');
-            target.appendChild(stepsList);
-        }
-
-        if (section.links && section.links.length) {
-            const label = document.createElement('p');
-            label.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-            label.textContent = 'Available Actions';
-            target.appendChild(label);
-            target.appendChild(createActionLinkList(section.links));
-        }
-
-        if (section.items && section.items.length) {
-            target.appendChild(createLabeledList('Visible Content', section.items));
-        }
-
-        if (section.groups && section.groups.length) {
-            const groupsWrap = document.createElement('div');
-            groupsWrap.className = 'space-y-4 mt-4';
-            renderGroups(groupsWrap, section.groups);
-            target.appendChild(groupsWrap);
-        }
-
-        if (section.requiredInputs && section.requiredInputs.length) {
-            target.appendChild(createLabeledList('Required Inputs', section.requiredInputs));
-        }
-
-        if (section.optionalInputs && section.optionalInputs.length) {
-            target.appendChild(createLabeledList('Optional Inputs', section.optionalInputs));
-        }
-
-        if (section.conditionalInputs && section.conditionalInputs.length) {
-            target.appendChild(createLabeledList('Conditional Inputs', section.conditionalInputs));
-        }
-
-        if (section.defaultedInputs && section.defaultedInputs.length) {
-            target.appendChild(createLabeledList('Defaulted Inputs', section.defaultedInputs));
-        }
-
-        if (section.lockedInputs && section.lockedInputs.length) {
-            target.appendChild(createLabeledList('Locked Inputs', section.lockedInputs));
-        }
-
-        if (section.rules && section.rules.length) {
-            target.appendChild(createCallout('Rules', section.rules, 'rules'));
-        }
-
-        if (section.expectedResults && section.expectedResults.length) {
-            target.appendChild(createCallout('Expected Result', section.expectedResults, 'expected'));
-        }
-
-        if (section.notes && section.notes.length) {
-            target.appendChild(createCallout('Notes', section.notes, 'notes'));
-        }
-    }
-
-    function sectionHasDetails(section) {
-        return Boolean(
-            section.description ||
-            (section.accessPaths && section.accessPaths.length) ||
-            (section.steps && section.steps.length) ||
-            (section.links && section.links.length) ||
-            (section.items && section.items.length) ||
-            (section.groups && section.groups.length) ||
-            (section.requiredInputs && section.requiredInputs.length) ||
-            (section.optionalInputs && section.optionalInputs.length) ||
-            (section.conditionalInputs && section.conditionalInputs.length) ||
-            (section.defaultedInputs && section.defaultedInputs.length) ||
-            (section.lockedInputs && section.lockedInputs.length) ||
-            (section.rules && section.rules.length) ||
-            (section.expectedResults && section.expectedResults.length) ||
-            (section.notes && section.notes.length)
-        );
-    }
-
-    function createSectionCard(section, level, titleOverride, includeId) {
-        const card = document.createElement('article');
-        card.className = level === 'nested'
-            ? 'rounded-lg border border-slate-100 bg-white p-4'
-            : 'rounded-lg border border-slate-100 bg-slate-50 p-5';
-        if (includeId) card.id = section.id;
-
-        const title = document.createElement(level === 'nested' ? 'h4' : 'h3');
-        title.className = 'font-semibold text-slate-900 mb-2';
-        title.textContent = titleOverride || section.title;
-        card.appendChild(title);
-
-        if (section.description) {
-            const desc = document.createElement('p');
-            desc.className = 'text-sm text-slate-600 leading-relaxed';
-            desc.textContent = section.description;
-            card.appendChild(desc);
-        }
-
-        renderSectionBody(section, card);
-        return card;
-    }
-
-    function renderSectionHeader(section) {
-        const heading = document.createElement('h2');
-        heading.id = section.id;
-        heading.className = 'text-xl font-bold text-slate-900 mb-4';
-        heading.textContent = section.title;
-        heading.setAttribute('tabindex', '-1');
-        return heading;
-    }
-
-    function renderSectionTree(section, headingLevel, isTopLevel, isFirstTopLevel) {
-        const sectionEl = document.createElement('section');
-        sectionEl.className = isTopLevel
-            ? 'rounded-xl border border-slate-100 bg-white p-6 shadow-sm'
-            : 'mt-4';
-
-        if (isTopLevel) {
-            sectionEl.appendChild(renderSectionHeader(section));
-        }
-
-        if (sectionHasDetails(section) && isTopLevel) {
-            const cardTitle = section.children && section.children.length ? 'Access, Usage, and Notes' : section.title;
-            const card = createSectionCard(section, 'root', cardTitle, false);
-            if (isFirstTopLevel) {
-                if (activityLogContent.rules && activityLogContent.rules.length) {
-                    card.appendChild(createCallout('Rules', activityLogContent.rules, 'rules'));
-                }
-                if (activityLogContent.notes && activityLogContent.notes.length) {
-                    card.appendChild(createCallout('Notes', activityLogContent.notes, 'notes'));
-                }
-            }
-            sectionEl.appendChild(card);
-        } else if (sectionHasDetails(section)) {
-            sectionEl.appendChild(createSectionCard(section, 'nested', section.title, true));
-        }
-
-        if (section.children && section.children.length) {
-            section.children.forEach(function (child) {
-                sectionEl.appendChild(renderSectionTree(child, Math.min(headingLevel + 1, 4), false, false));
-            });
-        }
-
-        return sectionEl;
-    }
-
-    function renderLegends(root) {
-        if (!activityLogContent.legends || !activityLogContent.legends.length) return;
-
-        const legendsWrap = document.createElement('div');
-        legendsWrap.className = 'mb-8 rounded-lg border border-slate-100 bg-slate-50 p-5';
-
-        const heading = document.createElement('h2');
-        heading.className = 'font-semibold text-slate-900 mb-3';
-        heading.textContent = 'Legends';
-        legendsWrap.appendChild(heading);
-        legendsWrap.appendChild(createBulletList(activityLogContent.legends));
-
-        root.appendChild(legendsWrap);
-    }
-
-    function renderAllSections() {
-        const root = document.getElementById('section-render-root');
-        if (!root) return;
-        root.innerHTML = '';
-
-        renderLegends(root);
-
-        activityLogContent.sections.forEach(function (section, index) {
-            root.appendChild(renderSectionTree(section, 2, true, index === 0));
-        });
-    }
-
-    function renderSidebar() {
-        var list = document.getElementById('docSidebarList');
-        if (!list) return;
-        list.innerHTML = '';
-
-        function appendItem(section, level, parent) {
-            var li = document.createElement('li');
-            li.className = 'sidebar-item';
-            li.dataset.target = section.id;
-            li.dataset.level = String(level);
-
-            var a = document.createElement('a');
-            var indent = level === 0 ? '' : ' pl-' + Math.min(level * 3, 12) + ' border-l border-slate-100';
-            a.className = 'block text-slate-600 hover:text-brand transition-colors py-1' + indent;
-            a.href = '#' + section.id;
-            a.dataset.target = section.id;
-            a.textContent = section.title;
-            li.appendChild(a);
-
-            if (section.children && section.children.length) {
-                var childList = document.createElement('ul');
-                childList.className = 'sidebar-children mt-1 space-y-1';
-                section.children.forEach(function (child) {
-                    appendItem(child, level + 1, childList);
-                });
-                li.appendChild(childList);
-            }
-
-            parent.appendChild(li);
-        }
-
-        activityLogContent.sections.forEach(function (section) {
-            appendItem(section, 0, list);
-        });
-    }
-
-    function setSidebarBranch(activeId) {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        var links = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'));
-
-        links.forEach(function (link) {
-            link.classList.remove('active', 'text-brand', 'font-semibold');
-        });
-
-        var activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
-        if (!activeLink) return;
-
-        activeLink.classList.add('active', 'text-brand', 'font-semibold');
-    }
-
-    function getVisibleSidebarTarget() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return null;
-
-        var targetIds = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'))
-            .map(function (link) { return link.dataset.target; })
-            .filter(Boolean);
-
-        var currentId = null;
-        var closestDistance = Number.POSITIVE_INFINITY;
-        var activationOffset = 96;
-
-        targetIds.forEach(function (id) {
-            var target = document.getElementById(id);
-            if (!target) return;
-
-            var distance = Math.abs(target.getBoundingClientRect().top - activationOffset);
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                currentId = id;
-            }
-        });
-
-        return currentId || targetIds[0] || null;
-    }
-
-    function setupSidebarVisibility() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        function updateFromScroll() {
-            var activeId = getVisibleSidebarTarget();
-            if (activeId) setSidebarBranch(activeId);
-        }
-
-        sidebar.querySelectorAll('a[data-target]').forEach(function (link) {
-            link.addEventListener('click', function () {
-                setSidebarBranch(this.dataset.target);
-            });
-        });
-
-        updateFromScroll();
-        window.addEventListener('hashchange', function () {
-            setTimeout(updateFromScroll, 50);
-        });
-        window.addEventListener('scroll', updateFromScroll, { passive: true });
-    }
-
-    function renderAll() {
-        renderSidebar();
-        renderAllSections();
-        setupSidebarVisibility();
-        scrollToHashTarget();
-    }
-
-    function scrollToHashTarget() {
-        var targetId = (location.hash || '').replace('#', '');
-        if (!targetId) return;
-
-        var target = document.getElementById(targetId);
-        if (!target) return;
-
-        setTimeout(function () {
-            target.scrollIntoView({ block: 'start' });
-            setSidebarBranch(targetId);
-        }, 0);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', renderAll);
-    } else {
-        renderAll();
-    }
-
     global.__activityLogContent = activityLogContent;
 })(window);
+

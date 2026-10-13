@@ -52,12 +52,14 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 4. Baseline Page Harmonization: Activity Log Management
-- [ ] **4.1. Template & Layout Alignment**
-  - [ ] Verify [`pages/workflow/activity-log-management/index.html`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/activity-log-management/index.html) container wrapper and hero alignment.
-- [ ] **4.2. Data & Renderer Integration**
-  - [ ] Add `createImageOrPlaceholder` helper to [`pages/workflow/activity-log-management/assets/js/dataFiller.js`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/activity-log-management/assets/js/dataFiller.js).
-  - [ ] Hook `images` rendering into `renderSectionBody`.
-  - [ ] Add initial screenshot placeholders for User Activities, Candidate Activities, and Activity Log modal views.
+- [x] **4.1. Template & Layout Alignment**
+  - [x] Verify [`pages/workflow/activity-log-management/index.html`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/pages/workflow/activity-log-management/index.html) container wrapper and hero alignment.
+- [x] **4.2. Data & Renderer Integration**
+  - [x] Hook `images` rendering into `ActivityLogRenderer` using `GoPickImageRenderer`.
+  - [x] Add initial screenshot placeholders for User Activities, Advanced Search, Candidate Activities, and Candidate Snapshot modal.
+- [x] **4.3. Architecture Decomposition & OOP Modularization**
+  - [x] Decompose `dataFiller.js` into focused OOP modules (`contentStore.js`, `contentRenderer.js`, `sidebarTracker.js`, `behavior.js`).
+  - [x] Ensure reliable scroll-spy viewport detection and clean module interop.
 
 ---
 
