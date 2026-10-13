@@ -149,11 +149,11 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 9. Final QA & Cross-Page Verification
-- [ ] **9.1. Syntax & Error Free Validation**
-  - [ ] Run `node -c` across all newly decomposed JS files.
-- [ ] **9.2. Interactive Behavior & Scroll-Spy Validation**
-  - [ ] Verify 140px scroll-spy offset and active sidebar highlighting across all 7 pages.
-  - [ ] Verify direct URL hash linking (`#section-id`).
-  - [ ] Verify image card placeholders render with uniform badges, borders, and captions.
-- [ ] **9.3. Documentation & Changelog**
-  - [ ] Confirm alignment with `AGENTS.md` and update changelog as required.
+- [x] **9.1. Syntax & Error Free Validation**
+  - [x] Run `node -c` across all newly decomposed JS files.
+- [x] **9.2. Interactive Behavior & Scroll-Spy Validation**
+  - [x] Verify 140px scroll-spy offset and active sidebar highlighting across all 7 pages.
+  - [x] Verify direct URL hash linking (`#section-id`).
+  - [x] Verify image card placeholders render with uniform badges, borders, and captions.
+- [x] **9.3. Documentation & Changelog**
+  - [x] Confirm alignment with `AGENTS.md` and update changelog as required.
