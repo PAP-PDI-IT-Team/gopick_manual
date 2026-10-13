@@ -103,13 +103,13 @@ This plan establishes layout and visual uniformity across the GoPick manual page
   - [x] Create `sidebarTracker.js` (`DashboardSidebarTracker`).
   - [x] Refactor `behavior.js` (`DashboardApp`).
   - [x] Update `index.html` script tags & verify syntax with `node -c`.
-- [ ] **8.2. Meters Management (`pages/workflow/meters-management/`)**
-  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Inventory matrix, Transfer/Recharge modal, Logs).
-  - [ ] Create `contentStore.js` (`MetersStore`).
-  - [ ] Create `contentRenderer.js` (`MetersRenderer` integrating `GoPickImageRenderer`).
-  - [ ] Create `sidebarTracker.js` (`MetersSidebarTracker`).
-  - [ ] Refactor `behavior.js` (`MetersApp`).
-  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [x] **8.2. Meters Management (`pages/workflow/meters-management/`)**
+  - [x] Pure data extraction into `dataFiller.js` with image placeholders (Inventory matrix, Transfer/Recharge modal, Logs).
+  - [x] Create `contentStore.js` (`MetersStore`).
+  - [x] Create `contentRenderer.js` (`MetersRenderer` integrating `GoPickImageRenderer`).
+  - [x] Create `sidebarTracker.js` (`MetersSidebarTracker`).
+  - [x] Refactor `behavior.js` (`MetersApp`).
+  - [x] Update `index.html` script tags & verify syntax with `node -c`.
 - [ ] **8.3. Users Management (`pages/workflow/users-management/`)**
   - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Directory table, Add/Edit User modal, Reset password).
   - [ ] Create `contentStore.js` (`UsersStore`).
