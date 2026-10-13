@@ -1,109 +1,58 @@
-(function () {
+(function (global) {
     'use strict';
 
-    var SIDEBAR_ACTIVATION_OFFSET = 96;
-
-    function getSidebarLinks() {
-        var sidebarList = document.getElementById('docSidebarList');
-        if (!sidebarList) {
-            throw new Error('Assessment Management could not initialize because #docSidebarList is missing.');
-        }
-
-        return Array.prototype.slice.call(sidebarList.querySelectorAll('a[href^="#"]'));
-    }
-
-    function getLinkTargetId(link) {
-        return link.getAttribute('href').slice(1);
-    }
-
-    function setActiveSidebarLink(activeId, sidebarLinks) {
-        sidebarLinks.forEach(function (link) {
-            link.classList.remove('active', 'text-brand', 'font-semibold');
-        });
-
-        var activeLink = sidebarLinks.find(function (link) {
-            return getLinkTargetId(link) === activeId;
-        });
-
-        if (activeLink) {
-            activeLink.classList.add('active', 'text-brand', 'font-semibold');
-        }
-    }
-
-    function getVisibleSectionId(sidebarLinks) {
-        var closestSectionId = null;
-        var closestDistance = Number.POSITIVE_INFINITY;
-
-        sidebarLinks.forEach(function (link) {
-            var targetId = getLinkTargetId(link);
-            var target = document.getElementById(targetId);
-            if (!target) {
-                throw new Error('Assessment Management sidebar target #' + targetId + ' is missing.');
-            }
-
-            var distance = Math.abs(target.getBoundingClientRect().top - SIDEBAR_ACTIVATION_OFFSET);
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestSectionId = targetId;
-            }
-        });
-
-        return closestSectionId;
-    }
-
-    function setupSidebarVisibility() {
-        var sidebarLinks = getSidebarLinks();
-
-        function updateActiveLinkFromScroll() {
-            var visibleSectionId = getVisibleSectionId(sidebarLinks);
-            if (visibleSectionId) setActiveSidebarLink(visibleSectionId, sidebarLinks);
-        }
-
-        sidebarLinks.forEach(function (link) {
-            link.addEventListener('click', function () {
-                setActiveSidebarLink(getLinkTargetId(this), sidebarLinks);
-            });
-        });
-
-        window.addEventListener('hashchange', function () {
-            setTimeout(updateActiveLinkFromScroll, 50);
-        });
-        window.addEventListener('scroll', updateActiveLinkFromScroll, { passive: true });
-        updateActiveLinkFromScroll();
-    }
-
-    function scrollToHashTarget() {
-        var targetId = location.hash.slice(1);
-        if (!targetId) return;
-
-        var target = document.getElementById(targetId);
-        if (!target) {
-            throw new Error('Assessment Management hash target #' + targetId + ' is missing.');
-        }
-
-        setTimeout(function () {
-            target.scrollIntoView({ block: 'start' });
-            setActiveSidebarLink(targetId, getSidebarLinks());
-        }, 0);
-    }
-
     function setFooterYear() {
-        var yearSpan = document.getElementById('footerYearSpan');
-        if (!yearSpan) {
-            throw new Error('Assessment Management could not initialize because #footerYearSpan is missing.');
-        }
-        yearSpan.textContent = new Date().getFullYear();
+        const yearSpan = document.getElementById('footerYearSpan');
+        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     }
 
-    function initAssessmentPage() {
-        setFooterYear();
-        setupSidebarVisibility();
-        scrollToHashTarget();
+    class AssessmentApp {
+        constructor() {
+            this.content = global.__assessmentContent || {};
+            this.store = new global.AssessmentContentStore(this.content);
+            this.renderer = new global.AssessmentContentRenderer(this.store, global.GoPickImageRenderer);
+            this.sidebar = new global.AssessmentSidebarTracker(this.store);
+        }
+
+        scrollToHash() {
+            const id = (location.hash || '').replace('#', '');
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                this.sidebar.setActive(id);
+                this.sidebar.isProgrammaticScroll = true;
+                setTimeout(() => {
+                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    el.focus && el.focus();
+                    setTimeout(() => {
+                        this.sidebar.isProgrammaticScroll = false;
+                    }, 400);
+                }, 30);
+            }
+        }
+
+        init() {
+            setFooterYear();
+            this.renderer.renderAllSections();
+            this.sidebar.render();
+            this.sidebar.bindListeners();
+
+            if (location.hash) {
+                this.scrollToHash();
+            } else {
+                this.sidebar.updateScrollSpy();
+            }
+        }
     }
+
+    const app = new AssessmentApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAssessmentPage);
+        document.addEventListener('DOMContentLoaded', () => app.init());
     } else {
-        initAssessmentPage();
+        app.init();
     }
-})();
+
+    global.AssessmentApp = AssessmentApp;
+    global.__assessmentApp = app;
+})(window);

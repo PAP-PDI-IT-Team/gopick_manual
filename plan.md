@@ -138,13 +138,13 @@ This plan establishes layout and visual uniformity across the GoPick manual page
   - [x] Create `sidebarTracker.js` (`ResourceCenterSidebarTracker`).
   - [x] Refactor `behavior.js` (`ResourceCenterApp`).
   - [x] Update `index.html` script tags & verify syntax with `node -c`.
-- [ ] **8.7. Assessment Management (`pages/workflow/assessment-management/`)**
-  - [ ] Standardize into data dictionary `dataFiller.js` with image placeholders (Catalog, Batteries, Norm groups, Scoring/Delivery).
-  - [ ] Create `contentStore.js` (`AssessmentStore`).
-  - [ ] Create `contentRenderer.js` (`AssessmentRenderer` integrating `GoPickImageRenderer`).
-  - [ ] Create `sidebarTracker.js` (`AssessmentSidebarTracker`).
-  - [ ] Refactor `behavior.js` (`AssessmentApp`).
-  - [ ] Align container markup in `index.html` to `.manual-reading-surface` & wire script tags.
+- [x] **8.7. Assessment Management (`pages/workflow/assessment-management/`)**
+  - [x] Standardize into data dictionary `dataFiller.js` with image placeholders (Catalog, Batteries, Norm groups, Scoring/Delivery).
+  - [x] Create `contentStore.js` (`AssessmentStore`).
+  - [x] Create `contentRenderer.js` (`AssessmentRenderer` integrating `GoPickImageRenderer`).
+  - [x] Create `sidebarTracker.js` (`AssessmentSidebarTracker`).
+  - [x] Refactor `behavior.js` (`AssessmentApp`).
+  - [x] Align container markup in `index.html` to `.manual-reading-surface` & wire script tags.
 
 ---
 
