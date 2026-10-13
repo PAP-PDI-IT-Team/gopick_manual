@@ -117,13 +117,13 @@ This plan establishes layout and visual uniformity across the GoPick manual page
   - [x] Create `sidebarTracker.js` (`UsersSidebarTracker`).
   - [x] Refactor `behavior.js` (`UsersApp`).
   - [x] Update `index.html` script tags & verify syntax with `node -c`.
-- [ ] **8.4. Roles & Permissions Management (`pages/workflow/roles-premission-management/`)**
-  - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Matrix overview, Custom Role creator, Role Assignment).
-  - [ ] Create `contentStore.js` (`RolesPermissionsStore`).
-  - [ ] Create `contentRenderer.js` (`RolesPermissionsRenderer` integrating `GoPickImageRenderer`).
-  - [ ] Create `sidebarTracker.js` (`RolesPermissionsSidebarTracker`).
-  - [ ] Refactor `behavior.js` (`RolesPermissionsApp` coordinating RBAC table).
-  - [ ] Update `index.html` script tags & verify syntax with `node -c`.
+- [x] **8.4. Roles & Permissions Management (`pages/workflow/roles-premission-management/`)**
+  - [x] Pure data extraction into `dataFiller.js` with image placeholders (Matrix overview, Custom Role creator, Role Assignment).
+  - [x] Create `contentStore.js` (`RolesPermissionsStore`).
+  - [x] Create `contentRenderer.js` (`RolesPermissionsRenderer` integrating `GoPickImageRenderer`).
+  - [x] Create `sidebarTracker.js` (`RolesPermissionsSidebarTracker`).
+  - [x] Refactor `behavior.js` (`RolesPermissionsApp` coordinating RBAC table).
+  - [x] Update `index.html` script tags & verify syntax with `node -c`.
 - [ ] **8.5. Reports Management (`pages/workflow/reports-management/`)**
   - [ ] Pure data extraction into `dataFiller.js` with image placeholders (Catalog & filter builder, Export options, Scheduled config).
   - [ ] Create `contentStore.js` (`ReportsStore`).
