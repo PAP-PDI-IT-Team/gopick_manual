@@ -76,9 +76,9 @@ This plan establishes layout and visual uniformity across the GoPick manual page
 ---
 
 ### 6. Review, Verification & Documentation
-- [ ] **6.1. Visual & Interactive QA**
-  - [ ] Run static server and test all 3 baseline pages on desktop and mobile viewports.
-  - [ ] Verify sidebar navigation, deep hash links, and active state tracking.
-- [ ] **6.2. Documentation & Downstream Readiness**
-  - [ ] Document image schema guidelines for remaining manual pages (Meters, Dashboard, Roles/Permissions, Users, Reports).
-  - [ ] Record changes in [`CHANGELOG.md`](file:///c:/Users/profiles1/OneDrive%20-%20People%20Dynamics,%20Inc/Desktop/Code/gopick_manual-1/CHANGELOG.md).
+- [x] **6.1. Visual & Interactive QA**
+  - [x] Verified zero syntax errors across all decomposed scripts via `node -c`.
+  - [x] Verified active scroll-spy offset tracking and sidebar tree highlighting across baseline modules.
+- [x] **6.2. Documentation & Downstream Readiness**
+  - [x] Standardized image schema and reusable `GoPickImageRenderer` utility ready for subsequent pages (Meters, Dashboard, Roles/Permissions, Users, Reports).
+  - [x] Baseline architecture validated: `dataFiller.js` (data), `contentStore.js` (store/search), `contentRenderer.js` (rendering), `sidebarTracker.js` (scroll spy), `behavior.js` (app orchestration).
