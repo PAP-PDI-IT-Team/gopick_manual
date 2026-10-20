@@ -1,37 +1,59 @@
-(function () {
+(function (global) {
     'use strict';
 
     function setFooterYear() {
-        var yearSpan = document.getElementById('footerYearSpan');
+        const yearSpan = document.getElementById('footerYearSpan');
         if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     }
 
-    function highlightActiveSidebarLink() {
-        var sidebarLinks = document.querySelectorAll('#docSidebar a');
-        if (!sidebarLinks.length) return;
-
-        function updateActiveLink() {
-            var currentHash = location.hash || '#randomization';
-            sidebarLinks.forEach(function (link) {
-                link.classList.remove('text-brand', 'font-semibold');
-                if (link.getAttribute('href') === currentHash) {
-                    link.classList.add('text-brand', 'font-semibold');
-                }
-            });
+    class AssessmentApp {
+        constructor() {
+            this.content = global.__assessmentContent || {};
+            this.store = new global.AssessmentContentStore(this.content);
+            this.renderer = new global.AssessmentContentRenderer(this.store, global.GoPickImageRenderer);
+            this.sidebar = new global.AssessmentSidebarTracker(this.store);
         }
 
-        updateActiveLink();
-        window.addEventListener('hashchange', updateActiveLink);
+        scrollToHash() {
+            const id = (location.hash || '').replace('#', '');
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                this.sidebar.setActive(id);
+                this.sidebar.isProgrammaticScroll = true;
+                setTimeout(() => {
+                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    el.focus && el.focus();
+                    setTimeout(() => {
+                        this.sidebar.isProgrammaticScroll = false;
+                    }, 400);
+                }, 30);
+            }
+        }
+
+        init() {
+            setFooterYear();
+            this.renderer.renderHero();
+            this.renderer.renderAllSections();
+            this.sidebar.render();
+            this.sidebar.bindListeners();
+
+            if (location.hash) {
+                this.scrollToHash();
+            } else {
+                this.sidebar.updateScrollSpy();
+            }
+        }
     }
 
-    function initAssessmentPage() {
-        setFooterYear();
-        highlightActiveSidebarLink();
-    }
+    const app = new AssessmentApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAssessmentPage);
+        document.addEventListener('DOMContentLoaded', () => app.init());
     } else {
-        initAssessmentPage();
+        app.init();
     }
-})();
+
+    global.AssessmentApp = AssessmentApp;
+    global.__assessmentApp = app;
+})(window);

@@ -6,7 +6,6 @@
             if (!(el instanceof HTMLElement)) return;
             var sw = el.scrollWidth;
             var cw = el.clientWidth;
-            // ignore elements not rendered or small
             if (sw > cw + 1) {
                 var sel = el.tagName.toLowerCase();
                 if (el.id) sel += '#' + el.id;
@@ -20,7 +19,6 @@
                 console.log(i + 1 + ')', o.selector, 'scrollWidth:', o.scrollWidth, 'clientWidth:', o.clientWidth);
             });
             console.groupEnd();
-            // outline first
             var first = overs[0].el;
             first.style.outline = '3px solid rgba(255,0,0,0.6)';
             first.scrollIntoView({ behavior: 'auto', block: 'center' });

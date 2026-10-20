@@ -63,6 +63,13 @@
         ],
         createAccount: {
             detail: 'Creates a new account through the account creation wizard.',
+            images: [
+                {
+                    title: 'Create Account Wizard Overview',
+                    caption: 'Displays the step-by-step account configuration wizard.',
+                    src: null
+                }
+            ],
             accessPath: 'Accounts > Create Account',
             howToUse: [
                 'Open Accounts.',
@@ -279,6 +286,13 @@
         },
         viewAccounts: {
             detail: 'Displays the active account listing with search, advanced search, archived account navigation, bulk actions, and row actions.',
+            images: [
+                {
+                    title: 'Accounts Listing & Action Toolbar',
+                    caption: 'Displays account rows, status badges, search controls, and action menus.',
+                    src: null
+                }
+            ],
             legend: [
                 { label: 'Active', detail: 'Active and not yet expired' },
                 { label: 'Deactivated', detail: 'Deactivated' },
@@ -359,6 +373,13 @@
             id: 'update-specific',
             title: 'Update Specific',
             detail: 'Updates one account detail section from the account detail page. The available update form depends on the account detail section where the update is triggered.',
+            images: [
+                {
+                    title: 'Update Specific Form View',
+                    caption: 'Section-isolated update view within the account detail page.',
+                    src: null
+                }
+            ],
             rules: ['Updating the current user own account only opens the Account Information variant.', 'Password fields are not prefilled.'],
             accessPath: 'Accounts > View Accounts > Row Actions > View > Section > Update',
             howToUse: [
@@ -574,6 +595,13 @@
                 id: 'view-active-account',
                 title: 'View Active Account',
                 detail: 'Opens account detail for an active, non-archived account.',
+                images: [
+                    {
+                        title: 'Active Account Detail Page',
+                        caption: 'Overview of account details, assigned assessments, meter management, and user list.',
+                        src: null
+                    }
+                ],
                 accessPath: 'Accounts > View Accounts > Row Actions > View',
                 howToUse: ['Open View Accounts.', 'Select View on a non-archived account row.'],
                 items: [
@@ -755,405 +783,5 @@
             }
         ]
     };
-
-    function appendText(parent, tagName, className, text) {
-        if (!text) return null;
-        var element = document.createElement(tagName);
-        element.className = className;
-        element.textContent = text;
-        parent.appendChild(element);
-        return element;
-    }
-
-    function createBulletList(items) {
-        var list = document.createElement('ul');
-        list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
-        items.forEach(function (item) {
-            var li = document.createElement('li');
-            li.className = 'flex gap-2';
-            var marker = document.createElement('span');
-            marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-            var text = item && typeof item !== 'string' && item.href ? document.createElement('a') : document.createElement('span');
-            text.textContent = typeof item === 'string' ? item : item.label;
-            if (item && typeof item !== 'string' && item.href) {
-                text.href = item.href;
-                text.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
-            }
-            li.appendChild(marker);
-            li.appendChild(text);
-            list.appendChild(li);
-
-            if (item && typeof item !== 'string' && item.children && item.children.length) {
-                var nested = document.createElement('ul');
-                nested.className = 'ml-7 mt-2 space-y-1 text-sm text-slate-500';
-                item.children.forEach(function (child) {
-                    var childItem = document.createElement('li');
-                    if (child && typeof child !== 'string' && child.href) {
-                        var childLink = document.createElement('a');
-                        childLink.href = child.href;
-                        childLink.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
-                        childLink.textContent = child.label;
-                        childItem.appendChild(childLink);
-                    } else {
-                        childItem.textContent = child;
-                    }
-                    nested.appendChild(childItem);
-                });
-                list.appendChild(nested);
-            }
-        });
-        return list;
-    }
-
-    function createActionLinkList(items) {
-        var list = document.createElement('ul');
-        list.className = 'mt-3 ml-4 space-y-2 border-l border-slate-100 pl-4';
-        items.forEach(function (item) {
-            var li = document.createElement('li');
-            var link = document.createElement('a');
-            link.className = 'block text-sm font-semibold text-brand hover:text-brand-dark transition-colors';
-            link.href = item.href;
-            link.textContent = item.label;
-            li.appendChild(link);
-            if (item.children && item.children.length) {
-                li.appendChild(createActionLinkList(item.children));
-            }
-            list.appendChild(li);
-        });
-        return list;
-    }
-
-    function createBox(titleText, items, boxClass, titleClass) {
-        if (!items || !items.length) return null;
-        var box = document.createElement('div');
-        box.className = boxClass || 'mt-4 rounded-lg border border-amber-100 bg-amber-50 p-4';
-        appendText(box, 'h4', titleClass || 'font-semibold text-amber-900 mb-2', titleText);
-        box.appendChild(createBulletList(items));
-        return box;
-    }
-
-    function appendSectionMeta(card, section) {
-        if (section.actions && section.actions.length) {
-            var hasLinks = section.actions.some(function (item) {
-                return item && typeof item !== 'string' && item.href;
-            });
-            appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', hasLinks ? 'Related Features' : 'Controls');
-            card.appendChild(hasLinks ? createActionLinkList(section.actions) : createBulletList(section.actions));
-        }
-
-        if (section.actionGroups && section.actionGroups.length) {
-            section.actionGroups.forEach(function (group) {
-                appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
-                card.appendChild(createActionLinkList(group.links || []));
-            });
-        }
-
-        if (section.items && section.items.length) {
-            card.appendChild(createBulletList(section.items));
-        }
-
-        if (section.accessPath) {
-            appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Access Path');
-            appendText(card, 'p', 'mt-1 text-sm text-slate-600 leading-relaxed', section.accessPath);
-        }
-
-        if (section.howToUse && section.howToUse.length) {
-            appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'How To Use');
-            card.appendChild(createBulletList(section.howToUse));
-        }
-
-        if (section.rules && section.rules.length) {
-            card.appendChild(createBox('Rules', section.rules));
-        }
-
-        if (section.expected && section.expected.length) {
-            card.appendChild(createBox('Expected Result', section.expected, 'mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4', 'font-semibold text-emerald-900 mb-2'));
-        }
-
-        if (section.notes && section.notes.length) {
-            section.notes.forEach(function (note) {
-                card.appendChild(createBox('Notes: ' + note.label, note.items, 'mt-4 rounded-lg border border-slate-100 bg-white p-4', 'font-semibold text-slate-900 mb-2'));
-            });
-        }
-    }
-
-    function createInfoCard(section, level) {
-        var card = document.createElement('article');
-        card.className = level === 'nested'
-            ? 'rounded-lg border border-slate-100 bg-white p-4'
-            : 'rounded-lg border border-slate-100 bg-slate-50 p-5';
-        if (!section.omitCardId) card.id = section.id;
-        appendText(card, level === 'nested' ? 'h4' : 'h3', 'font-semibold text-slate-900 mb-2', section.title);
-        appendText(card, 'p', 'text-sm text-slate-600 leading-relaxed', section.detail);
-        appendSectionMeta(card, section);
-        return card;
-    }
-
-    function renderSidebar() {
-        var list = document.getElementById('docSidebarList');
-        if (!list) return;
-        list.innerHTML = '';
-
-        function appendItem(section, level, parent) {
-            var li = document.createElement('li');
-            li.className = 'sidebar-item';
-            li.dataset.target = section.id;
-            li.dataset.level = String(level);
-            var a = document.createElement('a');
-            var indent = level === 0 ? '' : ' pl-' + Math.min(level * 3, 12) + ' border-l border-slate-100';
-            a.className = 'block text-slate-600 hover:text-brand transition-colors py-1' + indent;
-            a.href = '#' + section.id;
-            a.dataset.target = section.id;
-            a.textContent = section.title;
-            li.appendChild(a);
-            if (section.children && section.children.length) {
-                var childList = document.createElement('ul');
-                childList.className = 'sidebar-children mt-1 space-y-1';
-                section.children.forEach(function (child) {
-                    appendItem(child, level + 1, childList);
-                });
-                li.appendChild(childList);
-            }
-            parent.appendChild(li);
-        }
-
-        accountsContent.sections.forEach(function (section) {
-            appendItem(section, 0, list);
-        });
-    }
-
-    function setSidebarBranch(activeId) {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        var links = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'));
-
-        links.forEach(function (link) {
-            link.classList.remove('active', 'text-brand', 'font-semibold');
-        });
-
-        var activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
-        if (!activeLink) return;
-
-        activeLink.classList.add('active', 'text-brand', 'font-semibold');
-    }
-
-    function getVisibleSidebarTarget() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return null;
-
-        var targetIds = Array.prototype.slice.call(sidebar.querySelectorAll('a[data-target]'))
-            .map(function (link) { return link.dataset.target; })
-            .filter(Boolean);
-
-        var currentId = null;
-        var closestDistance = Number.POSITIVE_INFINITY;
-        var activationOffset = 96;
-        targetIds.forEach(function (id) {
-            var target = document.getElementById(id);
-            if (!target) return;
-            var distance = Math.abs(target.getBoundingClientRect().top - activationOffset);
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                currentId = id;
-            }
-        });
-
-        return currentId || targetIds[0] || null;
-    }
-
-    function setupSidebarVisibility() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        function updateFromScroll() {
-            var activeId = getVisibleSidebarTarget();
-            if (activeId) setSidebarBranch(activeId);
-        }
-
-        sidebar.querySelectorAll('a[data-target]').forEach(function (link) {
-            link.addEventListener('click', function () {
-                setSidebarBranch(this.dataset.target);
-            });
-        });
-
-        updateFromScroll();
-        window.addEventListener('hashchange', function () {
-            setTimeout(updateFromScroll, 50);
-        });
-        window.addEventListener('scroll', updateFromScroll, { passive: true });
-    }
-
-    function renderCreateAccount() {
-        var container = document.getElementById('createAccountSections');
-        if (!container) return;
-        container.innerHTML = '';
-        var summary = createInfoCard({
-            id: 'create-account-summary',
-            title: 'Access, Usage, and Notes',
-            detail: accountsContent.createAccount.detail,
-            accessPath: accountsContent.createAccount.accessPath,
-            howToUse: accountsContent.createAccount.howToUse,
-            expected: accountsContent.createAccount.expected,
-            notes: accountsContent.createAccount.notes
-        });
-        container.appendChild(summary);
-
-        accountsContent.createAccount.steps.forEach(function (step, index) {
-            var card = createInfoCard(step);
-            var badge = document.createElement('div');
-            badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
-            badge.textContent = index + 1;
-            card.insertBefore(badge, card.firstChild);
-            container.appendChild(card);
-        });
-    }
-
-    function renderLegend(container, items) {
-        var grid = document.createElement('div');
-        grid.className = 'mt-4 grid grid-cols-1 md:grid-cols-2 gap-4';
-        items.forEach(function (item) {
-            var card = document.createElement('div');
-            card.className = 'p-3 rounded-lg bg-white border border-slate-100';
-            appendText(card, 'div', 'text-sm font-bold text-slate-900', item.label);
-            appendText(card, 'div', 'text-xs text-slate-500 leading-relaxed mt-1', item.detail);
-            grid.appendChild(card);
-        });
-        container.appendChild(grid);
-    }
-
-    function renderViewAccounts() {
-        var container = document.getElementById('viewAccountsContent');
-        if (!container) return;
-        container.innerHTML = '';
-        appendText(container, 'p', 'text-sm text-slate-600 leading-relaxed', accountsContent.viewAccounts.detail);
-        appendText(container, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Legends');
-        renderLegend(container, accountsContent.viewAccounts.legend);
-        accountsContent.viewAccounts.actionGroups.forEach(function (group) {
-            appendText(container, 'p', 'mt-6 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
-            container.appendChild(createActionLinkList(group.links || []));
-        });
-        container.appendChild(createInfoCard(accountsContent.viewAccounts.archived));
-    }
-
-    function renderUpdateSpecific() {
-        var container = document.getElementById('updateSpecificContent');
-        if (!container) return;
-        container.innerHTML = '';
-    }
-
-    function createUpdateSpecificCard() {
-        var section = accountsContent.updateSpecific;
-        var intro = createInfoCard(section);
-        appendText(intro, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Variants');
-        section.groups.forEach(function (group) {
-            intro.appendChild(createInfoCard(group, 'nested'));
-        });
-        intro.appendChild(createBox('Rules', [section.securityRule]));
-        return intro;
-    }
-
-    function createUpdateAccountSectionCards() {
-        var titleMap = [
-            { id: 'update-account-information', title: 'Update Account Information' },
-            { id: 'update-assigned-products', title: 'Update Assigned Products' },
-            { id: 'update-meter-management', title: 'Update Meter Management' },
-            { id: 'update-other-account-settings', title: 'Update Other Account Settings' }
-        ];
-
-        return accountsContent.updateSpecific.groups.map(function (group, index) {
-            return createInfoCard({
-                id: titleMap[index].id,
-                title: titleMap[index].title,
-                items: group.items,
-                expected: group.expected,
-                notes: group.notes
-            }, 'nested');
-        });
-    }
-
-    function renderFunctions() {
-        var container = document.getElementById('functionSections');
-        if (!container) return;
-        container.innerHTML = '';
-        accountsContent.functions.forEach(function (section) {
-            container.appendChild(createInfoCard(section));
-            if (section.id === 'update-account') {
-                createUpdateAccountSectionCards().forEach(function (card) {
-                    container.appendChild(card);
-                });
-                container.appendChild(createUpdateSpecificCard());
-            }
-        });
-    }
-
-    function renderRowActions() {
-        var container = document.getElementById('rowActionsContent');
-        if (!container) return;
-        container.innerHTML = '';
-        accountsContent.rowActions.forEach(function (section) {
-            container.appendChild(createInfoCard(section));
-        });
-    }
-
-    function renderSearchSections() {
-        accountsContent.searchSections.forEach(function (section) {
-            var container = document.getElementById(section.id + 'Content');
-            if (!container) return;
-            container.innerHTML = '';
-            var renderedSection = Object.assign({}, section, { omitCardId: true });
-            container.appendChild(createInfoCard(renderedSection));
-        });
-    }
-
-    function renderBulkActions() {
-        var container = document.getElementById('bulkActionContent');
-        if (!container) return;
-        container.innerHTML = '';
-        accountsContent.bulkActions.forEach(function (section) {
-            container.appendChild(createInfoCard(section));
-        });
-    }
-
-    function renderHero() {
-        var title = document.getElementById('accountsPageTitle');
-        var description = document.getElementById('accountsPageDescription');
-        if (title) title.textContent = accountsContent.title;
-        if (description) description.textContent = accountsContent.description;
-    }
-
-    function renderAll() {
-        renderHero();
-        renderSidebar();
-        renderCreateAccount();
-        renderViewAccounts();
-        renderUpdateSpecific();
-        renderFunctions();
-        renderRowActions();
-        renderSearchSections();
-        renderBulkActions();
-        setupSidebarVisibility();
-        scrollToHashTarget();
-    }
-
-    function scrollToHashTarget() {
-        var targetId = (location.hash || '').replace('#', '');
-        if (!targetId) return;
-
-        var target = document.getElementById(targetId);
-        if (!target) return;
-
-        setTimeout(function () {
-            target.scrollIntoView({ block: 'start' });
-            setSidebarBranch(targetId);
-        }, 0);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', renderAll);
-    } else {
-        renderAll();
-    }
-
     global.__accountsContent = accountsContent;
 })(window);

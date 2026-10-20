@@ -283,6 +283,30 @@ Actor is the logged-in user at action time. Actor is not always the parent accou
 - `type=7`: requires explicit new-account target marker in notes and resolvable target account.
 - `type=8`: requires explicit message marker in notes and resolvable actor.
 
+### Resolution Paths Matrix
+
+User guide matrix table for traceability, answering how to identify, understand, and use the Meter log information table as a logger across transaction types, entity states, and `SHOW_ERROR` diagnostic modes:
+
+| # | Transaction Type | Target / Subject Entity State | Actor Entity (modified_by) State | Target Account Column (SHOW_ERROR=false) | Target Account Column (SHOW_ERROR=true) | Remarks Column (SHOW_ERROR=false) | Remarks Column (SHOW_ERROR=true) |
+|---|---|---|---|---|---|---|---|
+| 1 | Type 7: Moved to Created Account | Found in Storage 1 (accounts.id) | Found in Storage 2 (users.id) | Acme Branch | Acme Branch | Moved to Newly Created Account: Acme Branch | Moved to Newly Created Account: Acme Branch |
+| 2 | Type 7: Moved to Created Account | Found in Storage 2 (users.id &rarr; accounts.user_id) | Found in Storage 2 (users.id) | Acme Branch | Acme Branch | Moved to Newly Created Account: Acme Branch | Moved to Newly Created Account: Acme Branch |
+| 3 | Type 7: Moved to Created Account | Missing in Both (Target #105 deleted) | Found in Storage 2 (users.id = 2) | [ ⊘ Deleted Account #105 ] | Error: Target lookup failed<br>&bull; Target: accounts=MISS \| users=MISS<br>&bull; Actor: users=FOUND ("admin") | ⚠ Account #105 has been deleted.<br>(Moved meters to newly created account) | Error: Target missing<br>&bull; Target: accounts=MISS \| users=MISS<br>&bull; Actor: users=FOUND ("admin") |
+| 4 | Type 7: Moved to Created Account | Found in Storage 1 (accounts.id = 105) | Missing in Both (Actor #2 deleted) | Acme Branch | Acme Branch | Moved to Newly Created Account: Acme Branch<br>(by Deleted User #2) | Moved to Newly Created Account: Acme Branch<br>&bull; Actor: accounts=MISS \| users=MISS (DELETED) |
+| 5 | Type 7: Moved to Created Account | Missing in Both (Target #105 deleted) | Missing in Both (Actor #2 deleted) | [ ⊘ Deleted Account #105 ] | Error: Target & Actor missing<br>&bull; Target: MISS \| MISS<br>&bull; Actor: MISS \| MISS | ⚠ Account #105 has been deleted.<br>(Actor #2 also deleted) | Error: Both entities missing<br>&bull; Target: MISS \| MISS<br>&bull; Actor: MISS \| MISS |
+| 6 | Type 7: Legacy Alignment Row (FixMeter) | NULL / Not Set (transfer_to_account_id = null) | Found in Storage 2 (users.id = 2) | (not set) | Diagnostic Notice:<br>&bull; Subject: accounts.id=79 [FOUND]<br>&bull; Actor: users.id=2 [FOUND]<br>&bull; Target: NOT_SPECIFIED (legacy null) | Moved meters to newly created account<br>(or notes payload) | Notice: Legacy alignment row<br>&bull; Subject: FOUND<br>&bull; Actor: FOUND<br>&bull; Target: NOT_SPECIFIED |
+| 7 | Type 6: Balance Addition (value > 0) | Found in Storage 1 or 2 (Account #79) | Found in Storage 2 (Actor #2) | Acme Corp | Acme Corp | Meter Balance Update on: Acme Corp | Meter Balance Update on: Acme Corp |
+| 8 | Type 6: Balance Addition (value > 0) | Missing in Both (Account #79 deleted) | Found in Storage 2 (Actor #2) | [ ⊘ Deleted Account #79 ] | Error: Target lookup failed<br>&bull; Target: MISS \| MISS<br>&bull; Actor: users=FOUND ("admin") | ⚠ Account #79 has been deleted.<br>(Meter Balance Update) | Error: Target missing<br>&bull; Target: MISS \| MISS |
+| 9 | Type 6: Balance Deduction (value < 0) | Subject #79 active; Actor #2 active | Found in Storage 2 (users.id = 2) | admin (or linked account) | admin | Meter Balance Update by: admin | Meter Balance Update by: admin |
+| 10 | Type 6: Balance Deduction (value < 0) | Subject #79 active; Actor #2 deleted | Missing in Both (Actor #2 deleted) | [ ⊘ Deleted Account #2 ] | Error: Actor lookup failed<br>&bull; Subject: accounts=FOUND<br>&bull; Actor: accounts=MISS \| users=MISS | ⚠ Account #2 has been deleted.<br>(Meter Balance Update by: Deleted User #2) | Error: Actor missing<br>&bull; Subject: FOUND<br>&bull; Actor: accounts=MISS \| users=MISS |
+| 11 | Type 1 / 5: Outbound Transfer | Found in Storage 1 or 2 (Target #88) | Active user | Target Corp | Target Corp | Sent to Target Corp | Sent to Target Corp |
+| 12 | Type 1 / 5: Outbound Transfer | Missing in Both (Target #88 deleted) | Active user | [ ⊘ Deleted Account #88 ] | Error: Target lookup failed<br>&bull; Target: MISS \| MISS | ⚠ Account #88 has been deleted.<br>(Sent to Deleted Account #88) | Error: Target lookup failed<br>&bull; Target: MISS \| MISS |
+| 13 | Type 2 / 3 / 4: Inbound Meter / Initial | Found in Storage 1 or 2 (Account #79) | Active user | Acme Corp | Acme Corp | Initial Meters / Received from &lt;source&gt; | Initial Meters / Received from &lt;source&gt; |
+| 14 | Type 2 / 3 / 4: Inbound Meter / Initial | Missing in Both (Account #79 deleted) | Active user | [ ⊘ Deleted Account #79 ] | Error: Account lookup failed<br>&bull; Account #79: MISS \| MISS | ⚠ Account #79 has been deleted. | Error: Account lookup failed<br>&bull; Account #79: MISS \| MISS |
+| 15 | Type 0: Scored Assessment | Candidate owner matches subject account | Automated system | Acme Corp | Acme Corp | Used to Score Assessment | Used to Score Assessment |
+| 16 | Type 0: Scored Assessment | Cross-account deduction; Source active | Automated system | Parent Corp | Parent Corp | Used to Score Assessment: Parent Corp | Used to Score Assessment: Parent Corp |
+| 17 | Type 0: Scored Assessment | Cross-account deduction; Source deleted | Automated system | [ ⊘ Deleted Account #50 ] | Error: Scored assessment source miss<br>&bull; Account #50: MISS \| MISS | ⚠ Account #50 has been deleted.<br>(Used to Score Assessment) | Error: Scored assessment source miss |
+
 > Expected Result:
 > - Meter activity history is displayed.
 

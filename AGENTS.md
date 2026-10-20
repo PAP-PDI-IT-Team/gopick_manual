@@ -8,7 +8,15 @@ Keep responses direct, factual, and based on verified repository state.
 
 ## Scope
 
-Apply these instructions when changing `index.html`, `DESIGN.md`, `CHANGELOG.md`, or files under `.github/`, `pages/`, `assets/`, `shared/`, or `docs/`.
+Apply these instructions when changing `index.html`, `DESIGN.md`, `CHANGELOG.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or files under `.agents/`, `.claude/`, `.github/`, `pages/`, `assets/`, `shared/`, or `docs/`.
+
+## Repository Skills
+
+- `.agents/skills/` is the official source for this repository's shared skills. Keep GoPick skills in the repository, not in user-level skill directories.
+- For GoPick commit requests or commit-message reviews, read and follow [gopick-commit](.agents/skills/gopick-commit/SKILL.md). Explicit skill invocation authorizes local commits without another confirmation; ordinary implementation and explicit message-only requests do not. The skill never pushes or merges.
+- For requested Code Maintenance and Quality Checks, read and follow [CMQC](.agents/skills/cmqc/SKILL.md) for file-size thresholds and embedded CSS/JavaScript checks.
+- `CLAUDE.md` and `GEMINI.md` are tool-specific entrypoints that reference these instructions and the shared skills. Keep shared rules here rather than copying them into each entrypoint.
+- Entries under `.claude/skills/` are relative links to the official skills for Claude discovery. Edit the sources under `.agents/skills/`.
 
 ## Human Priority
 

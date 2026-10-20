@@ -66,6 +66,11 @@
             }
         },
         {
+            pageTitle: 'Activity Log',
+            pageUrl: '../../pages/workflow/activity-log-management/index.html',
+            docUrl: '../../docs/workflow/activity-log-management.md'
+        },
+        {
             pageTitle: 'Assessment Management',
             pageUrl: '../../pages/workflow/assessment-management/index.html',
             docUrl: '../../docs/workflow/assessment-management.md'
