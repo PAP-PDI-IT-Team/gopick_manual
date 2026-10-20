@@ -14,8 +14,8 @@
                     {
                         title: 'Dashboard Operational Overview',
                         caption: 'High-level dashboard overview showing meter requests, active accounts, expiring accounts, and inactive account cards.',
-                        src: '',
-                        alt: 'Dashboard Account Monitoring Overview'
+                        src: 'assets/img/dashboard-account-monitoring.png',
+                        alt: 'Dashboard with the Account Monitoring card outlined, showing Meter Requests, Active Accounts, Expiring Accounts, and Inactive Accounts'
                     }
                 ],
                 metrics: [
@@ -57,8 +57,8 @@
                     {
                         title: 'Quick Actions & Help Desk Navigation',
                         caption: 'Shortcut panels for account creation, meter orders, inquiry submission, and message notifications.',
-                        src: '',
-                        alt: 'Dashboard Quick Navigation Cards'
+                        src: 'assets/img/dashboard-quick-navigation.png',
+                        alt: 'Dashboard with the Quick Links, Help Desk, Message Inbox, and Announcements panels outlined'
                     }
                 ],
                 quickLinks: [
