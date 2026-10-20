@@ -1,5 +1,7 @@
 # Assessment Management
 
+Manages assessments, creates test batteries, and provides access to Job Fit Profile (JFP).
+
 ## View Assessments
 
 List of assessments available in a grid card gallery.

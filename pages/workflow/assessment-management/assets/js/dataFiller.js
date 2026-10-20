@@ -3,7 +3,7 @@
 
     const assessmentContent = {
         title: 'Assessment Management',
-        description: 'Manage, search, preview, import, and configure assessments and test batteries across the GoPick platform.',
+        description: 'Manages assessments, creates test batteries, and provides access to Job Fit Profile (JFP).',
         sections: [
             {
                 id: 'view-assessments',

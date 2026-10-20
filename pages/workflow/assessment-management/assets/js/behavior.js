@@ -33,6 +33,7 @@
 
         init() {
             setFooterYear();
+            this.renderer.renderHero();
             this.renderer.renderAllSections();
             this.sidebar.render();
             this.sidebar.bindListeners();

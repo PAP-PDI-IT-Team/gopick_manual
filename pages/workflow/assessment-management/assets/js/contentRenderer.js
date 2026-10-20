@@ -7,6 +7,19 @@
             this.imageRenderer = imageRenderer || global.GoPickImageRenderer || null;
         }
 
+        renderHero() {
+            const content = this.store.getContent();
+            const pageTitle = document.getElementById('assessmentPageTitle');
+            const pageDescription = document.getElementById('assessmentPageDescription');
+
+            if (!pageTitle || !pageDescription || !content.title || !content.description) {
+                throw new Error('Assessment hero requires title and description elements and content.');
+            }
+
+            pageTitle.textContent = content.title;
+            pageDescription.textContent = content.description;
+        }
+
         createBulletList(items) {
             const list = document.createElement('ul');
             list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';

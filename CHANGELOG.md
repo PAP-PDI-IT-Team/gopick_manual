@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Added the Assessment Management hero description covering assessment management, test battery creation, and Job Fit Profile access, synchronized with the Markdown source.
 - Isolated the shared screenshot-card renderer and stylesheet in `shared/components/image-card/`, updated all ten workflow consumers and site-shell asset versions, and documented how to reuse the component on other pages.
 - Reset the Assessment Management Markdown and rendered page to an Accounts Management-style shell, replacing the previous instructions and custom presentation with the four confirmed major assessment areas and documenting View Assessments functions through the established Access Path, How To Use, and Expected Result format.
 - Documented the finalized Import Assessment workflow and its Download Template child feature without adding unconfirmed results or file validation rules.
