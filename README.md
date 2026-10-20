@@ -20,6 +20,16 @@ GoPick Assessment Center Manual is a static documentation website for GoPick wor
 
 No application packages or build step are required.
 
+### Python static server
+
+From the repository root, run:
+
+```bash
+python3 -m http.server 82 --bind 127.0.0.1
+```
+
+Open `http://127.0.0.1:82/` in your browser. If port 82 is already in use, run `python3 -m http.server 8080 --bind 127.0.0.1` and open `http://127.0.0.1:8080/` instead. Stop the server with `Ctrl+C`.
+
 ### VS Code Five Server
 
 1. Open this repository in Visual Studio Code.
@@ -31,11 +41,11 @@ No application packages or build step are required.
 1. Open the root `index.html` file.
 2. It will open the browser to view the landing page.
 
-Five Server must serve the repository root because the landing page fetches `shared/data/gopick-data.json`.
+The static server must serve the repository root because the landing page fetches `shared/data/gopick-data.json`.
 
 ### Open the file directly
 
-You can also open the root `index.html` in a browser. Some browsers block local `fetch()` requests from `file://` pages, so the landing-page data may not load in this mode. Use Five Server when that occurs.
+You can also open the root `index.html` in a browser. Some browsers block local `fetch()` requests from `file://` pages, so the landing-page data may not load in this mode. Use a static server when that occurs.
 
 An internet connection is required for the Tailwind CSS CDN used by the pages.
 
