@@ -67,7 +67,8 @@
                 {
                     title: 'Create Account Wizard Overview',
                     caption: 'Displays the step-by-step account configuration wizard.',
-                    src: null
+                    src: 'assets/img/create-account-wizard-overview.png',
+                    alt: 'Create Account page showing the five-step wizard progress bar and the Account Information form'
                 }
             ],
             accessPath: 'Accounts > Create Account',
@@ -290,7 +291,14 @@
                 {
                     title: 'Accounts Listing & Action Toolbar',
                     caption: 'Displays account rows, status badges, search controls, and action menus.',
-                    src: null
+                    src: 'assets/img/view-accounts-listing.png',
+                    alt: 'View Accounts page with search, Advanced Search, View Archived Accounts, Bulk Action, filters, status legend, and an account row with view, update, and archive actions'
+                },
+                {
+                    title: 'Advanced Search Dialog',
+                    caption: 'Advanced Search dialog with rule rows for Account Name, Account Type, and Meter Balance, plus Add rule, Clear, Close, and Search.',
+                    src: 'assets/img/view-accounts-advanced-search.png',
+                    alt: 'Advanced Search dialog over the View Accounts page showing three rule rows with field, operator, and value inputs'
                 }
             ],
             legend: [
@@ -377,7 +385,8 @@
                 {
                     title: 'Update Specific Form View',
                     caption: 'Section-isolated update view within the account detail page.',
-                    src: null
+                    src: 'assets/img/update-specific-account-information.png',
+                    alt: 'Update Account: Account Information form with a two-step progress bar, read-only account type, username and parent account, and editable contact fields'
                 }
             ],
             rules: ['Updating the current user own account only opens the Account Information variant.', 'Password fields are not prefilled.'],
@@ -597,9 +606,34 @@
                 detail: 'Opens account detail for an active, non-archived account.',
                 images: [
                     {
-                        title: 'Active Account Detail Page',
-                        caption: 'Overview of account details, assigned assessments, meter management, and user list.',
-                        src: null
+                        title: 'View Account: Account Information',
+                        caption: 'Account Information tab showing account type, parent account, contact details, address, and expiration details with the Update button.',
+                        src: 'assets/img/view-account-information.png',
+                        alt: 'View Account page with the Account Information tab selected, showing identity, contact, address, and expiration details'
+                    },
+                    {
+                        title: 'View Account: Assigned Assessments',
+                        caption: 'Assigned Assessments tab listing assigned assessments by category with Manage and Change Log actions.',
+                        src: 'assets/img/view-account-assigned-assessments.png',
+                        alt: 'View Account page with the Assigned Assessments tab selected, listing assessments by category with Manage and Change Log actions'
+                    },
+                    {
+                        title: 'View Account: Meter Management',
+                        caption: 'Meter Management tab showing the metering management type and allocated meter with the View Meter Logs button.',
+                        src: 'assets/img/view-account-meter-management.png',
+                        alt: 'View Account page with the Meter Management tab selected, showing Metering Management Type and Allocated Meter'
+                    },
+                    {
+                        title: 'View Account: Other Account Settings',
+                        caption: 'Other Account Settings tab showing account limits, contacts, billing, and contract configuration.',
+                        src: 'assets/img/view-account-other-account-settings.png',
+                        alt: 'View Account page with the Other Account Settings tab selected, showing user limits, usage settings, and account contract settings'
+                    },
+                    {
+                        title: 'View Account: List of Users',
+                        caption: 'List of Users tab showing account users under the selected account, or an empty-list message.',
+                        src: 'assets/img/view-account-list-of-users.png',
+                        alt: 'View Account page with the List of Users tab selected, showing an empty list of accounts message'
                     }
                 ],
                 accessPath: 'Accounts > View Accounts > Row Actions > View',

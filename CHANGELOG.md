@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added the Dashboard Account Monitoring and Quick Navigation screenshots with blurred surroundings and an outlined focus area, replacing their pending placeholders.
+- Added a shared screenshot carousel to the image-card component with previous and next arrows, dot indicators, a position counter, and keyboard navigation; sections with a single screenshot render unchanged.
+- Added Accounts Management screenshots for the Create Account wizard, the View Account tabs, View Accounts and Advanced Search, and Update Specific, each with blurred surroundings and an outlined focus area and with contact details redacted.
+
+### Changed
+
+- Switched the Accounts Management renderer to the shared carousel so sections with multiple screenshots show them in one card.
 
 ## [1.1.1] - 2026-09-24 - PR 144a0e5
 

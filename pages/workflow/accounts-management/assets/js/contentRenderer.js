@@ -99,9 +99,7 @@
 
             const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
             if (section.images && section.images.length && imageRenderer) {
-                section.images.forEach(imageObj => {
-                    card.appendChild(imageRenderer.createImageOrPlaceholder(imageObj, section.title));
-                });
+                card.appendChild(imageRenderer.createImageGallery(section.images, section.title));
             }
 
             if (section.items && section.items.length) {
@@ -189,9 +187,7 @@
 
             const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
             if (content.viewAccounts.images && content.viewAccounts.images.length && imageRenderer) {
-                content.viewAccounts.images.forEach(img => {
-                    container.appendChild(imageRenderer.createImageOrPlaceholder(img, 'View Accounts'));
-                });
+                container.appendChild(imageRenderer.createImageGallery(content.viewAccounts.images, 'View Accounts'));
             }
 
             this.appendText(container, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Legends');

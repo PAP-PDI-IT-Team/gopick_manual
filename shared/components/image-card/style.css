@@ -146,3 +146,117 @@
     color: #64748b;
     line-height: 1.45;
 }
+
+.manual-image-gallery {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    outline: none;
+}
+
+.manual-image-gallery:focus-visible .manual-image-gallery__viewport {
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.45);
+    border-radius: 14px;
+}
+
+.manual-image-gallery__viewport {
+    position: relative;
+}
+
+.manual-image-gallery__slide {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.manual-image-gallery__slide[hidden] {
+    display: none;
+}
+
+.manual-image-gallery__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    transform: translateY(-50%);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #334155;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.manual-image-gallery__arrow:hover {
+    background: #b3060f;
+    border-color: #b3060f;
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.06);
+}
+
+.manual-image-gallery__arrow:focus-visible {
+    outline: 2px solid #e50914;
+    outline-offset: 2px;
+}
+
+.manual-image-gallery__arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.manual-image-gallery__arrow--previous {
+    left: 0.75rem;
+}
+
+.manual-image-gallery__arrow--next {
+    right: 0.75rem;
+}
+
+.manual-image-gallery__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.625rem;
+    padding: 0 0.25rem;
+}
+
+.manual-image-gallery__dots {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.manual-image-gallery__dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: rgba(148, 163, 184, 0.6);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.manual-image-gallery__dot:hover {
+    background: rgba(100, 116, 139, 0.9);
+}
+
+.manual-image-gallery__dot[aria-current="true"] {
+    background: #e50914;
+    transform: scale(1.25);
+}
+
+.manual-image-gallery__dot:focus-visible {
+    outline: 2px solid #e50914;
+    outline-offset: 2px;
+}
+
+.manual-image-gallery__counter {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+}
