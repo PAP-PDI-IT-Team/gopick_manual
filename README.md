@@ -43,8 +43,14 @@ An internet connection is required for the Tailwind CSS CDN used by the pages.
 
 ```text
 .
+|-- .agents/skills/            Official shared repository skills
+|-- .claude/skills/            Claude discovery links to shared skills
+|-- AGENTS.md                 Shared repository instructions and Codex entrypoint
+|-- CLAUDE.md                 Claude project entrypoint
+|-- GEMINI.md                 Antigravity project entrypoint
 |-- index.html                 Home-page shell
 |-- CONTRIBUTING.md           Contribution use cases and review requirements
+|-- SOP.md                    Plan, draft, human review, quality checks, and commit flow
 |-- assets/                    Home-page CSS and JavaScript
 |-- shared/
 |   |-- components/image-card/ Shared screenshot renderer and stylesheet
@@ -71,6 +77,20 @@ An internet connection is required for the Tailwind CSS CDN used by the pages.
     |-- guides/                Documentation structure and authoring standards
     `-- old-version/           Changelogs archived during future version maintenance
 ```
+
+## Repository skills
+
+Follow the [Plan-to-Commit SOP](SOP.md) for the interview, Markdown plan, draft, human review and revisions, CMQC, and authorized local commit sequence.
+
+The official shared skills live in [.agents/skills/](.agents/skills/). They belong to this repository and do not require a user-level installation.
+
+[gopick-commit](.agents/skills/gopick-commit/SKILL.md) prepares commit messages and creates authorized GoPick commits. Codex and Antigravity discover the shared skill directory directly. Claude discovers the same source through the relative `.claude/skills/gopick-commit` link; preserve that symbolic link when checking out the repository.
+
+The tool entrypoints are [AGENTS.md](AGENTS.md) for Codex, [CLAUDE.md](CLAUDE.md) for Claude, and [GEMINI.md](GEMINI.md) for Antigravity. Shared repository rules remain in `AGENTS.md`, and skill instructions remain in `.agents/skills/`.
+
+From a conversation opened in this repository, invoke `$gopick-commit` in Codex or `/gopick-commit` in Claude and Antigravity to authorize local commits immediately. A bare invocation covers pending staged, unstaged, and relevant untracked changes; the skill selects focused commit groups and messages and automatically updates the PR's changelog entries without a proposal or confirmation step. Explicit message-only, review-only, or dry-run requests do not modify the changelog or authorize commits. Required checks still apply. The skill never pushes or merges.
+
+[CMQC — Code Maintenance and Quality Checks](.agents/skills/cmqc/SKILL.md) reviews only staged and unstaged HTML, CSS, and JavaScript changes for file line counts and prohibited embedded or inline CSS/JavaScript. It checks complete changed files, inspecting index and working-tree versions separately when both differ. Unchanged and untracked files are excluded. Its line-count exemption applies only to `dataFiller.js`. Invoke `$cmqc` in Codex or `/cmqc` in Claude and Antigravity; no scope selection is needed. A check reports findings; repairs require a request to fix them. Claude's `.claude/skills/cmqc` link points to the same shared skill.
 
 ## Content ownership
 

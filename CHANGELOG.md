@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Added a root SOP with a Mermaid workflow and stage-responsibility tables covering interview-based planning, manual human or agent editing, human review and revisions, CMQC, and local commits through the commit skill for either author's changes.
+- Made explicit GoPick commit skill invocation automatically update the PR's changelog entries and create local commits without proposals or confirmation, while preserving required checks, explicit review-only requests, and the prohibition on pushing or merging.
+- Added the repository-scoped CMQC skill to check only staged and unstaged HTML, CSS, and JavaScript changes for line-count thresholds with a `dataFiller.js` exemption and embedded/inline CSS and JavaScript violations, with entrypoints for Codex, Claude, and Antigravity.
+- Moved the GoPick commit skill into the repository's official `.agents/skills/` directory, added Claude and Antigravity Markdown entrypoints and a Claude discovery link, and removed the previously installed user-level copies.
 - Added the Assessment Management hero description covering assessment management, test battery creation, and Job Fit Profile access, synchronized with the Markdown source.
 - Isolated the shared screenshot-card renderer and stylesheet in `shared/components/image-card/`, updated all ten workflow consumers and site-shell asset versions, and documented how to reuse the component on other pages.
 - Reset the Assessment Management Markdown and rendered page to an Accounts Management-style shell, replacing the previous instructions and custom presentation with the four confirmed major assessment areas and documenting View Assessments functions through the established Access Path, How To Use, and Expected Result format.

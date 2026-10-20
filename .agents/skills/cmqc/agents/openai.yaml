@@ -1,0 +1,4 @@
+interface:
+  display_name: "CMQC — Code Maintenance and Quality Checks"
+  short_description: "Check staged and unstaged GoPick code quality"
+  default_prompt: "Use $cmqc to check only staged and unstaged GoPick HTML, CSS, and JavaScript changes for file-size limits and embedded CSS or JavaScript, and report findings without editing files."
