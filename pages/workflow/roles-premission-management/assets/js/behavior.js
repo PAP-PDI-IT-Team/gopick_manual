@@ -23,7 +23,6 @@
         { func: 'Assessment-Schedule Module: Update Assessment of Child Users', crud: 'Update', limit: 'modAssessmentSchedule-actionCreate', scope: '', perms: ['C', '', '', '', '', 'C', 'C', 'C', 'C', '-'] }
     ];
 
-
     var ROLE_NAMES = ['Super Admin (IT)', 'Super Admin (ASD)', 'Test Creator', 'API Access', 'Administrator', 'Distributor', 'Sub Distributor', 'Client Account', 'Sub Account', 'Self Registration'];
 
     function getPermClass(permValue) {
@@ -133,20 +132,55 @@
         if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     }
 
-    function initAccountsPage() {
-        populateRbacTable();
-        generateRoleCapabilities();
-        setFooterYear();
+    class RolesPermissionsApp {
+        constructor() {
+            this.content = global.__rolesPermissionContent || {};
+            this.store = new global.RolesPermissionsContentStore(this.content);
+            this.renderer = new global.RolesPermissionsContentRenderer(this.store, global.GoPickImageRenderer);
+            this.sidebar = new global.RolesPermissionsSidebarTracker(this.store);
+        }
+
+        scrollToHash() {
+            const id = (location.hash || '').replace('#', '');
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                this.sidebar.setActive(id);
+                this.sidebar.isProgrammaticScroll = true;
+                setTimeout(() => {
+                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    el.focus && el.focus();
+                    setTimeout(() => {
+                        this.sidebar.isProgrammaticScroll = false;
+                    }, 400);
+                }, 30);
+            }
+        }
+
+        init() {
+            setFooterYear();
+            this.renderer.renderAll();
+            populateRbacTable();
+            generateRoleCapabilities();
+            this.sidebar.render();
+            this.sidebar.bindListeners();
+
+            if (location.hash) {
+                this.scrollToHash();
+            } else {
+                this.sidebar.updateScrollSpy();
+            }
+        }
     }
+
+    const app = new RolesPermissionsApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAccountsPage);
+        document.addEventListener('DOMContentLoaded', () => app.init());
     } else {
-        initAccountsPage();
+        app.init();
     }
 
-    global.accountsBehavior = {
-        initBehavior: initAccountsPage
-    };
-
+    global.RolesPermissionsApp = RolesPermissionsApp;
+    global.__rolesPermissionsApp = app;
 })(window);

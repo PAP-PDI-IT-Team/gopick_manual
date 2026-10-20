@@ -4,9 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Assessment Management - GoPick</title>
-  <link rel="stylesheet" href="../../../shared/css/site-shell.css?v=20260429-gradient">
+  <link rel="stylesheet" href="../../../shared/css/site-shell.css?v=20261020-isolate-image-card">
+  <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261020-isolate-image-card">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css?v=20260924-accounts-format">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -39,28 +41,57 @@
   </header>
 
   <main class="manual-main pt-20 pb-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
       <!-- ==================== Page Hero ==================== -->
       <div class="manual-page-hero mb-10">
         <span class="manual-page-hero__eyebrow">Manual Page</span>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">Assessment Management</h1>
-        <p class="mt-3 text-lg text-slate-500 max-w-3xl">Configuration guides for assessment randomization, timers, and image uploads in the GoPick platform.</p>
+        <h1 id="assessmentPageTitle" class="text-3xl md:text-4xl font-extrabold text-slate-900">Assessment Management</h1>
+        <p id="assessmentPageDescription" class="mt-3 text-lg text-slate-500 max-w-3xl"></p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
         <!-- ==================== Sidebar ==================== -->
         <aside class="hidden lg:block lg:col-span-1">
-          <nav id="docSidebar" class="manual-sidebar-panel sticky top-24 p-5">
+          <nav class="manual-sidebar-panel sticky top-24 p-5">
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">On this page</h4>
-            <ul id="docSidebarList" class="space-y-2 text-sm"></ul>
+            <ul id="docSidebarList" class="space-y-2 text-sm">
+              <li class="sidebar-item">
+                <a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#view-assessments">View Assessments</a>
+                <ul class="sidebar-children mt-1 space-y-1">
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#search">Search</a></li>
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#advanced-search">Advanced Search</a></li>
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#filter-by-category">Filter By Category</a></li>
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#filter-by-codes">Filter By Codes</a></li>
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#sort">Sort</a></li>
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#sort-by-ascending-or-descending">Sort By Ascending or Descending</a></li>
+                  <li>
+                    <a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#click-assessment-card">View specific Assessment</a>
+                    <ul class="sidebar-children mt-1 ml-3 space-y-1">
+                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#preview-assessment">Preview Assessment</a></li>
+                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#upload-norm">Upload Norm</a></li>
+                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#config-dropdown">Config Dropdown</a></li>
+                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#settings-dropdown">Settings Dropdown</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="sidebar-item">
+                <a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#import-assessment">Import Assessment</a>
+                <ul class="sidebar-children mt-1 space-y-1">
+                  <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#download-template">Download Template</a></li>
+                </ul>
+              </li>
+              <li><a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#create-test-battery">Create Test Battery</a></li>
+              <li><a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#schedule-job-fit-profile">Schedule Job Fit Profile</a></li>
+              <li><a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#other-pages">Other Pages</a></li>
+            </ul>
           </nav>
         </aside>
 
         <!-- ==================== Content ==================== -->
         <div class="lg:col-span-4 space-y-8">
-          <!-- Single render target: JS will render the selected section here -->
           <section id="docsContent" class="manual-reading-surface p-6">
             <div id="section-render-root"></div>
           </section>
@@ -79,10 +110,13 @@
     </div>
   </footer>
 
-  <script src="assets/js/dataFiller.js" defer></script>
-  <script src="assets/js/behavior.js" defer></script>
+  <script src="../../../shared/components/image-card/renderer.js?v=20261020-isolate-image-card" defer></script>
+  <script src="assets/js/dataFiller.js?v=20261020-assessment-description" defer></script>
+  <script src="assets/js/contentStore.js?v=20261013-phase2" defer></script>
+  <script src="assets/js/contentRenderer.js?v=20261020-assessment-description" defer></script>
+  <script src="assets/js/sidebarTracker.js?v=20261013-phase2" defer></script>
+  <script src="assets/js/behavior.js?v=20261020-assessment-description" defer></script>
   <script src="../../../shared/js/headerSearch.js" defer></script>
   <script src="../../../shared/js/manualNav.js" defer></script>
 </body>
 </html>
-

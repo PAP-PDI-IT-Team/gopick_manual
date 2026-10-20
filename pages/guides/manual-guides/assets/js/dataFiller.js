@@ -1,4 +1,3 @@
-// manual guides data filler - rendered from docs/guides/manual-documentation-standard.md
 (function (global) {
     'use strict';
 

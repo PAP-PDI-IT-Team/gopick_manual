@@ -1,0 +1,4 @@
+interface:
+  display_name: "GoPick Commit"
+  short_description: "Prepare and create commits for the GoPick manual"
+  default_prompt: "Use $gopick-commit to inspect pending GoPick changes, automatically update the changelog, and create focused local commits without confirmation; never push or merge."

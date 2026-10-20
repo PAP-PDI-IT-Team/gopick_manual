@@ -1,9 +1,3 @@
-/*
-  Data Layer: assets/js/dataFiller.js
-  - Exposes `gopickDataLayer.init()` which injects data into DOM by id
-  - Functions use descriptive names and single responsibility
-  - Simple SRC/SOP and one-level abstraction
-*/
 (function (global) {
     'use strict';
 
@@ -33,7 +27,6 @@
         contact: `Admin / Manager portal: http://localhost:82/app/administrator/\nCandidate portal: http://localhost:82/app/\nDatabase admin (admins only): http://localhost:8080/\nIf you cannot log in or need account setup, contact your site administrator.`
     };
 
-    /* helper: inject text into element by id */
     function fillTextById(targetId, textContent) {
         const node = document.getElementById(targetId);
         if (!node) return false;
@@ -53,7 +46,6 @@
         listNode.innerHTML = '';
         gopickData.features.forEach(function (featureText) {
             const li = document.createElement('li');
-            // include Tailwind utility classes for visual styling and initial hidden state
             li.className = 'features__item bg-white p-4 rounded-md border border-gray-100 opacity-0 translate-y-3';
             li.textContent = featureText;
             listNode.appendChild(li);

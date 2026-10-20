@@ -133,20 +133,58 @@
         if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     }
 
-    function initAccountsPage() {
-        populateRbacTable();
-        generateRoleCapabilities();
-        setFooterYear();
+    class AccountsApp {
+        constructor() {
+            this.content = global.__accountsContent || {};
+            this.store = new global.AccountsStore(this.content);
+            this.renderer = new global.AccountsRenderer(this.store, global.GoPickImageRenderer);
+            this.sidebar = new global.AccountsSidebarTracker(this.store);
+        }
+
+        scrollToHash() {
+            const id = (location.hash || '').replace('#', '');
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                this.sidebar.setActive(id);
+                this.sidebar.isProgrammaticScroll = true;
+                setTimeout(() => {
+                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    el.focus && el.focus();
+                    setTimeout(() => {
+                        this.sidebar.isProgrammaticScroll = false;
+                    }, 400);
+                }, 30);
+            }
+        }
+
+        init() {
+            setFooterYear();
+            this.renderer.renderAll();
+            this.sidebar.render();
+            this.sidebar.bindListeners();
+            populateRbacTable();
+            generateRoleCapabilities();
+
+            if (location.hash) {
+                this.scrollToHash();
+            } else {
+                this.sidebar.updateScrollSpy();
+            }
+        }
     }
+
+    const app = new AccountsApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAccountsPage);
+        document.addEventListener('DOMContentLoaded', () => app.init());
     } else {
-        initAccountsPage();
+        app.init();
     }
 
+    global.AccountsApp = AccountsApp;
+    global.__accountsApp = app;
     global.accountsBehavior = {
-        initBehavior: initAccountsPage
+        initBehavior: () => app.init()
     };
-
 })(window);

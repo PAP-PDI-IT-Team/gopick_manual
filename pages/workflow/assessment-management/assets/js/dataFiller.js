@@ -1,165 +1,209 @@
-// assessment data filler - hold page content in JS and render into HTML
 (function (global) {
     'use strict';
 
     const assessmentContent = {
         title: 'Assessment Management',
+        description: 'Manages assessments, creates test batteries, and provides access to Job Fit Profile (JFP).',
         sections: [
             {
-                id: 'randomization',
-                title: 'Assessment Randomization and Timer',
-                description: 'Configure question randomization and timer settings for any assessment.',
-                steps: [
-                    { title: 'Open "View Assessments"', detail: 'Locate it in the side panel of the admin portal.' },
-                    { title: 'Select an assessment', detail: 'Choose the assessment from the gallery view.' },
-                    { title: 'Open configuration', detail: 'Click the configuration icon - the 3rd button in the top-left button group.' },
-                    { title: 'Select "Page Setup"', detail: 'From the dropdown, select Page Setup.' },
-                    { title: 'Set timer and randomization', detail: 'Choose which part of the exam will be randomized, enable the timer, and set the specified time limit.' }
+                id: 'view-assessments',
+                title: 'View Assessments',
+                description: 'List of assessments available in a grid card gallery.',
+                images: [
+                    {
+                        title: 'Assessment Catalog Gallery View',
+                        caption: 'Interactive catalog of available assessments with search, category filtering, and direct action triggers.',
+                        src: '',
+                        alt: 'View Assessments Catalog Screenshot'
+                    }
+                ],
+                children: [
+                    {
+                        id: 'search',
+                        title: 'Search',
+                        description: 'Searches the visible assessment cards.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Search Input'],
+                        steps: [
+                            'Open View Assessments.',
+                            'Enter search text.',
+                            'Submit the search.'
+                        ],
+                        expectedResults: [
+                            'Assessment cards matching the search text are displayed.'
+                        ]
+                    },
+                    {
+                        id: 'advanced-search',
+                        title: 'Advanced Search',
+                        description: 'Searches assessments using configured rules.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Advanced Search'],
+                        steps: [
+                            'Open View Assessments.',
+                            'Open Advanced Search.',
+                            'Add or remove search rules.',
+                            'Select Search.'
+                        ],
+                        expectedResults: [
+                            'Assessment cards matching the configured rules are displayed.'
+                        ]
+                    },
+                    {
+                        id: 'filter-by-category',
+                        title: 'Filter By Category',
+                        description: 'Restricts the assessment gallery to a selected category.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Filter By Category'],
+                        steps: [
+                            'Open View Assessments.',
+                            'Open Filter By Category.',
+                            'Select a category.'
+                        ],
+                        expectedResults: [
+                            'Only assessment cards in the selected category are displayed.'
+                        ]
+                    },
+                    {
+                        id: 'filter-by-codes',
+                        title: 'Filter By Codes',
+                        description: 'Restricts the assessment gallery using a selected assessment code.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Filter By Codes'],
+                        steps: [
+                            'Open View Assessments.',
+                            'Open Filter By Codes.',
+                            'Select the applicable code.'
+                        ],
+                        expectedResults: [
+                            'Only assessment cards matching the selected code are displayed.'
+                        ]
+                    },
+                    {
+                        id: 'sort',
+                        title: 'Sort',
+                        description: 'Orders assessment cards using a selected field.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Sort'],
+                        steps: [
+                            'Open View Assessments.',
+                            'Open Sort.',
+                            'Select a sort field.'
+                        ],
+                        expectedResults: [
+                            'Assessment cards are reordered using the selected field.'
+                        ]
+                    },
+                    {
+                        id: 'sort-by-ascending-or-descending',
+                        title: 'Sort By Ascending or Descending',
+                        description: 'Controls the direction applied to the selected sort field.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Sort Direction'],
+                        steps: [
+                            'Select a sort field.',
+                            'Select ascending or descending order.'
+                        ],
+                        expectedResults: [
+                            'Assessment cards are displayed in the selected direction.'
+                        ]
+                    },
+                    {
+                        id: 'click-assessment-card',
+                        title: 'View specific Assessment',
+                        description: 'View Assessment Informations: Description, Dimension, Number of Items, Time Limit, Test Norms, Recommended Level and/or etc.',
+                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card'],
+                        images: [
+                            {
+                                title: 'Assessment Details & Parameters View',
+                                caption: 'Modal view detailing assessment dimensions, item count, norms, and configuration dropdowns.',
+                                src: '',
+                                alt: 'Specific Assessment Information Screenshot'
+                            }
+                        ],
+                        steps: [
+                            'Open View Assessments.',
+                            'Select an assessment card.'
+                        ],
+                        children: [
+                            {
+                                id: 'preview-assessment',
+                                title: 'Preview Assessment',
+                                description: 'Preview test instructions, item rendering, and candidate view.',
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Preview Assessment']
+                            },
+                            {
+                                id: 'upload-norm',
+                                title: 'Upload Norm',
+                                description: 'Upload specialized norm tables and reference percentiles.',
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Upload Norm']
+                            },
+                            {
+                                id: 'config-dropdown',
+                                title: 'Config Dropdown',
+                                description: 'Configure sub-dimensions, time limits, and test batteries.',
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown']
+                            },
+                            {
+                                id: 'settings-dropdown',
+                                title: 'Settings Dropdown',
+                                description: 'Adjust scoring criteria, report delivery, and access levels.',
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Settings Dropdown']
+                            }
+                        ]
+                    }
                 ]
             },
             {
-                id: 'updating-instructions',
-                title: 'Updating Instructions on Assessments',
-                description: 'Edit or add question-level instructions and configuration for an assessment.',
+                id: 'import-assessment',
+                title: 'Import Assessment',
+                description: 'Upload and ingest an assessment definition into the system.',
+                accessPaths: ['Assessments', 'Import Assessment'],
+                images: [
+                    {
+                        title: 'Import Assessment Wizard',
+                        caption: 'File upload zone with template validator and batch ingest controls.',
+                        src: '',
+                        alt: 'Import Assessment Wizard Screenshot'
+                    }
+                ],
                 steps: [
-                    { title: 'Open "View Assessments"', detail: 'Locate it in the side panel of the admin portal.' },
-                    { title: 'Select an assessment', detail: 'Choose the assessment from the gallery view.' },
-                    { title: 'Open configuration', detail: 'Click the configuration icon - the 3rd button in the top-left button group.' },
-                    { title: 'Select "Set Questions"', detail: 'From the dropdown, select Set Questions to manage question-level settings.' },
-                    { title: 'Edit question instructions', detail: 'Under each question, fill in instructions and other configurations as needed.' }
+                    'Open Import Assessment.',
+                    'Select an assessment file based on the provided template.',
+                    'Select Import Assessment.'
+                ],
+                children: [
+                    {
+                        id: 'download-template',
+                        title: 'Download Template',
+                        description: 'Download the standardized template for assessment definitions.',
+                        accessPaths: ['Assessments', 'Import Assessment', 'Download Template'],
+                        steps: [
+                            'Open Import Assessment.',
+                            'Select Download Template.'
+                        ]
+                    }
                 ]
             },
             {
-                id: 'upload-images',
-                title: 'Upload Images',
-                tag: ['Admin ASD', 'Admin IT'],
-                description: 'Upload or update assessment images. Restricted to ASD and IT Super Admin roles.',
-                steps: [
-                    { title: 'Open "View Assessments"', detail: 'Locate it in the side panel of the admin portal.' },
-                    { title: 'Select an assessment', detail: 'Choose the assessment from the gallery view.' },
-                    { title: 'Open settings', detail: 'Click the settings icon - the 4th button in the top-left button group.' },
-                    { title: 'Select "Update"', detail: 'From the dropdown, select Update.' },
-                    { title: 'Upload under Assessment Development', detail: 'Below the ASSESSMENT DEVELOPMENT heading, click the upload icon to add or update images.' }
+                id: 'create-test-battery',
+                title: 'Create Test Battery',
+                description: 'Create test battery assessments by combining multiple individual assessments.',
+                images: [
+                    {
+                        title: 'Create Test Battery Configuration',
+                        caption: 'Battery builder combining multiple cognitive, behavioral, or skills assessments.',
+                        src: '',
+                        alt: 'Create Test Battery Screenshot'
+                    }
                 ]
+            },
+            {
+                id: 'schedule-job-fit-profile',
+                title: 'Schedule Job Fit Profile',
+                description: 'Access the Job Fit Profile Assessment subsystem and schedule candidate batches.'
+            },
+            {
+                id: 'other-pages',
+                title: 'Other Pages',
+                description: 'Cross-functional auxiliary references for assessment delivery.'
             }
         ]
     };
 
-    function createStepCard(index, step) {
-        const wrap = document.createElement('div');
-        wrap.className = 'flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100';
-
-        const badge = document.createElement('div');
-        badge.className = 'w-9 h-9 rounded-full bg-brand text-white font-bold flex items-center justify-center flex-shrink-0';
-        badge.textContent = index;
-
-        const content = document.createElement('div');
-        const title = document.createElement('div');
-        title.className = 'font-semibold text-slate-900';
-        title.textContent = step.title;
-
-        const detail = document.createElement('div');
-        detail.className = 'text-sm text-slate-500 mt-1';
-        detail.textContent = step.detail;
-
-        content.appendChild(title);
-        content.appendChild(detail);
-        wrap.appendChild(badge);
-        wrap.appendChild(content);
-        return wrap;
-    }
-
-    function renderAllSections() {
-        const root = document.getElementById('section-render-root');
-        if (!root) return;
-        root.innerHTML = '';
-
-        assessmentContent.sections.forEach(function (section) {
-            const sectionEl = document.createElement('div');
-            sectionEl.className = 'mb-8';
-
-            // heading + optional tag(s)
-            const headerWrap = document.createElement('div');
-            headerWrap.className = 'flex items-center gap-3 mb-2';
-
-            const heading = document.createElement('h2');
-            heading.id = section.id;
-            heading.className = 'text-xl font-bold text-slate-900';
-            heading.textContent = section.title;
-            heading.setAttribute('tabindex', '-1');
-            headerWrap.appendChild(heading);
-
-            if (section.tag) {
-                var tags = Array.isArray(section.tag) ? section.tag : [section.tag];
-                tags.forEach(function (t) {
-                    var tagEl = document.createElement('span');
-                    tagEl.className = 'inline-flex px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700';
-                    tagEl.textContent = t;
-                    headerWrap.appendChild(tagEl);
-                });
-            }
-
-            sectionEl.appendChild(headerWrap);
-
-            if (section.description) {
-                const desc = document.createElement('p');
-                desc.className = 'text-sm text-slate-500 mb-5';
-                desc.textContent = section.description;
-                sectionEl.appendChild(desc);
-            }
-
-            const stepsContainer = document.createElement('div');
-            stepsContainer.className = 'space-y-4';
-            section.steps.forEach(function (s, i) {
-                stepsContainer.appendChild(createStepCard(i + 1, s));
-            });
-            sectionEl.appendChild(stepsContainer);
-
-            root.appendChild(sectionEl);
-        });
-    }
-
-    function renderSidebar() {
-        var list = document.getElementById('docSidebarList');
-        if (!list) return;
-        list.innerHTML = '';
-        assessmentContent.sections.forEach(function (section) {
-            var li = document.createElement('li');
-            var a = document.createElement('a');
-            a.className = 'block text-slate-600 hover:text-brand transition-colors py-1';
-            a.href = '#' + section.id;
-            a.textContent = section.title;
-            li.appendChild(a);
-            list.appendChild(li);
-        });
-    }
-
-    function scrollToHash() {
-        var id = (location.hash || '').replace('#', '');
-        if (!id) return;
-        var el = document.getElementById(id);
-        if (el) {
-            setTimeout(function () {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                el.focus && el.focus();
-            }, 20);
-        }
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () {
-            renderSidebar();
-            renderAllSections();
-            scrollToHash();
-            window.addEventListener('hashchange', scrollToHash);
-        });
-    } else {
-        renderSidebar();
-        renderAllSections();
-        scrollToHash();
-        window.addEventListener('hashchange', scrollToHash);
-    }
-
-    // expose data for debugging if needed
     global.__assessmentContent = assessmentContent;
 })(window);

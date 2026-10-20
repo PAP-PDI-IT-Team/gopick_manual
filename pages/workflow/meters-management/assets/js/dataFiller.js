@@ -1,4 +1,3 @@
-// meters data filler - content derived from docs/meters-management.md
 (function (global) {
     'use strict';
 
@@ -13,11 +12,27 @@
                 id: 'meter-request',
                 title: 'Meter Request',
                 description: 'View and manage meter requests from lower hierarchy accounts.',
+                images: [
+                    {
+                        title: 'Meter Requests Table View',
+                        caption: 'Pending meter requests queue with actions to review, approve, or reject allocations.',
+                        src: '',
+                        alt: 'Meter Requests Table Screenshot'
+                    }
+                ],
                 children: [
                     {
                         id: 'approve-or-reject-request',
                         title: 'Approve Or Reject Request',
                         description: 'Review pending meter requests and approve or reject the request.',
+                        images: [
+                            {
+                                title: 'Approve / Reject Request Dialog',
+                                caption: 'Confirmation prompt to approve or reject meter movement and allocate balances.',
+                                src: '',
+                                alt: 'Approve / Reject Dialog Screenshot'
+                            }
+                        ],
                         groups: [
                             { title: 'Access Path', items: ['Meters > Meter Request'] }
                         ],
@@ -47,6 +62,14 @@
                 id: 'order-meters',
                 title: 'Order Meters',
                 description: 'Request meters from higher hierarchy accounts.',
+                images: [
+                    {
+                        title: 'Order Meters Form',
+                        caption: 'Form to submit an inbound request for meter balance to higher hierarchy accounts.',
+                        src: '',
+                        alt: 'Order Meters Form Screenshot'
+                    }
+                ],
                 groups: [
                     { title: 'Access Path', items: ['Meters > Order Meters'] }
                 ],
@@ -68,6 +91,14 @@
                 id: 'transfer-meters',
                 title: 'Transfer Meters',
                 description: 'Transfer meter balances to allowed accounts.',
+                images: [
+                    {
+                        title: 'Transfer Meters Modal',
+                        caption: 'Source balance selector, transfer value input, and destination account chooser.',
+                        src: '',
+                        alt: 'Transfer Meters Modal Screenshot'
+                    }
+                ],
                 groups: [
                     {
                         title: 'Access Paths',
@@ -102,6 +133,14 @@
                 id: 'meter-records',
                 title: 'Meter Records',
                 description: 'View account meter balances, logs, and meter-related actions.',
+                images: [
+                    {
+                        title: 'Meter Records Table View',
+                        caption: 'Comprehensive list of accounts with active balances, pending allocation, and actions.',
+                        src: '',
+                        alt: 'Meter Records List Screenshot'
+                    }
+                ],
                 groups: [
                     { title: 'Access Path', items: ['Meters > Meter Records'] }
                 ],
@@ -259,6 +298,200 @@
                                         ]
                                     }
                                 ]
+                            },
+                            {
+                                id: 'resolution-paths-matrix',
+                                title: 'Resolution Paths Matrix',
+                                description: 'User guide matrix table for traceability, answering how to identify, understand, and use the Meter log information table as a logger across transaction types, entity states, and SHOW_ERROR diagnostic modes.',
+                                matrix: [
+                                    {
+                                        id: 1,
+                                        type: 'Type 7: Moved to Created Account',
+                                        typeCategory: 'type7',
+                                        targetState: 'Found in Storage 1 (accounts.id)',
+                                        actorState: 'Found in Storage 2 (users.id)',
+                                        targetProd: 'Acme Branch',
+                                        targetDebug: 'Acme Branch',
+                                        remarksProd: 'Moved to Newly Created Account: Acme Branch',
+                                        remarksDebug: 'Moved to Newly Created Account: Acme Branch'
+                                    },
+                                    {
+                                        id: 2,
+                                        type: 'Type 7: Moved to Created Account',
+                                        typeCategory: 'type7',
+                                        targetState: 'Found in Storage 2 (users.id → accounts.user_id)',
+                                        actorState: 'Found in Storage 2 (users.id)',
+                                        targetProd: 'Acme Branch',
+                                        targetDebug: 'Acme Branch',
+                                        remarksProd: 'Moved to Newly Created Account: Acme Branch',
+                                        remarksDebug: 'Moved to Newly Created Account: Acme Branch'
+                                    },
+                                    {
+                                        id: 3,
+                                        type: 'Type 7: Moved to Created Account',
+                                        typeCategory: 'type7',
+                                        targetState: 'Missing in Both (Target #105 deleted)',
+                                        actorState: 'Found in Storage 2 (users.id = 2)',
+                                        targetProd: '[ ⊘ Deleted Account #105 ]',
+                                        targetDebug: 'Error: Target lookup failed\n• Target: accounts=MISS | users=MISS\n• Actor: users=FOUND ("admin")',
+                                        remarksProd: '⚠ Account #105 has been deleted.\n(Moved meters to newly created account)',
+                                        remarksDebug: 'Error: Target missing\n• Target: accounts=MISS | users=MISS\n• Actor: users=FOUND ("admin")'
+                                    },
+                                    {
+                                        id: 4,
+                                        type: 'Type 7: Moved to Created Account',
+                                        typeCategory: 'type7',
+                                        targetState: 'Found in Storage 1 (accounts.id = 105)',
+                                        actorState: 'Missing in Both (Actor #2 deleted)',
+                                        targetProd: 'Acme Branch',
+                                        targetDebug: 'Acme Branch',
+                                        remarksProd: 'Moved to Newly Created Account: Acme Branch\n(by Deleted User #2)',
+                                        remarksDebug: 'Moved to Newly Created Account: Acme Branch\n• Actor: accounts=MISS | users=MISS (DELETED)'
+                                    },
+                                    {
+                                        id: 5,
+                                        type: 'Type 7: Moved to Created Account',
+                                        typeCategory: 'type7',
+                                        targetState: 'Missing in Both (Target #105 deleted)',
+                                        actorState: 'Missing in Both (Actor #2 deleted)',
+                                        targetProd: '[ ⊘ Deleted Account #105 ]',
+                                        targetDebug: 'Error: Target & Actor missing\n• Target: MISS | MISS\n• Actor: MISS | MISS',
+                                        remarksProd: '⚠ Account #105 has been deleted.\n(Actor #2 also deleted)',
+                                        remarksDebug: 'Error: Both entities missing\n• Target: MISS | MISS\n• Actor: MISS | MISS'
+                                    },
+                                    {
+                                        id: 6,
+                                        type: 'Type 7: Legacy Alignment Row (FixMeter)',
+                                        typeCategory: 'type7',
+                                        targetState: 'NULL / Not Set (transfer_to_account_id = null)',
+                                        actorState: 'Found in Storage 2 (users.id = 2)',
+                                        targetProd: '(not set)',
+                                        targetDebug: 'Diagnostic Notice:\n• Subject: accounts.id=79 [FOUND]\n• Actor: users.id=2 [FOUND]\n• Target: NOT_SPECIFIED (legacy null)',
+                                        remarksProd: 'Moved meters to newly created account\n(or notes payload)',
+                                        remarksDebug: 'Notice: Legacy alignment row\n• Subject: FOUND\n• Actor: FOUND\n• Target: NOT_SPECIFIED'
+                                    },
+                                    {
+                                        id: 7,
+                                        type: 'Type 6: Balance Addition (value > 0)',
+                                        typeCategory: 'type6',
+                                        targetState: 'Found in Storage 1 or 2 (Account #79)',
+                                        actorState: 'Found in Storage 2 (Actor #2)',
+                                        targetProd: 'Acme Corp',
+                                        targetDebug: 'Acme Corp',
+                                        remarksProd: 'Meter Balance Update on: Acme Corp',
+                                        remarksDebug: 'Meter Balance Update on: Acme Corp'
+                                    },
+                                    {
+                                        id: 8,
+                                        type: 'Type 6: Balance Addition (value > 0)',
+                                        typeCategory: 'type6',
+                                        targetState: 'Missing in Both (Account #79 deleted)',
+                                        actorState: 'Found in Storage 2 (Actor #2)',
+                                        targetProd: '[ ⊘ Deleted Account #79 ]',
+                                        targetDebug: 'Error: Target lookup failed\n• Target: MISS | MISS\n• Actor: users=FOUND ("admin")',
+                                        remarksProd: '⚠ Account #79 has been deleted.\n(Meter Balance Update)',
+                                        remarksDebug: 'Error: Target missing\n• Target: MISS | MISS'
+                                    },
+                                    {
+                                        id: 9,
+                                        type: 'Type 6: Balance Deduction (value < 0)',
+                                        typeCategory: 'type6',
+                                        targetState: 'Subject #79 active; Actor #2 active',
+                                        actorState: 'Found in Storage 2 (users.id = 2)',
+                                        targetProd: 'admin (or linked account)',
+                                        targetDebug: 'admin',
+                                        remarksProd: 'Meter Balance Update by: admin',
+                                        remarksDebug: 'Meter Balance Update by: admin'
+                                    },
+                                    {
+                                        id: 10,
+                                        type: 'Type 6: Balance Deduction (value < 0)',
+                                        typeCategory: 'type6',
+                                        targetState: 'Subject #79 active; Actor #2 deleted',
+                                        actorState: 'Missing in Both (Actor #2 deleted)',
+                                        targetProd: '[ ⊘ Deleted Account #2 ]',
+                                        targetDebug: 'Error: Actor lookup failed\n• Subject: accounts=FOUND\n• Actor: accounts=MISS | users=MISS',
+                                        remarksProd: '⚠ Account #2 has been deleted.\n(Meter Balance Update by: Deleted User #2)',
+                                        remarksDebug: 'Error: Actor missing\n• Subject: FOUND\n• Actor: accounts=MISS | users=MISS'
+                                    },
+                                    {
+                                        id: 11,
+                                        type: 'Type 1 / 5: Outbound Transfer',
+                                        typeCategory: 'type1_5',
+                                        targetState: 'Found in Storage 1 or 2 (Target #88)',
+                                        actorState: 'Active user',
+                                        targetProd: 'Target Corp',
+                                        targetDebug: 'Target Corp',
+                                        remarksProd: 'Sent to Target Corp',
+                                        remarksDebug: 'Sent to Target Corp'
+                                    },
+                                    {
+                                        id: 12,
+                                        type: 'Type 1 / 5: Outbound Transfer',
+                                        typeCategory: 'type1_5',
+                                        targetState: 'Missing in Both (Target #88 deleted)',
+                                        actorState: 'Active user',
+                                        targetProd: '[ ⊘ Deleted Account #88 ]',
+                                        targetDebug: 'Error: Target lookup failed\n• Target: MISS | MISS',
+                                        remarksProd: '⚠ Account #88 has been deleted.\n(Sent to Deleted Account #88)',
+                                        remarksDebug: 'Error: Target lookup failed\n• Target: MISS | MISS'
+                                    },
+                                    {
+                                        id: 13,
+                                        type: 'Type 2 / 3 / 4: Inbound Meter / Initial',
+                                        typeCategory: 'type2_3_4',
+                                        targetState: 'Found in Storage 1 or 2 (Account #79)',
+                                        actorState: 'Active user',
+                                        targetProd: 'Acme Corp',
+                                        targetDebug: 'Acme Corp',
+                                        remarksProd: 'Initial Meters / Received from <source>',
+                                        remarksDebug: 'Initial Meters / Received from <source>'
+                                    },
+                                    {
+                                        id: 14,
+                                        type: 'Type 2 / 3 / 4: Inbound Meter / Initial',
+                                        typeCategory: 'type2_3_4',
+                                        targetState: 'Missing in Both (Account #79 deleted)',
+                                        actorState: 'Active user',
+                                        targetProd: '[ ⊘ Deleted Account #79 ]',
+                                        targetDebug: 'Error: Account lookup failed\n• Account #79: MISS | MISS',
+                                        remarksProd: '⚠ Account #79 has been deleted.',
+                                        remarksDebug: 'Error: Account lookup failed\n• Account #79: MISS | MISS'
+                                    },
+                                    {
+                                        id: 15,
+                                        type: 'Type 0: Scored Assessment',
+                                        typeCategory: 'type0',
+                                        targetState: 'Candidate owner matches subject account',
+                                        actorState: 'Automated system',
+                                        targetProd: 'Acme Corp',
+                                        targetDebug: 'Acme Corp',
+                                        remarksProd: 'Used to Score Assessment',
+                                        remarksDebug: 'Used to Score Assessment'
+                                    },
+                                    {
+                                        id: 16,
+                                        type: 'Type 0: Scored Assessment',
+                                        typeCategory: 'type0',
+                                        targetState: 'Cross-account deduction; Source active',
+                                        actorState: 'Automated system',
+                                        targetProd: 'Parent Corp',
+                                        targetDebug: 'Parent Corp',
+                                        remarksProd: 'Used to Score Assessment: Parent Corp',
+                                        remarksDebug: 'Used to Score Assessment: Parent Corp'
+                                    },
+                                    {
+                                        id: 17,
+                                        type: 'Type 0: Scored Assessment',
+                                        typeCategory: 'type0',
+                                        targetState: 'Cross-account deduction; Source deleted',
+                                        actorState: 'Automated system',
+                                        targetProd: '[ ⊘ Deleted Account #50 ]',
+                                        targetDebug: 'Error: Scored assessment source miss\n• Account #50: MISS | MISS',
+                                        remarksProd: '⚠ Account #50 has been deleted.\n(Used to Score Assessment)',
+                                        remarksDebug: 'Error: Scored assessment source miss'
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -304,289 +537,5 @@
             }
         ]
     };
-
-    function createStepCard(index, text) {
-        const wrap = document.createElement('div');
-        wrap.className = 'flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100';
-
-        const badge = document.createElement('div');
-        badge.className = 'w-9 h-9 rounded-full bg-brand text-white font-bold flex items-center justify-center flex-shrink-0';
-        badge.textContent = index;
-
-        const detail = document.createElement('div');
-        detail.className = 'text-sm text-slate-600 leading-relaxed';
-        detail.textContent = text;
-
-        wrap.appendChild(badge);
-        wrap.appendChild(detail);
-        return wrap;
-    }
-
-    function createBulletList(items) {
-        const list = document.createElement('ul');
-        list.className = 'space-y-2 text-sm text-slate-600 leading-relaxed';
-        items.forEach(function (item) {
-            const li = document.createElement('li');
-            li.className = 'flex gap-2';
-
-            const marker = document.createElement('span');
-            marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-
-            const text = document.createElement('span');
-            text.textContent = item;
-
-            li.appendChild(marker);
-            li.appendChild(text);
-            list.appendChild(li);
-        });
-        return list;
-    }
-
-    function createCallout(title, items, kind) {
-        const wrap = document.createElement('div');
-        const isRules = kind === 'rules';
-        wrap.className = isRules
-            ? 'mt-5 rounded-lg border border-amber-100 bg-amber-50 p-5'
-            : 'mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-5';
-
-        const heading = document.createElement('h3');
-        heading.className = isRules ? 'font-semibold text-amber-900 mb-3' : 'font-semibold text-emerald-900 mb-3';
-        heading.textContent = title;
-
-        wrap.appendChild(heading);
-        wrap.appendChild(createBulletList(items));
-        return wrap;
-    }
-
-    function renderGroups(container, groups) {
-        groups.forEach(function (group) {
-            const wrap = document.createElement('div');
-            wrap.className = 'rounded-lg border border-slate-100 bg-slate-50 p-5';
-
-            const heading = document.createElement('h3');
-            heading.className = 'font-semibold text-slate-900 mb-3';
-            heading.textContent = group.title;
-            wrap.appendChild(heading);
-            wrap.appendChild(createBulletList(group.items || []));
-            container.appendChild(wrap);
-        });
-    }
-
-    function renderSectionBody(section, target) {
-        if (section.groups && section.groups.length) {
-            const groupsWrap = document.createElement('div');
-            groupsWrap.className = 'space-y-4';
-            renderGroups(groupsWrap, section.groups);
-            target.appendChild(groupsWrap);
-        }
-
-        if (section.steps && section.steps.length) {
-            const stepsTitle = document.createElement('h3');
-            stepsTitle.className = 'mt-5 mb-3 font-semibold text-slate-900';
-            stepsTitle.textContent = 'How To Use';
-            target.appendChild(stepsTitle);
-
-            const stepsWrap = document.createElement('div');
-            stepsWrap.className = 'space-y-4';
-            section.steps.forEach(function (step, i) {
-                stepsWrap.appendChild(createStepCard(i + 1, step));
-            });
-            target.appendChild(stepsWrap);
-        }
-
-        if (section.rules && section.rules.length) {
-            target.appendChild(createCallout('Rules', section.rules, 'rules'));
-        }
-
-        if (section.expectedResults && section.expectedResults.length) {
-            target.appendChild(createCallout('Expected Result', section.expectedResults, 'expected'));
-        }
-    }
-
-    function renderSectionHeader(section, headingLevel, eyebrowText) {
-        const fragment = document.createDocumentFragment();
-        if (eyebrowText) {
-            const eyebrow = document.createElement('div');
-            eyebrow.className = 'text-xs font-bold uppercase tracking-wider text-brand mb-2';
-            eyebrow.textContent = eyebrowText;
-            fragment.appendChild(eyebrow);
-        }
-
-        const headingTag = headingLevel === 2 ? 'h2' : (headingLevel === 3 ? 'h3' : 'h4');
-        const heading = document.createElement(headingTag);
-        heading.id = section.id;
-        heading.className = headingLevel === 2 ? 'text-xl font-bold text-slate-900' : (headingLevel === 3 ? 'text-lg font-bold text-slate-900' : 'text-base font-bold text-slate-900');
-        heading.textContent = section.title;
-        heading.setAttribute('tabindex', '-1');
-        fragment.appendChild(heading);
-
-        if (section.description) {
-            const desc = document.createElement('p');
-            desc.className = 'text-sm text-slate-500 mt-2 mb-5';
-            desc.textContent = section.description;
-            fragment.appendChild(desc);
-        }
-
-        return fragment;
-    }
-
-    function renderSectionTree(section, headingLevel, eyebrowText, isTopLevel) {
-        const sectionEl = document.createElement('section');
-        sectionEl.className = isTopLevel ? 'mb-10' : 'mt-8 border-t border-slate-100 pt-6';
-        sectionEl.appendChild(renderSectionHeader(section, headingLevel, eyebrowText));
-        renderSectionBody(section, sectionEl);
-
-        if (section.children && section.children.length) {
-            section.children.forEach(function (child) {
-                sectionEl.appendChild(renderSectionTree(child, Math.min(headingLevel + 1, 4), section.title, false));
-            });
-        }
-
-        return sectionEl;
-    }
-
-    function renderLegends(root) {
-        if (!metersContent.legends || !metersContent.legends.length) return;
-
-        const legendsWrap = document.createElement('div');
-        legendsWrap.className = 'mb-8 rounded-lg border border-slate-100 bg-slate-50 p-5';
-
-        const heading = document.createElement('h2');
-        heading.className = 'font-semibold text-slate-900 mb-3';
-        heading.textContent = 'Legends';
-        legendsWrap.appendChild(heading);
-        legendsWrap.appendChild(createBulletList(metersContent.legends));
-
-        root.appendChild(legendsWrap);
-    }
-
-    function renderAllSections() {
-        const root = document.getElementById('section-render-root');
-        if (!root) return;
-        root.innerHTML = '';
-
-        renderLegends(root);
-
-        metersContent.sections.forEach(function (section) {
-            root.appendChild(renderSectionTree(section, 2, null, true));
-        });
-    }
-
-    function getSidebarLinkClass(level) {
-        var depth = Math.min(level, 5);
-        var indentClasses = ['', ' pl-3 border-l border-slate-100', ' pl-6 border-l border-slate-100', ' pl-9 border-l border-slate-100', ' pl-12 border-l border-slate-100', ' pl-16 border-l border-slate-100'];
-        var sizeClass = level === 0 ? ' text-sm' : (level < 3 ? ' text-[13px]' : ' text-xs');
-        return 'block text-slate-600 hover:text-brand transition-colors py-1' + sizeClass + indentClasses[depth];
-    }
-
-    function createSidebarItem(section, level) {
-        var li = document.createElement('li');
-        li.className = 'sidebar-item';
-
-        var a = document.createElement('a');
-        a.className = getSidebarLinkClass(level);
-        a.href = '#' + section.id;
-        a.dataset.target = section.id;
-        a.textContent = section.title;
-        li.appendChild(a);
-
-        if (section.children && section.children.length) {
-            var childList = document.createElement('ul');
-            childList.className = 'sidebar-children hidden mt-1 space-y-1';
-            section.children.forEach(function (child) {
-                childList.appendChild(createSidebarItem(child, level + 1));
-            });
-            li.appendChild(childList);
-        }
-
-        return li;
-    }
-
-    function renderSidebar() {
-        var list = document.getElementById('docSidebarList');
-        if (!list) return;
-        list.innerHTML = '';
-        metersContent.sections.forEach(function (section) {
-            list.appendChild(createSidebarItem(section, 0));
-        });
-    }
-
-    function setSidebarBranch(activeId) {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        Array.from(sidebar.querySelectorAll('a[data-target]')).forEach(function (link) {
-            link.classList.remove('active', 'text-brand', 'font-semibold');
-        });
-        Array.from(sidebar.querySelectorAll('.sidebar-children')).forEach(function (list) {
-            list.classList.add('hidden');
-        });
-
-        var activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
-        if (!activeLink) return;
-        activeLink.classList.add('active', 'text-brand', 'font-semibold');
-
-        var item = activeLink.closest('.sidebar-item');
-        while (item) {
-            var ownChildren = item.querySelector(':scope > .sidebar-children');
-            if (ownChildren) ownChildren.classList.remove('hidden');
-
-            var parentList = item.parentElement;
-            if (parentList && parentList.classList.contains('sidebar-children')) {
-                parentList.classList.remove('hidden');
-                item = parentList.closest('.sidebar-item');
-            } else {
-                item = null;
-            }
-        }
-    }
-
-    function getVisibleSidebarTarget() {
-        var links = Array.from(document.querySelectorAll('#docSidebarList a[data-target]'));
-        var currentId = null;
-        var offset = 120;
-
-        links.forEach(function (link) {
-            var target = document.getElementById(link.dataset.target);
-            if (target && target.getBoundingClientRect().top <= offset) {
-                currentId = link.dataset.target;
-            }
-        });
-
-        return currentId || (links[0] && links[0].dataset.target);
-    }
-
-    function setupSidebarVisibility() {
-        var sidebar = document.getElementById('docSidebarList');
-        if (!sidebar) return;
-
-        function updateFromScroll() {
-            var activeId = getVisibleSidebarTarget() || (location.hash || '').replace('#', '');
-            if (activeId) setSidebarBranch(activeId);
-        }
-
-        sidebar.querySelectorAll('a[data-target]').forEach(function (link) {
-            link.addEventListener('click', function () {
-                setSidebarBranch(this.dataset.target);
-            });
-        });
-
-        updateFromScroll();
-        window.addEventListener('hashchange', function () { setTimeout(updateFromScroll, 50); });
-        window.addEventListener('scroll', updateFromScroll, { passive: true });
-    }
-
-    function renderAll() {
-        renderSidebar();
-        renderAllSections();
-        setupSidebarVisibility();
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', renderAll);
-    } else {
-        renderAll();
-    }
-
     global.__metersContent = metersContent;
 })(window);
