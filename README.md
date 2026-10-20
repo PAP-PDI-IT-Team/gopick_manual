@@ -47,6 +47,7 @@ An internet connection is required for the Tailwind CSS CDN used by the pages.
 |-- CONTRIBUTING.md           Contribution use cases and review requirements
 |-- assets/                    Home-page CSS and JavaScript
 |-- shared/
+|   |-- components/image-card/ Shared screenshot renderer and stylesheet
 |   |-- css/                   Shared site-shell styles
 |   |-- data/                  Home-page content data
 |   |-- img/                   Shared images and logo
@@ -87,6 +88,34 @@ The repository keeps documentation meaning and browser presentation separate:
 When changing one page, begin with that page's local assets. Change files under `shared/` only when the behavior or presentation is intentionally shared by multiple pages.
 
 The site does not parse Markdown at runtime. When documentation changes, update the corresponding Markdown source and deliberately synchronize its meaning with the rendered page data.
+
+### Reusing screenshot cards
+
+The screenshot component lives in `shared/components/image-card/`: `renderer.js` creates the card and `style.css` owns its presentation, including shadows and icon sizing. It inherits the host page's typography and base styles. Screenshot content stays in the owning page's `assets/js/dataFiller.js`.
+
+For a page under `pages/<category>/<section>/`, load the stylesheet after the site shell and load the renderer before the page's content renderer and behavior scripts:
+
+```html
+<link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261020-isolate-image-card">
+<script src="../../../shared/components/image-card/renderer.js?v=20261020-isolate-image-card" defer></script>
+```
+
+Adjust the relative paths for pages at other directory depths. Existing workflow renderers consume section `images` arrays; add screenshot metadata to the section's page-local data:
+
+```js
+images: [
+    {
+        title: 'Active Account Detail Page',
+        caption: 'Overview of account details and assigned assessments.',
+        src: 'assets/img/active-account-detail.png',
+        alt: 'Active account details with assigned assessments'
+    }
+]
+```
+
+Image paths resolve relative to the page URL. Use `src: null` while a screenshot is pending. A supplied image displays the `UI Reference` badge; a failed image load displays `Image Unavailable` with the placeholder.
+
+For a page renderer that does not yet consume `images`, call `window.GoPickImageRenderer.createImageOrPlaceholder(imageData, sectionTitle)` from that page's external renderer script and append the returned `figure` to the section. Missing captions are omitted, and missing alternative text uses the card title. The card is informational and adds no keyboard controls.
 
 ## Principles to use and consider
 

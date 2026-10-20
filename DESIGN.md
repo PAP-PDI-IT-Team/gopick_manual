@@ -464,6 +464,8 @@ Role badges and icon panels use tinted color backgrounds with stronger matching 
 ### Image Cards & Visual Placeholders
 Workflow and operational documentation integrates standardized visual screenshot cards (`.manual-image-card`) to anchor instructions to visible user interfaces.
 
+The component's renderer and styles live together in `shared/components/image-card/renderer.js` and `shared/components/image-card/style.css`. The component owns its shadow values and icon sizing; page-local data owns screenshot titles, captions, sources, and alternative text. See [Reusing screenshot cards](README.md#reusing-screenshot-cards) for asset loading and integration.
+
 - **Container (`.manual-image-card`)**: Built on a clean white surface with subtle slate border (`border-slate-200`), rounded corners (`12px` / `rounded-xl`), and soft shadow (`shadow-xs`).
 - **Placeholder State (`.manual-image-card__placeholder`)**: Used when a screen capture is awaiting creation. Features a dashed border (`border-2 border-dashed border-slate-300`), muted neutral background (`bg-slate-50/50`), center-aligned camera SVG icon, helper title, and instruction caption. Includes subtle hover elevation (`hover:border-slate-400 hover:bg-slate-50`).
 - **Header Badges**:

@@ -5,10 +5,11 @@ All notable changes to the GoPick Assessment Center Manual will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.1] - 2026-09-24
+## [1.1.1] - 2026-09-24 - PR 144a0e5
 
 ### Changed
 
+- Isolated the shared screenshot-card renderer and stylesheet in `shared/components/image-card/`, updated all ten workflow consumers and site-shell asset versions, and documented how to reuse the component on other pages.
 - Reset the Assessment Management Markdown and rendered page to an Accounts Management-style shell, replacing the previous instructions and custom presentation with the four confirmed major assessment areas and documenting View Assessments functions through the established Access Path, How To Use, and Expected Result format.
 - Documented the finalized Import Assessment workflow and its Download Template child feature without adding unconfirmed results or file validation rules.
 - Renamed Click Assessment Card to View specific Assessment, updated its assessment-information description, removed its placeholder expected result, and added Preview Assessment, Upload Norm, and Config Dropdown child sections.
