@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Added an opt-in browser-frame presentation for screenshot cards, enabled only on the Dashboard and Accounts Management pages, with a window title bar, uncropped images, and no live-reference badge; other pages keep the existing card style.
 - Switched the Accounts Management renderer to the shared carousel so sections with multiple screenshots show them in one card.
 
 ## [1.1.1] - 2026-09-24 - PR 144a0e5
