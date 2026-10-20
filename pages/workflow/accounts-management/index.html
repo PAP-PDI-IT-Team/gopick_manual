@@ -11,17 +11,7 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { DEFAULT: '#e50914', light: '#ff2d38', dark: '#b3060f' }
-          }
-        }
-      }
-    }
-  </script>
+  <script src="../../../shared/js/tailwindConfig.js?v=20261020-external-config"></script>
 </head>
 <body class="manual-page bg-slate-50 text-slate-800 antialiased" data-image-card-variant="frame">
 
@@ -122,13 +112,12 @@
   </footer>
 
   <script src="../../../shared/components/image-card/renderer.js?v=20261020-image-gallery" defer></script>
-  <script src="assets/js/dataFiller.js?v=20261020-account-gallery" defer></script>
+  <script src="assets/js/dataFiller.js?v=20261020-account-placeholders" defer></script>
   <script src="assets/js/contentStore.js" defer></script>
-  <script src="assets/js/contentRenderer.js" defer></script>
+  <script src="assets/js/contentRenderer.js?v=20261020-account-placeholders" defer></script>
   <script src="assets/js/sidebarTracker.js" defer></script>
   <script src="assets/js/behavior.js" defer></script>
   <script src="../../../shared/js/headerSearch.js" defer></script>
   <script src="../../../shared/js/manualNav.js" defer></script>
 </body>
 </html>
-

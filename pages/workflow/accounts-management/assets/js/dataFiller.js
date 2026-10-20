@@ -91,6 +91,7 @@
                 {
                     id: 'create-account-information',
                     title: 'Account Information',
+                    images: [{ title: 'Account Information', src: '', alt: 'Account Information screenshot' }],
                     detail: 'Collects account identity, parent relationship, contact information, address information, account expiration, and account status.',
                     items: [
                         {
@@ -144,6 +145,7 @@
                 {
                     id: 'create-assign-products',
                     title: 'Assign Products',
+                    images: [{ title: 'Assign Products', src: '', alt: 'Assign Products screenshot' }],
                     detail: 'Assigns assessments that the company or organization account can use.',
                     items: [
                         {
@@ -166,6 +168,7 @@
                 {
                     id: 'create-meter-management',
                     title: 'Meter Management',
+                    images: [{ title: 'Meter Management', src: '', alt: 'Meter Management screenshot' }],
                     detail: 'Sets the account meter management type and meter balance.',
                     items: [
                         {
@@ -195,6 +198,7 @@
                 {
                     id: 'create-other-account-settings',
                     title: 'Other Account Settings',
+                    images: [{ title: 'Other Account Settings', src: '', alt: 'Other Account Settings screenshot' }],
                     detail: 'Sets account limits, API access, account contacts, billing configuration, and contract configuration.',
                     items: [
                         {
@@ -259,6 +263,7 @@
                 {
                     id: 'create-review-account-details',
                     title: 'Review Account Details',
+                    images: [{ title: 'Review Account Details', src: '', alt: 'Review Account Details screenshot' }],
                     detail: 'Reviews the entered and selected account creation details before saving the account.',
                     items: [
                         'Account information.',
@@ -404,6 +409,7 @@
             groups: [
                 {
                     title: 'Account Information',
+                    images: [{ title: 'Account Information', src: '', alt: 'Account Information screenshot' }],
                     items: [
                         {
                             label: 'Locked inputs',
@@ -441,6 +447,7 @@
                 },
                 {
                     title: 'Assigned Assessments',
+                    images: [{ title: 'Assigned Assessments', src: '', alt: 'Assigned Assessments screenshot' }],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -454,6 +461,7 @@
                 },
                 {
                     title: 'Meter Management',
+                    images: [{ title: 'Meter Management', src: '', alt: 'Meter Management screenshot' }],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -469,6 +477,7 @@
                 },
                 {
                     title: 'Other Account Settings',
+                    images: [{ title: 'Other Account Settings', src: '', alt: 'Other Account Settings screenshot' }],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -504,6 +513,7 @@
             {
                 id: 'account-detail',
                 title: 'Account Detail',
+                images: [{ title: 'Account Detail', src: '', alt: 'Account Detail screenshot' }],
                 detail: 'Displays account information configured during creation and account configuration actions.',
                 accessPath: 'Accounts > View Accounts > Row Actions > View',
                 actions: [
@@ -527,6 +537,7 @@
             {
                 id: 'update-account',
                 title: 'Update Account',
+                images: [{ title: 'Update Account', src: '', alt: 'Update Account screenshot' }],
                 detail: 'Updates account settings through the update wizard. This is different from Update Specific, which updates a single account detail section.',
                 accessPath: 'Accounts > View Accounts > Row Actions > Update',
                 howToUse: [
@@ -544,6 +555,7 @@
             {
                 id: 'privacy-consent',
                 title: 'Privacy Consent',
+                images: [{ title: 'Privacy Consent', src: '', alt: 'Privacy Consent screenshot' }],
                 detail: 'Manages privacy consent content and candidate-side consent checkbox visibility.',
                 actions: ['Consent content', 'Consent Gather Data Checkbox to Appear', 'Consent Capture Photo to Appear', 'Save changes'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Privacy Consent',
@@ -553,6 +565,7 @@
             {
                 id: 'demographics',
                 title: 'Demographics',
+                images: [{ title: 'Demographics', src: '', alt: 'Demographics screenshot' }],
                 detail: 'Page to manage demographics form.',
                 actions: ['Default Required: First Name, Last Name, Gender, Email, Position Applied', 'Can be toggled: Birthdate, Civil Status, Alternative/Work Email, Phone Number, Educational Attainment, Work Experience, Level of Position Applying For, Course, Priority Course, Region of Residence, Agency Visited, Service Availed, Customer Type, Age, Transaction Type, School', 'Save Button'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Demographics',
@@ -564,6 +577,7 @@
             {
                 id: 'assessment-completion-page',
                 title: 'Assessment Completion Page',
+                images: [{ title: 'Assessment Completion Page', src: '', alt: 'Assessment Completion Page screenshot' }],
                 detail: 'Page to manage completion page.',
                 actions: ['Edit Content', 'Save Button'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Assessment Completion Page',
@@ -575,6 +589,7 @@
             {
                 id: 'assessment-center-logo',
                 title: 'Assessment Center Logo',
+                images: [{ title: 'Assessment Center Logo', src: '', alt: 'Assessment Center Logo screenshot' }],
                 detail: 'Page for updating Assessment Center Logo.',
                 actions: ['Upload Logo', 'Save Button'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Assessment Center Logo Page',
@@ -586,6 +601,7 @@
             {
                 id: 'unblock-account',
                 title: 'Unblock Account',
+                images: [{ title: 'Unblock Account', src: '', alt: 'Unblock Account screenshot' }],
                 detail: 'Triggered when account is blocked due to multiple attempts to login.',
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Unblock Account Trigger',
                 howToUse: ['Navigate into it.', 'Trigger it.'],
@@ -594,6 +610,7 @@
             {
                 id: 'manage-assigned-assessment',
                 title: 'Manage Assigned Assessment',
+                images: [{ title: 'Manage Assigned Assessment', src: '', alt: 'Manage Assigned Assessment screenshot' }],
                 detail: 'Updates a specific assigned assessment configuration.',
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Assigned Assessments > Manage',
                 howToUse: ['Open the account detail page.', 'Open Assigned Assessments.', 'Select Manage.', 'Update Set Max Respondents.', 'Update Valid Date Start.', 'Update Valid Date Expiration.', 'Update Status.', 'Save changes.']
@@ -658,6 +675,7 @@
             {
                 id: 'view-archived-account',
                 title: 'View Archived Account',
+                images: [{ title: 'View Archived Account', src: '', alt: 'View Archived Account screenshot' }],
                 detail: 'Opens account detail for an archived account.',
                 accessPath: 'Accounts > View Accounts > View Archived Accounts > Row Actions > View',
                 howToUse: ['Open View Archived Accounts.', 'Select View on an archived account row.'],
@@ -680,6 +698,7 @@
             {
                 id: 'update-account-row-action',
                 title: 'Update Account Row Action',
+                images: [{ title: 'Update Account Row Action', src: '', alt: 'Update Account Row Action screenshot' }],
                 detail: 'Links to Update Account from an account table row.',
                 items: [
                     {
@@ -754,6 +773,7 @@
             {
                 id: 'archive',
                 title: 'Archive',
+                images: [{ title: 'Archive', src: '', alt: 'Archive screenshot' }],
                 detail: 'Moves a non-archived account to archived accounts.',
                 accessPath: 'Accounts > View Accounts > Row Actions > Archive',
                 howToUse: ['Open View Accounts.', 'Select Archive on a specific account row.'],
@@ -763,6 +783,7 @@
             {
                 id: 'restore',
                 title: 'Restore',
+                images: [{ title: 'Restore', src: '', alt: 'Restore screenshot' }],
                 detail: 'Moves an archived account back to the account list.',
                 accessPath: 'Accounts > View Accounts > View Archived Accounts > Row Actions > Restore',
                 howToUse: ['Open View Archived Accounts.', 'Select Restore on a specific account row.'],
@@ -774,6 +795,7 @@
             {
                 id: 'search',
                 title: 'Search',
+                images: [{ title: 'Search', src: '', alt: 'Search screenshot' }],
                 detail: 'Search for the contents of the table.',
                 accessPath: 'Accounts > View Accounts > Search Input',
                 howToUse: ['Navigate in.', 'Input values.', 'Enter.']
@@ -781,6 +803,7 @@
             {
                 id: 'advanced-search',
                 title: 'Advanced Search',
+                images: [{ title: 'Advanced Search', src: '', alt: 'Advanced Search screenshot' }],
                 detail: 'Searches account table content using configured rules.',
                 accessPath: 'Accounts > View Accounts > Advanced Search > Add Rule',
                 howToUse: ['Open an account listing table.', 'Open Advanced Search.', 'Add or remove rules.', 'Select Search.'],
@@ -791,6 +814,7 @@
             {
                 id: 'bulk-action-archive',
                 title: 'Bulk Action: Archive',
+                images: [{ title: 'Bulk Action: Archive', src: '', alt: 'Bulk Action: Archive screenshot' }],
                 detail: 'Moves selected account rows to archived accounts.',
                 accessPath: 'Accounts > View Accounts > Bulk > Archive',
                 howToUse: ['Open View Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Archive.'],
@@ -800,6 +824,7 @@
             {
                 id: 'bulk-action-delete',
                 title: 'Bulk Action: Delete',
+                images: [{ title: 'Bulk Action: Delete', src: '', alt: 'Bulk Action: Delete screenshot' }],
                 detail: 'Deletes selected account rows.',
                 accessPath: 'Accounts > View Accounts > Bulk > Delete',
                 howToUse: ['Open View Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Delete.'],
@@ -809,6 +834,7 @@
             {
                 id: 'bulk-action-restore',
                 title: 'Bulk Action: Restore',
+                images: [{ title: 'Bulk Action: Restore', src: '', alt: 'Bulk Action: Restore screenshot' }],
                 detail: 'Restores selected archived account rows.',
                 accessPath: 'Accounts > View Accounts > View Archived Accounts > Bulk > Restore',
                 howToUse: ['Open View Archived Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Restore.'],

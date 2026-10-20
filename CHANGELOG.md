@@ -11,12 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added the Dashboard Account Monitoring and Quick Navigation screenshots with blurred surroundings and an outlined focus area, replacing their pending placeholders.
 - Added a shared screenshot carousel to the image-card component with previous and next arrows, dot indicators, a position counter, and keyboard navigation; sections with a single screenshot render unchanged.
+- Added screenshot placeholders for the remaining Accounts Management wizard steps, update variants, configuration pages, search, row actions, and bulk actions.
 - Added Accounts Management screenshots for the Create Account wizard, the View Account tabs, View Accounts and Advanced Search, and Update Specific, each with blurred surroundings and an outlined focus area and with contact details redacted.
 
 ### Changed
 
-- Added an opt-in browser-frame presentation for screenshot cards, enabled only on the Dashboard and Accounts Management pages, with a window title bar, uncropped images, and no live-reference badge; other pages keep the existing card style.
+- Added an opt-in browser-frame presentation for screenshot cards, enabled only on the Accounts Management page, with a window title bar, uncropped images, and no live-reference badge; other pages keep the existing card style.
+- Restored the Dashboard to its standard screenshot cards and page data consumed by its dedicated renderer.
 - Switched the Accounts Management renderer to the shared carousel so sections with multiple screenshots show them in one card.
+- Moved the Dashboard and Accounts Management Tailwind configuration into an external shared script, preserving their existing brand colors and load order.
 
 ## [1.2.0] - 2026-08-24
 

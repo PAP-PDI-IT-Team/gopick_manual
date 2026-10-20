@@ -224,6 +224,7 @@
                 return this.createInfoCard({
                     id: titleMap[index].id,
                     title: titleMap[index].title,
+                    images: [{ title: titleMap[index].title, src: '', alt: titleMap[index].title + ' screenshot' }],
                     items: group.items,
                     expected: group.expected,
                     notes: group.notes
