@@ -107,6 +107,11 @@
             docUrl: '../../docs/workflow/users-management.md'
         },
         {
+            pageTitle: 'Advisory Management',
+            pageUrl: '../../pages/workflow/advisory-management/index.html',
+            docUrl: '../../docs/workflow/advisory-management.md'
+        },
+        {
             pageTitle: 'Documentation Standard V2',
             pageUrl: '../../pages/guides/manual-guides/index.html',
             docUrl: '../../docs/guides/manual-documentation-standard.md'

@@ -18,7 +18,7 @@ The dashboard provides a central location to review high-level account activity,
 - Help Desk
   - Order Meter: Navigation Link
   - Send Inquiry: Navigation Link
-- Announcement: List of 2 latest announcement
+- Announcement: List of 2 latest announcements; select an announcement to open [View Advisory](../pages/workflow/advisory-management/index.html#view-advisory)
 - Message Inbox: List of 3 latest messages
   - See All Messages: Navigation Link
 
