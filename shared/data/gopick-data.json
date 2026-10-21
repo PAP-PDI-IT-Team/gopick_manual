@@ -302,6 +302,38 @@
       "name": "Shai Saloza",
       "role": "Project Manager Head",
       "avatarUrl": "https://api.dicebear.com/9.x/notionists/svg?seed=Shais"
+    },
+        {
+      "period": "2026",
+      "name": "Jomer Dorego",
+      "role": "Full Stack Developer",
+      "avatarUrl": "https://api.dicebear.com/9.x/notionists/svg?seed=jomer",
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/jcoder6"
+        },
+        {
+          "label": "LinkedIn",
+          "url": "https://www.linkedin.com/in/jomer-dorego"
+        }
+      ]
+    },
+        {
+      "period": "2026",
+      "name": "Alfredo Sanger III",
+      "role": "Full Stack Developer",
+      "avatarUrl": "https://api.dicebear.com/9.x/notionists/svg?seed=alfredo",
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/Althirdy/"
+        },
+        {
+          "label": "LinkedIn",
+          "url": "https://www.linkedin.com/in/alfredo-sanger/"
+        }
+      ]
     }
   ]
 }
