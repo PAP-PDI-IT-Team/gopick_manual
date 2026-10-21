@@ -1,3 +1,4 @@
+import os
 import re
 import sys
 from html.parser import HTMLParser
@@ -72,27 +73,98 @@ def count_physical_lines(file_name):
 
 def check_line_counts(file_names):
     critical_count = 0
+    summary_rows = []
+    classification_counts = {
+        "Critical": 0,
+        "Warning": 0,
+        "Exempt — dataFiller.js": 0,
+        "Sweet spot": 0,
+        "No size warning": 0,
+    }
 
     for file_name in file_names:
         line_count = count_physical_lines(file_name)
 
         if Path(file_name).name == "dataFiller.js":
-            print(f"::notice file={file_name}::{line_count} lines; exempt dataFiller.js")
+            classification = "Exempt — dataFiller.js"
+            print(f"::notice file={file_name}::{file_name}: {line_count} lines; {classification}")
         elif line_count > 800:
+            classification = "Critical"
             print(
-                f"::error file={file_name}::{line_count} lines; "
+                f"::error file={file_name}::{file_name}: {line_count} lines; "
                 "critical files must be decomposed before extension"
             )
             critical_count += 1
         elif line_count > 500:
+            classification = "Warning"
             print(
-                f"::warning file={file_name}::{line_count} lines; "
+                f"::warning file={file_name}::{file_name}: {line_count} lines; "
                 "identify cohesive responsibilities to extract"
             )
         elif line_count > 200:
-            print(f"::notice file={file_name}::{line_count} lines; sweet spot")
+            classification = "Sweet spot"
+            print(f"::notice file={file_name}::{file_name}: {line_count} lines; {classification}")
         else:
-            print(f"::notice file={file_name}::{line_count} lines; no size warning")
+            classification = "No size warning"
+            print(f"::notice file={file_name}::{file_name}: {line_count} lines; {classification}")
+
+        summary_rows.append((file_name, line_count, classification))
+        classification_counts[classification] += 1
+
+    summary_lines = [
+        "## Error Summary",
+        "",
+    ]
+
+    error_rows = [
+        summary_row
+        for summary_row in summary_rows
+        if summary_row[2] in {"Critical", "Warning"}
+    ]
+    error_rows.sort(key=lambda summary_row: summary_row[1], reverse=True)
+
+    if error_rows:
+        summary_lines.extend(
+            [
+                f"- Critical: {classification_counts['Critical']}",
+                f"- Warning: {classification_counts['Warning']}",
+                "",
+                "| File | Lines | Standing | Required action |",
+                "|---|---:|---|---|",
+            ]
+        )
+
+        for file_name, line_count, classification in error_rows:
+            escaped_file_name = file_name.replace("|", "\\|")
+            if classification == "Critical":
+                required_action = "Decompose by responsibility before extending the file."
+            else:
+                required_action = "Identify cohesive responsibilities to extract."
+            summary_lines.append(
+                f"| `{escaped_file_name}` | {line_count} | {classification} | {required_action} |"
+            )
+    else:
+        summary_lines.append("No critical or warning line-count findings.")
+
+    summary_lines.extend(
+        [
+            "",
+            "## Success Summary",
+            "",
+            f"- Successful files: {len(summary_rows) - len(error_rows)}",
+            f"- Sweet spot: {classification_counts['Sweet spot']}",
+            f"- No size warning: {classification_counts['No size warning']}",
+            f"- Exempt — dataFiller.js: {classification_counts['Exempt — dataFiller.js']}",
+        ]
+    )
+
+    summary_text = "\n".join(summary_lines)
+    print(f"\n{summary_text}")
+
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary_path:
+        with Path(summary_path).open("a", encoding="utf-8") as summary_file:
+            summary_file.write(f"{summary_text}\n")
 
     return critical_count
 
