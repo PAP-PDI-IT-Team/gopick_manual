@@ -91,7 +91,20 @@
                 {
                     id: 'create-account-information',
                     title: 'Account Information',
-                    images: [{ title: 'Account Information', src: '', alt: 'Account Information screenshot' }],
+                    images: [
+                        {
+                            title: 'Account Information: top of the form',
+                            caption: 'Wizard progress bar and the first fields: Account Type, Account Name, Username, passwords, contact details, Country, and Business Phone Number.',
+                            src: 'assets/img/create-account-information-top.png',
+                            alt: 'Create Account wizard on step 1 with the Account Information form outlined, showing Account Type, Account Name, Username, Password, Confirm Password, and primary contact fields'
+                        },
+                        {
+                            title: 'Account Information: rest of the form',
+                            caption: 'Business Address, the billing address checkbox, Expiry Date and Time, Actual Account Expiration, Status, and the Next button.',
+                            src: 'assets/img/create-account-information-bottom.png',
+                            alt: 'Lower part of the Account Information form with the address, expiry, status fields outlined and the Next button emphasized'
+                        }
+                    ],
                     detail: 'Collects account identity, parent relationship, contact information, address information, account expiration, and account status.',
                     items: [
                         {
@@ -145,7 +158,12 @@
                 {
                     id: 'create-assign-products',
                     title: 'Assign Products',
-                    images: [{ title: 'Assign Products', src: '', alt: 'Assign Products screenshot' }],
+                    images: [{
+                        title: 'Assign Products',
+                        caption: 'Assign Products step with the five assessment category dropdowns outlined, and the Back and Next buttons below.',
+                        src: 'assets/img/create-assign-products.png',
+                        alt: 'Create Account wizard on step 2 with the Assign Products card outlined and the Cognitive, Competency, Survey, Behavioral, and Test Battery category dropdowns emphasized'
+                    }],
                     detail: 'Assigns assessments that the company or organization account can use.',
                     items: [
                         {
@@ -168,7 +186,12 @@
                 {
                     id: 'create-meter-management',
                     title: 'Meter Management',
-                    images: [{ title: 'Meter Management', src: '', alt: 'Meter Management screenshot' }],
+                    images: [{
+                        title: 'Meter Management',
+                        caption: 'Meter Management step with the card and the Current Meter(s) field outlined, and the Back and Next buttons below.',
+                        src: 'assets/img/create-meter-management.png',
+                        alt: 'Create Account wizard on step 3 with the Meter Management card outlined, showing Metering Management Type and the Current Meter(s) field emphasized'
+                    }],
                     detail: 'Sets the account meter management type and meter balance.',
                     items: [
                         {
@@ -198,7 +221,20 @@
                 {
                     id: 'create-other-account-settings',
                     title: 'Other Account Settings',
-                    images: [{ title: 'Other Account Settings', src: '', alt: 'Other Account Settings screenshot' }],
+                    images: [
+                        {
+                            title: 'Other Account Settings: limits and contacts',
+                            caption: 'Account limits, API Access Username, and the HRSC fields at the top of the step.',
+                            src: 'assets/img/create-other-account-settings-top.png',
+                            alt: 'Create Account wizard on step 4 with the Other Account Settings card outlined and the account limit fields emphasized'
+                        },
+                        {
+                            title: 'Other Account Settings: billing and contract',
+                            caption: 'Assessment specialist and client contact fields, Site Billing Type, Contract Type, Contracted Meters, Addendum, and the Next button.',
+                            src: 'assets/img/create-other-account-settings-bottom.png',
+                            alt: 'Lower part of the Other Account Settings step with the billing and contract fields outlined and the Next button emphasized'
+                        }
+                    ],
                     detail: 'Sets account limits, API access, account contacts, billing configuration, and contract configuration.',
                     items: [
                         {
@@ -263,7 +299,20 @@
                 {
                     id: 'create-review-account-details',
                     title: 'Review Account Details',
-                    images: [{ title: 'Review Account Details', src: '', alt: 'Review Account Details screenshot' }],
+                    images: [
+                        {
+                            title: 'Review Account Details: account and assessments',
+                            caption: 'Review Account Information and Review Assigned Assessments, with personal values blurred.',
+                            src: 'assets/img/create-review-account-top.png',
+                            alt: 'Create Account wizard on the final step with the review card outlined, showing account information and assigned assessments; personal values are blurred'
+                        },
+                        {
+                            title: 'Review Account Details: meters, settings, and submit',
+                            caption: 'Review Meter Management and Review Other Account Settings, with the Back and Submit buttons.',
+                            src: 'assets/img/create-review-account-bottom.png',
+                            alt: 'Lower part of the review step with the meter and settings review outlined and the Submit button emphasized'
+                        }
+                    ],
                     detail: 'Reviews the entered and selected account creation details before saving the account.',
                     items: [
                         'Account information.',
@@ -409,7 +458,12 @@
             groups: [
                 {
                     title: 'Account Information',
-                    images: [{ title: 'Account Information', src: '', alt: 'Account Information screenshot' }],
+                    images: [{
+                        title: 'Update Specific: Account Information',
+                        caption: 'Account Information tab with the section card and the Update button outlined.',
+                        src: 'assets/img/update-specific-group-account-information.png',
+                        alt: 'View Account page with the Account Information card and its Update button outlined; personal values are blurred'
+                    }],
                     items: [
                         {
                             label: 'Locked inputs',
@@ -447,7 +501,12 @@
                 },
                 {
                     title: 'Assigned Assessments',
-                    images: [{ title: 'Assigned Assessments', src: '', alt: 'Assigned Assessments screenshot' }],
+                    images: [{
+                        title: 'Update Specific: Assigned Assessments',
+                        caption: 'Assigned Assessments tab with the assessment list and the Update button outlined.',
+                        src: 'assets/img/update-specific-group-assigned-assessments.png',
+                        alt: 'View Account page with the Assigned Assessments card, its Manage and Change Log actions, and the Update button outlined'
+                    }],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -461,7 +520,12 @@
                 },
                 {
                     title: 'Meter Management',
-                    images: [{ title: 'Meter Management', src: '', alt: 'Meter Management screenshot' }],
+                    images: [{
+                        title: 'Update Specific: Meter Management',
+                        caption: 'Meter Management tab with the section card and the Update button outlined next to View Meter Logs.',
+                        src: 'assets/img/update-specific-group-meter-management.png',
+                        alt: 'View Account page with the Meter Management card and its Update and View Meter Logs buttons, with the Update button outlined'
+                    }],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -477,7 +541,12 @@
                 },
                 {
                     title: 'Other Account Settings',
-                    images: [{ title: 'Other Account Settings', src: '', alt: 'Other Account Settings screenshot' }],
+                    images: [{
+                        title: 'Update Specific: Other Account Settings',
+                        caption: 'Other Account Settings tab with the section card and the Update button outlined.',
+                        src: 'assets/img/update-specific-group-other-account-settings.png',
+                        alt: 'View Account page with the Other Account Settings card showing user limits, usage settings, and contract settings, with the Update button outlined'
+                    }],
                     items: [
                         {
                             label: 'Editable inputs',

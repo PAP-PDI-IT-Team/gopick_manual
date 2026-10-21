@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a shared screenshot carousel to the image-card component with previous and next arrows, dot indicators, a position counter, and keyboard navigation; sections with a single screenshot render unchanged.
 - Added screenshot placeholders for the remaining Accounts Management wizard steps, update variants, configuration pages, search, row actions, and bulk actions.
 - Added Accounts Management screenshots for the Create Account wizard, the View Account tabs, View Accounts and Advanced Search, and Update Specific, each with blurred surroundings and an outlined focus area and with contact details redacted.
+- Added the Update Specific screenshots for the Account Information, Assigned Assessments, Meter Management, and Other Account Settings groups, each with a blurred surround, an outlined section card, an emphasized Update button, and personal values blurred.
+- Added the Create Account wizard step screenshots for Account Information, Assign Products, Meter Management, Other Account Settings, and Review Account Details, using carousels where a step spans two screens and blurring personal values on the review step.
 
 ### Changed
 
