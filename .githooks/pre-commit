@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+repository_root=$(git rev-parse --show-toplevel)
+temporary_directory=$(mktemp -d)
+trap 'rm -rf "$temporary_directory"' EXIT
+
+cd "$repository_root" || exit 1
+
+mapfile -d '' staged_javascript_files < <(
+  git diff --cached --name-only --diff-filter=ACMR -z -- \
+    ':(glob)assets/**/*.js' \
+    ':(glob)pages/**/*.js' \
+    ':(glob)shared/**/*.js'
+)
+
+mapfile -d '' staged_html_files < <(
+  git diff --cached --name-only --diff-filter=ACMR -z -- \
+    'index.html' \
+    ':(glob)assets/**/*.html' \
+    ':(glob)pages/**/*.html' \
+    ':(glob)shared/**/*.html'
+)
+
+mapfile -d '' staged_code_files < <(
+  git diff --cached --name-only --diff-filter=ACMR -z -- \
+    'index.html' \
+    ':(glob)assets/**/*.html' \
+    ':(glob)assets/**/*.css' \
+    ':(glob)assets/**/*.js' \
+    ':(glob)pages/**/*.html' \
+    ':(glob)pages/**/*.css' \
+    ':(glob)pages/**/*.js' \
+    ':(glob)shared/**/*.html' \
+    ':(glob)shared/**/*.css' \
+    ':(glob)shared/**/*.js'
+)
+
+for file_name in "${staged_code_files[@]}"; do
+  mkdir -p "$temporary_directory/$(dirname "$file_name")"
+  git show ":$file_name" > "$temporary_directory/$file_name"
+done
+
+failure_count=0
+
+if (( ${#staged_javascript_files[@]} > 0 )); then
+  echo "Checking JavaScript identifier lengths..."
+  (
+    cd "$temporary_directory" || exit 1
+    npx --yes eslint@9.38.0 \
+      --no-config-lookup \
+      --rule 'id-length: ["error", {"min": 5, "properties": "never"}]' \
+      "${staged_javascript_files[@]}"
+  ) || ((failure_count += 1))
+fi
+
+if (( ${#staged_html_files[@]} > 0 )); then
+  echo "Checking for embedded or inline CSS and JavaScript..."
+  (
+    cd "$temporary_directory" || exit 1
+    python3 "$repository_root/.github/scripts/check-code-rules.py" \
+      embedded "${staged_html_files[@]}"
+  ) || ((failure_count += 1))
+fi
+
+if (( ${#staged_code_files[@]} > 0 )); then
+  echo "Checking file line counts..."
+  (
+    cd "$temporary_directory" || exit 1
+    python3 "$repository_root/.github/scripts/check-code-rules.py" \
+      line-count "${staged_code_files[@]}"
+  ) || ((failure_count += 1))
+fi
+
+if (( failure_count > 0 )); then
+  echo "Pre-commit checks failed."
+  exit 1
+fi
+
+echo "Pre-commit checks passed."
