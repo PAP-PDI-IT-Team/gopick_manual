@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added matching pull-request and pre-commit checks that reject short JavaScript identifiers and embedded or inline CSS and JavaScript, and classify changed HTML, CSS, and JavaScript files using the repository's CMQC line-count thresholds and `dataFiller.js` exemption.
+- Added matching pull-request and pre-commit checks that reject short JavaScript identifiers and embedded or inline CSS and JavaScript, and classify changed HTML, CSS, and JavaScript files using the repository's CMQC line-count thresholds and `dataFiller.js` exemption, with per-file results in the GitHub Actions job summary.
 
 ## [1.3.0] - 2026-10-20
 
