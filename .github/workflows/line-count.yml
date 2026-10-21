@@ -1,0 +1,55 @@
+name: Check file line counts
+
+on:
+  pull_request:
+    paths:
+      - "index.html"
+      - "assets/**/*.html"
+      - "assets/**/*.css"
+      - "assets/**/*.js"
+      - "pages/**/*.html"
+      - "pages/**/*.css"
+      - "pages/**/*.js"
+      - "shared/**/*.html"
+      - "shared/**/*.css"
+      - "shared/**/*.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-line-counts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changed file sizes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            BASE_SHA="HEAD^"
+          fi
+
+          mapfile -d '' changed_files < <(
+            git diff --name-only --diff-filter=ACMR -z "$BASE_SHA" HEAD -- \
+              'index.html' \
+              ':(glob)assets/**/*.html' \
+              ':(glob)assets/**/*.css' \
+              ':(glob)assets/**/*.js' \
+              ':(glob)pages/**/*.html' \
+              ':(glob)pages/**/*.css' \
+              ':(glob)pages/**/*.js' \
+              ':(glob)shared/**/*.html' \
+              ':(glob)shared/**/*.css' \
+              ':(glob)shared/**/*.js'
+          )
+
+          if (( ${#changed_files[@]} > 0 )); then
+            python3 .github/scripts/check-code-rules.py \
+              line-count "${changed_files[@]}"
+          fi

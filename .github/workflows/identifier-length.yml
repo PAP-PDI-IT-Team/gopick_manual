@@ -1,0 +1,96 @@
+name: Check code rules
+
+on:
+  pull_request:
+    paths:
+      - "index.html"
+      - "assets/**/*.js"
+      - "assets/**/*.html"
+      - "pages/**/*.js"
+      - "pages/**/*.html"
+      - "shared/**/*.js"
+      - "shared/**/*.html"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-identifiers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed JavaScript files
+        id: changed-files
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            BASE_SHA="HEAD^"
+          fi
+
+          mapfile -d '' changed_files < <(
+            git diff --name-only --diff-filter=ACMR -z "$BASE_SHA" HEAD -- \
+              ':(glob)assets/**/*.js' \
+              ':(glob)pages/**/*.js' \
+              ':(glob)shared/**/*.js'
+          )
+
+          if (( ${#changed_files[@]} == 0 )); then
+            echo "has_javascript=false" >> "$GITHUB_OUTPUT"
+          else
+            printf '%s\0' "${changed_files[@]}" > "$RUNNER_TEMP/changed-javascript-files"
+            echo "has_javascript=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Enforce five-character identifiers
+        if: steps.changed-files.outputs.has_javascript == 'true'
+        run: |
+          mapfile -d '' changed_files < "$RUNNER_TEMP/changed-javascript-files"
+          npx --yes eslint@9.38.0 \
+            --no-config-lookup \
+            --rule 'id-length: ["error", {"min": 5, "properties": "never"}]' \
+            "${changed_files[@]}"
+
+  check-embedded-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed HTML files
+        id: changed-files
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            BASE_SHA="HEAD^"
+          fi
+
+          mapfile -d '' changed_html_files < <(
+            git diff --name-only --diff-filter=ACMR -z "$BASE_SHA" HEAD -- \
+              'index.html' \
+              ':(glob)assets/**/*.html' \
+              ':(glob)pages/**/*.html' \
+              ':(glob)shared/**/*.html'
+          )
+
+          if (( ${#changed_html_files[@]} == 0 )); then
+            echo "has_html=false" >> "$GITHUB_OUTPUT"
+          else
+            printf '%s\0' "${changed_html_files[@]}" > "$RUNNER_TEMP/changed-html-files"
+            echo "has_html=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reject internal and inline CSS or JavaScript
+        if: steps.changed-files.outputs.has_html == 'true'
+        run: |
+          mapfile -d '' changed_html_files < "$RUNNER_TEMP/changed-html-files"
+          python3 .github/scripts/check-code-rules.py \
+            embedded "${changed_html_files[@]}"
