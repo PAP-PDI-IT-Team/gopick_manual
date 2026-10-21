@@ -2,6 +2,7 @@ name: Check file line counts
 
 on:
   pull_request:
+    branches: ["main"]
     paths:
       - "index.html"
       - "assets/**/*.html"
