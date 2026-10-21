@@ -6,6 +6,18 @@ Describe what changed and why.
 
 List the files, pages, workflows, or behaviors intentionally changed.
 
+## Change Flow
+
+Update the labels to show how this pull request moves from its source change through verification and review.
+
+```mermaid
+flowchart LR
+    A[Source or request] --> B[Owning files]
+    B --> C[Verification]
+    C --> D[Peer review]
+    D --> E[Merge]
+```
+
 ## Verification
 
 Describe the checks performed and their results.
