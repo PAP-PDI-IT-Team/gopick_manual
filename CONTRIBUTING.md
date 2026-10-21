@@ -15,6 +15,14 @@ Read these repository contracts before changing files:
 
 Human-approved scope is authoritative. Do not expand a contribution into unrelated cleanup, architecture changes, renamed contracts, compatibility behavior, or speculative documentation.
 
+Enable the repository's pre-commit checks once after cloning:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook checks staged files for short JavaScript identifiers, embedded or inline CSS and JavaScript, and CMQC line-count classifications before every commit.
+
 ## Branching Workflow
 
 Each pull request must use its own branch created from the latest intended `main` baseline. Do not commit contribution work directly to `main`.
