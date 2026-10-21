@@ -174,38 +174,13 @@
             });
         }
 
-        renderLegend(container, items) {
-            const grid = document.createElement('div');
-            grid.className = 'mt-4 grid grid-cols-1 md:grid-cols-2 gap-4';
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'p-3 rounded-lg bg-white border border-slate-100';
-                this.appendText(card, 'div', 'text-sm font-bold text-slate-900', item.label);
-                this.appendText(card, 'div', 'text-xs text-slate-500 leading-relaxed mt-1', item.detail);
-                grid.appendChild(card);
-            });
-            container.appendChild(grid);
-        }
-
         renderViewAccounts() {
             const container = document.getElementById('viewAccountsContent');
             if (!container) return;
             container.innerHTML = '';
-            const content = this.store.getContent();
-            this.appendText(container, 'p', 'text-sm text-slate-600 leading-relaxed', content.viewAccounts.detail);
-
-            const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
-            if (content.viewAccounts.images && content.viewAccounts.images.length && imageRenderer) {
-                container.appendChild(imageRenderer.createImageGallery(content.viewAccounts.images, 'View Accounts'));
-            }
-
-            this.appendText(container, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Legends');
-            this.renderLegend(container, content.viewAccounts.legend);
-            content.viewAccounts.actionGroups.forEach(group => {
-                this.appendText(container, 'p', 'mt-6 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
-                container.appendChild(this.createActionLinkList(group.links || []));
-            });
-            container.appendChild(this.createInfoCard(content.viewAccounts.archived));
+            const viewAccounts = this.store.getContent().viewAccounts;
+            container.appendChild(this.createViewPanel(viewAccounts, { tagName: 'div', className: 'flow-overview', titleTag: 'h3', title: 'Accounts listing' }));
+            container.appendChild(this.createViewPanel(viewAccounts.archived, { tagName: 'article', id: viewAccounts.archived.id, className: 'flow-overview', titleTag: 'h3', title: viewAccounts.archived.title }));
         }
 
         createUpdateSpecificCard() {
@@ -220,25 +195,30 @@
             return intro;
         }
 
-        createUpdateAccountSectionCards() {
-            const content = this.store.getContent();
-            const titleMap = [
-                { id: 'update-account-information', title: 'Update Account Information' },
-                { id: 'update-assigned-products', title: 'Update Assigned Products' },
-                { id: 'update-meter-management', title: 'Update Meter Management' },
-                { id: 'update-other-account-settings', title: 'Update Other Account Settings' }
-            ];
+        createFlowStepPanel(steps) {
+            const flowPanel = document.createElement('div');
+            flowPanel.className = 'flow-step-panel';
+            const status = document.createElement('p');
+            status.className = 'flow-step-panel__status sr-only';
+            status.setAttribute('aria-live', 'polite');
+            flowPanel.appendChild(status);
+            steps.forEach((step, index) => flowPanel.appendChild(this.createWizardStep(step, index, steps)));
+            return flowPanel;
+        }
 
-            return content.updateSpecific.groups.map((group, index) => {
-                return this.createInfoCard({
-                    id: titleMap[index].id,
-                    title: titleMap[index].title,
-                    images: [{ title: titleMap[index].title, src: '', alt: titleMap[index].title + ' screenshot' }],
-                    items: group.items,
-                    expected: group.expected,
-                    notes: group.notes
-                }, 'nested');
-            });
+        createUpdateAccountSteps(section) {
+            const groups = this.store.getContent().updateSpecific.groups;
+            if (section.steps.length !== groups.length) {
+                throw new Error('Update Account steps must match Update Specific groups');
+            }
+            return section.steps.map((step, index) => ({
+                id: step.id,
+                title: step.title,
+                images: step.images,
+                items: groups[index].items,
+                rules: step.rules,
+                notes: groups[index].notes
+            }));
         }
 
         renderFunctions() {
@@ -247,13 +227,17 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.functions.forEach(section => {
-                container.appendChild(this.createInfoCard(section));
-                if (section.id === 'update-account') {
-                    this.createUpdateAccountSectionCards().forEach(card => {
-                        container.appendChild(card);
-                    });
-                    container.appendChild(this.createUpdateSpecificCard());
+                if (section.id === 'account-detail') {
+                    container.appendChild(this.createViewPanel(section, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title }));
+                    return;
                 }
+                if (section.id === 'update-account') {
+                    container.appendChild(this.createViewPanel(section, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title }));
+                    container.appendChild(this.createFlowStepPanel(this.createUpdateAccountSteps(section)));
+                    container.appendChild(this.createUpdateSpecificCard());
+                    return;
+                }
+                container.appendChild(this.createInfoCard(section));
             });
         }
 
@@ -310,7 +294,10 @@
     if (!global.AccountsFlowBuilders) {
         throw new Error('AccountsRenderer requires AccountsFlowBuilders (flowBuilders.js)');
     }
-    Object.assign(AccountsRenderer.prototype, global.AccountsFlowBuilders.methods);
+    if (!global.AccountsViewBuilders) {
+        throw new Error('AccountsRenderer requires AccountsViewBuilders (viewBuilders.js)');
+    }
+    Object.assign(AccountsRenderer.prototype, global.AccountsFlowBuilders.methods, global.AccountsViewBuilders.methods);
 
     global.AccountsRenderer = AccountsRenderer;
 })(window);

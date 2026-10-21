@@ -12,10 +12,14 @@
         'Defaulted inputs': 'defaulted',
         'Optional inputs': 'optional',
         'Conditional inputs': 'conditional',
-        'Visible content': 'neutral'
+        'Visible content': 'neutral',
+        'Locked inputs': 'locked',
+        'Editable inputs': 'neutral',
+        'Conditional input': 'conditional',
+        'Available actions': 'neutral'
     };
 
-    const RULE_EMPHASIS_PHRASES = ['Non-admin users', 'Admin users', 'Addresses', 'Phone number', 'Expiry Date', 'must match', 'cannot', 'only be lower', 'At least one assessment', 'cannot be 0', '99,999', '999', 'prefilled', 'locked', 'appears only'];
+    const RULE_EMPHASIS_PHRASES = ['Non-admin users', 'Admin users', 'Addresses', 'Phone number', 'Expiry Date', 'must match', 'cannot', 'only be lower', 'At least one assessment', 'cannot be 0', '99,999', '999', 'prefilled', 'locked', 'appears only', 'not archived', 'current user own account'];
 
     const FIELD_NAME_IN_SENTENCE = /^(.+?) (defaults to|appears only|apply to|applies to)\b/;
 
@@ -144,12 +148,12 @@
                 return list;
             },
 
-            createExpectedLine(expectedItems) {
+            createExpectedLine(expectedItems, labelText) {
                 const line = document.createElement('div');
                 line.className = 'flow-result';
                 line.appendChild(this.createSvgIcon(['M20 6L9 17l-5-5'], 'flow-result__icon'));
                 const text = document.createElement('div');
-                this.appendText(text, 'p', 'flow-result__label', 'When you save');
+                this.appendText(text, 'p', 'flow-result__label', labelText);
                 expectedItems.forEach(itemText => this.appendText(text, 'p', 'flow-result__text', itemText));
                 line.appendChild(text);
                 return line;
@@ -183,11 +187,11 @@
 
                 if (createAccount.howToUse && createAccount.howToUse.length) {
                     this.appendText(overview, 'h4', 'flow-overview__subtitle', 'How to use');
-                    overview.appendChild(this.createFlowSteps(createAccount.howToUse));
+                    overview.appendChild(this.createPhasedSteps(createAccount.howToUse, createAccount.steps, 'Create wizard'));
                 }
 
                 if (createAccount.expected && createAccount.expected.length) {
-                    overview.appendChild(this.createExpectedLine(createAccount.expected));
+                    overview.appendChild(this.createExpectedLine(createAccount.expected, 'When you save'));
                 }
 
                 return overview;
@@ -235,7 +239,7 @@
                 text.replace(pattern, (match, captured, offset) => {
                     if (offset > lastIndex) parent.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
                     const strong = document.createElement('strong');
-                    strong.className = 'flow-emphasis';
+                    strong.className = /\d/.test(match) ? 'flow-emphasis flow-emphasis--value' : 'flow-emphasis';
                     strong.textContent = match;
                     parent.appendChild(strong);
                     lastIndex = offset + match.length;
@@ -256,7 +260,10 @@
                 ruleGroups.forEach(group => {
                     const block = document.createElement('div');
                     block.className = 'flow-rules__group';
-                    if (group.label) this.appendText(block, 'p', 'flow-rules__label', group.label);
+                    if (group.label) {
+                        const label = this.appendText(block, 'p', 'flow-rules__label', group.label);
+                        this.appendText(label, 'span', 'flow-inputs__count', String(group.children.length));
+                    }
                     const list = document.createElement('ul');
                     list.className = 'flow-rules__list';
                     group.children.forEach(ruleText => {
@@ -293,10 +300,10 @@
                 const controls = document.createElement('nav');
                 controls.className = 'flow-step-controls';
                 controls.setAttribute('aria-label', 'Wizard steps');
-                if (previousStep && FLOW_STEP_IDS.includes(previousStep.id)) {
+                if (previousStep) {
                     controls.appendChild(this.createStepControl(previousStep, 'previous'));
                 }
-                if (nextStep && FLOW_STEP_IDS.includes(nextStep.id)) {
+                if (nextStep) {
                     controls.appendChild(this.createStepControl(nextStep, 'next'));
                 }
                 return controls;
@@ -328,10 +335,10 @@
                 }
                 if (step.howToUse && step.howToUse.length) {
                     this.appendText(article, 'h5', 'flow-inputs__heading', 'How to use');
-                    article.appendChild(this.createFlowSteps(step.howToUse));
+                    article.appendChild(this.createPhasedSteps(step.howToUse, steps, null));
                 }
                 if (step.rules && step.rules.length) article.appendChild(this.createFlowRules(step.rules, this.collectEmphasisTerms(step)));
-                if (step.expected && step.expected.length) article.appendChild(this.createExpectedLine(step.expected));
+                if (step.expected && step.expected.length) article.appendChild(this.createExpectedLine(step.expected, 'When you save'));
                 if (step.notes && step.notes.length) article.appendChild(this.createNotesPopover(step.notes, step.id + '-notes'));
                 article.appendChild(this.createStepControls(steps[index - 1], steps[index + 1]));
                 return article;

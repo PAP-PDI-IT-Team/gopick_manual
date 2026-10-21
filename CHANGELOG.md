@@ -28,7 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restored the Dashboard to its standard screenshot cards and page data consumed by its dedicated renderer.
 - Switched the Accounts Management renderer to the shared carousel so sections with multiple screenshots show them in one card.
 - Made the Accounts Management sidebar collapsible with a wider layout, a clearer active state, and softer inactive links.
-- Redesigned the Create Account wizard overview as flat content on the main panel with a numbered step list, an inline expected result, and Dev and QA notes in a popover, and made every Accounts Management screenshot open enlarged on click.
+- Redesigned the Create Account wizard overview as flat content on the main panel with a journey track that brackets the five wizard steps and highlights the step shown in the carousel, an inline expected result, and Dev and QA notes in a popover, and made every Accounts Management screenshot open enlarged on click.
+- Rebuilt the Accounts Management View Accounts section on the wizard step design: a status legend and row action and page button groups as count-badged chip groups, with linked chips for each action.
+- Added the Account Detail screenshot with a blurred surround, an outlined focus area, and blurred personal values, and rebuilt the Account Detail section on the wizard step design with an access trail, page control chips, and a "What you see" panel that splits Return Button destinations from conditional fields.
+- Added the Update Account Information screenshots with a blurred surround, an outlined focus area, and blurred personal values, and rebuilt Update Account as a wizard overview with a four-step carousel, locked-input chips, a single How to use journey track that brackets the four wizard steps and highlights the step shown in the carousel, grouped guard-rail Rules taken from the Markdown, and Previous and Next controls.
+- Rendered the Review Account Details How to use as a linear, non-clickable journey track.
+- Reflowed the wizard Rules guard rails into two balanced columns with counted group headings, quieter field names, and highlighted limit values.
+- Added the Update Account wizard screenshots for Assign Products, Meter Management, and Other Account Settings with blurred surroundings and an outlined focus area, and blurred the account name.
+- Split the Accounts Management page stylesheet into sidebar, layout, flow overview, wizard, inputs, rules, journey, and screenshot viewer files with no visual change.
+- Added hover and focus tooltips to the View Accounts page buttons, taken from the Markdown descriptions.
+- Added the View Archived Accounts screenshot with a blurred surround and an outlined focus area, and removed the redundant Row Actions chip from the row action groups, leaving the row actions as direct links.
 - Moved the Dashboard and Accounts Management Tailwind configuration into an external shared script, preserving their existing brand colors and load order.
 
 ## [1.2.0] - 2026-08-24

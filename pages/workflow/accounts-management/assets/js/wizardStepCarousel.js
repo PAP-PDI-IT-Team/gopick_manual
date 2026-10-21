@@ -42,6 +42,8 @@
                 this.statusElement.textContent = (position ? position.textContent + ': ' : '') + (title ? title.textContent : '');
             }
 
+            this.panel.dispatchEvent(new CustomEvent('flowstepchange', { bubbles: true, detail: { stepId: stepId } }));
+
             if (settings.scrollIntoView) {
                 targetStep.scrollIntoView({ block: 'start', behavior: this.prefersReducedMotion() ? 'auto' : 'smooth' });
             }

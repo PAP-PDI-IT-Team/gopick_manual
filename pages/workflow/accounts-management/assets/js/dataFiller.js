@@ -341,6 +341,7 @@
         },
         viewAccounts: {
             detail: 'Displays the active account listing with search, advanced search, archived account navigation, bulk actions, and row actions.',
+            accessPath: 'Accounts > View Accounts',
             images: [
                 {
                     title: 'Accounts Listing & Action Toolbar',
@@ -359,36 +360,30 @@
                 { label: 'Active', detail: 'Active and not yet expired' },
                 { label: 'Deactivated', detail: 'Deactivated' },
                 { label: 'Expiring', detail: 'Active and exceeded expiration date but not account expiration extension' },
-                { label: 'Expired', detail: 'Active, exceeded expiration date and exceeded account expiration extension' },
-                { label: 'Archived', detail: 'Archived account' }
+                { label: 'Expired', detail: 'Active, exceeded expiration date and exceeded account expiration extension' }
             ],
             actionGroups: [
                 {
                     title: 'Available Row Actions',
                     links: [
-                        {
-                            label: 'Row Actions',
-                            href: '#row-actions',
-                            children: [
-                                { label: 'View', href: '#view-active-account' },
-                                { label: 'Update Wizard', href: '#update-account' },
-                                { label: 'Archive Specific', href: '#archive' }
-                            ]
-                        }
+                        { label: 'View', href: '#view-active-account' },
+                        { label: 'Update Wizard', href: '#update-account' },
+                        { label: 'Archive Specific', href: '#archive' }
                     ]
                 },
                 {
                     title: 'Page Buttons',
                     links: [
-                        { label: 'Search', href: '#search' },
-                        { label: 'Advanced Search', href: '#advanced-search' },
-                        { label: 'View Archive', href: '#view-archived-accounts' },
+                        { label: 'Search', href: '#search', tooltip: 'Searches account table content.' },
+                        { label: 'Advanced Search', href: '#advanced-search', tooltip: 'Searches account table content using configured rules.' },
+                        { label: 'View Archive', href: '#view-archived-accounts', tooltip: 'Displays archived accounts with search, advanced search, bulk actions, and row actions.' },
                         {
                             label: 'Bulk Actions',
+                            tooltip: 'Owns account listing actions applied to selected account rows.',
                             href: '#bulk-action',
                             children: [
-                                { label: 'Archive', href: '#bulk-action-archive' },
-                                { label: 'Delete', href: '#bulk-action-delete' }
+                                { label: 'Archive', href: '#bulk-action-archive', tooltip: 'Moves selected account rows to archived accounts.' },
+                                { label: 'Delete', href: '#bulk-action-delete', tooltip: 'Deletes selected account rows.' }
                             ]
                         }
                     ]
@@ -398,32 +393,39 @@
                 id: 'view-archived-accounts',
                 title: 'View Archived Accounts',
                 detail: 'Displays archived accounts with search, advanced search, bulk actions, and row actions.',
+                accessPath: 'Accounts > View Accounts > View Archived Accounts',
+                images: [
+                    {
+                        title: 'Archived Accounts Listing',
+                        caption: 'Archived accounts table with search, Advanced Search, Back to Accounts, Bulk Action, filters, status legend, and the view and restore row actions.',
+                        src: 'assets/img/view-archived-accounts-listing.png',
+                        alt: 'View Archived Accounts page with search, Advanced Search, Back to Accounts, Bulk Action, account type and date created filters, status legend, and an archived account row with view and restore actions'
+                    }
+                ],
+                legend: [
+                    { label: 'Archived', detail: 'Archived account' }
+                ],
                 actionGroups: [
                     {
                         title: 'Available Row Actions',
                         links: [
-                            {
-                                label: 'Row Actions',
-                                href: '#row-actions',
-                                children: [
-                                    { label: 'View', href: '#view-active-account' },
-                                    { label: 'Restore', href: '#restore' }
-                                ]
-                            }
+                            { label: 'View', href: '#view-active-account' },
+                            { label: 'Restore', href: '#restore' }
                         ]
                     },
                     {
                         title: 'Page Buttons',
                         links: [
-                            { label: 'View Accounts', href: '#view-accounts' },
-                            { label: 'Search', href: '#search' },
-                            { label: 'Advanced Search', href: '#advanced-search' },
+                            { label: 'View Accounts', href: '#view-accounts', tooltip: 'Displays the active account listing with search, advanced search, archived account navigation, bulk actions, and row actions.' },
+                            { label: 'Search', href: '#search', tooltip: 'Searches account table content.' },
+                            { label: 'Advanced Search', href: '#advanced-search', tooltip: 'Searches account table content using configured rules.' },
                             {
                                 label: 'Bulk Actions',
+                            tooltip: 'Owns account listing actions applied to selected account rows.',
                                 href: '#bulk-action',
                                 children: [
-                                    { label: 'Restore', href: '#bulk-action-restore' },
-                                    { label: 'Delete', href: '#bulk-action-delete' }
+                                    { label: 'Restore', href: '#bulk-action-restore', tooltip: 'Restores selected archived account rows.' },
+                                    { label: 'Delete', href: '#bulk-action-delete', tooltip: 'Deletes selected account rows.' }
                                 ]
                             }
                         ]
@@ -582,7 +584,12 @@
             {
                 id: 'account-detail',
                 title: 'Account Detail',
-                images: [{ title: 'Account Detail', src: '', alt: 'Account Detail screenshot' }],
+                images: [{
+                    title: 'Account Detail: Account Information',
+                    caption: 'Back to List, the account configuration gear, the five section tabs, and the Account Information card with its Update button; personal values are blurred.',
+                    src: 'assets/img/account-detail.png',
+                    alt: 'View Account page with Back to List, the configuration gear, the Account Information, Assigned Assessments, Meter Management, Other Account Settings, and List of Users tabs, and the Account Information card outlined; personal values are blurred'
+                }],
                 detail: 'Displays account information configured during creation and account configuration actions.',
                 accessPath: 'Accounts > View Accounts > Row Actions > View',
                 actions: [
@@ -595,18 +602,171 @@
                     'List Of Users Section'
                 ],
                 expected: [
-                    'From an active account detail page, the user returns to View Accounts.',
-                    'From an archived account detail page, the user returns to View Archived Accounts.',
-                    'Parent Meter appears when Metering Management Type is not Deduct usage from this account.',
-                    'Site Billing Amount (PHP) appears when Site Billing Amount (PHP)(Type) is Included in Package.',
-                    'Addendum and Contract Meters appear when Contract Type is Volume-based.',
-                    'Base Meter appears when Contract Type is Per Usage.'
+                    {
+                        label: 'Return Button',
+                        returns: [
+                            { source: 'Active account detail page', target: { label: 'View Accounts', href: '#view-accounts' } },
+                            { source: 'Archived account detail page', target: { label: 'View Archived Accounts', href: '#view-archived-accounts' } }
+                        ]
+                    },
+                    {
+                        label: 'Conditional fields',
+                        conditions: [
+                            { fields: ['Parent Meter'], condition: 'Metering Management Type is not Deduct usage from this account' },
+                            { fields: ['Site Billing Amount (PHP)'], condition: 'Site Billing Amount (PHP)(Type) is Included in Package' },
+                            { fields: ['Addendum', 'Contract Meters'], condition: 'Contract Type is Volume-based' },
+                            { fields: ['Base Meter'], condition: 'Contract Type is Per Usage' }
+                        ]
+                    }
                 ]
             },
             {
                 id: 'update-account',
                 title: 'Update Account',
-                images: [{ title: 'Update Account', src: '', alt: 'Update Account screenshot' }],
+                steps: [
+                    {
+                        id: 'update-account-information',
+                        title: 'Update Account Information',
+                        rules: [
+                            {
+                                label: 'Input Guard Rails',
+                                children: [
+                                    'Inputs are optional when they are not indicated as required.',
+                                    'Inputs indicated as required must be completed.',
+                                    'Conditional inputs appear only when their condition is met.'
+                                ]
+                            },
+                            {
+                                label: 'Validation Guard Rails',
+                                children: [
+                                    'Account Type, Parent Account, and Account Name cannot be changed.',
+                                    'Username, Password, Primary Contact Name, and Primary Contact Email have a maximum of 100 characters.',
+                                    'Addresses have a maximum of 250 characters.',
+                                    'Phone number has a maximum of 25 characters.',
+                                    'Password and Confirm Password must match.',
+                                    'Billing Address can be copied from Business Address by toggling the checkbox, or entered manually when the checkbox is off.',
+                                    'Expiry Date and Time cannot be set later than today.',
+                                    'Status does not show when editing the current user\'s own account.'
+                                ]
+                            }
+                        ],
+                        images: [
+                            {
+                                title: 'Update Account Information: top of the form',
+                                caption: 'Update wizard progress bar, read-only Account Type, Username, and Parent Account, then Account Name, passwords, contact details, Country, and Business Phone Number; personal values are blurred.',
+                                src: 'assets/img/update-account-information-top.png',
+                                alt: 'Update Account wizard on step 1 with the Account Information form outlined, showing read-only account type, username, and parent account above the editable fields; personal values are blurred'
+                            },
+                            {
+                                title: 'Update Account Information: rest of the form',
+                                caption: 'Business Address, the billing address checkbox, Expiry Date and Time, Actual Account Expiration, Status, and the Next button.',
+                                src: 'assets/img/update-account-information-bottom.png',
+                                alt: 'Lower part of the Update Account Information form outlined, showing address, billing checkbox, expiry, actual account expiration, status, and the Next button; personal values are blurred'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'update-assigned-products',
+                        title: 'Update Assigned Products',
+                        rules: [
+                            {
+                                label: 'Input Guard Rails',
+                                children: [
+                                    'Inputs are optional when they are not indicated as required.',
+                                    'Inputs indicated as required must be completed.'
+                                ]
+                            }
+                        ],
+                        images: [{
+                            title: 'Update Assigned Products',
+                            caption: 'Update wizard step 2 with the five assessment category dropdowns, the Update Assessment button, and the Back and Next buttons; the account name is blurred.',
+                            src: 'assets/img/update-assign-products.png',
+                            alt: 'Update Account wizard on the Assign Products step outlined, showing the Cognitive, Competency, Behavioral, Survey, and Test Battery category dropdowns and the Update Assessment button; the account name is blurred'
+                        }]
+                    },
+                    {
+                        id: 'update-meter-management',
+                        title: 'Update Meter Management',
+                        rules: [
+                            {
+                                label: 'Input Guard Rails',
+                                children: [
+                                    'Inputs are optional when they are not indicated as required.',
+                                    'Inputs indicated as required must be completed.',
+                                    'Conditional inputs appear only when their condition is met.'
+                                ]
+                            },
+                            {
+                                label: 'Meter Management Guard Rails',
+                                children: [
+                                    'Sub-Account has Deduct usage from this account and Deduct usage from Client Account.',
+                                    'Current Meters and Parent Meter Balance cannot be modified when meter management type is Deduct usage from Account.'
+                                ]
+                            }
+                        ],
+                        images: [{
+                            title: 'Update Meter Management',
+                            caption: 'Update wizard step 3 with the metering management type, the Current Meter(s) field, the View Meter Log button, and the Back and Next buttons.',
+                            src: 'assets/img/update-meter-management.png',
+                            alt: 'Update Account wizard on the Meter Management step outlined, showing the metering management type, Current Meter(s) field, and View Meter Log button'
+                        }]
+                    },
+                    {
+                        id: 'update-other-account-settings',
+                        title: 'Update Other Account Settings',
+                        rules: [
+                            {
+                                label: 'Input Guard Rails',
+                                children: [
+                                    'Inputs are optional when they are not indicated as required.',
+                                    'Inputs indicated as required must be completed.',
+                                    'Conditional inputs appear only when their condition is met.'
+                                ]
+                            },
+                            {
+                                label: 'Account Limit Guard Rails',
+                                children: [
+                                    'Distributor accounts have Sub-Distributor, User Account, Sub-Account, and Self Registration limits.',
+                                    'Sub-Distributor accounts have User Account, Sub-Account, and Self Registration limits.',
+                                    'User Account accounts have User Account, Sub-Account, and Self Registration limits.',
+                                    'Sub-Account accounts have User Account and Self Registration limits.',
+                                    'Maximum account limit value is 999.'
+                                ]
+                            },
+                            {
+                                label: 'Display & Visibility Guard Rails',
+                                children: [
+                                    'HRSC Name, HRSC Email, Assessment Specialist Name, Assessment Specialist Email, Client Contact Person Name, and Client Contact Person Email have a maximum of 100 characters.',
+                                    'Site Billing Amount (PHP) appears when Site Billing Amount (PHP)(Type) is Included in Package.',
+                                    'Addendum and Contract Meters appear when Contract Type is Volume-based.',
+                                    'Base Meter appears when Contract Type is Per Usage.'
+                                ]
+                            },
+                            {
+                                label: 'Data Sync Guard Rails',
+                                children: [
+                                    'Contracted Meters is prefilled from meter management.',
+                                    'Addendum is locked when the selected meter type is parent based.',
+                                    'Maximum Addendum, Base Meter, and Billing Amount value is 999.'
+                                ]
+                            }
+                        ],
+                        images: [
+                            {
+                                title: 'Update Other Account Settings: limits and contacts',
+                                caption: 'Update wizard step 4 with the account limit fields, API Access Username, and the first HRSC and assessment specialist fields.',
+                                src: 'assets/img/update-other-account-settings-top.png',
+                                alt: 'Update Account wizard on the Other Account Settings step outlined, showing the account limit fields and API Access Username'
+                            },
+                            {
+                                title: 'Update Other Account Settings: billing and contract',
+                                caption: 'Contact fields, Site Billing Type, Contract Type, Contracted Meters, Addendum, and the Back and Next buttons.',
+                                src: 'assets/img/update-other-account-settings-bottom.png',
+                                alt: 'Lower part of the Other Account Settings step outlined, showing the contact, billing, and contract fields and the Back and Next buttons'
+                            }
+                        ]
+                    }
+                ],
                 detail: 'Updates account settings through the update wizard. This is different from Update Specific, which updates a single account detail section.',
                 accessPath: 'Accounts > View Accounts > Row Actions > Update',
                 howToUse: [
