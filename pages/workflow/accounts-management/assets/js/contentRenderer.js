@@ -126,16 +126,14 @@
 
             if (section.notes && section.notes.length) {
                 section.notes.forEach(note => {
-                    card.appendChild(this.createBox('Notes: ' + note.label, note.items, 'mt-4 rounded-lg border border-slate-100 bg-white p-4', 'font-semibold text-slate-900 mb-2'));
+                    card.appendChild(this.createBox('Notes: ' + note.label, note.items, 'mt-4 rounded-lg bg-slate-100/70 p-4', 'font-semibold text-slate-900 mb-2'));
                 });
             }
         }
 
         createInfoCard(section, level) {
             const card = document.createElement('article');
-            card.className = level === 'nested'
-                ? 'rounded-lg border border-slate-100 bg-white p-4'
-                : 'rounded-lg border border-slate-100 bg-slate-50 p-5';
+            card.className = level === 'nested' ? 'flat-card flat-card--nested' : 'flat-card';
             if (!section.omitCardId) card.id = section.id;
             this.appendText(card, level === 'nested' ? 'h4' : 'h3', 'font-semibold text-slate-900 mb-2', section.title);
             this.appendText(card, 'p', 'text-sm text-slate-600 leading-relaxed', section.detail);
@@ -149,13 +147,24 @@
             container.innerHTML = '';
 
             const content = this.store.getContent();
-            const summary = this.createInfoCard(Object.assign({}, content.createAccount, {
-                title: 'Wizard Overview',
-                id: 'create-account-summary'
-            }));
-            container.appendChild(summary);
+            container.appendChild(this.createWizardOverview(content.createAccount));
 
-            content.createAccount.steps.forEach((step, index) => {
+            const steps = content.createAccount.steps;
+            let flowPanel = null;
+            steps.forEach((step, index) => {
+                if (global.AccountsFlowBuilders.FLOW_STEP_IDS.includes(step.id)) {
+                    if (!flowPanel) {
+                        flowPanel = document.createElement('div');
+                        flowPanel.className = 'flow-step-panel';
+                        const status = document.createElement('p');
+                        status.className = 'flow-step-panel__status sr-only';
+                        status.setAttribute('aria-live', 'polite');
+                        flowPanel.appendChild(status);
+                        container.appendChild(flowPanel);
+                    }
+                    flowPanel.appendChild(this.createWizardStep(step, index, steps));
+                    return;
+                }
                 const card = this.createInfoCard(step);
                 const badge = document.createElement('div');
                 badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
@@ -297,6 +306,11 @@
             this.renderBulkActions();
         }
     }
+
+    if (!global.AccountsFlowBuilders) {
+        throw new Error('AccountsRenderer requires AccountsFlowBuilders (flowBuilders.js)');
+    }
+    Object.assign(AccountsRenderer.prototype, global.AccountsFlowBuilders.methods);
 
     global.AccountsRenderer = AccountsRenderer;
 })(window);

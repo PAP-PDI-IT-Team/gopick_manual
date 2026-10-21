@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added an opt-in browser-frame presentation for screenshot cards, enabled only on the Accounts Management page, with a window title bar, uncropped images, and no live-reference badge; other pages keep the existing card style.
 - Restored the Dashboard to its standard screenshot cards and page data consumed by its dedicated renderer.
 - Switched the Accounts Management renderer to the shared carousel so sections with multiple screenshots show them in one card.
+- Made the Accounts Management sidebar collapsible with a wider layout, a clearer active state, and softer inactive links.
+- Redesigned the Create Account wizard overview as flat content on the main panel with a numbered step list, an inline expected result, and Dev and QA notes in a popover, and made every Accounts Management screenshot open enlarged on click.
 - Moved the Dashboard and Accounts Management Tailwind configuration into an external shared script, preserving their existing brand colors and load order.
 
 ## [1.2.0] - 2026-08-24

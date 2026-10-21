@@ -139,11 +139,15 @@
             this.store = new global.AccountsStore(this.content);
             this.renderer = new global.AccountsRenderer(this.store, global.GoPickImageRenderer);
             this.sidebar = new global.AccountsSidebarTracker(this.store);
+            this.screenshotViewer = new global.AccountsScreenshotViewer();
         }
 
         scrollToHash() {
             const id = (location.hash || '').replace('#', '');
             if (!id) return;
+            if (this.wizardCarousel.hasStep(id)) {
+                this.wizardCarousel.showStep(id);
+            }
             const el = document.getElementById(id);
             if (el) {
                 this.sidebar.setActive(id);
@@ -161,6 +165,9 @@
         init() {
             setFooterYear();
             this.renderer.renderAll();
+            this.screenshotViewer.bindTo(document.querySelector('main'));
+            this.wizardCarousel = new global.AccountsWizardStepCarousel(document.querySelector('.flow-step-panel'));
+            this.wizardCarousel.init();
             this.sidebar.render();
             this.sidebar.bindListeners();
             populateRbacTable();
