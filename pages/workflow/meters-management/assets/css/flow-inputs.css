@@ -1,0 +1,256 @@
+.flow-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.flow-inputs__heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.625rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.flow-inputs__count {
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.375rem;
+    border-radius: 9999px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flow-inputs__chips {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 0.5rem;
+}
+
+.flow-inputs__chip {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #1e293b;
+}
+
+.flow-inputs__group--required .flow-inputs__chip::after {
+    content: "*";
+    margin-left: 0.25rem;
+    color: #b3060f;
+    font-weight: 700;
+}
+
+.flow-inputs__group--calculated .flow-inputs__chip {
+    border-style: dashed;
+    border-color: #94a3b8;
+    background: #f8fafc;
+    color: #334155;
+}
+
+.flow-inputs__chips--sentences {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+
+.flow-inputs__group--defaulted .flow-inputs__chip {
+    border-color: #e2e8f0;
+    background: #f1f5f9;
+}
+
+.flow-inputs__group--locked .flow-inputs__chip {
+    border-color: #e2e8f0;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.flow-inputs__group--optional .flow-inputs__chip {
+    border-style: dashed;
+}
+
+.flow-inputs__group--conditional .flow-inputs__chip {
+    gap: 0.5rem;
+}
+
+.flow-inputs__group--conditional .flow-inputs__chip::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: #d97706;
+}
+
+.flow-inputs__chip--link {
+    padding: 0;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.flow-inputs__chip--link:hover,
+.flow-inputs__chip--link:focus-within {
+    border-color: #e50914;
+    background: #fef2f2;
+}
+
+.flow-inputs__chip-anchor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    color: #b3060f;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.flow-inputs__chip-anchor:focus-visible {
+    outline: 2px solid #e50914;
+    outline-offset: 3px;
+}
+
+.flow-inputs__chip-arrow {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    color: #94a3b8;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.flow-inputs__chip--link:hover .flow-inputs__chip-arrow,
+.flow-inputs__chip--link:focus-within .flow-inputs__chip-arrow {
+    color: #e50914;
+    transform: translateX(3px);
+}
+
+.flow-inputs__chip-tooltip {
+    position: absolute;
+    left: 0.75rem;
+    bottom: calc(100% + 0.5rem);
+    z-index: 5;
+    width: max-content;
+    max-width: min(18rem, 80vw);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.45;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(2px);
+    pointer-events: none;
+    transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
+}
+
+.flow-inputs__chip-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    border: 6px solid transparent;
+    border-top-color: #0f172a;
+}
+
+.flow-inputs__chip--link:has(.flow-inputs__chip-tooltip) {
+    position: relative;
+}
+
+.flow-inputs__chip--link:hover .flow-inputs__chip-tooltip,
+.flow-inputs__chip--link:focus-within .flow-inputs__chip-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.flow-inputs__chip--child {
+    background: #f8fafc;
+}
+
+.flow-inputs__chip--child .flow-inputs__chip-anchor {
+    color: #334155;
+    font-weight: 500;
+}
+
+.flow-inputs__cluster {
+    grid-column: 1 / -1;
+    padding: 0.5rem;
+    border: 1px dashed #cbd5e1;
+    border-radius: 0.75rem;
+    background: #f8fafc;
+}
+
+.flow-inputs__cluster > .flow-inputs__chips {
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flow-inputs__chip-tooltip,
+    .flow-inputs__chip-arrow {
+        transition: none;
+    }
+}
+
+.flow-inputs__chip--status {
+    --status-dot: #64748b;
+    align-items: flex-start;
+    gap: 0.625rem;
+}
+
+.flow-inputs__chip--status::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.4375rem;
+    border-radius: 9999px;
+    background: var(--status-dot);
+}
+
+.flow-inputs__chip--active {
+    --status-dot: #10b981;
+}
+
+.flow-inputs__chip--expiring {
+    --status-dot: #f59e0b;
+}
+
+.flow-inputs__chip--expired {
+    --status-dot: #ef4444;
+}
+
+.flow-inputs__chip--archived {
+    --status-dot: #6366f1;
+}
+
+.flow-inputs__chip-name {
+    display: block;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.flow-inputs__chip-detail {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #475569;
+}

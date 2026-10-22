@@ -285,7 +285,7 @@ Actor is the logged-in user at action time. Actor is not always the parent accou
 
 ### Resolution Paths Matrix
 
-User guide matrix table for traceability, answering how to identify, understand, and use the Meter log information table as a logger across transaction types, entity states, and `SHOW_ERROR` diagnostic modes:
+Find out what the Meter Log shows for each kind of transaction, including when an account or user has been deleted. The `What users see` view is the normal log (`SHOW_ERROR=false`); the `Diagnostic` view adds lookup details (`SHOW_ERROR=true`):
 
 | # | Transaction Type | Target / Subject Entity State | Actor Entity (modified_by) State | Target Account Column (SHOW_ERROR=false) | Target Account Column (SHOW_ERROR=true) | Remarks Column (SHOW_ERROR=false) | Remarks Column (SHOW_ERROR=true) |
 |---|---|---|---|---|---|---|---|
