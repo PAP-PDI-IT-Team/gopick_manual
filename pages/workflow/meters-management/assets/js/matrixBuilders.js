@@ -1,310 +1,322 @@
 (function (global) {
     'use strict';
 
+    const MATRIX_CATEGORIES = [
+        { label: 'All Paths (17)', key: 'all' },
+        { label: 'Type 7: Created Account', key: 'type7' },
+        { label: 'Type 6: Balance Add/Deduct', key: 'type6' },
+        { label: 'Type 1 / 5: Transfers', key: 'type1_5' },
+        { label: 'Type 2 / 3 / 4: Inbound / Initial', key: 'type2_3_4' },
+        { label: 'Type 0: Scored Assessment', key: 'type0' }
+    ];
+
     const MATRIX_MODES = [
-        { key: 'prod', label: 'What users see', hint: 'Production view (SHOW_ERROR = false)' },
-        { key: 'debug', label: 'Diagnostic', hint: 'Diagnostic view (SHOW_ERROR = true)' },
-        { key: 'both', label: 'Compare both', hint: 'Both views stacked in each cell' }
+        { label: 'All Columns (Side-by-Side)', key: 'all' },
+        { label: 'SHOW_ERROR = false (Production)', key: 'prod' },
+        { label: 'SHOW_ERROR = true (Diagnostic)', key: 'debug' }
     ];
 
-    const MATRIX_COLUMNS = [
-        { label: 'Transaction type', className: 'matrix-col-type' },
-        { label: 'Account situation', className: 'matrix-col-state' },
-        { label: 'Target account shown', className: 'matrix-col-result' },
-        { label: 'Remark shown', className: 'matrix-col-result' }
+    const MATRIX_HEADERS = [
+        { text: '#', className: 'px-3 py-3 w-10 text-center' },
+        { text: 'Transaction Type', className: 'px-3 py-3 min-w-[170px]' },
+        { text: 'Target / Subject Entity State', className: 'px-3 py-3 min-w-[190px]' },
+        { text: 'Actor Entity State', className: 'px-3 py-3 min-w-[150px]' },
+        { text: 'Target Account (SHOW_ERROR=false)', className: 'px-3 py-3 min-w-[160px] col-prod', badge: 'Prod' },
+        { text: 'Target Account (SHOW_ERROR=true)', className: 'px-3 py-3 min-w-[200px] col-debug', badge: 'Diag' },
+        { text: 'Remarks Column (SHOW_ERROR=false)', className: 'px-3 py-3 min-w-[200px] col-prod', badge: 'Prod' },
+        { text: 'Remarks Column (SHOW_ERROR=true)', className: 'px-3 py-3 min-w-[200px] col-debug', badge: 'Diag' }
     ];
 
-    const TYPE_TONES = {
-        type7: 'purple',
-        type1_5: 'blue',
-        type2_3_4: 'cyan',
-        type0: 'violet'
-    };
+    const RESULT_COLUMNS = [
+        { field: 'targetProd', className: 'px-3 py-3 align-top col-prod' },
+        { field: 'targetDebug', className: 'px-3 py-3 align-top col-debug' },
+        { field: 'remarksProd', className: 'px-3 py-3 align-top col-prod' },
+        { field: 'remarksDebug', className: 'px-3 py-3 align-top col-debug' }
+    ];
+
+    const SEARCH_FIELDS = ['id', 'type', 'targetState', 'actorState', 'targetProd', 'targetDebug', 'remarksProd', 'remarksDebug'];
+
+    const PILL_CLASS = 'matrix-filter-pill text-xs px-2.5 py-1 rounded-full border border-slate-200 bg-white text-slate-700 font-medium hover:bg-slate-100 transition-colors';
+    const MODE_CLASS = 'matrix-mode-btn px-2.5 py-1 rounded-md transition-all';
 
     const methods = {
-        describeMatrixState(text) {
-            const deletedMatch = /^Missing in Both \((.+?) deleted\)$/.exec(text);
-            if (deletedMatch) return { label: deletedMatch[1] + ' deleted', tone: 'bad' };
-
-            const namedFoundMatch = /^Found in Storage 1 or 2 \((.+)\)$/.exec(text) || /^Found in Storage 2 \((Actor #\d+)\)$/.exec(text);
-            if (namedFoundMatch) return { label: namedFoundMatch[1] + ' found', tone: 'good' };
-
-            const idFoundMatch = /^Found in Storage [12] \((accounts|users)\.id = (\d+)\)$/.exec(text);
-            if (idFoundMatch) {
-                const entityName = idFoundMatch[1] === 'accounts' ? 'Account' : 'User';
-                return { label: entityName + ' #' + idFoundMatch[2] + ' found', tone: 'good' };
-            }
-
-            if (/^Found in Storage [12] \(/.test(text)) return { label: 'Found', tone: 'good' };
-            if (/^NULL \/ Not Set/.test(text)) return { label: 'Not specified', tone: 'warn' };
-
-            if (/^Subject #\d+ active; Actor #\d+ (active|deleted)$/.test(text)) {
-                const label = text.replace('Subject', 'Account').replace('Actor', 'user').replace('; ', ', ');
-                return { label: label, tone: text.includes('deleted') ? 'bad' : 'good' };
-            }
-
-            return { label: text, tone: text.includes('deleted') ? 'bad' : 'neutral' };
+        appendMatrixLines(wrapper, lines, classForLine) {
+            lines.forEach((lineText, lineIndex) => {
+                const lineElement = document.createElement('div');
+                const lineClass = classForLine(lineText, lineIndex);
+                if (lineClass) lineElement.className = lineClass;
+                lineElement.textContent = lineText;
+                wrapper.appendChild(lineElement);
+            });
         },
 
-        createMatrixStateLine(text, caption) {
-            const description = this.describeMatrixState(text);
-            if (description.label === 'Found') {
-                description.label = (caption === 'Done by' ? 'User' : 'Account') + ' found';
+        createMatrixDiagnosticBlock(cellText) {
+            const wrapper = document.createElement('div');
+            if (!cellText) {
+                wrapper.textContent = '-';
+                return wrapper;
             }
-            const line = document.createElement('div');
-            line.className = 'matrix-state matrix-state--' + description.tone;
-            this.appendText(line, 'span', 'matrix-state__caption', caption);
-            this.appendText(line, 'span', 'matrix-state__label', description.label);
-            if (description.label !== text) {
-                this.appendText(line, 'span', 'matrix-tech', text);
+
+            const trimmed = cellText.trim();
+            const lines = cellText.split('\n');
+            if (trimmed.startsWith('Error:') || trimmed.startsWith('Diagnostic Notice:') || trimmed.startsWith('Notice:')) {
+                wrapper.className = 'font-mono text-[11px] leading-relaxed p-2.5 rounded-lg bg-slate-900 text-slate-100 border border-slate-800 shadow-sm';
+                this.appendMatrixLines(wrapper, lines, (lineText, lineIndex) => {
+                    if (lineIndex > 0) return 'text-slate-300 pl-2 text-[10.5px]';
+                    return lineText.startsWith('Error:') ? 'font-semibold text-rose-400' : 'font-semibold text-amber-300';
+                });
+                return wrapper;
             }
-            return line;
+
+            if (trimmed.startsWith('⚠')) {
+                wrapper.className = 'text-xs p-2.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200';
+                this.appendMatrixLines(wrapper, lines, (lineText, lineIndex) => (lineIndex === 0 ? 'font-semibold' : 'text-amber-800/80 text-[11px] mt-0.5'));
+                return wrapper;
+            }
+
+            if (trimmed.startsWith('[ ⊘')) {
+                wrapper.className = 'text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-1 rounded inline-block';
+                wrapper.textContent = cellText;
+                return wrapper;
+            }
+
+            if (trimmed === '(not set)') {
+                wrapper.className = 'text-xs italic text-slate-400 font-mono';
+                wrapper.textContent = cellText;
+                return wrapper;
+            }
+
+            if (lines.length > 1) {
+                this.appendMatrixLines(wrapper, lines, (lineText, lineIndex) => (lineIndex > 0 ? 'text-slate-500 text-[11px] mt-0.5' : ''));
+            } else {
+                wrapper.textContent = cellText;
+            }
+            return wrapper;
         },
 
-        createMatrixSituationCell(item) {
-            const wrap = document.createElement('div');
-            wrap.className = 'matrix-situation';
-            wrap.appendChild(this.createMatrixStateLine(item.targetState, 'Account'));
-            wrap.appendChild(this.createMatrixStateLine(item.actorState, 'Done by'));
-            return wrap;
+        createMatrixStateCell(cellText) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'text-xs text-slate-700 leading-relaxed';
+            this.appendMatrixLines(wrapper, cellText.split('\n'), lineText => {
+                if (lineText.includes('Missing in Both') || lineText.includes('MISS') || lineText.includes('deleted')) return 'text-rose-700 font-medium';
+                if (lineText.includes('NULL / Not Set')) return 'text-amber-700 font-medium';
+                if (lineText.includes('Found in Storage')) return 'text-slate-800 font-medium';
+                return 'text-slate-600';
+            });
+            return wrapper;
         },
 
-        createMatrixTypeBadge(item) {
-            const tone = item.typeCategory === 'type6'
-                ? (item.type.includes('Addition') ? 'green' : 'amber')
-                : (TYPE_TONES[item.typeCategory] || 'slate');
+        createMatrixTypeBadge(matrixItem) {
             const badge = document.createElement('span');
-            badge.className = 'matrix-type matrix-type--' + tone;
-            badge.textContent = item.type;
+            let colorClasses = 'bg-slate-100 text-slate-800 border-slate-200';
+            if (matrixItem.typeCategory === 'type7') {
+                colorClasses = 'bg-purple-50 text-purple-700 border-purple-200';
+            } else if (matrixItem.typeCategory === 'type6') {
+                colorClasses = matrixItem.type.includes('Addition')
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    : 'bg-amber-50 text-amber-700 border-amber-200';
+            } else if (matrixItem.typeCategory === 'type1_5') {
+                colorClasses = 'bg-blue-50 text-blue-700 border-blue-200';
+            } else if (matrixItem.typeCategory === 'type2_3_4') {
+                colorClasses = 'bg-cyan-50 text-cyan-700 border-cyan-200';
+            } else if (matrixItem.typeCategory === 'type0') {
+                colorClasses = 'bg-violet-50 text-violet-700 border-violet-200';
+            }
+
+            badge.className = 'inline-block text-xs font-semibold px-2 py-1 rounded-md border ' + colorClasses;
+            badge.textContent = matrixItem.type;
             return badge;
         },
 
-        createMatrixResultBlock(text) {
-            const block = document.createElement('div');
-            const trimmed = text ? text.trim() : '';
-            if (!trimmed) {
-                block.className = 'matrix-result matrix-result--empty';
-                block.textContent = '-';
-                return block;
-            }
-
-            const isError = trimmed.startsWith('Error:');
-            const isNotice = trimmed.startsWith('Diagnostic Notice:') || trimmed.startsWith('Notice:');
-            const isWarning = trimmed.startsWith('\u26A0');
-            const isDeleted = trimmed.startsWith('[ \u2298');
-            const isUnset = trimmed === '(not set)';
-
-            let tone = 'plain';
-            if (isError) tone = 'error';
-            else if (isNotice) tone = 'notice';
-            else if (isWarning) tone = 'warning';
-            else if (isDeleted) tone = 'deleted';
-            else if (isUnset) tone = 'unset';
-            block.className = 'matrix-result matrix-result--' + tone;
-
-            trimmed.split('\n').forEach((line, lineIndex) => {
-                this.appendText(block, 'div', lineIndex === 0 ? 'matrix-result__main' : 'matrix-result__detail', line);
-            });
-            return block;
-        },
-
-        createMatrixResultCell(productionText, diagnosticText) {
-            const wrap = document.createElement('div');
-            wrap.className = 'matrix-results';
-
-            const production = document.createElement('div');
-            production.className = 'matrix-results__prod';
-            this.appendText(production, 'span', 'matrix-results__caption', 'What users see');
-            production.appendChild(this.createMatrixResultBlock(productionText));
-
-            const diagnostic = document.createElement('div');
-            diagnostic.className = 'matrix-results__debug';
-            this.appendText(diagnostic, 'span', 'matrix-results__caption', 'Diagnostic');
-            diagnostic.appendChild(this.createMatrixResultBlock(diagnosticText));
-
-            wrap.appendChild(production);
-            wrap.appendChild(diagnostic);
-            return wrap;
-        },
-
-        createMatrixRow(item) {
-            const row = document.createElement('tr');
-            row.className = 'matrix-row';
-            row.dataset.category = item.typeCategory;
-            row.dataset.search = [
-                item.id, item.type, item.targetState, item.actorState,
-                item.targetProd, item.targetDebug, item.remarksProd, item.remarksDebug
-            ].join(' ').toLowerCase();
-
-            const cells = [
-                { label: 'Transaction type', content: this.createMatrixTypeBadge(item), className: 'matrix-col-type' },
-                { label: 'Account situation', content: this.createMatrixSituationCell(item), className: 'matrix-col-state' },
-                { label: 'Target account shown', content: this.createMatrixResultCell(item.targetProd, item.targetDebug), className: 'matrix-col-result' },
-                { label: 'Remark shown', content: this.createMatrixResultCell(item.remarksProd, item.remarksDebug), className: 'matrix-col-result' }
-            ];
-
-            const numberCell = document.createElement('td');
-            numberCell.className = 'matrix-col-number';
-            numberCell.textContent = item.id;
-            row.appendChild(numberCell);
-
-            cells.forEach(cell => {
-                const cellElement = document.createElement('td');
-                cellElement.className = cell.className;
-                cellElement.dataset.label = cell.label;
-                cellElement.appendChild(cell.content);
-                row.appendChild(cellElement);
-            });
-            return row;
-        },
-
-        createMatrixTable(matrixData, rowElements) {
-            const wrap = document.createElement('div');
-            wrap.className = 'matrix-table-wrap';
-            const table = document.createElement('table');
-            table.className = 'matrix-table';
-
-            const head = document.createElement('thead');
-            const headRow = document.createElement('tr');
-            const numberHeader = document.createElement('th');
-            numberHeader.scope = 'col';
-            numberHeader.className = 'matrix-col-number';
-            numberHeader.textContent = '#';
-            headRow.appendChild(numberHeader);
-            MATRIX_COLUMNS.forEach(column => {
-                const header = document.createElement('th');
-                header.scope = 'col';
-                header.className = column.className;
-                header.textContent = column.label;
-                headRow.appendChild(header);
-            });
-            head.appendChild(headRow);
-            table.appendChild(head);
-
-            const body = document.createElement('tbody');
-            matrixData.forEach(item => {
-                const row = this.createMatrixRow(item);
-                rowElements.push(row);
-                body.appendChild(row);
-            });
-            table.appendChild(body);
-            wrap.appendChild(table);
-            return wrap;
-        },
-
-        createMatrixChoiceButtons(choices, className, onChoose) {
-            const buttons = [];
-            choices.forEach((choice, choiceIndex) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = className;
-                button.textContent = choice.label;
-                if (choice.hint) button.title = choice.hint;
-                button.setAttribute('aria-pressed', choiceIndex === 0 ? 'true' : 'false');
-                button.addEventListener('click', () => {
-                    buttons.forEach(other => other.setAttribute('aria-pressed', other === button ? 'true' : 'false'));
-                    onChoose(choice.key);
+        createMatrixFilterPills(matrixState) {
+            const pillsWrap = document.createElement('div');
+            pillsWrap.className = 'flex flex-wrap items-center gap-1.5';
+            const pillButtons = [];
+            MATRIX_CATEGORIES.forEach(categoryOption => {
+                const pillButton = document.createElement('button');
+                pillButton.type = 'button';
+                pillButton.className = PILL_CLASS + (categoryOption.key === 'all' ? ' active' : '');
+                pillButton.textContent = categoryOption.label;
+                pillButton.dataset.key = categoryOption.key;
+                pillButton.addEventListener('click', () => {
+                    matrixState.activeCategory = categoryOption.key;
+                    pillButtons.forEach(otherButton => otherButton.classList.remove('active'));
+                    pillButton.classList.add('active');
+                    this.applyMatrixFilters(matrixState);
                 });
-                buttons.push(button);
+                pillButtons.push(pillButton);
+                pillsWrap.appendChild(pillButton);
             });
-            return buttons;
+            return pillsWrap;
         },
 
-        createMatrixTechnicalToggle(onToggle) {
-            const label = document.createElement('label');
-            label.className = 'matrix-technical-toggle';
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.addEventListener('change', () => onToggle(checkbox.checked));
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(' Show technical details'));
-            return label;
+        createMatrixSearch(matrixState) {
+            const searchInput = document.createElement('input');
+            searchInput.type = 'search';
+            searchInput.placeholder = 'Filter matrix (e.g. Acme, #105, deleted, Storage 2)...';
+            searchInput.className = 'text-xs px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand w-full md:w-64';
+            searchInput.addEventListener('input', inputEvent => {
+                matrixState.searchQuery = inputEvent.target.value.toLowerCase().trim();
+                this.applyMatrixFilters(matrixState);
+            });
+            return searchInput;
+        },
+
+        createMatrixModeSwitcher(matrixState) {
+            const switcherWrap = document.createElement('div');
+            switcherWrap.className = 'inline-flex items-center rounded-lg bg-slate-200/70 p-0.5 text-xs text-slate-600';
+            const modeButtons = [];
+            MATRIX_MODES.forEach(modeOption => {
+                const modeButton = document.createElement('button');
+                modeButton.type = 'button';
+                modeButton.className = MODE_CLASS + (modeOption.key === 'all' ? ' active' : ' hover:text-slate-900');
+                modeButton.textContent = modeOption.label;
+                modeButton.dataset.key = modeOption.key;
+                modeButton.addEventListener('click', () => {
+                    matrixState.activeMode = modeOption.key;
+                    modeButtons.forEach(otherButton => {
+                        otherButton.classList.remove('active');
+                        otherButton.classList.add('hover:text-slate-900');
+                    });
+                    modeButton.classList.add('active');
+                    modeButton.classList.remove('hover:text-slate-900');
+                    this.applyMatrixMode(matrixState);
+                    this.applyMatrixFilters(matrixState);
+                });
+                modeButtons.push(modeButton);
+                switcherWrap.appendChild(modeButton);
+            });
+            return switcherWrap;
+        },
+
+        createMatrixControls(matrixState) {
+            const controlsCard = document.createElement('div');
+            controlsCard.className = 'rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-3';
+
+            const topRow = document.createElement('div');
+            topRow.className = 'flex flex-col md:flex-row md:items-center justify-between gap-3';
+            topRow.appendChild(this.createMatrixFilterPills(matrixState));
+            topRow.appendChild(this.createMatrixSearch(matrixState));
+            controlsCard.appendChild(topRow);
+
+            const bottomRow = document.createElement('div');
+            bottomRow.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-200/60 text-xs';
+            bottomRow.appendChild(this.createMatrixModeSwitcher(matrixState));
+            matrixState.counter = document.createElement('span');
+            matrixState.counter.className = 'text-xs text-slate-500 font-medium';
+            matrixState.counter.textContent = 'Showing ' + matrixState.matrixData.length + ' of ' + matrixState.matrixData.length + ' paths';
+            bottomRow.appendChild(matrixState.counter);
+            controlsCard.appendChild(bottomRow);
+            return controlsCard;
+        },
+
+        createMatrixHead() {
+            const tableHead = document.createElement('thead');
+            tableHead.className = 'bg-slate-50/90 text-[11px] font-bold text-slate-700 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200';
+            const headRow = document.createElement('tr');
+            MATRIX_HEADERS.forEach(headerDefinition => {
+                const headerCell = document.createElement('th');
+                headerCell.scope = 'col';
+                headerCell.className = headerDefinition.className;
+                headerCell.textContent = headerDefinition.text;
+                if (headerDefinition.badge) {
+                    const badgeElement = document.createElement('span');
+                    badgeElement.className = headerDefinition.badge === 'Prod'
+                        ? 'ml-1.5 inline-block text-[9px] font-semibold px-1 py-0.2 rounded bg-emerald-100 text-emerald-800'
+                        : 'ml-1.5 inline-block text-[9px] font-semibold px-1 py-0.2 rounded bg-indigo-100 text-indigo-800';
+                    badgeElement.textContent = headerDefinition.badge;
+                    headerCell.appendChild(badgeElement);
+                }
+                headRow.appendChild(headerCell);
+            });
+            tableHead.appendChild(headRow);
+            return tableHead;
+        },
+
+        createMatrixCell(className, content) {
+            const tableCell = document.createElement('td');
+            tableCell.className = className;
+            tableCell.appendChild(content);
+            return tableCell;
+        },
+
+        createMatrixRow(matrixItem, rowIndex) {
+            const tableRow = document.createElement('tr');
+            tableRow.className = (rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/40') + ' hover:bg-slate-100/60 transition-colors';
+            tableRow.dataset.category = matrixItem.typeCategory;
+            tableRow.dataset.search = SEARCH_FIELDS.map(fieldName => matrixItem[fieldName]).join(' ').toLowerCase();
+
+            const idCell = document.createElement('td');
+            idCell.className = 'px-3 py-3 font-mono font-semibold text-slate-400 text-center align-top';
+            idCell.textContent = matrixItem.id;
+            tableRow.appendChild(idCell);
+            tableRow.appendChild(this.createMatrixCell('px-3 py-3 align-top', this.createMatrixTypeBadge(matrixItem)));
+            tableRow.appendChild(this.createMatrixCell('px-3 py-3 align-top', this.createMatrixStateCell(matrixItem.targetState)));
+            tableRow.appendChild(this.createMatrixCell('px-3 py-3 align-top', this.createMatrixStateCell(matrixItem.actorState)));
+            RESULT_COLUMNS.forEach(column => {
+                tableRow.appendChild(this.createMatrixCell(column.className, this.createMatrixDiagnosticBlock(matrixItem[column.field])));
+            });
+            return tableRow;
+        },
+
+        createMatrixTable(matrixState) {
+            const tableWrap = document.createElement('div');
+            tableWrap.className = 'matrix-table-wrap overflow-x-auto rounded-xl border border-slate-200 bg-white';
+            const table = document.createElement('table');
+            table.className = 'w-full text-left border-collapse text-xs divide-y divide-slate-100 min-w-[980px]';
+            table.appendChild(this.createMatrixHead());
+
+            const tableBody = document.createElement('tbody');
+            tableBody.className = 'divide-y divide-slate-100 bg-white';
+            matrixState.rowElements = matrixState.matrixData.map((matrixItem, rowIndex) => {
+                const tableRow = this.createMatrixRow(matrixItem, rowIndex);
+                tableBody.appendChild(tableRow);
+                return tableRow;
+            });
+
+            matrixState.emptyRow = document.createElement('tr');
+            matrixState.emptyRow.className = 'hidden';
+            const emptyCell = document.createElement('td');
+            emptyCell.colSpan = 8;
+            emptyCell.className = 'py-10 text-center text-sm text-slate-400';
+            emptyCell.textContent = 'No resolution paths match your filter criteria.';
+            matrixState.emptyRow.appendChild(emptyCell);
+            tableBody.appendChild(matrixState.emptyRow);
+
+            table.appendChild(tableBody);
+            tableWrap.appendChild(table);
+            return tableWrap;
+        },
+
+        applyMatrixMode(matrixState) {
+            const showProduction = matrixState.activeMode !== 'debug';
+            const showDiagnostic = matrixState.activeMode !== 'prod';
+            matrixState.container.querySelectorAll('.col-prod').forEach(column => column.classList.toggle('hidden', !showProduction));
+            matrixState.container.querySelectorAll('.col-debug').forEach(column => column.classList.toggle('hidden', !showDiagnostic));
+        },
+
+        applyMatrixFilters(matrixState) {
+            let visibleCount = 0;
+            matrixState.rowElements.forEach(tableRow => {
+                const matchesCategory = matrixState.activeCategory === 'all' || tableRow.dataset.category === matrixState.activeCategory;
+                const matchesSearch = !matrixState.searchQuery || tableRow.dataset.search.includes(matrixState.searchQuery);
+                const isVisible = matchesCategory && matchesSearch;
+                tableRow.classList.toggle('hidden', !isVisible);
+                if (isVisible) visibleCount += 1;
+            });
+            matrixState.emptyRow.classList.toggle('hidden', visibleCount !== 0);
+            matrixState.counter.textContent = 'Showing ' + visibleCount + ' of ' + matrixState.matrixData.length + ' paths';
         },
 
         renderResolutionMatrix(matrixData) {
+            if (!Array.isArray(matrixData) || !matrixData.length) {
+                throw new Error('Resolution Paths Matrix requires matrix rows');
+            }
             const container = document.createElement('div');
-            container.className = 'matrix';
-            container.dataset.mode = 'prod';
-            container.dataset.technical = 'off';
-
-            const rowElements = [];
-            const state = { category: 'all', search: '' };
-            const counter = document.createElement('span');
-            counter.className = 'matrix-counter';
-            counter.setAttribute('aria-live', 'polite');
-
-            const applyFilters = () => {
-                let visibleCount = 0;
-                rowElements.forEach(row => {
-                    const isMatch = (state.category === 'all' || row.dataset.category === state.category)
-                        && (!state.search || row.dataset.search.includes(state.search));
-                    row.hidden = !isMatch;
-                    if (isMatch) visibleCount++;
-                });
-                emptyMessage.hidden = visibleCount !== 0;
-                counter.textContent = 'Showing ' + visibleCount + ' of ' + matrixData.length + ' paths';
-            };
-
-            const categories = [
-                { label: 'All paths (' + matrixData.length + ')', key: 'all' },
-                { label: 'Type 7: Created Account', key: 'type7' },
-                { label: 'Type 6: Balance Add/Deduct', key: 'type6' },
-                { label: 'Type 1 / 5: Transfers', key: 'type1_5' },
-                { label: 'Type 2 / 3 / 4: Inbound / Initial', key: 'type2_3_4' },
-                { label: 'Type 0: Scored Assessment', key: 'type0' }
-            ];
-
-            const controls = document.createElement('div');
-            controls.className = 'matrix-controls';
-
-            const topRow = document.createElement('div');
-            topRow.className = 'matrix-controls__row';
-            const pills = document.createElement('div');
-            pills.className = 'matrix-controls__pills';
-            this.createMatrixChoiceButtons(categories, 'matrix-pill', key => {
-                state.category = key;
-                applyFilters();
-            }).forEach(button => pills.appendChild(button));
-            topRow.appendChild(pills);
-
-            const search = document.createElement('input');
-            search.type = 'search';
-            search.className = 'matrix-search';
-            search.placeholder = 'Filter paths (e.g. Acme, #105, deleted)';
-            search.setAttribute('aria-label', 'Filter resolution paths');
-            search.addEventListener('input', () => {
-                state.search = search.value.toLowerCase().trim();
-                applyFilters();
-            });
-            topRow.appendChild(search);
-            controls.appendChild(topRow);
-
-            const bottomRow = document.createElement('div');
-            bottomRow.className = 'matrix-controls__row matrix-controls__row--bottom';
-            const modeSwitcher = document.createElement('div');
-            modeSwitcher.className = 'matrix-modes';
-            modeSwitcher.setAttribute('role', 'group');
-            modeSwitcher.setAttribute('aria-label', 'Result view');
-            this.createMatrixChoiceButtons(MATRIX_MODES, 'matrix-mode', key => {
-                container.dataset.mode = key;
-            }).forEach(button => modeSwitcher.appendChild(button));
-            bottomRow.appendChild(modeSwitcher);
-            bottomRow.appendChild(this.createMatrixTechnicalToggle(isOn => {
-                container.dataset.technical = isOn ? 'on' : 'off';
-            }));
-            bottomRow.appendChild(counter);
-            controls.appendChild(bottomRow);
-            container.appendChild(controls);
-
-            container.appendChild(this.createMatrixTable(matrixData, rowElements));
-
-            const emptyMessage = document.createElement('p');
-            emptyMessage.className = 'matrix-empty';
-            emptyMessage.hidden = true;
-            emptyMessage.textContent = 'No resolution paths match your filter criteria.';
-            container.appendChild(emptyMessage);
-
-            applyFilters();
+            container.className = 'mt-6 space-y-4';
+            const matrixState = { matrixData: matrixData, container: container, activeCategory: 'all', activeMode: 'all', searchQuery: '' };
+            container.appendChild(this.createMatrixControls(matrixState));
+            container.appendChild(this.createMatrixTable(matrixState));
             return container;
         }
     };

@@ -353,13 +353,7 @@
                             {
                                 id: 'resolution-paths-matrix',
                                 title: 'Resolution Paths Matrix',
-                                description: 'Find out what the Meter Log shows for each kind of transaction, including when an account or user has been deleted.',
-                                scenarioGuide: [
-                                    { term: '1. Pick the type', meaning: 'Use the chips to choose the kind of transaction you are checking.' },
-                                    { term: '2. Match the situation', meaning: 'Find the row whose account situation matches yours, for example found or deleted.' },
-                                    { term: '3. Read the result', meaning: 'The last two columns show the account and remark the log displays.' },
-                                    { term: 'What users see / Diagnostic', meaning: 'What users see is the normal log. Diagnostic adds lookup details for support checks.' }
-                                ],
+                                description: 'User guide matrix table for traceability, answering how to identify, understand, and use the Meter log information table as a logger across transaction types, entity states, and SHOW_ERROR diagnostic modes.',
                                 matrix: [
                                     {
                                         id: 1,
