@@ -222,6 +222,10 @@
                 this.appendText(titleBlock, options.titleTag, 'flow-overview__title', options.title);
                 this.appendText(titleBlock, 'p', 'flow-overview__lead', section.detail);
                 header.appendChild(titleBlock);
+                if (section.notes && section.notes.length) {
+                    if (!options.id) throw new Error(options.title + ' notes require a panel id');
+                    header.appendChild(this.createNotesPopover(section.notes, options.id + '-notes'));
+                }
                 panel.appendChild(header);
 
                 if (section.accessPath) panel.appendChild(this.createAccessTrail(section.accessPath));
@@ -250,15 +254,21 @@
                     groups.appendChild(this.createChipGroup('Page controls', controlChips, false, controlChips.length));
                 }
                 if (groups.childElementCount) panel.appendChild(groups);
+                if (section.items && section.items.length) {
+                    const inputGroups = section.items.every(item => typeof item === 'string')
+                        ? [{ label: 'Visible content', children: section.items }]
+                        : section.items;
+                    panel.appendChild(this.createInputGroups(inputGroups));
+                }
                 if (section.howToUse && section.howToUse.length) {
                     this.appendText(panel, 'h4', 'flow-overview__subtitle', 'How to use');
-                    const hasLinkedSteps = section.howToUse.some(step => typeof step !== 'string');
-                    panel.appendChild(hasLinkedSteps ? this.createPhasedSteps(section.howToUse, section.steps || [], 'Update wizard') : this.createFlowSteps(section.howToUse));
+                    panel.appendChild(this.createPhasedSteps(section.howToUse, section.steps || [], options.bandLabel));
                 }
                 if (section.rules && section.rules.length) panel.appendChild(this.createFlowRules(section.rules, this.collectEmphasisTerms(section)));
                 if (section.expected && section.expected.length) {
                     const isGrouped = section.expected.every(item => typeof item !== 'string');
-                    panel.appendChild(isGrouped ? this.createOutcomePanel(section.expected) : this.createExpectedLine(section.expected, 'What you see'));
+                    if (!isGrouped && !options.expectedLabel) throw new Error(options.title + ' expected results require a label');
+                    panel.appendChild(isGrouped ? this.createOutcomePanel(section.expected) : this.createExpectedLine(section.expected, options.expectedLabel));
                 }
                 return panel;
             }

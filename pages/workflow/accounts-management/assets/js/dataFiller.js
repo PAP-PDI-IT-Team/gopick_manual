@@ -449,16 +449,23 @@
             accessPath: 'Accounts > View Accounts > Row Actions > View > Section > Update',
             howToUse: [
                 'Open the account detail page.',
-                'Open Account Information, Assigned Assessments, Meter Management, or Other Account Settings.',
+                { label: 'Open Account Information.', href: '#update-specific-account-information' },
+                { label: 'Open Assigned Assessments.', href: '#update-specific-assigned-assessments' },
+                { label: 'Open Meter Management.', href: '#update-specific-meter-management' },
+                { label: 'Open Other Account Settings.', href: '#update-specific-other-account-settings' },
                 'Select Update.',
                 'Update the section-specific fields.',
                 'Review changes.',
                 'Save changes.'
             ],
             expected: ['Only the selected account section is updated.'],
-            notes: [{ label: 'QA and System User', items: ['Changes happen only where the section are updating.'] }],
+            notes: [
+                { label: 'QA and System User', items: ['Changes happen only where the section are updating.'] },
+                { label: 'Dev', items: ['Passwords must not be displayed as old password values.'] }
+            ],
             groups: [
                 {
+                    id: 'update-specific-account-information',
                     title: 'Account Information',
                     images: [{
                         title: 'Update Specific: Account Information',
@@ -492,16 +499,22 @@
                             children: ['Status does not show when editing the current user own account.']
                         }
                     ],
-                    expected: [
-                        'Username, Password, Primary Contact Name, Primary Contact Email: Max of 100 characters.',
-                        'Addresses: max of 250 characters.',
-                        'Phone Number: max of 25 characters.',
-                        'Password and Confirm Password should match.',
-                        'Billing Address can be similar to Business Address using checkbox toggled or enter manually via input that shows up when checkbox is off.',
-                        'Expiry Date & Time cannot be set later than today.'
+                    rules: [
+                        {
+                            label: 'Validation Guard Rails',
+                            children: [
+                                'Username, Password, Primary Contact Name, Primary Contact Email: Max of 100 characters.',
+                                'Addresses: max of 250 characters.',
+                                'Phone Number: max of 25 characters.',
+                                'Password and Confirm Password should match.',
+                                'Billing Address can be similar to Business Address using checkbox toggled or enter manually via input that shows up when checkbox is off.',
+                                'Expiry Date & Time cannot be set later than today.'
+                            ]
+                        }
                     ]
                 },
                 {
+                    id: 'update-specific-assigned-assessments',
                     title: 'Assigned Assessments',
                     images: [{
                         title: 'Update Specific: Assigned Assessments',
@@ -521,6 +534,7 @@
                     ]
                 },
                 {
+                    id: 'update-specific-meter-management',
                     title: 'Meter Management',
                     images: [{
                         title: 'Update Specific: Meter Management',
@@ -538,10 +552,16 @@
                             children: ['View Meter Logs']
                         }
                     ],
-                    expected: ['Sub-Account has Deduct usage from this account and Deduct usage from Client Account.'],
+                    rules: [
+                        {
+                            label: 'Meter Management Guard Rails',
+                            children: ['Sub-Account has Deduct usage from this account and Deduct usage from Client Account.']
+                        }
+                    ],
                     notes: [{ label: 'QA, Dev, System User', items: ['Deduction to self: Deduct usage from this account.', 'Deduct from parent: Deduct usage from Distributor/Sub-Distributor/Client Account.'] }]
                 },
                 {
+                    id: 'update-specific-other-account-settings',
                     title: 'Other Account Settings',
                     images: [{
                         title: 'Update Specific: Other Account Settings',
@@ -570,15 +590,19 @@
                             children: ['Site Billing Amount (PHP)', 'Contract Meters', 'Addendum', 'Base Meter']
                         }
                     ],
-                    expected: [
-                        'HRSC Name, HRSC Email, Assessment Specialist Name, Assessment Specialist Email, Client Contract Person Name, Client Contract Person Email: Max of 100 characters.',
-                        'If Site Billing Amount (PHP)(Type) is Included in package then the Site Billing Amount (PHP) appears.',
-                        'If Contract Type is Volume-based then the Addendum and Contract Meters appears.',
-                        'If Contract Type is Per Usage then the Base Meter appears.'
+                    rules: [
+                        {
+                            label: 'Display & Visibility Guard Rails',
+                            children: [
+                                'HRSC Name, HRSC Email, Assessment Specialist Name, Assessment Specialist Email, Client Contract Person Name, Client Contract Person Email: Max of 100 characters.',
+                                'If Site Billing Amount (PHP)(Type) is Included in package then the Site Billing Amount (PHP) appears.',
+                                'If Contract Type is Volume-based then the Addendum and Contract Meters appears.',
+                                'If Contract Type is Per Usage then the Base Meter appears.'
+                            ]
+                        }
                     ]
                 }
-            ],
-            securityRule: 'Passwords must not be displayed as old password values.'
+            ]
         },
         functions: [
             {
@@ -784,7 +808,12 @@
             {
                 id: 'privacy-consent',
                 title: 'Privacy Consent',
-                images: [{ title: 'Privacy Consent', src: '', alt: 'Privacy Consent screenshot' }],
+                images: [{
+                    title: 'Privacy Consent',
+                    caption: 'Content Manager: Privacy Consent with the consent content editor, the Consent Gather Data and Consent Capture Photo checkboxes, and the Save button outlined; the account name is blurred.',
+                    src: 'assets/img/privacy-consent.png',
+                    alt: 'Content Manager Privacy Consent page with the consent editor, two consent checkboxes, and the Save button outlined; the account name is blurred'
+                }],
                 detail: 'Manages privacy consent content and candidate-side consent checkbox visibility.',
                 actions: ['Consent content', 'Consent Gather Data Checkbox to Appear', 'Consent Capture Photo to Appear', 'Save changes'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Privacy Consent',
@@ -794,53 +823,108 @@
             {
                 id: 'demographics',
                 title: 'Demographics',
-                images: [{ title: 'Demographics', src: '', alt: 'Demographics screenshot' }],
-                detail: 'Page to manage demographics form.',
-                actions: ['Default Required: First Name, Last Name, Gender, Email, Position Applied', 'Can be toggled: Birthdate, Civil Status, Alternative/Work Email, Phone Number, Educational Attainment, Work Experience, Level of Position Applying For, Course, Priority Course, Region of Residence, Agency Visited, Service Availed, Customer Type, Age, Transaction Type, School', 'Save Button'],
+                images: [{
+                    title: 'Demographics',
+                    caption: 'Content Manager: Demographics with the Manage Demographics Form outlined, showing the five required fields checked, the optional field checkboxes, and the Save Changes button emphasized.',
+                    src: 'assets/img/demographics.png',
+                    alt: 'Content Manager Demographics page with the Manage Demographics Form outlined, required fields checked, optional field checkboxes, and the Save Changes button emphasized'
+                }],
+                detail: 'Manages which demographic fields appear in the candidate-side demographics form.',
+                actions: ['Save Button'],
+                items: [
+                    {
+                        label: 'Required inputs',
+                        children: ['First Name', 'Last Name', 'Gender', 'Email', 'Position Applied']
+                    },
+                    {
+                        label: 'Optional inputs',
+                        children: [
+                            'Birthdate',
+                            'Civil Status',
+                            'Alternative/Work Email',
+                            'Phone Number',
+                            'Educational Attainment',
+                            'Work Experience',
+                            'Level of Position Applying For',
+                            'Course',
+                            'Priority Course',
+                            'Region of Residence',
+                            'Agency Visited',
+                            'Service Availed',
+                            'Customer Type',
+                            'Age',
+                            'Transaction Type',
+                            'School'
+                        ]
+                    }
+                ],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Demographics',
-                howToUse: ['Navigate into it.', 'Update Content View Display via Checkbox what to display.', 'Save Button.'],
-                rules: ['This can be set to not show for the specific account group. Configured by Super Admins.'],
-                expected: ['Update Demographics which data to gather.', 'Can be visible or not; if not visible means account is not allowed to use this function.'],
-                notes: [{ label: 'QA and System User', items: ['Always Check RBAC for the specific Account type.'] }]
+                howToUse: ['Open Demographics.', 'Toggle demographic fields that should appear.', 'Save changes.'],
+                rules: [
+                    'First Name, Last Name, Gender, Email, and Position Applied are required by default and cannot be toggled off.',
+                    'This page can be hidden for a specific account group by Super Admin configuration.'
+                ],
+                expected: ['Demographic data gathering is updated.', 'If the page is not visible, the account is not allowed to use this function.'],
+                notes: [{ label: 'QA and System User', items: ['Always check RBAC for the specific account type.'] }]
             },
             {
                 id: 'assessment-completion-page',
                 title: 'Assessment Completion Page',
-                images: [{ title: 'Assessment Completion Page', src: '', alt: 'Assessment Completion Page screenshot' }],
-                detail: 'Page to manage completion page.',
+                images: [{
+                    title: 'Assessment Completion Page',
+                    caption: 'Content Manager: Assessment Completion Page with the completion content editor and the Save button emphasized; the account name is blurred.',
+                    src: 'assets/img/assessment-completion-page.png',
+                    alt: 'Content Manager Assessment Completion Page with the content editor outlined and the Save button emphasized; the account name is blurred'
+                }],
+                detail: 'Manages assessment completion page content.',
                 actions: ['Edit Content', 'Save Button'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Assessment Completion Page',
-                howToUse: ['Navigate into it.', 'Pre-filled inputs can be altered: Content.', 'Save button.'],
-                rules: ['This can be set to not show for the specific account group. Configured by Super Admins.'],
-                expected: ['Can be visible or not; if not visible means account is not allowed to use this function.'],
-                notes: [{ label: 'QA and System User', items: ['Always Check RBAC for the specific account type.'] }]
+                howToUse: ['Open Assessment Completion Page.', 'Update the prefilled content.', 'Save changes.'],
+                rules: ['This page can be hidden for a specific account group by Super Admin configuration.'],
+                expected: ['Assessment completion page content is updated.', 'If the page is not visible, the account is not allowed to use this function.'],
+                notes: [{ label: 'QA and System User', items: ['Always check RBAC for the specific account type.'] }]
             },
             {
                 id: 'assessment-center-logo',
                 title: 'Assessment Center Logo',
-                images: [{ title: 'Assessment Center Logo', src: '', alt: 'Assessment Center Logo screenshot' }],
-                detail: 'Page for updating Assessment Center Logo.',
+                images: [{
+                    title: 'Assessment Center Logo',
+                    caption: 'Content Manager: Assessment Center Logo with the upload area, logo preview, and Save button outlined; the account name is blurred.',
+                    src: 'assets/img/assessment-center-logo.png',
+                    alt: 'Content Manager Assessment Center Logo page with the upload area and logo preview outlined and the Save button emphasized; the account name is blurred'
+                }],
+                detail: 'Manages the assessment center logo for the account.',
                 actions: ['Upload Logo', 'Save Button'],
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Assessment Center Logo Page',
-                howToUse: ['Navigate into it.', 'Can be pre-filled or none, uploading image will replace it.', 'Upload image.', 'Save button.'],
-                rules: ['This can be set to not show for the specific account group. Configured by Super Admins.'],
-                expected: ['Can be visible or not; if not visible means account is not allowed to use this function.'],
-                notes: [{ label: 'QA and System User', items: ['Always Check RBAC for the specific account type.'] }]
+                howToUse: ['Open Assessment Center Logo.', 'Upload an image.', 'Save changes.'],
+                rules: ['This page can be hidden for a specific account group by Super Admin configuration.'],
+                expected: ['The uploaded image replaces the existing logo.', 'If the page is not visible, the account is not allowed to use this function.'],
+                notes: [{ label: 'QA and System User', items: ['Always check RBAC for the specific account type.'] }]
             },
             {
                 id: 'unblock-account',
                 title: 'Unblock Account',
-                images: [{ title: 'Unblock Account', src: '', alt: 'Unblock Account screenshot' }],
-                detail: 'Triggered when account is blocked due to multiple attempts to login.',
+                images: [{
+                    title: 'Unblock Account',
+                    caption: 'View Account page with the Account Configuration dropdown open and the Unblock Account option emphasized. The account content card is outlined, personal values are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/unblock-account.png',
+                    alt: 'View Account page with the Account Configuration dropdown open, listing Privacy Consent, Demographics, Assessment Completion Page, Assessment Center Logo, and the emphasized Unblock Account option above an outlined Account Information card'
+                }],
+                detail: 'Unblocks an account that is blocked due to multiple login attempts.',
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Unblock Account Trigger',
-                howToUse: ['Navigate into it.', 'Trigger it.'],
-                notes: [{ label: 'QA and System User', items: ['This only appears if account is blocked.'] }]
+                howToUse: ['Open the view account page.', 'Trigger Unblock Account.'],
+                rules: ['This only appears when the account is blocked.']
             },
             {
                 id: 'manage-assigned-assessment',
                 title: 'Manage Assigned Assessment',
-                images: [{ title: 'Manage Assigned Assessment', src: '', alt: 'Manage Assigned Assessment screenshot' }],
-                detail: 'Updates a specific assigned assessment configuration.',
+                images: [{
+                    title: 'Manage Assigned Assessment',
+                    caption: 'Update Account Assessment page with the assign assessment account and the assessment limit fields. The content card is outlined, the Save button is emphasized, the account name is blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/manage-assigned-assessment.png',
+                    alt: 'Update Account Assessment page showing the Account Name, Set Max Respondents, Valid Date Start, Valid Date Expiration, and Status fields inside an outlined card with the Save button emphasized'
+                }],
+                detail: 'Owns assigned assessment configuration from the view account assigned assessments section.',
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Assigned Assessments > Manage',
                 howToUse: ['Open the account detail page.', 'Open Assigned Assessments.', 'Select Manage.', 'Update Set Max Respondents.', 'Update Valid Date Start.', 'Update Valid Date Expiration.', 'Update Status.', 'Save changes.']
             }
@@ -851,6 +935,12 @@
                 title: 'View Active Account',
                 detail: 'Opens account detail for an active, non-archived account.',
                 images: [
+                    {
+                        title: 'View Accounts Listing',
+                        caption: 'View Accounts listing with the View row action emphasized on an active account row. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                        src: 'assets/img/view-active-account.png',
+                        alt: 'View Accounts page with search, Advanced Search, View Archived Accounts, Bulk Action, and five active account rows, with the View row action emphasized on the first row inside an outlined listing area'
+                    },
                     {
                         title: 'View Account: Account Information',
                         caption: 'Account Information tab showing account type, parent account, contact details, address, and expiration details with the Update button.',
@@ -895,16 +985,21 @@
                 ],
                 expected: [
                     'The active account detail page opens.',
-                    'If Metering Management Type is not Deduct usage from this account then Parent Meter appears.',
-                    'If Site Billing Amount (PHP)(Type) is Included in package then Site Billing Amount (PHP) appears.',
-                    'If Contract Type is Volume-based then Addendum and Contract Meters appears.',
-                    'If Contract Type is Per Usage then Base Meter appears.'
+                    'If Metering Management Type is not Deduct usage from this account, Parent Meter appears.',
+                    'If Site Billing Amount (PHP)(Type) is Included in package, Site Billing Amount (PHP) appears.',
+                    'If Contract Type is Volume-based, Addendum and Contract Meters appear.',
+                    'If Contract Type is Per Usage, Base Meter appears.'
                 ]
             },
             {
                 id: 'view-archived-account',
                 title: 'View Archived Account',
-                images: [{ title: 'View Archived Account', src: '', alt: 'View Archived Account screenshot' }],
+                images: [{
+                    title: 'View Archived Account',
+                    caption: 'View Archived Accounts listing with the View row action emphasized on an archived account row. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/view-archived-account.png',
+                    alt: 'View Archived Accounts page with search, Advanced Search, Back to Accounts, Bulk Action, and two archived account rows, with the View row action emphasized on the first row inside an outlined listing area'
+                }],
                 detail: 'Opens account detail for an archived account.',
                 accessPath: 'Accounts > View Accounts > View Archived Accounts > Row Actions > View',
                 howToUse: ['Open View Archived Accounts.', 'Select View on an archived account row.'],
@@ -918,91 +1013,42 @@
                 ],
                 expected: [
                     'The archived account detail page opens.',
-                    'If Metering Management Type is not Deduct usage from this account then Parent Meter appears.',
-                    'If Site Billing Amount (PHP)(Type) is Included in package then Site Billing Amount (PHP) appears.',
-                    'If Contract Type is Volume-based then Addendum and Contract Meters appears.',
-                    'If Contract Type is Per Usage then Base Meter appears.'
+                    'If Metering Management Type is not Deduct usage from this account, Parent Meter appears.',
+                    'If Site Billing Amount (PHP)(Type) is Included in package, Site Billing Amount (PHP) appears.',
+                    'If Contract Type is Volume-based, Addendum and Contract Meters appear.',
+                    'If Contract Type is Per Usage, Base Meter appears.'
                 ]
             },
             {
                 id: 'update-account-row-action',
                 title: 'Update Account Row Action',
-                images: [{ title: 'Update Account Row Action', src: '', alt: 'Update Account Row Action screenshot' }],
+                images: [{
+                    title: 'Update Account Row Action',
+                    caption: 'View Accounts listing with the Update row action emphasized on an account row. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/update-account-row-action.png',
+                    alt: 'View Accounts page with search, Advanced Search, View Archived Accounts, Bulk Action, and five account rows, with the Update row action emphasized on the first row inside an outlined listing area'
+                }],
                 detail: 'Links to Update Account from an account table row.',
-                items: [
+                actionGroups: [
                     {
-                        label: 'Account Information',
-                        children: [
-                            'Account Type, Parent Account, and Account Name cannot be changed.',
-                            'Username',
-                            'Password',
-                            'Confirm Password',
-                            'Primary Contact Name',
-                            'Primary Contact Email',
-                            'Country',
-                            'Business Phone Number',
-                            'Business Address',
-                            'Billing Address: required or set as same as Business Address',
-                            'Expiry Date and Time',
-                            'Actual Account Expiration: +2 Months(default)',
-                            'Status: Active(default), hidden when editing own account'
-                        ]
-                    },
-                    {
-                        label: 'Assign Products',
-                        children: [
-                            'Selected Assessments can adjust each meter consumption.',
-                            'Manage',
-                            'Change Log',
-                            'Update Assessment'
-                        ]
-                    },
-                    {
-                        label: 'Meter Management',
-                        children: [
-                            'Meter Management Type: Deduct usage from this account or Deduct usage from Account.',
-                            'Current Meters / Parent Meter Balance cannot be modified when Meter Management Type is Deduct usage from Account.',
-                            'View Meter Logs'
-                        ]
-                    },
-                    {
-                        label: 'Other Account Settings',
-                        children: [
-                            'User Account Limit by account type.',
-                            'API Access Username',
-                            'HRSC Name and Email',
-                            'Assessment Specialist Name and Email',
-                            'Client Contact Person Name and Email',
-                            'Site Billing Amount (PHP)(Type)',
-                            'Site Billing Amount (PHP)',
-                            'Contract Type',
-                            'Contract Meters',
-                            'Addendum',
-                            'Base Meter'
-                        ]
-                    },
-                    'Review Account Details'
+                        title: 'Available actions',
+                        links: [{ label: 'Update Account', href: '#update-account', tooltip: 'Owns full account update through the wizard.' }]
+                    }
                 ],
                 accessPath: 'Accounts > View Accounts > Row Actions > Update',
                 howToUse: ['Open View Accounts.', 'Select Update on a specific account row.'],
-                rules: ['This only appears when the account is not archived and is not the current user own account.'],
-                expected: [
-                    'The update account wizard opens.',
-                    'Username, Password, Primary Contact Name, Primary Contact Email: Max of 100 characters.',
-                    'Addresses: max of 250 characters.',
-                    'Phone Number: max of 25 characters.',
-                    'Password and Confirm Password should match.',
-                    'Billing Address can be similar to Business Address using checkbox toggled or enter manually via input that shows up when checkbox is off.',
-                    'Expiry Date & Time cannot be set later than today.',
-                    'Sub-account has two meter options: Deduct usage from this account and Deduct usage from Client Account.',
-                    'Max Limit of Account Limits: 999.',
-                    'Max Value of Addendum, Base Meter and Billing Amount: 999.'
-                ]
+                rules: ['This only appears when the account is not archived and is not the current user\'s own account.'],
+                expected: ['The update account wizard opens.']
             },
             {
                 id: 'archive',
                 title: 'Archive',
-                images: [{ title: 'Archive', src: '', alt: 'Archive screenshot' }],
+                images: [{
+                    title: 'Archive',
+                    caption: 'View Accounts listing with the Archive row action emphasized on an account row. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/archive.png',
+                    alt: 'View Accounts page with search, Advanced Search, View Archived Accounts, Bulk Action, and five account rows, with the Archive row action emphasized on the first row inside an outlined listing area'
+                }],
                 detail: 'Moves a non-archived account to archived accounts.',
                 accessPath: 'Accounts > View Accounts > Row Actions > Archive',
                 howToUse: ['Open View Accounts.', 'Select Archive on a specific account row.'],
@@ -1012,7 +1058,12 @@
             {
                 id: 'restore',
                 title: 'Restore',
-                images: [{ title: 'Restore', src: '', alt: 'Restore screenshot' }],
+                images: [{
+                    title: 'Restore',
+                    caption: 'View Archived Accounts listing with the Restore row action emphasized on an archived account row. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/restore.png',
+                    alt: 'View Archived Accounts page with search, Advanced Search, Back to Accounts, Bulk Action, and two archived account rows, with the Restore row action emphasized on the first row inside an outlined listing area'
+                }],
                 detail: 'Moves an archived account back to the account list.',
                 accessPath: 'Accounts > View Accounts > View Archived Accounts > Row Actions > Restore',
                 howToUse: ['Open View Archived Accounts.', 'Select Restore on a specific account row.'],
@@ -1024,15 +1075,26 @@
             {
                 id: 'search',
                 title: 'Search',
-                images: [{ title: 'Search', src: '', alt: 'Search screenshot' }],
-                detail: 'Search for the contents of the table.',
+                images: [{
+                    title: 'Search',
+                    caption: 'View Accounts page with the Search Input emphasized above the account table. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/search.png',
+                    alt: 'View Accounts page with the Search Input emphasized beside Advanced Search, View Archived Accounts, and Bulk Action, above an outlined account table with blurred account names'
+                }],
+                detail: 'Searches account table content.',
                 accessPath: 'Accounts > View Accounts > Search Input',
-                howToUse: ['Navigate in.', 'Input values.', 'Enter.']
+                howToUse: ['Open an account listing table.', 'Enter search text.', 'Press Enter.'],
+                expected: ['Matching accounts are shown in the table.']
             },
             {
                 id: 'advanced-search',
                 title: 'Advanced Search',
-                images: [{ title: 'Advanced Search', src: '', alt: 'Advanced Search screenshot' }],
+                images: [{
+                    title: 'Advanced Search',
+                    caption: 'Advanced Search dialog over View Accounts with two rule rows, Add rule, Clear, Close, and Search. The dialog is outlined, the Search button is emphasized, and the surrounding page and account names are blurred.',
+                    src: 'assets/img/advanced-search.png',
+                    alt: 'Advanced Search dialog with two rules set to Account Name begins with, an Add rule button, Clear, Close, and an emphasized Search button, over a blurred View Accounts page'
+                }],
                 detail: 'Searches account table content using configured rules.',
                 accessPath: 'Accounts > View Accounts > Advanced Search > Add Rule',
                 howToUse: ['Open an account listing table.', 'Open Advanced Search.', 'Add or remove rules.', 'Select Search.'],
@@ -1043,7 +1105,12 @@
             {
                 id: 'bulk-action-archive',
                 title: 'Bulk Action: Archive',
-                images: [{ title: 'Bulk Action: Archive', src: '', alt: 'Bulk Action: Archive screenshot' }],
+                images: [{
+                    title: 'Bulk Action: Archive',
+                    caption: 'View Accounts listing with three selected rows and the Bulk Action dropdown open, with Archive emphasized. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/bulk-action-archive.png',
+                    alt: 'View Accounts page with three selected active account rows, the Bulk Action dropdown open, and the Archive option emphasized inside an outlined listing area'
+                }],
                 detail: 'Moves selected account rows to archived accounts.',
                 accessPath: 'Accounts > View Accounts > Bulk > Archive',
                 howToUse: ['Open View Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Archive.'],
@@ -1053,7 +1120,12 @@
             {
                 id: 'bulk-action-delete',
                 title: 'Bulk Action: Delete',
-                images: [{ title: 'Bulk Action: Delete', src: '', alt: 'Bulk Action: Delete screenshot' }],
+                images: [{
+                    title: 'Bulk Action: Delete',
+                    caption: 'View Accounts listing with three selected rows and the Bulk Action dropdown open, with Delete emphasized. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/bulk-action-delete.png',
+                    alt: 'View Accounts page with three selected active account rows, the Bulk Action dropdown open, and the Delete option emphasized inside an outlined listing area'
+                }],
                 detail: 'Deletes selected account rows.',
                 accessPath: 'Accounts > View Accounts > Bulk > Delete',
                 howToUse: ['Open View Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Delete.'],
@@ -1063,7 +1135,12 @@
             {
                 id: 'bulk-action-restore',
                 title: 'Bulk Action: Restore',
-                images: [{ title: 'Bulk Action: Restore', src: '', alt: 'Bulk Action: Restore screenshot' }],
+                images: [{
+                    title: 'Bulk Action: Restore',
+                    caption: 'View Archived Accounts listing with two selected rows and the Bulk Action dropdown open, with the Retrieve option (documented as Restore) emphasized. The listing area is outlined, account names are blurred, and the surrounding page is blurred.',
+                    src: 'assets/img/bulk-action-restore.png',
+                    alt: 'View Archived Accounts page with two selected archived account rows, the Bulk Action dropdown open, and the Retrieve option, documented as Restore, emphasized inside an outlined listing area'
+                }],
                 detail: 'Restores selected archived account rows.',
                 accessPath: 'Accounts > View Accounts > View Archived Accounts > Bulk > Restore',
                 howToUse: ['Open View Archived Accounts.', 'Select account checkboxes.', 'Open Bulk.', 'Select Restore.'],

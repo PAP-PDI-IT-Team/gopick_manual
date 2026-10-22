@@ -1,6 +1,18 @@
 (function (global) {
     'use strict';
 
+    const VIEW_PANEL_FUNCTIONS = {
+        'account-detail': {},
+        'privacy-consent': { expectedLabel: 'When you save' },
+        'demographics': { expectedLabel: 'When you save' },
+        'assessment-completion-page': { expectedLabel: 'When you save' },
+        'assessment-center-logo': { expectedLabel: 'When you save' },
+        'unblock-account': {},
+        'manage-assigned-assessment': {}
+    };
+
+    const LISTING_PANEL_OPTIONS = { expectedLabel: 'What you see' };
+
     class AccountsRenderer {
         constructor(store, imageRenderer) {
             this.store = store;
@@ -162,7 +174,7 @@
                         flowPanel.appendChild(status);
                         container.appendChild(flowPanel);
                     }
-                    flowPanel.appendChild(this.createWizardStep(step, index, steps));
+                    flowPanel.appendChild(this.createWizardStep(step, index, steps, global.AccountsFlowBuilders.WIZARD_SEQUENCE));
                     return;
                 }
                 const card = this.createInfoCard(step);
@@ -183,26 +195,23 @@
             container.appendChild(this.createViewPanel(viewAccounts.archived, { tagName: 'article', id: viewAccounts.archived.id, className: 'flow-overview', titleTag: 'h3', title: viewAccounts.archived.title }));
         }
 
-        createUpdateSpecificCard() {
-            const content = this.store.getContent();
-            const section = content.updateSpecific;
-            const intro = this.createInfoCard(section);
-            this.appendText(intro, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Variants');
-            section.groups.forEach(group => {
-                intro.appendChild(this.createInfoCard(group, 'nested'));
-            });
-            intro.appendChild(this.createBox('Rules', [section.securityRule]));
-            return intro;
+        createUpdateSpecificSection() {
+            const section = this.store.getContent().updateSpecific;
+            const overviewSection = Object.assign({}, section, { steps: section.groups });
+            const fragment = document.createDocumentFragment();
+            fragment.appendChild(this.createViewPanel(overviewSection, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title, bandLabel: 'Section variants', expectedLabel: 'When you save' }));
+            fragment.appendChild(this.createFlowStepPanel(section.groups, global.AccountsFlowBuilders.VARIANT_SEQUENCE));
+            return fragment;
         }
 
-        createFlowStepPanel(steps) {
+        createFlowStepPanel(steps, sequence) {
             const flowPanel = document.createElement('div');
             flowPanel.className = 'flow-step-panel';
             const status = document.createElement('p');
             status.className = 'flow-step-panel__status sr-only';
             status.setAttribute('aria-live', 'polite');
             flowPanel.appendChild(status);
-            steps.forEach((step, index) => flowPanel.appendChild(this.createWizardStep(step, index, steps)));
+            steps.forEach((step, index) => flowPanel.appendChild(this.createWizardStep(step, index, steps, sequence)));
             return flowPanel;
         }
 
@@ -227,18 +236,25 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.functions.forEach(section => {
-                if (section.id === 'account-detail') {
-                    container.appendChild(this.createViewPanel(section, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title }));
+                if (Object.prototype.hasOwnProperty.call(VIEW_PANEL_FUNCTIONS, section.id)) {
+                    const panelOptions = Object.assign({ tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title }, VIEW_PANEL_FUNCTIONS[section.id]);
+                    container.appendChild(this.createViewPanel(section, panelOptions));
                     return;
                 }
                 if (section.id === 'update-account') {
-                    container.appendChild(this.createViewPanel(section, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title }));
-                    container.appendChild(this.createFlowStepPanel(this.createUpdateAccountSteps(section)));
-                    container.appendChild(this.createUpdateSpecificCard());
+                    container.appendChild(this.createViewPanel(section, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title, bandLabel: 'Update wizard' }));
+                    container.appendChild(this.createFlowStepPanel(this.createUpdateAccountSteps(section), global.AccountsFlowBuilders.WIZARD_SEQUENCE));
+                    container.appendChild(this.createUpdateSpecificSection());
                     return;
                 }
                 container.appendChild(this.createInfoCard(section));
             });
+        }
+
+        createListingPanel(section, panelId) {
+            const panelOptions = Object.assign({ tagName: 'article', className: 'flow-overview', titleTag: 'h3', title: section.title }, LISTING_PANEL_OPTIONS);
+            if (panelId) panelOptions.id = panelId;
+            return this.createViewPanel(section, panelOptions);
         }
 
         renderRowActions() {
@@ -247,7 +263,7 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.rowActions.forEach(section => {
-                container.appendChild(this.createInfoCard(section));
+                container.appendChild(this.createListingPanel(section, section.id));
             });
         }
 
@@ -257,8 +273,7 @@
                 const container = document.getElementById(section.id + 'Content');
                 if (!container) return;
                 container.innerHTML = '';
-                const renderedSection = Object.assign({}, section, { omitCardId: true });
-                container.appendChild(this.createInfoCard(renderedSection));
+                container.appendChild(this.createListingPanel(section, null));
             });
         }
 
@@ -268,7 +283,7 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.bulkActions.forEach(section => {
-                container.appendChild(this.createInfoCard(section));
+                container.appendChild(this.createListingPanel(section, section.id));
             });
         }
 

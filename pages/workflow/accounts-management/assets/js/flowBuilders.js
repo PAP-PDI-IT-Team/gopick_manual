@@ -3,6 +3,10 @@
 
     const FLOW_STEP_IDS = ['create-account-information', 'create-assign-products', 'create-meter-management', 'create-other-account-settings', 'create-review-account-details'];
 
+    const WIZARD_SEQUENCE = { positionLabel: 'Step', controlsLabel: 'Wizard steps' };
+
+    const VARIANT_SEQUENCE = { positionLabel: 'Variant', controlsLabel: 'Section variants' };
+
     const INPUT_GROUP_TONES = {
         'Required inputs': 'required',
         'Required selection': 'required',
@@ -127,25 +131,6 @@
                 wrap.appendChild(trigger);
                 wrap.appendChild(panel);
                 return wrap;
-            },
-
-            createFlowSteps(steps) {
-                const list = document.createElement('ol');
-                list.className = 'flow-steps';
-                steps.forEach(step => {
-                    const item = document.createElement('li');
-                    item.className = 'flow-steps__item';
-                    const isLink = step && typeof step !== 'string' && step.href;
-                    const text = document.createElement(isLink ? 'a' : 'span');
-                    text.textContent = typeof step === 'string' ? step : step.label;
-                    if (isLink) {
-                        text.href = step.href;
-                        text.className = 'flow-steps__link';
-                    }
-                    item.appendChild(text);
-                    list.appendChild(item);
-                });
-                return list;
             },
 
             createExpectedLine(expectedItems, labelText) {
@@ -296,10 +281,10 @@
                 return button;
             },
 
-            createStepControls(previousStep, nextStep) {
+            createStepControls(previousStep, nextStep, controlsLabel) {
                 const controls = document.createElement('nav');
                 controls.className = 'flow-step-controls';
-                controls.setAttribute('aria-label', 'Wizard steps');
+                controls.setAttribute('aria-label', controlsLabel);
                 if (previousStep) {
                     controls.appendChild(this.createStepControl(previousStep, 'previous'));
                 }
@@ -309,14 +294,15 @@
                 return controls;
             },
 
-            createWizardStep(step, index, steps) {
+            createWizardStep(step, index, steps, sequence) {
+                if (!sequence) throw new Error('Wizard step requires a sequence: ' + step.id);
                 const article = document.createElement('article');
                 article.id = step.id;
                 article.className = 'flow-step';
 
                 const header = document.createElement('div');
                 header.className = 'flow-step__header';
-                this.appendText(header, 'p', 'flow-step__position', 'Step ' + (index + 1) + ' of ' + steps.length);
+                this.appendText(header, 'p', 'flow-step__position', sequence.positionLabel + ' ' + (index + 1) + ' of ' + steps.length);
                 this.appendText(header, 'h3', 'flow-step__title', step.title);
                 article.appendChild(header);
                 this.appendText(article, 'p', 'flow-overview__lead', step.detail);
@@ -340,13 +326,15 @@
                 if (step.rules && step.rules.length) article.appendChild(this.createFlowRules(step.rules, this.collectEmphasisTerms(step)));
                 if (step.expected && step.expected.length) article.appendChild(this.createExpectedLine(step.expected, 'When you save'));
                 if (step.notes && step.notes.length) article.appendChild(this.createNotesPopover(step.notes, step.id + '-notes'));
-                article.appendChild(this.createStepControls(steps[index - 1], steps[index + 1]));
+                article.appendChild(this.createStepControls(steps[index - 1], steps[index + 1], sequence.controlsLabel));
                 return article;
             }
     };
 
     global.AccountsFlowBuilders = {
         FLOW_STEP_IDS: FLOW_STEP_IDS,
+        WIZARD_SEQUENCE: WIZARD_SEQUENCE,
+        VARIANT_SEQUENCE: VARIANT_SEQUENCE,
         methods: methods
     };
 })(window);
