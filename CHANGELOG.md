@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved the Dashboard and Accounts Management Tailwind configuration into an external shared script, preserving their existing brand colors and load order.
 - Added the Unblock Account, Manage Assigned Assessment, Search, Advanced Search, View Active Account listing, View Archived Account, Update Account Row Action, Archive, Restore, and Bulk Action Archive, Delete, and Restore screenshots with a blurred surround, an outlined content card, an emphasized Unblock Account option or Save button, and personal values blurred, and rebuilt Unblock Account, Manage Assigned Assessment, Search, Advanced Search, the row actions, and the bulk actions on the view panel design with pending screenshot placeholders, and moved the View Active Account and View Archived Account visible content and conditional results into the Markdown.
 - Rendered every Accounts Management How to use as a horizontal numbered journey, replacing the vertical step list, which stacks vertically below 768px.
+- Removed the Advanced Search dialog screenshot from the View Accounts listing section, which keeps the listing screenshot; Advanced Search has its own screenshot.
 
 ## [1.2.0] - 2026-08-24
 

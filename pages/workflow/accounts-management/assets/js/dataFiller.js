@@ -348,12 +348,6 @@
                     caption: 'Displays account rows, status badges, search controls, and action menus.',
                     src: 'assets/img/view-accounts-listing.png',
                     alt: 'View Accounts page with search, Advanced Search, View Archived Accounts, Bulk Action, filters, status legend, and an account row with view, update, and archive actions'
-                },
-                {
-                    title: 'Advanced Search Dialog',
-                    caption: 'Advanced Search dialog with rule rows for Account Name, Account Type, and Meter Balance, plus Add rule, Clear, Close, and Search.',
-                    src: 'assets/img/view-accounts-advanced-search.png',
-                    alt: 'Advanced Search dialog over the View Accounts page showing three rule rows with field, operator, and value inputs'
                 }
             ],
             legend: [
