@@ -181,6 +181,36 @@ Upload an assessment.
 
 Create test battery assessments by combining multiple assessments.
 
+### Assessment List
+
+Displays assessments grouped by category, with checkboxes and assessment specifications. Other test batteries are excluded.
+
+#### How To Use
+
+1. Select at least two assessments using the checkboxes.
+2. Select `Next` to move to Test Battery Configurations.
+
+> Rules:
+> - Select a minimum of two assessments.
+
+### Test Battery Configurations
+
+#### Required Inputs
+
+- Name
+- Status
+- Meter Deduction
+- Set Test Order and Passing Score
+
+#### Optional Inputs
+
+- Description
+
+#### How To Use
+
+1. Enter the test battery configuration.
+2. Select `Save` to save the test battery, or select `Back` to return to Assessment List.
+
 ## Schedule Job Fit Profile
 
 Access the Job Fit Profile Assessment subsystem.

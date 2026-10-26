@@ -274,6 +274,14 @@
                         id: 'download-template',
                         title: 'Download Template',
                         description: 'Download the standardized template for assessment definitions.',
+                        images: [
+                            {
+                                title: 'Download Template',
+                                caption: 'Download Template action in Import Assessment.',
+                                src: '',
+                                alt: 'Download Assessment Template Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'Import Assessment', 'Download Template'],
                         steps: [
                             'Open Import Assessment.',
@@ -286,12 +294,49 @@
                 id: 'create-test-battery',
                 title: 'Create Test Battery',
                 description: 'Create test battery assessments by combining multiple individual assessments.',
-                images: [
+                children: [
                     {
-                        title: 'Create Test Battery Configuration',
-                        caption: 'Battery builder combining multiple cognitive, behavioral, or skills assessments.',
-                        src: '',
-                        alt: 'Create Test Battery Screenshot'
+                        id: 'create-test-battery-step-1',
+                        title: 'Assessment List',
+                        images: [
+                            {
+                                title: 'Assessment List',
+                                caption: 'Categorized assessment list with selection checkboxes and assessment specifications.',
+                                src: '',
+                                alt: 'Assessment List Screenshot'
+                            }
+                        ],
+                        description: 'Displays assessments grouped by category, with checkboxes and assessment specifications. Other test batteries are excluded.',
+                        steps: [
+                            'Select at least two assessments using the checkboxes.',
+                            'Select Next to move to Test Battery Configurations.'
+                        ],
+                        rules: [
+                            'Select a minimum of two assessments.'
+                        ]
+                    },
+                    {
+                        id: 'create-test-battery-step-2',
+                        title: 'Test Battery Configurations',
+                        images: [
+                            {
+                                title: 'Test Battery Configurations',
+                                caption: 'Test battery configuration inputs with Save and Back actions.',
+                                src: '',
+                                alt: 'Test Battery Configurations Screenshot'
+                            }
+                        ],
+                        requiredInputs: [
+                            'Name',
+                            'Status',
+                            'Meter Deduction',
+                            'Set Test Order and Passing Score'
+                        ],
+                        optionalInputs: ['Description'],
+                        steps: [
+                            'Enter the test battery configuration.',
+                            'Select Save to save the test battery, or select Back to return to Assessment List.'
+                        ]
                     }
                 ]
             },

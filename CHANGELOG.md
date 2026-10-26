@@ -9,12 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Documented Create Test Battery in the Accounts wizard layout with Assessment List selection, a minimum of two assessments, and Test Battery Configurations inputs and Next, Save, and Back actions.
+- Added a screenshot placeholder for Download Template under Import Assessment.
 - Documented the Preview Assessment expected result covering provider-supplied assessment information, available test norms, and the assessments included in a test battery.
 - Added Assessment Management screenshot placeholders for Search, Advanced Search, category and code filters, sort field and direction, Preview Assessment, Upload Norm, and Schedule Job Fit Profile.
 - Added Page Setup, Set Questions, Set Report Template, and Debug Mode under Config Dropdown, plus Update, Export Assessment, View Scheduled Candidates, and Delete under Settings Dropdown, synchronized across the workflow source, rendered content, and navigation.
 
 ### Changed
 
+- Moved the Create Test Battery overview screenshot placeholder into its two wizard steps, with one preview for Assessment List and one for Test Battery Configurations.
 - Replaced the Upload Norm screenshot placeholder with a full-width under-construction illustration stored under shared images while its destination page is being prepared.
 
 - Moved the Assessment Management Tailwind configuration into a page-local script to satisfy the embedded JavaScript check while preserving its brand colors and load order.

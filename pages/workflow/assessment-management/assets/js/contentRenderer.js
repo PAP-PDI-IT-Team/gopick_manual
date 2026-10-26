@@ -115,6 +115,19 @@
                 });
             }
 
+            [
+                { key: 'requiredInputs', label: 'Required Inputs' },
+                { key: 'optionalInputs', label: 'Optional Inputs' }
+            ].forEach(inputGroup => {
+                if (section[inputGroup.key] && section[inputGroup.key].length) {
+                    const inputLabel = document.createElement('p');
+                    inputLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
+                    inputLabel.textContent = inputGroup.label;
+                    target.appendChild(inputLabel);
+                    target.appendChild(this.createBulletList(section[inputGroup.key]));
+                }
+            });
+
             if (section.steps && section.steps.length) {
                 const stepLabel = document.createElement('p');
                 stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
@@ -174,6 +187,60 @@
             return sectionEl;
         }
 
+        createWizardCard(section) {
+            const wizardCard = document.createElement('article');
+            wizardCard.className = 'rounded-lg border border-slate-100 bg-slate-50 p-5';
+            wizardCard.id = section.id;
+            wizardCard.setAttribute('tabindex', '-1');
+
+            const heading = document.createElement('h3');
+            heading.className = 'font-semibold text-slate-900 mb-2';
+            heading.textContent = section.title;
+            wizardCard.appendChild(heading);
+
+            if (section.description) {
+                const descriptionText = document.createElement('p');
+                descriptionText.className = 'text-sm text-slate-600 leading-relaxed';
+                descriptionText.textContent = section.description;
+                wizardCard.appendChild(descriptionText);
+            }
+
+            this.renderSectionBody(section, wizardCard);
+            return wizardCard;
+        }
+
+        renderCreateTestBattery(section) {
+            const wizardSection = document.createElement('section');
+            wizardSection.id = section.id;
+            wizardSection.className = 'bg-white rounded-xl border border-slate-100 p-6 shadow-sm';
+            wizardSection.setAttribute('tabindex', '-1');
+
+            const heading = document.createElement('h2');
+            heading.className = 'text-xl font-bold text-slate-900 mb-4';
+            heading.textContent = section.title;
+            wizardSection.appendChild(heading);
+
+            const container = document.createElement('div');
+            container.className = 'grid gap-4 grid-cols-1';
+            const summary = this.createWizardCard(Object.assign({}, section, {
+                title: 'Wizard Overview',
+                id: 'create-test-battery-summary'
+            }));
+            container.appendChild(summary);
+
+            section.children.forEach((wizardStep, stepIndex) => {
+                const stepCard = this.createWizardCard(wizardStep);
+                const badge = document.createElement('div');
+                badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
+                badge.textContent = stepIndex + 1;
+                stepCard.insertBefore(badge, stepCard.firstChild);
+                container.appendChild(stepCard);
+            });
+
+            wizardSection.appendChild(container);
+            return wizardSection;
+        }
+
         renderAllSections() {
             const renderRoot = document.getElementById('section-render-root');
             if (!renderRoot) return;
@@ -181,7 +248,9 @@
 
             const sections = this.store.getSections();
             sections.forEach(section => {
-                renderRoot.appendChild(this.renderSectionTree(section, 2, null, true));
+                renderRoot.appendChild(section.id === 'create-test-battery'
+                    ? this.renderCreateTestBattery(section)
+                    : this.renderSectionTree(section, 2, null, true));
             });
         }
     }
