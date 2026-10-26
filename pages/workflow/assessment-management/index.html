@@ -11,17 +11,7 @@
   <link rel="stylesheet" href="assets/css/components.css?v=20260924-accounts-format">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { DEFAULT: '#e50914', light: '#ff2d38', dark: '#b3060f' }
-          }
-        }
-      }
-    }
-  </script>
+  <script src="assets/js/tailwindConfig.js?v=20261026-external-config"></script>
 </head>
 <body class="manual-page bg-slate-50 text-slate-800 antialiased">
 
@@ -71,8 +61,22 @@
                     <ul class="sidebar-children mt-1 ml-3 space-y-1">
                       <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#preview-assessment">Preview Assessment</a></li>
                       <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#upload-norm">Upload Norm</a></li>
-                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#config-dropdown">Config Dropdown</a></li>
-                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#settings-dropdown">Settings Dropdown</a></li>
+                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#config-dropdown">Config Dropdown</a>
+                        <ul class="sidebar-children mt-1 ml-3 space-y-1">
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#page-setup">Page Setup</a></li>
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#set-questions">Set Questions</a></li>
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#set-report-template">Set Report Template</a></li>
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#debug-mode">Debug Mode</a></li>
+                        </ul>
+                      </li>
+                      <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#settings-dropdown">Settings Dropdown</a>
+                        <ul class="sidebar-children mt-1 ml-3 space-y-1">
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#update">Update</a></li>
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#export-assessment">Export Assessment</a></li>
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#view-scheduled-candidates">View Scheduled Candidates</a></li>
+                          <li><a class="block pl-3 border-l border-slate-100 text-slate-600 hover:text-brand transition-colors py-1" href="#delete">Delete</a></li>
+                        </ul>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -85,7 +89,6 @@
               </li>
               <li><a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#create-test-battery">Create Test Battery</a></li>
               <li><a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#schedule-job-fit-profile">Schedule Job Fit Profile</a></li>
-              <li><a class="block text-slate-600 hover:text-brand transition-colors py-1" href="#other-pages">Other Pages</a></li>
             </ul>
           </nav>
         </aside>
@@ -111,7 +114,7 @@
   </footer>
 
   <script src="../../../shared/components/image-card/renderer.js?v=20261020-isolate-image-card" defer></script>
-  <script src="assets/js/dataFiller.js?v=20261020-assessment-description" defer></script>
+  <script src="assets/js/dataFiller.js?v=20261026-assessment-dropdowns" defer></script>
   <script src="assets/js/contentStore.js?v=20261013-phase2" defer></script>
   <script src="assets/js/contentRenderer.js?v=20261020-assessment-description" defer></script>
   <script src="assets/js/sidebarTracker.js?v=20261013-phase2" defer></script>

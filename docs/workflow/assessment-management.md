@@ -127,7 +127,23 @@ View Assessment Informations: Description, Dimension, Number of Items, Time Limi
 
 #### Config Dropdown
 
+##### Page Setup
+
+##### Set Questions
+
+##### Set Report Template
+
+##### Debug Mode
+
 #### Settings Dropdown
+
+##### Update
+
+##### Export Assessment
+
+##### View Scheduled Candidates
+
+##### Delete
 
 ## Import Assessment
 
@@ -161,5 +177,3 @@ Create test battery assessments by combining multiple assessments.
 ## Schedule Job Fit Profile
 
 Access the Job Fit Profile Assessment subsystem.
-
-## Other Pages

@@ -22,6 +22,14 @@
                         id: 'search',
                         title: 'Search',
                         description: 'Searches the visible assessment cards.',
+                        images: [
+                            {
+                                title: 'Assessment Search',
+                                caption: 'Search input used to find assessment cards.',
+                                src: '',
+                                alt: 'Assessment Search Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'View Assessments', 'Search Input'],
                         steps: [
                             'Open View Assessments.',
@@ -36,6 +44,14 @@
                         id: 'advanced-search',
                         title: 'Advanced Search',
                         description: 'Searches assessments using configured rules.',
+                        images: [
+                            {
+                                title: 'Assessment Advanced Search',
+                                caption: 'Advanced Search rules for finding assessments.',
+                                src: '',
+                                alt: 'Assessment Advanced Search Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'View Assessments', 'Advanced Search'],
                         steps: [
                             'Open View Assessments.',
@@ -51,6 +67,14 @@
                         id: 'filter-by-category',
                         title: 'Filter By Category',
                         description: 'Restricts the assessment gallery to a selected category.',
+                        images: [
+                            {
+                                title: 'Filter By Category',
+                                caption: 'Category filter for the assessment gallery.',
+                                src: '',
+                                alt: 'Filter By Category Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'View Assessments', 'Filter By Category'],
                         steps: [
                             'Open View Assessments.',
@@ -65,6 +89,14 @@
                         id: 'filter-by-codes',
                         title: 'Filter By Codes',
                         description: 'Restricts the assessment gallery using a selected assessment code.',
+                        images: [
+                            {
+                                title: 'Filter By Codes',
+                                caption: 'Assessment code filter for the assessment gallery.',
+                                src: '',
+                                alt: 'Filter By Codes Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'View Assessments', 'Filter By Codes'],
                         steps: [
                             'Open View Assessments.',
@@ -79,6 +111,14 @@
                         id: 'sort',
                         title: 'Sort',
                         description: 'Orders assessment cards using a selected field.',
+                        images: [
+                            {
+                                title: 'Assessment Sort',
+                                caption: 'Sort field selection for assessment cards.',
+                                src: '',
+                                alt: 'Assessment Sort Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'View Assessments', 'Sort'],
                         steps: [
                             'Open View Assessments.',
@@ -93,6 +133,14 @@
                         id: 'sort-by-ascending-or-descending',
                         title: 'Sort By Ascending or Descending',
                         description: 'Controls the direction applied to the selected sort field.',
+                        images: [
+                            {
+                                title: 'Sort Direction',
+                                caption: 'Ascending and descending sort controls for assessment cards.',
+                                src: '',
+                                alt: 'Sort Direction Screenshot'
+                            }
+                        ],
                         accessPaths: ['Assessments', 'View Assessments', 'Sort Direction'],
                         steps: [
                             'Select a sort field.',
@@ -124,25 +172,77 @@
                                 id: 'preview-assessment',
                                 title: 'Preview Assessment',
                                 description: 'Preview test instructions, item rendering, and candidate view.',
+                                images: [
+                                    {
+                                        title: 'Preview Assessment',
+                                        caption: 'Assessment preview view.',
+                                        src: '',
+                                        alt: 'Preview Assessment Screenshot'
+                                    }
+                                ],
                                 accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Preview Assessment']
                             },
                             {
                                 id: 'upload-norm',
                                 title: 'Upload Norm',
                                 description: 'Upload specialized norm tables and reference percentiles.',
+                                images: [
+                                    {
+                                        title: 'Upload Norm',
+                                        caption: 'Assessment norm upload view.',
+                                        src: '',
+                                        alt: 'Upload Norm Screenshot'
+                                    }
+                                ],
                                 accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Upload Norm']
                             },
                             {
                                 id: 'config-dropdown',
                                 title: 'Config Dropdown',
                                 description: 'Configure sub-dimensions, time limits, and test batteries.',
-                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown']
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown'],
+                                children: [
+                                    {
+                                        id: 'page-setup',
+                                        title: 'Page Setup'
+                                    },
+                                    {
+                                        id: 'set-questions',
+                                        title: 'Set Questions'
+                                    },
+                                    {
+                                        id: 'set-report-template',
+                                        title: 'Set Report Template'
+                                    },
+                                    {
+                                        id: 'debug-mode',
+                                        title: 'Debug Mode'
+                                    }
+                                ]
                             },
                             {
                                 id: 'settings-dropdown',
                                 title: 'Settings Dropdown',
                                 description: 'Adjust scoring criteria, report delivery, and access levels.',
-                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Settings Dropdown']
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Settings Dropdown'],
+                                children: [
+                                    {
+                                        id: 'update',
+                                        title: 'Update'
+                                    },
+                                    {
+                                        id: 'export-assessment',
+                                        title: 'Export Assessment'
+                                    },
+                                    {
+                                        id: 'view-scheduled-candidates',
+                                        title: 'View Scheduled Candidates'
+                                    },
+                                    {
+                                        id: 'delete',
+                                        title: 'Delete'
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -195,12 +295,15 @@
             {
                 id: 'schedule-job-fit-profile',
                 title: 'Schedule Job Fit Profile',
-                description: 'Access the Job Fit Profile Assessment subsystem and schedule candidate batches.'
-            },
-            {
-                id: 'other-pages',
-                title: 'Other Pages',
-                description: 'Cross-functional auxiliary references for assessment delivery.'
+                description: 'Access the Job Fit Profile Assessment subsystem and schedule candidate batches.',
+                images: [
+                    {
+                        title: 'Schedule Job Fit Profile',
+                        caption: 'Job Fit Profile Assessment subsystem.',
+                        src: '',
+                        alt: 'Schedule Job Fit Profile Screenshot'
+                    }
+                ]
             }
         ]
     };
