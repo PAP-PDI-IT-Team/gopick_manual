@@ -123,7 +123,14 @@ View Assessment Informations: Description, Dimension, Number of Items, Time Limi
 
 #### Preview Assessment
 
+> Expected Result:
+> - The preview displays the custom description provided by the assessment provider, including the description, dimensions, number of items, time limit, test norm, recommended level, and available test norms.
+> - For a test battery, the preview also lists the assessments included in the battery.
+
 #### Upload Norm
+
+> Notes:
+> - The Upload Norm page is under construction and will be added soon. Its link is not yet available.
 
 #### Config Dropdown
 

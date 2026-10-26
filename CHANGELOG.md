@@ -9,12 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Documented the Preview Assessment expected result covering provider-supplied assessment information, available test norms, and the assessments included in a test battery.
 - Added Assessment Management screenshot placeholders for Search, Advanced Search, category and code filters, sort field and direction, Preview Assessment, Upload Norm, and Schedule Job Fit Profile.
 - Added Page Setup, Set Questions, Set Report Template, and Debug Mode under Config Dropdown, plus Update, Export Assessment, View Scheduled Candidates, and Delete under Settings Dropdown, synchronized across the workflow source, rendered content, and navigation.
 
 ### Changed
 
+- Replaced the Upload Norm screenshot placeholder with a full-width under-construction illustration stored under shared images while its destination page is being prepared.
+
 - Moved the Assessment Management Tailwind configuration into a page-local script to satisfy the embedded JavaScript check while preserving its brand colors and load order.
+
+### Fixed
+
+- Renamed short local identifiers in the Assessment Management renderer to satisfy the repository naming check without changing rendering behavior.
+- Restored the Access Path label above navigation chips in Assessment Management sections.
 
 ### Removed
 

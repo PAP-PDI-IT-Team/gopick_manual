@@ -180,21 +180,24 @@
                                         alt: 'Preview Assessment Screenshot'
                                     }
                                 ],
-                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Preview Assessment']
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Preview Assessment'],
+                                expectedResults: [
+                                    'The preview displays the custom description provided by the assessment provider, including the description, dimensions, number of items, time limit, test norm, recommended level, and available test norms.',
+                                    'For a test battery, the preview also lists the assessments included in the battery.'
+                                ]
                             },
                             {
                                 id: 'upload-norm',
                                 title: 'Upload Norm',
                                 description: 'Upload specialized norm tables and reference percentiles.',
-                                images: [
+                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Upload Norm'],
+                                links: [
                                     {
-                                        title: 'Upload Norm',
-                                        caption: 'Assessment norm upload view.',
-                                        src: '',
-                                        alt: 'Upload Norm Screenshot'
+                                        label: 'Upload Norm page under construction',
+                                        image: '../../../shared/img/upload-norm-under-construction.png?v=20261026-page-coming-soon',
+                                        disabled: true
                                     }
-                                ],
-                                accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Upload Norm']
+                                ]
                             },
                             {
                                 id: 'config-dropdown',

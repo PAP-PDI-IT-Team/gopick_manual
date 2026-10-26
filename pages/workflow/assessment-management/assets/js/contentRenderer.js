@@ -21,29 +21,29 @@
         }
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
-            items.forEach(function (item) {
-                const li = document.createElement('li');
-                li.className = 'flex gap-2';
+            const bulletList = document.createElement('ul');
+            bulletList.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
+            items.forEach(function (bulletItem) {
+                const listItem = document.createElement('li');
+                listItem.className = 'flex gap-2';
 
                 const marker = document.createElement('span');
                 marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
 
-                const text = document.createElement('span');
-                text.textContent = item;
+                const itemText = document.createElement('span');
+                itemText.textContent = bulletItem;
 
-                li.appendChild(marker);
-                li.appendChild(text);
-                list.appendChild(li);
+                listItem.appendChild(marker);
+                listItem.appendChild(itemText);
+                bulletList.appendChild(listItem);
             });
-            return list;
+            return bulletList;
         }
 
-        createCallout(title, items, kind) {
-            const wrap = document.createElement('div');
-            const isRules = kind === 'rules';
-            wrap.className = isRules
+        createCallout(title, items, calloutKind) {
+            const calloutWrapper = document.createElement('div');
+            const isRules = calloutKind === 'rules';
+            calloutWrapper.className = isRules
                 ? 'mt-5 rounded-lg border border-amber-100 bg-amber-50 p-5'
                 : 'mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-5';
 
@@ -51,18 +51,18 @@
             heading.className = isRules ? 'font-semibold text-amber-900 mb-3' : 'font-semibold text-emerald-900 mb-3';
             heading.textContent = title;
 
-            wrap.appendChild(heading);
-            wrap.appendChild(this.createBulletList(items));
-            return wrap;
+            calloutWrapper.appendChild(heading);
+            calloutWrapper.appendChild(this.createBulletList(items));
+            return calloutWrapper;
         }
 
         renderImages(section, target) {
             if (!section.images || !section.images.length) return;
             if (!this.imageRenderer || !this.imageRenderer.createImageOrPlaceholder) return;
 
-            section.images.forEach(img => {
-                const card = this.imageRenderer.createImageOrPlaceholder(img, section.title);
-                target.appendChild(card);
+            section.images.forEach(imageData => {
+                const imageCard = this.imageRenderer.createImageOrPlaceholder(imageData, section.title);
+                target.appendChild(imageCard);
             });
         }
 
@@ -70,10 +70,15 @@
             this.renderImages(section, target);
 
             if (section.accessPaths && section.accessPaths.length) {
+                const accessLabel = document.createElement('p');
+                accessLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
+                accessLabel.textContent = 'Access Path';
+                target.appendChild(accessLabel);
+
                 const pathWrap = document.createElement('div');
                 pathWrap.className = 'mt-3 mb-4 flex items-center gap-1.5 text-xs text-slate-500 font-medium';
-                section.accessPaths.forEach((step, idx) => {
-                    if (idx > 0) {
+                section.accessPaths.forEach((pathLabel, pathIndex) => {
+                    if (pathIndex > 0) {
                         const arrow = document.createElement('span');
                         arrow.className = 'text-slate-400';
                         arrow.textContent = '›';
@@ -81,10 +86,33 @@
                     }
                     const stepBadge = document.createElement('span');
                     stepBadge.className = 'px-2 py-0.5 rounded bg-slate-100 text-slate-700';
-                    stepBadge.textContent = step;
+                    stepBadge.textContent = pathLabel;
                     pathWrap.appendChild(stepBadge);
                 });
                 target.appendChild(pathWrap);
+            }
+
+            if (section.links && section.links.length) {
+                section.links.forEach(linkItem => {
+                    const linkGroup = document.createElement('div');
+                    linkGroup.className = 'mt-3 w-full';
+
+                    const sectionLink = document.createElement('span');
+                    sectionLink.className = 'block w-full cursor-not-allowed rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-400';
+                    sectionLink.setAttribute('aria-label', linkItem.label);
+
+                    const statusImage = document.createElement('img');
+                    statusImage.src = linkItem.image;
+                    statusImage.alt = linkItem.label;
+                    statusImage.className = 'block h-auto w-full max-w-full rounded-lg';
+                    statusImage.loading = 'lazy';
+                    sectionLink.appendChild(statusImage);
+                    sectionLink.setAttribute('role', 'link');
+                    sectionLink.setAttribute('aria-disabled', String(linkItem.disabled));
+                    sectionLink.setAttribute('tabindex', '0');
+                    linkGroup.appendChild(sectionLink);
+                    target.appendChild(linkGroup);
+                });
             }
 
             if (section.steps && section.steps.length) {
@@ -122,10 +150,10 @@
             fragment.appendChild(heading);
 
             if (section.description) {
-                const desc = document.createElement('p');
-                desc.className = 'text-sm text-slate-500 mt-2 mb-5';
-                desc.textContent = section.description;
-                fragment.appendChild(desc);
+                const descriptionText = document.createElement('p');
+                descriptionText.className = 'text-sm text-slate-500 mt-2 mb-5';
+                descriptionText.textContent = section.description;
+                fragment.appendChild(descriptionText);
             }
 
             return fragment;
@@ -147,13 +175,13 @@
         }
 
         renderAllSections() {
-            const root = document.getElementById('section-render-root');
-            if (!root) return;
-            root.innerHTML = '';
+            const renderRoot = document.getElementById('section-render-root');
+            if (!renderRoot) return;
+            renderRoot.innerHTML = '';
 
             const sections = this.store.getSections();
             sections.forEach(section => {
-                root.appendChild(this.renderSectionTree(section, 2, null, true));
+                renderRoot.appendChild(this.renderSectionTree(section, 2, null, true));
             });
         }
     }
