@@ -2,52 +2,52 @@
     'use strict';
 
     function createCameraIcon() {
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 24 24');
-        svg.setAttribute('fill', 'none');
-        svg.setAttribute('stroke', 'currentColor');
-        svg.setAttribute('stroke-width', '2');
-        svg.setAttribute('stroke-linecap', 'round');
-        svg.setAttribute('stroke-linejoin', 'round');
-        svg.setAttribute('class', 'manual-image-card__placeholder-icon');
+        var svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgElement.setAttribute('viewBox', '0 0 24 24');
+        svgElement.setAttribute('fill', 'none');
+        svgElement.setAttribute('stroke', 'currentColor');
+        svgElement.setAttribute('stroke-width', '2');
+        svgElement.setAttribute('stroke-linecap', 'round');
+        svgElement.setAttribute('stroke-linejoin', 'round');
+        svgElement.setAttribute('class', 'manual-image-card__placeholder-icon');
 
-        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z');
+        var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathElement.setAttribute('d', 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z');
         var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', '12');
         circle.setAttribute('cy', '13');
         circle.setAttribute('r', '4');
 
-        svg.appendChild(path);
-        svg.appendChild(circle);
-        return svg;
+        svgElement.appendChild(pathElement);
+        svgElement.appendChild(circle);
+        return svgElement;
     }
 
     function createSmallCameraIcon() {
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 24 24');
-        svg.setAttribute('fill', 'none');
-        svg.setAttribute('stroke', 'currentColor');
-        svg.setAttribute('stroke-width', '2');
-        svg.setAttribute('stroke-linecap', 'round');
-        svg.setAttribute('stroke-linejoin', 'round');
-        svg.setAttribute('class', 'manual-image-card__tag-icon');
+        var svgElement2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgElement2.setAttribute('viewBox', '0 0 24 24');
+        svgElement2.setAttribute('fill', 'none');
+        svgElement2.setAttribute('stroke', 'currentColor');
+        svgElement2.setAttribute('stroke-width', '2');
+        svgElement2.setAttribute('stroke-linecap', 'round');
+        svgElement2.setAttribute('stroke-linejoin', 'round');
+        svgElement2.setAttribute('class', 'manual-image-card__tag-icon');
 
-        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z');
+        var pathElement2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathElement2.setAttribute('d', 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z');
         var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', '12');
         circle.setAttribute('cy', '13');
         circle.setAttribute('r', '4');
 
-        svg.appendChild(path);
-        svg.appendChild(circle);
-        return svg;
+        svgElement2.appendChild(pathElement2);
+        svgElement2.appendChild(circle);
+        return svgElement2;
     }
 
     function createImageOrPlaceholder(imageObj, sectionTitle) {
-        var card = document.createElement('figure');
-        card.className = 'manual-image-card';
+        var cardElement = document.createElement('figure');
+        cardElement.className = 'manual-image-card';
 
         var titleText = (imageObj && imageObj.title) || (sectionTitle ? sectionTitle + ' Interface' : 'Feature View');
         var captionText = imageObj && imageObj.caption;
@@ -58,14 +58,14 @@
         var header = document.createElement('div');
         header.className = 'manual-image-card__header';
 
-        var tag = document.createElement('span');
-        tag.className = 'manual-image-card__tag';
-        tag.appendChild(createSmallCameraIcon());
+        var tagElement = document.createElement('span');
+        tagElement.className = 'manual-image-card__tag';
+        tagElement.appendChild(createSmallCameraIcon());
 
         var tagLabel = document.createElement('span');
         tagLabel.textContent = 'Screenshot: ' + titleText;
-        tag.appendChild(tagLabel);
-        header.appendChild(tag);
+        tagElement.appendChild(tagLabel);
+        header.appendChild(tagElement);
 
         var badge = document.createElement('span');
         badge.className = isPending
@@ -74,41 +74,41 @@
         badge.textContent = isPending ? 'Pending Screenshot' : 'UI Reference';
         header.appendChild(badge);
 
-        card.appendChild(header);
+        cardElement.appendChild(header);
 
-        var body = document.createElement('div');
-        body.className = 'manual-image-card__body';
+        var bodyElement = document.createElement('div');
+        bodyElement.className = 'manual-image-card__body';
 
         if (!isPending) {
-            var img = document.createElement('img');
-            img.className = 'manual-image-card__img';
-            img.src = srcText;
-            img.alt = altText;
-            img.loading = 'lazy';
-            img.addEventListener('error', function () {
-                body.innerHTML = '';
-                body.appendChild(renderPlaceholderBox(titleText, captionText));
+            var imageElement = document.createElement('img');
+            imageElement.className = 'manual-image-card__img';
+            imageElement.src = srcText;
+            imageElement.alt = altText;
+            imageElement.loading = 'lazy';
+            imageElement.addEventListener('error', function () {
+                bodyElement.innerHTML = '';
+                bodyElement.appendChild(renderPlaceholderBox(titleText, captionText));
                 badge.className = 'manual-image-card__badge manual-image-card__badge--pending';
                 badge.textContent = 'Image Unavailable';
             });
-            body.appendChild(img);
+            bodyElement.appendChild(imageElement);
         } else {
-            body.appendChild(renderPlaceholderBox(titleText, captionText));
+            bodyElement.appendChild(renderPlaceholderBox(titleText, captionText));
         }
 
-        card.appendChild(body);
+        cardElement.appendChild(bodyElement);
 
         if (captionText) {
             var caption = document.createElement('figcaption');
             caption.className = 'manual-image-card__caption';
             caption.textContent = captionText;
-            card.appendChild(caption);
+            cardElement.appendChild(caption);
         }
 
-        return card;
+        return cardElement;
     }
 
-    function renderPlaceholderBox(title, hint) {
+    function renderPlaceholderBox(title, hintText) {
         var placeholder = document.createElement('div');
         placeholder.className = 'manual-image-card__placeholder';
 
@@ -124,7 +124,7 @@
 
         var hintEl = document.createElement('div');
         hintEl.className = 'manual-image-card__placeholder-hint';
-        hintEl.textContent = hint || 'Screenshot placeholder will be replaced with live UI capture once asset is provided.';
+        hintEl.textContent = hintText || 'Screenshot placeholder will be replaced with live UI capture once asset is provided.';
         placeholder.appendChild(hintEl);
 
         return placeholder;
@@ -136,19 +136,19 @@
         button.className = 'manual-image-gallery__arrow manual-image-gallery__arrow--' + direction;
         button.setAttribute('aria-label', direction === 'previous' ? 'Previous screenshot' : 'Next screenshot');
 
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 24 24');
-        svg.setAttribute('fill', 'none');
-        svg.setAttribute('stroke', 'currentColor');
-        svg.setAttribute('stroke-width', '2.5');
-        svg.setAttribute('stroke-linecap', 'round');
-        svg.setAttribute('stroke-linejoin', 'round');
-        svg.setAttribute('aria-hidden', 'true');
+        var svgElement3 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgElement3.setAttribute('viewBox', '0 0 24 24');
+        svgElement3.setAttribute('fill', 'none');
+        svgElement3.setAttribute('stroke', 'currentColor');
+        svgElement3.setAttribute('stroke-width', '2.5');
+        svgElement3.setAttribute('stroke-linecap', 'round');
+        svgElement3.setAttribute('stroke-linejoin', 'round');
+        svgElement3.setAttribute('aria-hidden', 'true');
 
         var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         chevron.setAttribute('d', direction === 'previous' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6');
-        svg.appendChild(chevron);
-        button.appendChild(svg);
+        svgElement3.appendChild(chevron);
+        button.appendChild(svgElement3);
 
         return button;
     }
@@ -198,25 +198,25 @@
             slideList.forEach(function (slide, slideIndex) {
                 slide.hidden = slideIndex !== activeIndex;
             });
-            Array.prototype.forEach.call(dotList.children, function (dot, dotIndex) {
+            Array.prototype.forEach.call(dotList.children, function (dotButton, dotIndex) {
                 if (dotIndex === activeIndex) {
-                    dot.setAttribute('aria-current', 'true');
+                    dotButton.setAttribute('aria-current', 'true');
                 } else {
-                    dot.removeAttribute('aria-current');
+                    dotButton.removeAttribute('aria-current');
                 }
             });
             counter.textContent = (activeIndex + 1) + ' / ' + slideList.length;
         }
 
         slideList.forEach(function (slide, slideIndex) {
-            var dot = document.createElement('button');
-            dot.type = 'button';
-            dot.className = 'manual-image-gallery__dot';
-            dot.setAttribute('aria-label', 'Show screenshot ' + (slideIndex + 1) + ' of ' + slideList.length);
-            dot.addEventListener('click', function () {
+            var dotButton2 = document.createElement('button');
+            dotButton2.type = 'button';
+            dotButton2.className = 'manual-image-gallery__dot';
+            dotButton2.setAttribute('aria-label', 'Show screenshot ' + (slideIndex + 1) + ' of ' + slideList.length);
+            dotButton2.addEventListener('click', function () {
                 showSlide(slideIndex);
             });
-            dotList.appendChild(dot);
+            dotList.appendChild(dotButton2);
         });
 
         previousButton.addEventListener('click', function () {

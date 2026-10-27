@@ -46,11 +46,11 @@
 
         setBranchOpen(sectionId, isOpen) {
             const sidebar = document.getElementById(this.rootListId);
-            const item = sidebar.querySelector('li[data-target="' + sectionId + '"]');
-            const button = item.querySelector(':scope > .sidebar-row > .sidebar-toggle');
-            const childList = item.querySelector(':scope > .sidebar-children');
+            const itemData = sidebar.querySelector('li[data-target="' + sectionId + '"]');
+            const button = itemData.querySelector(':scope > .sidebar-row > .sidebar-toggle');
+            const childList = itemData.querySelector(':scope > .sidebar-children');
             button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            button.setAttribute('aria-label', (isOpen ? 'Hide ' : 'Show ') + item.dataset.title + ' sections');
+            button.setAttribute('aria-label', (isOpen ? 'Hide ' : 'Show ') + itemData.dataset.title + ' sections');
             childList.hidden = !isOpen;
         }
 
@@ -74,27 +74,27 @@
         }
 
         appendItem(section, level, parent) {
-            const li = document.createElement('li');
-            li.className = 'sidebar-item';
-            li.dataset.target = section.id;
-            li.dataset.level = String(level);
-            li.dataset.title = section.title;
+            const listItem = document.createElement('li');
+            listItem.className = 'sidebar-item';
+            listItem.dataset.target = section.id;
+            listItem.dataset.level = String(level);
+            listItem.dataset.title = section.title;
 
-            const a = document.createElement('a');
+            const anchor = document.createElement('a');
             const indent = level === 0 ? '' : ' pl-' + Math.min(level * 3, 12) + ' border-l border-slate-100';
-            a.className = 'sidebar-link block text-slate-600 hover:text-brand transition-colors py-1' + indent;
-            a.href = '#' + section.id;
-            a.dataset.target = section.id;
-            a.textContent = section.title;
+            anchor.className = 'sidebar-link block text-slate-600 hover:text-brand transition-colors py-1' + indent;
+            anchor.href = '#' + section.id;
+            anchor.dataset.target = section.id;
+            anchor.textContent = section.title;
 
-            a.addEventListener('click', () => {
+            anchor.addEventListener('click', () => {
                 this.setActive(section.id);
             });
 
-            const row = document.createElement('div');
-            row.className = 'sidebar-row';
-            row.appendChild(a);
-            li.appendChild(row);
+            const rowElement = document.createElement('div');
+            rowElement.className = 'sidebar-row';
+            rowElement.appendChild(anchor);
+            listItem.appendChild(rowElement);
 
             if (section.children && section.children.length) {
                 const childList = document.createElement('ul');
@@ -104,22 +104,22 @@
                 section.children.forEach(child => {
                     this.appendItem(child, level + 1, childList);
                 });
-                li.classList.add('has-children');
-                row.appendChild(this.createToggleButton(section, childList));
-                li.appendChild(childList);
+                listItem.classList.add('has-children');
+                rowElement.appendChild(this.createToggleButton(section, childList));
+                listItem.appendChild(childList);
             }
 
-            parent.appendChild(li);
+            parent.appendChild(listItem);
         }
 
         render() {
-            const list = document.getElementById(this.rootListId);
-            if (!list) return;
-            list.innerHTML = '';
+            const listElement = document.getElementById(this.rootListId);
+            if (!listElement) return;
+            listElement.innerHTML = '';
 
             const sections = this.store.getSections();
             sections.forEach(section => {
-                this.appendItem(section, 0, list);
+                this.appendItem(section, 0, listElement);
             });
         }
 
@@ -131,9 +131,9 @@
             if (!sidebar) return;
 
             const links = sidebar.querySelectorAll('a[data-target]');
-            links.forEach(link => {
-                link.classList.remove('active', 'text-brand', 'font-semibold');
-                link.classList.add('text-slate-600');
+            links.forEach(linkElement => {
+                linkElement.classList.remove('active', 'text-brand', 'font-semibold');
+                linkElement.classList.add('text-slate-600');
             });
 
             const activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
@@ -156,20 +156,20 @@
             const isBottom = (window.innerHeight + scrollY) >= (document.documentElement.scrollHeight - 30);
 
             if (isBottom) {
-                for (let i = links.length - 1; i >= 0; i--) {
-                    const targetEl = document.getElementById(links[i].dataset.target);
-                    if (targetEl) return links[i].dataset.target;
+                for (let index = links.length - 1; index >= 0; index--) {
+                    const targetEl = document.getElementById(links[index].dataset.target);
+                    if (targetEl) return links[index].dataset.target;
                 }
             }
 
             let candidateId = null;
-            for (let i = 0; i < links.length; i++) {
-                const targetId = links[i].dataset.target;
-                const el = document.getElementById(targetId);
-                if (!el || el.closest('[hidden]')) continue;
+            for (let index2 = 0; index2 < links.length; index2++) {
+                const targetId = links[index2].dataset.target;
+                const element = document.getElementById(targetId);
+                if (!element || element.closest('[hidden]')) continue;
 
-                const top = el.getBoundingClientRect().top;
-                if (top <= headerOffset) {
+                const topOffset = element.getBoundingClientRect().top;
+                if (topOffset <= headerOffset) {
                     candidateId = targetId;
                 } else {
                     break;

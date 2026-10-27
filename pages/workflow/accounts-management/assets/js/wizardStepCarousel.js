@@ -18,7 +18,7 @@
         }
 
         hasStep(stepId) {
-            return this.steps.some(step => step.id === stepId);
+            return this.steps.some(stepData => stepData.id === stepId);
         }
 
         prefersReducedMotion() {
@@ -27,13 +27,13 @@
 
         showStep(stepId, options) {
             const settings = Object.assign({ moveFocus: false, scrollIntoView: false }, options);
-            const targetStep = this.steps.find(step => step.id === stepId);
+            const targetStep = this.steps.find(stepData2 => stepData2.id === stepId);
             if (!targetStep) {
                 throw new Error('Wizard step not found: ' + stepId);
             }
 
-            this.steps.forEach(step => {
-                step.hidden = step !== targetStep;
+            this.steps.forEach(stepData3 => {
+                stepData3.hidden = stepData3 !== targetStep;
             });
 
             if (this.statusElement) {
@@ -70,7 +70,7 @@
             }
         }
 
-        init() {
+        initialize() {
             const hashId = (location.hash || '').replace('#', '');
             this.showStep(this.hasStep(hashId) ? hashId : this.steps[0].id);
             this.panel.addEventListener('click', clickEvent => this.handleControlClick(clickEvent));

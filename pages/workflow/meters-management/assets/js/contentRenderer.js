@@ -87,7 +87,7 @@
             return sectionEl;
         }
 
-        renderLegends(root) {
+        renderLegends(rootElement) {
             const legends = this.store.getLegends();
             if (!legends || !legends.length) return;
 
@@ -97,18 +97,18 @@
             panel.className = 'flow-overview';
             panel.appendChild(this.createChipGroups([{ title: 'Legends', items: legends }]));
             legendsWrap.appendChild(panel);
-            root.appendChild(legendsWrap);
+            rootElement.appendChild(legendsWrap);
         }
 
         renderAllSections() {
-            const root = document.getElementById('section-render-root');
-            if (!root) throw new Error('Meters content root #section-render-root is missing');
-            root.innerHTML = '';
+            const rootElement2 = document.getElementById('section-render-root');
+            if (!rootElement2) throw new Error('Meters content root #section-render-root is missing');
+            rootElement2.innerHTML = '';
 
-            this.renderLegends(root);
+            this.renderLegends(rootElement2);
 
             this.store.getSections().forEach(section => {
-                root.appendChild(this.renderSectionTree(section, 2, null, true));
+                rootElement2.appendChild(this.renderSectionTree(section, 2, null, true));
             });
         }
     }

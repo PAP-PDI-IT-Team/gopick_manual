@@ -143,16 +143,16 @@
         }
 
         scrollToHash() {
-            const id = (location.hash || '').replace('#', '');
-            if (!id) return;
-            this.wizardCarousels.filter(carousel => carousel.hasStep(id)).forEach(carousel => carousel.showStep(id));
-            const el = document.getElementById(id);
-            if (el) {
-                this.sidebar.setActive(id);
+            const targetId = (location.hash || '').replace('#', '');
+            if (!targetId) return;
+            this.wizardCarousels.filter(carousel => carousel.hasStep(targetId)).forEach(carousel => carousel.showStep(targetId));
+            const element = document.getElementById(targetId);
+            if (element) {
+                this.sidebar.setActive(targetId);
                 this.sidebar.isProgrammaticScroll = true;
                 setTimeout(() => {
-                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    el.focus && el.focus();
+                    element.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    element.focus && element.focus();
                     setTimeout(() => {
                         this.sidebar.isProgrammaticScroll = false;
                     }, 400);
@@ -160,12 +160,12 @@
             }
         }
 
-        init() {
+        initialize() {
             setFooterYear();
             this.renderer.renderAll();
             this.screenshotViewer.bindTo(document.querySelector('main'));
             this.wizardCarousels = Array.from(document.querySelectorAll('.flow-step-panel')).map(panel => new global.AccountsWizardStepCarousel(panel));
-            this.wizardCarousels.forEach(carousel => carousel.init());
+            this.wizardCarousels.forEach(carousel => carousel.initialize());
             this.sidebar.render();
             this.sidebar.bindListeners();
             populateRbacTable();
@@ -179,17 +179,17 @@
         }
     }
 
-    const app = new AccountsApp();
+    const pageApp = new AccountsApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => pageApp.initialize());
     } else {
-        app.init();
+        pageApp.initialize();
     }
 
     global.AccountsApp = AccountsApp;
-    global.__accountsApp = app;
+    global.__accountsApp = pageApp;
     global.accountsBehavior = {
-        initBehavior: () => app.init()
+        initBehavior: () => pageApp.initialize()
     };
 })(window);

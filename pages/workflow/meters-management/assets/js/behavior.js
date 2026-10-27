@@ -16,15 +16,15 @@
         }
 
         scrollToHash() {
-            const id = (location.hash || '').replace('#', '');
-            if (!id) return;
-            const el = document.getElementById(id);
-            if (el) {
-                this.sidebar.setActive(id);
+            const targetId = (location.hash || '').replace('#', '');
+            if (!targetId) return;
+            const element = document.getElementById(targetId);
+            if (element) {
+                this.sidebar.setActive(targetId);
                 this.sidebar.isProgrammaticScroll = true;
                 setTimeout(() => {
-                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    el.focus && el.focus();
+                    element.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    element.focus && element.focus();
                     setTimeout(() => {
                         this.sidebar.isProgrammaticScroll = false;
                     }, 400);
@@ -32,7 +32,7 @@
             }
         }
 
-        init() {
+        initialize() {
             setFooterYear();
             this.renderer.renderAllSections();
             this.screenshotViewer.bindTo(document.querySelector('main'));
@@ -47,14 +47,14 @@
         }
     }
 
-    const app = new MetersApp();
+    const pageApp = new MetersApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => pageApp.initialize());
     } else {
-        app.init();
+        pageApp.initialize();
     }
 
     global.MetersApp = MetersApp;
-    global.__metersApp = app;
+    global.__metersApp = pageApp;
 })(window);

@@ -14,26 +14,26 @@
             const guide = document.createElement('dl');
             guide.className = 'meter-guide';
             guideItems.forEach(guideItem => {
-                const item = document.createElement('div');
-                item.className = 'meter-guide__item';
-                this.appendText(item, 'dt', 'meter-guide__term', guideItem.term);
-                this.appendText(item, 'dd', 'meter-guide__meaning', guideItem.meaning);
-                guide.appendChild(item);
+                const itemData = document.createElement('div');
+                itemData.className = 'meter-guide__item';
+                this.appendText(itemData, 'dt', 'meter-guide__term', guideItem.term);
+                this.appendText(itemData, 'dd', 'meter-guide__meaning', guideItem.meaning);
+                guide.appendChild(itemData);
             });
             return guide;
         },
 
-        createScenarioLine(line) {
-            const row = document.createElement('li');
-            row.className = 'meter-scenario__line';
-            if (line.view) {
-                const tone = VIEW_TONES[line.view];
-                if (!tone) throw new Error('Unknown scenario view: ' + line.view);
-                this.appendText(row, 'span', 'meter-scenario__view meter-scenario__view--' + tone, line.view);
+        createScenarioLine(lineText) {
+            const rowElement = document.createElement('li');
+            rowElement.className = 'meter-scenario__line';
+            if (lineText.view) {
+                const toneName = VIEW_TONES[lineText.view];
+                if (!toneName) throw new Error('Unknown scenario view: ' + lineText.view);
+                this.appendText(rowElement, 'span', 'meter-scenario__view meter-scenario__view--' + toneName, lineText.view);
             }
-            this.appendText(row, 'code', 'meter-scenario__value', line.text);
-            this.appendText(row, 'span', 'meter-scenario__note', line.note ? '(' + line.note + ')' : '');
-            return row;
+            this.appendText(rowElement, 'code', 'meter-scenario__value', lineText.text);
+            this.appendText(rowElement, 'span', 'meter-scenario__note', lineText.note ? '(' + lineText.note + ')' : '');
+            return rowElement;
         },
 
         createScenarioEntry(entry) {
@@ -48,48 +48,48 @@
             }
             const lines = document.createElement('ul');
             lines.className = 'meter-scenario__lines';
-            entry.lines.forEach(line => lines.appendChild(this.createScenarioLine(line)));
+            entry.lines.forEach(lineText2 => lines.appendChild(this.createScenarioLine(lineText2)));
             block.appendChild(lines);
             return block;
         },
 
-        createScenarioRow(row) {
-            const wrap = document.createElement('div');
-            wrap.className = 'meter-scenario__row';
-            this.appendText(wrap, 'p', 'meter-scenario__label', row.label);
+        createScenarioRow(rowElement2) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'meter-scenario__row';
+            this.appendText(wrapper, 'p', 'meter-scenario__label', rowElement2.label);
             const entries = document.createElement('div');
             entries.className = 'meter-scenario__entries';
-            row.entries.forEach(entry => entries.appendChild(this.createScenarioEntry(entry)));
-            wrap.appendChild(entries);
-            return wrap;
+            rowElement2.entries.forEach(entry => entries.appendChild(this.createScenarioEntry(entry)));
+            wrapper.appendChild(entries);
+            return wrapper;
         },
 
         createScenarioCard(scenario) {
-            const card = document.createElement('article');
-            card.className = 'meter-scenario';
-            this.appendText(card, 'h5', 'meter-scenario__title', scenario.title);
-            scenario.rows.forEach(row => card.appendChild(this.createScenarioRow(row)));
-            return card;
+            const cardElement = document.createElement('article');
+            cardElement.className = 'meter-scenario';
+            this.appendText(cardElement, 'h5', 'meter-scenario__title', scenario.title);
+            scenario.rows.forEach(rowElement3 => cardElement.appendChild(this.createScenarioRow(rowElement3)));
+            return cardElement;
         },
 
         appendRemarkText(parent, remarkText) {
-            remarkText.split(/(<[^>]+>)/).forEach(part => {
-                if (!part) return;
-                if (part.startsWith('<')) this.appendText(parent, 'span', 'meter-remark__placeholder', part);
-                else parent.appendChild(document.createTextNode(part));
+            remarkText.split(/(<[^>]+>)/).forEach(segment => {
+                if (!segment) return;
+                if (segment.startsWith('<')) this.appendText(parent, 'span', 'meter-remark__placeholder', segment);
+                else parent.appendChild(document.createTextNode(segment));
             });
         },
 
         createRemarkRow(remarkItem) {
-            const row = document.createElement('li');
-            row.className = 'meter-remark';
+            const rowElement4 = document.createElement('li');
+            rowElement4.className = 'meter-remark';
             const remark = document.createElement('code');
             remark.className = 'meter-remark__text';
             this.appendRemarkText(remark, remarkItem.remark);
-            row.appendChild(remark);
-            row.appendChild(this.createSvgIcon(['M5 12h14', 'M13 6l6 6-6 6'], 'meter-remark__arrow'));
-            this.appendText(row, 'p', 'meter-remark__meaning', remarkItem.meaning);
-            return row;
+            rowElement4.appendChild(remark);
+            rowElement4.appendChild(this.createSvgIcon(['M5 12h14', 'M13 6l6 6-6 6'], 'meter-remark__arrow'));
+            this.appendText(rowElement4, 'p', 'meter-remark__meaning', remarkItem.meaning);
+            return rowElement4;
         },
 
         createRemarkGuide(remarkItems) {
@@ -100,18 +100,18 @@
             this.appendText(header, 'span', 'meter-remarks__column', 'Remark you see');
             this.appendText(header, 'span', 'meter-remarks__column', 'What it means');
             guide.appendChild(header);
-            const list = document.createElement('ul');
-            list.className = 'meter-remarks__list';
-            remarkItems.forEach(remarkItem => list.appendChild(this.createRemarkRow(remarkItem)));
-            guide.appendChild(list);
+            const listElement = document.createElement('ul');
+            listElement.className = 'meter-remarks__list';
+            remarkItems.forEach(remarkItem => listElement.appendChild(this.createRemarkRow(remarkItem)));
+            guide.appendChild(listElement);
             return guide;
         },
 
         createScenarios(scenarios) {
-            const list = document.createElement('div');
-            list.className = 'meter-scenarios';
-            scenarios.forEach(scenario => list.appendChild(this.createScenarioCard(scenario)));
-            return list;
+            const listElement2 = document.createElement('div');
+            listElement2.className = 'meter-scenarios';
+            scenarios.forEach(scenario => listElement2.appendChild(this.createScenarioCard(scenario)));
+            return listElement2;
         }
     };
 

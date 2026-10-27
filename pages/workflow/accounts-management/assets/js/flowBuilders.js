@@ -29,21 +29,21 @@
 
     const methods = {
             createSvgIcon(pathData, className) {
-                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                icon.setAttribute('viewBox', '0 0 24 24');
-                icon.setAttribute('fill', 'none');
-                icon.setAttribute('stroke', 'currentColor');
-                icon.setAttribute('stroke-width', '2');
-                icon.setAttribute('stroke-linecap', 'round');
-                icon.setAttribute('stroke-linejoin', 'round');
-                icon.setAttribute('aria-hidden', 'true');
-                icon.setAttribute('class', className);
+                const iconElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                iconElement.setAttribute('viewBox', '0 0 24 24');
+                iconElement.setAttribute('fill', 'none');
+                iconElement.setAttribute('stroke', 'currentColor');
+                iconElement.setAttribute('stroke-width', '2');
+                iconElement.setAttribute('stroke-linecap', 'round');
+                iconElement.setAttribute('stroke-linejoin', 'round');
+                iconElement.setAttribute('aria-hidden', 'true');
+                iconElement.setAttribute('class', className);
                 pathData.forEach(segment => {
-                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    path.setAttribute('d', segment);
-                    icon.appendChild(path);
+                    const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    pathElement.setAttribute('d', segment);
+                    iconElement.appendChild(pathElement);
                 });
-                return icon;
+                return iconElement;
             },
 
             createAccessTrail(pathText) {
@@ -67,10 +67,10 @@
             },
 
             createNotesPopover(notes, popoverId) {
-                const titleText = 'Notes for ' + notes.map(note => note.label).join(' and ');
+                const titleText = 'Notes for ' + notes.map(noteData => noteData.label).join(' and ');
 
-                const wrap = document.createElement('div');
-                wrap.className = 'flow-notes';
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flow-notes';
 
                 const trigger = document.createElement('button');
                 trigger.type = 'button';
@@ -102,17 +102,17 @@
                 panelHeader.appendChild(closeButton);
                 panel.appendChild(panelHeader);
 
-                notes.forEach(note => {
+                notes.forEach(noteData2 => {
                     const group = document.createElement('section');
                     group.className = 'flow-notes__group';
-                    group.dataset.audience = note.label.toLowerCase();
+                    group.dataset.audience = noteData2.label.toLowerCase();
 
-                    this.appendText(group, 'p', 'flow-notes__tag', note.label);
+                    this.appendText(group, 'p', 'flow-notes__tag', noteData2.label);
 
-                    const list = document.createElement('ul');
-                    list.className = 'flow-notes__list';
-                    note.items.forEach(itemText => this.appendText(list, 'li', 'flow-notes__item', itemText));
-                    group.appendChild(list);
+                    const listElement = document.createElement('ul');
+                    listElement.className = 'flow-notes__list';
+                    noteData2.items.forEach(itemText => this.appendText(listElement, 'li', 'flow-notes__item', itemText));
+                    group.appendChild(listElement);
                     panel.appendChild(group);
                 });
 
@@ -122,26 +122,26 @@
                     if (!isOpen) return;
                     const triggerRect = trigger.getBoundingClientRect();
                     const panelWidth = panel.offsetWidth;
-                    const left = Math.max(16, Math.min(triggerRect.right - panelWidth, window.innerWidth - panelWidth - 16));
+                    const leftOffset = Math.max(16, Math.min(triggerRect.right - panelWidth, window.innerWidth - panelWidth - 16));
                     panel.style.top = (triggerRect.bottom + 10) + 'px';
-                    panel.style.left = left + 'px';
-                    panel.style.setProperty('--caret-x', (triggerRect.left + triggerRect.width / 2 - left) + 'px');
+                    panel.style.left = leftOffset + 'px';
+                    panel.style.setProperty('--caret-x', (triggerRect.left + triggerRect.width / 2 - leftOffset) + 'px');
                 });
 
-                wrap.appendChild(trigger);
-                wrap.appendChild(panel);
-                return wrap;
+                wrapper.appendChild(trigger);
+                wrapper.appendChild(panel);
+                return wrapper;
             },
 
             createExpectedLine(expectedItems, labelText) {
-                const line = document.createElement('div');
-                line.className = 'flow-result';
-                line.appendChild(this.createSvgIcon(['M20 6L9 17l-5-5'], 'flow-result__icon'));
-                const text = document.createElement('div');
-                this.appendText(text, 'p', 'flow-result__label', labelText);
-                expectedItems.forEach(itemText => this.appendText(text, 'p', 'flow-result__text', itemText));
-                line.appendChild(text);
-                return line;
+                const lineText = document.createElement('div');
+                lineText.className = 'flow-result';
+                lineText.appendChild(this.createSvgIcon(['M20 6L9 17l-5-5'], 'flow-result__icon'));
+                const textValue = document.createElement('div');
+                this.appendText(textValue, 'p', 'flow-result__label', labelText);
+                expectedItems.forEach(itemText => this.appendText(textValue, 'p', 'flow-result__text', itemText));
+                lineText.appendChild(textValue);
+                return lineText;
             },
 
             createWizardOverview(createAccount) {
@@ -183,46 +183,46 @@
             },
 
             createInputGroups(groups) {
-                const wrap = document.createElement('div');
-                wrap.className = 'flow-inputs';
+                const wrapper2 = document.createElement('div');
+                wrapper2.className = 'flow-inputs';
                 groups.forEach(group => {
-                    const tone = INPUT_GROUP_TONES[group.label] || 'neutral';
+                    const toneName = INPUT_GROUP_TONES[group.label] || 'neutral';
                     const block = document.createElement('div');
-                    block.className = 'flow-inputs__group flow-inputs__group--' + tone;
+                    block.className = 'flow-inputs__group flow-inputs__group--' + toneName;
                     const heading = document.createElement('h5');
                     heading.className = 'flow-inputs__heading';
                     heading.textContent = group.label;
                     this.appendText(heading, 'span', 'flow-inputs__count', String(group.children.length));
                     block.appendChild(heading);
                     const chips = document.createElement('ul');
-                    const holdsSentences = group.children.some(text => /\.$/.test(text));
+                    const holdsSentences = group.children.some(textValue2 => /\.$/.test(textValue2));
                     chips.className = holdsSentences ? 'flow-inputs__chips flow-inputs__chips--sentences' : 'flow-inputs__chips';
                     group.children.forEach(fieldName => this.appendText(chips, 'li', 'flow-inputs__chip', fieldName));
                     block.appendChild(chips);
-                    wrap.appendChild(block);
+                    wrapper2.appendChild(block);
                 });
-                return wrap;
+                return wrapper2;
             },
 
-            collectEmphasisTerms(step) {
+            collectEmphasisTerms(stepData) {
                 const fieldNames = [];
-                (step.items || []).forEach(group => (group.children || []).forEach(name => {
-                    if (/\.$/.test(name)) {
-                        const match = name.match(FIELD_NAME_IN_SENTENCE);
-                        if (match) match[1].split(' and ').forEach(part => fieldNames.push(part));
+                (stepData.items || []).forEach(group => (group.children || []).forEach(nameText => {
+                    if (/\.$/.test(nameText)) {
+                        const match = nameText.match(FIELD_NAME_IN_SENTENCE);
+                        if (match) match[1].split(' and ').forEach(segment2 => fieldNames.push(segment2));
                         return;
                     }
-                    name.split(' or same as ').forEach(part => fieldNames.push(part));
+                    nameText.split(' or same as ').forEach(segment3 => fieldNames.push(segment3));
                 }));
                 return fieldNames.concat(RULE_EMPHASIS_PHRASES).sort((first, second) => second.length - first.length);
             },
 
-            appendEmphasizedText(parent, text, terms) {
-                const escapedTerms = terms.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            appendEmphasizedText(parent, textValue3, terms) {
+                const escapedTerms = terms.map(termText => termText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
                 const pattern = new RegExp('(' + escapedTerms.concat(['\\d[\\d,]*\\s+characters']).join('|') + ')', 'g');
                 let lastIndex = 0;
-                text.replace(pattern, (match, captured, offset) => {
-                    if (offset > lastIndex) parent.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+                textValue3.replace(pattern, (match, captured, offset) => {
+                    if (offset > lastIndex) parent.appendChild(document.createTextNode(textValue3.slice(lastIndex, offset)));
                     const strong = document.createElement('strong');
                     strong.className = /\d/.test(match) ? 'flow-emphasis flow-emphasis--value' : 'flow-emphasis';
                     strong.textContent = match;
@@ -230,17 +230,17 @@
                     lastIndex = offset + match.length;
                     return match;
                 });
-                if (lastIndex < text.length) parent.appendChild(document.createTextNode(text.slice(lastIndex)));
+                if (lastIndex < textValue3.length) parent.appendChild(document.createTextNode(textValue3.slice(lastIndex)));
             },
 
             createFlowRules(rules, emphasisTerms) {
-                const wrap = document.createElement('div');
-                wrap.className = 'flow-rules';
-                this.appendText(wrap, 'h5', 'flow-rules__title', 'Rules');
+                const wrapper3 = document.createElement('div');
+                wrapper3.className = 'flow-rules';
+                this.appendText(wrapper3, 'h5', 'flow-rules__title', 'Rules');
                 const columns = document.createElement('div');
                 columns.className = 'flow-rules__columns';
-                const looseRules = rules.filter(rule => typeof rule === 'string');
-                const ruleGroups = rules.filter(rule => typeof rule !== 'string');
+                const looseRules = rules.filter(ruleData => typeof ruleData === 'string');
+                const ruleGroups = rules.filter(ruleData2 => typeof ruleData2 !== 'string');
                 if (looseRules.length) ruleGroups.unshift({ label: '', children: looseRules });
                 ruleGroups.forEach(group => {
                     const block = document.createElement('div');
@@ -249,19 +249,19 @@
                         const label = this.appendText(block, 'p', 'flow-rules__label', group.label);
                         this.appendText(label, 'span', 'flow-inputs__count', String(group.children.length));
                     }
-                    const list = document.createElement('ul');
-                    list.className = 'flow-rules__list';
+                    const listElement2 = document.createElement('ul');
+                    listElement2.className = 'flow-rules__list';
                     group.children.forEach(ruleText => {
-                        const item = document.createElement('li');
-                        item.className = 'flow-rules__item';
-                        this.appendEmphasizedText(item, ruleText, emphasisTerms);
-                        list.appendChild(item);
+                        const itemData = document.createElement('li');
+                        itemData.className = 'flow-rules__item';
+                        this.appendEmphasizedText(itemData, ruleText, emphasisTerms);
+                        listElement2.appendChild(itemData);
                     });
-                    block.appendChild(list);
+                    block.appendChild(listElement2);
                     columns.appendChild(block);
                 });
-                wrap.appendChild(columns);
-                return wrap;
+                wrapper3.appendChild(columns);
+                return wrapper3;
             },
 
             createStepControl(targetStep, direction) {
@@ -271,12 +271,12 @@
                 button.setAttribute('data-step-target', targetStep.id);
                 const isPrevious = direction === 'previous';
                 const chevron = this.createSvgIcon([isPrevious ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'], 'flow-step-controls__chevron');
-                const text = document.createElement('span');
-                text.className = 'flow-step-controls__text';
-                this.appendText(text, 'span', 'flow-step-controls__direction', isPrevious ? 'Previous' : 'Next');
-                this.appendText(text, 'span', 'flow-step-controls__target', targetStep.title);
+                const textValue4 = document.createElement('span');
+                textValue4.className = 'flow-step-controls__text';
+                this.appendText(textValue4, 'span', 'flow-step-controls__direction', isPrevious ? 'Previous' : 'Next');
+                this.appendText(textValue4, 'span', 'flow-step-controls__target', targetStep.title);
                 if (isPrevious) button.appendChild(chevron);
-                button.appendChild(text);
+                button.appendChild(textValue4);
                 if (!isPrevious) button.appendChild(chevron);
                 return button;
             },
@@ -294,38 +294,38 @@
                 return controls;
             },
 
-            createWizardStep(step, index, steps, sequence) {
-                if (!sequence) throw new Error('Wizard step requires a sequence: ' + step.id);
+            createWizardStep(stepData2, index, steps, sequence) {
+                if (!sequence) throw new Error('Wizard step requires a sequence: ' + stepData2.id);
                 const article = document.createElement('article');
-                article.id = step.id;
+                article.id = stepData2.id;
                 article.className = 'flow-step';
 
                 const header = document.createElement('div');
                 header.className = 'flow-step__header';
                 this.appendText(header, 'p', 'flow-step__position', sequence.positionLabel + ' ' + (index + 1) + ' of ' + steps.length);
-                this.appendText(header, 'h3', 'flow-step__title', step.title);
+                this.appendText(header, 'h3', 'flow-step__title', stepData2.title);
                 article.appendChild(header);
-                this.appendText(article, 'p', 'flow-overview__lead', step.detail);
+                this.appendText(article, 'p', 'flow-overview__lead', stepData2.detail);
 
                 const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
-                if (step.images && step.images.length) {
+                if (stepData2.images && stepData2.images.length) {
                     if (!imageRenderer) throw new Error('Wizard step requires GoPickImageRenderer');
-                    article.appendChild(imageRenderer.createImageGallery(step.images, step.title));
+                    article.appendChild(imageRenderer.createImageGallery(stepData2.images, stepData2.title));
                 }
 
-                if (step.items && step.items.length) {
-                    const groups = step.items.every(item => typeof item === 'string')
-                        ? [{ label: 'Visible content', children: step.items }]
-                        : step.items;
+                if (stepData2.items && stepData2.items.length) {
+                    const groups = stepData2.items.every(itemData2 => typeof itemData2 === 'string')
+                        ? [{ label: 'Visible content', children: stepData2.items }]
+                        : stepData2.items;
                     article.appendChild(this.createInputGroups(groups));
                 }
-                if (step.howToUse && step.howToUse.length) {
+                if (stepData2.howToUse && stepData2.howToUse.length) {
                     this.appendText(article, 'h5', 'flow-inputs__heading', 'How to use');
-                    article.appendChild(this.createPhasedSteps(step.howToUse, steps, null));
+                    article.appendChild(this.createPhasedSteps(stepData2.howToUse, steps, null));
                 }
-                if (step.rules && step.rules.length) article.appendChild(this.createFlowRules(step.rules, this.collectEmphasisTerms(step)));
-                if (step.expected && step.expected.length) article.appendChild(this.createExpectedLine(step.expected, 'When you save'));
-                if (step.notes && step.notes.length) article.appendChild(this.createNotesPopover(step.notes, step.id + '-notes'));
+                if (stepData2.rules && stepData2.rules.length) article.appendChild(this.createFlowRules(stepData2.rules, this.collectEmphasisTerms(stepData2)));
+                if (stepData2.expected && stepData2.expected.length) article.appendChild(this.createExpectedLine(stepData2.expected, 'When you save'));
+                if (stepData2.notes && stepData2.notes.length) article.appendChild(this.createNotesPopover(stepData2.notes, stepData2.id + '-notes'));
                 article.appendChild(this.createStepControls(steps[index - 1], steps[index + 1], sequence.controlsLabel));
                 return article;
             }

@@ -28,114 +28,114 @@
             },
 
             createStatusChip(legendItem) {
-                const tone = STATUS_TONES[legendItem.label];
-                if (!tone) throw new Error('Unknown account status legend: ' + legendItem.label);
-                const chip = document.createElement('li');
-                chip.className = 'flow-inputs__chip flow-inputs__chip--status flow-inputs__chip--' + tone;
-                const text = document.createElement('span');
-                this.appendText(text, 'span', 'flow-inputs__chip-name', legendItem.label);
-                this.appendText(text, 'span', 'flow-inputs__chip-detail', legendItem.detail);
-                chip.appendChild(text);
-                return chip;
+                const toneName = STATUS_TONES[legendItem.label];
+                if (!toneName) throw new Error('Unknown account status legend: ' + legendItem.label);
+                const chipElement2 = document.createElement('li');
+                chipElement2.className = 'flow-inputs__chip flow-inputs__chip--status flow-inputs__chip--' + toneName;
+                const textValue = document.createElement('span');
+                this.appendText(textValue, 'span', 'flow-inputs__chip-name', legendItem.label);
+                this.appendText(textValue, 'span', 'flow-inputs__chip-detail', legendItem.detail);
+                chipElement2.appendChild(textValue);
+                return chipElement2;
             },
 
-            createLinkChip(link, isChild) {
-                const chip = document.createElement('li');
-                chip.className = 'flow-inputs__chip flow-inputs__chip--link' + (isChild ? ' flow-inputs__chip--child' : '');
+            createLinkChip(linkElement, isChild) {
+                const chipElement3 = document.createElement('li');
+                chipElement3.className = 'flow-inputs__chip flow-inputs__chip--link' + (isChild ? ' flow-inputs__chip--child' : '');
                 const anchor = document.createElement('a');
                 anchor.className = 'flow-inputs__chip-anchor';
-                anchor.href = link.href;
-                this.appendText(anchor, 'span', 'flow-inputs__chip-label', link.label);
-                if (link.tooltip) {
+                anchor.href = linkElement.href;
+                this.appendText(anchor, 'span', 'flow-inputs__chip-label', linkElement.label);
+                if (linkElement.tooltip) {
                     tooltipCounter += 1;
-                    const tooltip = this.appendText(chip, 'span', 'flow-inputs__chip-tooltip', link.tooltip);
+                    const tooltip = this.appendText(chipElement3, 'span', 'flow-inputs__chip-tooltip', linkElement.tooltip);
                     tooltip.id = 'view-button-tooltip-' + tooltipCounter;
                     tooltip.setAttribute('role', 'tooltip');
                     anchor.setAttribute('aria-describedby', tooltip.id);
                 }
                 anchor.appendChild(this.createSvgIcon(['M5 12h14', 'M13 6l6 6-6 6'], 'flow-inputs__chip-arrow'));
-                chip.appendChild(anchor);
-                return chip;
+                chipElement3.appendChild(anchor);
+                return chipElement3;
             },
 
-            createLinkCluster(link) {
+            createLinkCluster(linkElement2) {
                 const cluster = document.createElement('li');
                 cluster.className = 'flow-inputs__cluster';
-                const list = document.createElement('ul');
-                list.className = 'flow-inputs__chips';
-                list.appendChild(this.createLinkChip(link, false));
-                link.children.forEach(child => list.appendChild(this.createLinkChip(child, true)));
-                cluster.appendChild(list);
+                const listElement = document.createElement('ul');
+                listElement.className = 'flow-inputs__chips';
+                listElement.appendChild(this.createLinkChip(linkElement2, false));
+                linkElement2.children.forEach(child => listElement.appendChild(this.createLinkChip(child, true)));
+                cluster.appendChild(listElement);
                 return cluster;
             },
 
             createLinkChips(links) {
-                return links.map(link => {
-                    const hasChildren = link.children && link.children.length;
-                    return hasChildren ? this.createLinkCluster(link) : this.createLinkChip(link, false);
+                return links.map(linkElement3 => {
+                    const hasChildren = linkElement3.children && linkElement3.children.length;
+                    return hasChildren ? this.createLinkCluster(linkElement3) : this.createLinkChip(linkElement3, false);
                 });
             },
 
             countLinks(links) {
-                return links.reduce((total, link) => total + 1 + (link.children ? link.children.length : 0), 0);
+                return links.reduce((total, linkElement4) => total + 1 + (linkElement4.children ? linkElement4.children.length : 0), 0);
             },
 
             createReturnRow(returnItem) {
-                const row = document.createElement('li');
-                row.className = 'flow-outcome__row';
-                this.appendText(row, 'span', 'flow-outcome__source', returnItem.source);
-                row.appendChild(this.createSvgIcon(['M5 12h14', 'M13 6l6 6-6 6'], 'flow-outcome__arrow'));
+                const rowElement = document.createElement('li');
+                rowElement.className = 'flow-outcome__row';
+                this.appendText(rowElement, 'span', 'flow-outcome__source', returnItem.source);
+                rowElement.appendChild(this.createSvgIcon(['M5 12h14', 'M13 6l6 6-6 6'], 'flow-outcome__arrow'));
                 const target = document.createElement('a');
                 target.className = 'flow-outcome__target';
                 target.href = returnItem.target.href;
                 target.textContent = returnItem.target.label;
-                row.appendChild(target);
-                return row;
+                rowElement.appendChild(target);
+                return rowElement;
             },
 
             createConditionRow(conditionItem) {
-                const row = document.createElement('li');
-                row.className = 'flow-outcome__row flow-outcome__row--condition';
+                const rowElement2 = document.createElement('li');
+                rowElement2.className = 'flow-outcome__row flow-outcome__row--condition';
                 const fields = document.createElement('span');
                 fields.className = 'flow-outcome__fields';
                 conditionItem.fields.forEach(fieldName => this.appendText(fields, 'span', 'flow-outcome__field', fieldName));
-                row.appendChild(fields);
+                rowElement2.appendChild(fields);
                 const condition = document.createElement('span');
                 condition.className = 'flow-outcome__condition';
                 this.appendText(condition, 'span', 'flow-outcome__keyword', 'appears when');
                 condition.appendChild(document.createTextNode(' ' + conditionItem.condition));
-                row.appendChild(condition);
-                return row;
+                rowElement2.appendChild(condition);
+                return rowElement2;
             },
 
             createOutcomePanel(outcomeGroups) {
-                const wrap = document.createElement('div');
-                wrap.className = 'flow-outcome';
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flow-outcome';
                 const title = document.createElement('h5');
                 title.className = 'flow-outcome__title';
                 title.appendChild(this.createSvgIcon(['M20 6L9 17l-5-5'], 'flow-outcome__icon'));
                 title.appendChild(document.createTextNode('What you see'));
-                wrap.appendChild(title);
+                wrapper.appendChild(title);
                 const columns = document.createElement('div');
                 columns.className = 'flow-outcome__columns';
                 outcomeGroups.forEach(group => {
                     const block = document.createElement('div');
                     this.appendText(block, 'p', 'flow-rules__label', group.label);
-                    const list = document.createElement('ul');
-                    list.className = 'flow-outcome__list';
-                    if (group.returns) group.returns.forEach(item => list.appendChild(this.createReturnRow(item)));
-                    else if (group.conditions) group.conditions.forEach(item => list.appendChild(this.createConditionRow(item)));
+                    const listElement2 = document.createElement('ul');
+                    listElement2.className = 'flow-outcome__list';
+                    if (group.returns) group.returns.forEach(itemData => listElement2.appendChild(this.createReturnRow(itemData)));
+                    else if (group.conditions) group.conditions.forEach(itemData2 => listElement2.appendChild(this.createConditionRow(itemData2)));
                     else throw new Error('Outcome group requires returns or conditions: ' + group.label);
-                    block.appendChild(list);
+                    block.appendChild(listElement2);
                     columns.appendChild(block);
                 });
-                wrap.appendChild(columns);
-                return wrap;
+                wrapper.appendChild(columns);
+                return wrapper;
             },
 
             splitStepPhases(steps) {
-                const firstLinkIndex = steps.findIndex(step => typeof step !== 'string');
-                const lastLinkIndex = steps.length - 1 - steps.slice().reverse().findIndex(step => typeof step !== 'string');
+                const firstLinkIndex = steps.findIndex(stepData => typeof stepData !== 'string');
+                const lastLinkIndex = steps.length - 1 - steps.slice().reverse().findIndex(stepData2 => typeof stepData2 !== 'string');
                 return {
                     lead: steps.slice(0, firstLinkIndex),
                     wizard: steps.slice(firstLinkIndex, lastLinkIndex + 1),
@@ -143,72 +143,72 @@
                 };
             },
 
-            createJourneyStop(step, stepNumber, wizardSteps) {
-                const item = document.createElement('li');
-                item.className = 'flow-journey__stop';
-                if (typeof step === 'string') {
-                    this.appendText(item, 'span', 'flow-journey__dot', String(stepNumber));
-                    this.appendText(item, 'span', 'flow-journey__label', step);
-                    return item;
+            createJourneyStop(stepData3, stepNumber, wizardSteps) {
+                const itemData3 = document.createElement('li');
+                itemData3.className = 'flow-journey__stop';
+                if (typeof stepData3 === 'string') {
+                    this.appendText(itemData3, 'span', 'flow-journey__dot', String(stepNumber));
+                    this.appendText(itemData3, 'span', 'flow-journey__label', stepData3);
+                    return itemData3;
                 }
-                const target = wizardSteps.find(wizardStep => '#' + wizardStep.id === step.href);
-                if (!target) throw new Error('How to use link has no matching wizard step: ' + step.href);
-                item.classList.add('flow-journey__stop--wizard');
-                const link = document.createElement('a');
-                link.className = 'flow-journey__link';
-                link.href = step.href;
-                link.setAttribute('aria-label', step.label);
-                this.appendText(link, 'span', 'flow-journey__dot', String(stepNumber));
-                this.appendText(link, 'span', 'flow-journey__label', target.title.replace(/^Update /, ''));
-                item.appendChild(link);
-                return item;
+                const target = wizardSteps.find(wizardStep => '#' + wizardStep.id === stepData3.href);
+                if (!target) throw new Error('How to use link has no matching wizard step: ' + stepData3.href);
+                itemData3.classList.add('flow-journey__stop--wizard');
+                const linkElement5 = document.createElement('a');
+                linkElement5.className = 'flow-journey__link';
+                linkElement5.href = stepData3.href;
+                linkElement5.setAttribute('aria-label', stepData3.label);
+                this.appendText(linkElement5, 'span', 'flow-journey__dot', String(stepNumber));
+                this.appendText(linkElement5, 'span', 'flow-journey__label', target.title.replace(/^Update /, ''));
+                itemData3.appendChild(linkElement5);
+                return itemData3;
             },
 
             trackCurrentStop(journey) {
                 document.addEventListener('flowstepchange', stepEvent => {
                     const links = Array.from(journey.querySelectorAll('.flow-journey__link'));
-                    if (!links.some(link => link.getAttribute('href') === '#' + stepEvent.detail.stepId)) return;
-                    links.forEach(link => {
-                        const isCurrent = link.getAttribute('href') === '#' + stepEvent.detail.stepId;
-                        if (isCurrent) link.setAttribute('aria-current', 'step');
-                        else link.removeAttribute('aria-current');
+                    if (!links.some(linkElement6 => linkElement6.getAttribute('href') === '#' + stepEvent.detail.stepId)) return;
+                    links.forEach(linkElement7 => {
+                        const isCurrent = linkElement7.getAttribute('href') === '#' + stepEvent.detail.stepId;
+                        if (isCurrent) linkElement7.setAttribute('aria-current', 'step');
+                        else linkElement7.removeAttribute('aria-current');
                     });
                 });
             },
 
             createPhasedSteps(steps, wizardSteps, bandLabel) {
-                const hasLinkedSteps = steps.some(step => typeof step !== 'string');
+                const hasLinkedSteps = steps.some(stepData4 => typeof stepData4 !== 'string');
                 const phases = hasLinkedSteps ? this.splitStepPhases(steps) : { lead: steps, wizard: [], tail: [] };
                 const journey = document.createElement('ol');
                 journey.className = 'flow-journey';
                 journey.style.setProperty('--stop-total', String(steps.length));
                 let stepNumber = 0;
-                const appendStop = (parent, step) => {
+                const appendStop = (parent, stepData5) => {
                     stepNumber += 1;
-                    parent.appendChild(this.createJourneyStop(step, stepNumber, wizardSteps));
+                    parent.appendChild(this.createJourneyStop(stepData5, stepNumber, wizardSteps));
                 };
 
-                phases.lead.forEach(step => appendStop(journey, step));
+                phases.lead.forEach(stepData6 => appendStop(journey, stepData6));
 
                 if (phases.wizard.length) journey.appendChild(this.createJourneyBand(phases.wizard, stepNumber, appendStop, bandLabel));
 
-                phases.tail.forEach(step => appendStop(journey, step));
+                phases.tail.forEach(stepData7 => appendStop(journey, stepData7));
                 this.trackCurrentStop(journey);
                 return journey;
             },
 
             createJourneyBand(wizardPhaseSteps, precedingCount, appendStop, bandLabel) {
                 if (!bandLabel) throw new Error('Journey band requires a label');
-                const band = document.createElement('li');
-                band.className = 'flow-journey__band';
-                band.style.setProperty('--band-span', String(wizardPhaseSteps.length));
-                this.appendText(band, 'p', 'flow-journey__band-label', bandLabel);
+                const bandElement = document.createElement('li');
+                bandElement.className = 'flow-journey__band';
+                bandElement.style.setProperty('--band-span', String(wizardPhaseSteps.length));
+                this.appendText(bandElement, 'p', 'flow-journey__band-label', bandLabel);
                 const bandStops = document.createElement('ol');
                 bandStops.className = 'flow-journey__band-stops';
                 bandStops.start = precedingCount + 1;
-                wizardPhaseSteps.forEach(step => appendStop(bandStops, step));
-                band.appendChild(bandStops);
-                return band;
+                wizardPhaseSteps.forEach(stepData8 => appendStop(bandStops, stepData8));
+                bandElement.appendChild(bandStops);
+                return bandElement;
             },
 
             createViewPanel(section, options) {
@@ -239,23 +239,23 @@
                 const groups = document.createElement('div');
                 groups.className = 'flow-inputs';
                 if (section.legend && section.legend.length) {
-                    groups.appendChild(this.createChipGroup('Status legend', section.legend.map(item => this.createStatusChip(item)), true, section.legend.length));
+                    groups.appendChild(this.createChipGroup('Status legend', section.legend.map(itemData4 => this.createStatusChip(itemData4)), true, section.legend.length));
                 }
                 (section.actionGroups || []).forEach(group => {
                     groups.appendChild(this.createChipGroup(group.title, this.createLinkChips(group.links || []), false, this.countLinks(group.links || [])));
                 });
                 if (section.actions && section.actions.length) {
                     const controlChips = section.actions.map(actionText => {
-                        const chip = document.createElement('li');
-                        chip.className = 'flow-inputs__chip';
-                        chip.textContent = actionText;
-                        return chip;
+                        const chipElement4 = document.createElement('li');
+                        chipElement4.className = 'flow-inputs__chip';
+                        chipElement4.textContent = actionText;
+                        return chipElement4;
                     });
                     groups.appendChild(this.createChipGroup('Page controls', controlChips, false, controlChips.length));
                 }
                 if (groups.childElementCount) panel.appendChild(groups);
                 if (section.items && section.items.length) {
-                    const inputGroups = section.items.every(item => typeof item === 'string')
+                    const inputGroups = section.items.every(itemData5 => typeof itemData5 === 'string')
                         ? [{ label: 'Visible content', children: section.items }]
                         : section.items;
                     panel.appendChild(this.createInputGroups(inputGroups));
@@ -266,7 +266,7 @@
                 }
                 if (section.rules && section.rules.length) panel.appendChild(this.createFlowRules(section.rules, this.collectEmphasisTerms(section)));
                 if (section.expected && section.expected.length) {
-                    const isGrouped = section.expected.every(item => typeof item !== 'string');
+                    const isGrouped = section.expected.every(itemData6 => typeof itemData6 !== 'string');
                     if (!isGrouped && !options.expectedLabel) throw new Error(options.title + ' expected results require a label');
                     panel.appendChild(isGrouped ? this.createOutcomePanel(section.expected) : this.createExpectedLine(section.expected, options.expectedLabel));
                 }
