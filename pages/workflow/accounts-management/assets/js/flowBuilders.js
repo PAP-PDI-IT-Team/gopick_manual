@@ -3,9 +3,9 @@
 
     const FLOW_STEP_IDS = ['create-account-information', 'create-assign-products', 'create-meter-management', 'create-other-account-settings', 'create-review-account-details'];
 
-    const WIZARD_SEQUENCE = { positionLabel: 'Step', controlsLabel: 'Wizard steps' };
+    const WIZARD_SEQUENCE = { listLabel: 'Wizard steps' };
 
-    const VARIANT_SEQUENCE = { positionLabel: 'Variant', controlsLabel: 'Section variants' };
+    const VARIANT_SEQUENCE = { listLabel: 'Section variants' };
 
     const INPUT_GROUP_TONES = {
         'Required inputs': 'required',
@@ -264,45 +264,13 @@
                 return wrapper3;
             },
 
-            createStepControl(targetStep, direction) {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'flow-step-controls__button flow-step-controls__button--' + direction;
-                button.setAttribute('data-step-target', targetStep.id);
-                const isPrevious = direction === 'previous';
-                const chevron = this.createSvgIcon([isPrevious ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'], 'flow-step-controls__chevron');
-                const textValue4 = document.createElement('span');
-                textValue4.className = 'flow-step-controls__text';
-                this.appendText(textValue4, 'span', 'flow-step-controls__direction', isPrevious ? 'Previous' : 'Next');
-                this.appendText(textValue4, 'span', 'flow-step-controls__target', targetStep.title);
-                if (isPrevious) button.appendChild(chevron);
-                button.appendChild(textValue4);
-                if (!isPrevious) button.appendChild(chevron);
-                return button;
-            },
-
-            createStepControls(previousStep, nextStep, controlsLabel) {
-                const controls = document.createElement('nav');
-                controls.className = 'flow-step-controls';
-                controls.setAttribute('aria-label', controlsLabel);
-                if (previousStep) {
-                    controls.appendChild(this.createStepControl(previousStep, 'previous'));
-                }
-                if (nextStep) {
-                    controls.appendChild(this.createStepControl(nextStep, 'next'));
-                }
-                return controls;
-            },
-
-            createWizardStep(stepData2, index, steps, sequence) {
-                if (!sequence) throw new Error('Wizard step requires a sequence: ' + stepData2.id);
+            createWizardStep(stepData2, steps) {
                 const article = document.createElement('article');
                 article.id = stepData2.id;
                 article.className = 'flow-step';
 
                 const header = document.createElement('div');
                 header.className = 'flow-step__header';
-                this.appendText(header, 'p', 'flow-step__position', sequence.positionLabel + ' ' + (index + 1) + ' of ' + steps.length);
                 this.appendText(header, 'h3', 'flow-step__title', stepData2.title);
                 article.appendChild(header);
                 this.appendText(article, 'p', 'flow-overview__lead', stepData2.detail);
@@ -326,7 +294,6 @@
                 if (stepData2.rules && stepData2.rules.length) article.appendChild(this.createFlowRules(stepData2.rules, this.collectEmphasisTerms(stepData2)));
                 if (stepData2.expected && stepData2.expected.length) article.appendChild(this.createExpectedLine(stepData2.expected, 'When you save'));
                 if (stepData2.notes && stepData2.notes.length) article.appendChild(this.createNotesPopover(stepData2.notes, stepData2.id + '-notes'));
-                article.appendChild(this.createStepControls(steps[index - 1], steps[index + 1], sequence.controlsLabel));
                 return article;
             }
     };

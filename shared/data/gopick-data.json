@@ -4,6 +4,97 @@
     "subtitle": "The complete browser-based platform for building, scheduling, delivering, and reporting on online assessments - with a focus on clear, detailed candidate reports.",
     "ctaText": "Explore the Platform"
   },
+  "docsNav": [
+    {
+      "title": "Get started",
+      "items": [
+        {
+          "label": "Introduction",
+          "url": "index.html"
+        }
+      ]
+    },
+    {
+      "title": "Workflow",
+      "items": [
+        {
+          "label": "Dashboard",
+          "url": "pages/workflow/dashboard-management/index.html"
+        },
+        {
+          "label": "Accounts",
+          "url": "pages/workflow/accounts-management/index.html"
+        },
+        {
+          "label": "Candidates",
+          "url": "pages/workflow/candidate-management/index.html"
+        },
+        {
+          "label": "Assessments",
+          "url": "pages/workflow/assessment-management/index.html"
+        },
+        {
+          "label": "Meters",
+          "url": "pages/workflow/meters-management/index.html"
+        },
+        {
+          "label": "Reports",
+          "url": "pages/workflow/reports-management/index.html"
+        },
+        {
+          "label": "Users",
+          "url": "pages/workflow/users-management/index.html"
+        },
+        {
+          "label": "Roles and permissions",
+          "url": "pages/workflow/roles-premission-management/index.html"
+        },
+        {
+          "label": "Activity log",
+          "url": "pages/workflow/activity-log-management/index.html"
+        },
+        {
+          "label": "Advisory",
+          "url": "pages/workflow/advisory-management/index.html"
+        },
+        {
+          "label": "Resource center",
+          "url": "pages/workflow/resource-center/index.html"
+        }
+      ]
+    },
+    {
+      "title": "Domain governance",
+      "items": [
+        {
+          "label": "Meters governance",
+          "url": "pages/domain-governance/meters/index.html"
+        }
+      ]
+    },
+    {
+      "title": "Guides",
+      "items": [
+        {
+          "label": "Manual guides",
+          "url": "pages/guides/manual-guides/index.html"
+        },
+        {
+          "label": "Page structure v3",
+          "url": "pages/guides/page-structure-v3/index.html"
+        }
+      ]
+    },
+    {
+      "title": "Developer rules",
+      "items": [
+        {
+          "label": "Dev rules",
+          "url": "pages/dev-rules/index.html"
+        }
+      ]
+    }
+  ],
   "features": [
     {
       "index": 1,

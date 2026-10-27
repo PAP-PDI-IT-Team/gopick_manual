@@ -498,6 +498,52 @@ Inner workflow and documentation pages follow a strict Separation of Concerns (S
 5. **Layer 5: Application Orchestrator (`behavior.js`)**:
    - OOP `class <Module>App` binding store, renderer, and tracker, handling URL hash routing (`#section-id`), and orchestrating any auxiliary widgets (e.g., RBAC tables).
 
+## Docs Shell
+Manual pages are moving to a documentation shell modeled on the Fumadocs docs layout:
+- a page tree on the left;
+- the page in the middle, with a breadcrumb, a large title, and previous/next links at the end;
+- the page's own section tree on the right ("On this page").
+
+`pages/workflow/accounts-management/` is the first page on it. `ui-dna.md` tracks the migration and holds the checklist for the next page.
+
+Shared owners:
+- `shared/css/docs-shell.css`: tokens, base, header, layout, footer, motion.
+- `shared/css/docs-navigation.css`: drawer, search dialog.
+- `shared/css/docs-page.css`: page grid, breadcrumb, folders, "On this page", pager.
+- `shared/js/ui/docsSidebar.js`, `shared/js/ui/docsPageTree.js`, `shared/js/ui/docsReveal.js`.
+- The `docsNav` list in `shared/data/gopick-data.json` is the single source for the tree, breadcrumb and pager.
+
+### Tokens
+Tokens are scoped to `.docs-shell` and use zinc neutrals in place of slate.
+
+| Token | Value | Use |
+|---|---|---|
+| `--ground` | `#ffffff` | Page ground |
+| `--tone-1` | `#f4f4f5` | First tone step: chips, callouts, screenshot frames, hover fills, mobile "On this page" |
+| `--tone-2` | `#e4e4e7` | Second tone step: hover on tone-1, defaulted and locked inputs, the TOC track |
+| `--ink` | `#09090b` | All running text |
+| `--ink-soft` | `#52525b` | Secondary notes, metadata, links at rest |
+| `--ink-field` | `#18181b` | Dark surfaces: notes popover, viewer arrows |
+| `--accent` | `#e50914` | Active TOC marker, focus ring, the current journey stop, link underline on hover |
+| `--accent-press` | `#b3060f` | Required asterisk, red text on white |
+| `--radius` | `6px` | One radius for surfaces and controls |
+
+Accounts adds the page tokens `--rules-mark` (`#b45309`) and `--result-mark` (`#047857`) for the 4px marker bars on Rules and Expected Result callouts.
+
+### Type
+One family, **Geist** (weights 400/500/600), in five sizes:
+- display `clamp(2.25rem, 0.9rem + 4.6vw, 5rem)`, used only for the page `h1`;
+- heading 28px; lead 20px; body 17px; small 14px.
+
+Running text, chips, rules and results are set at the body size. Small is for metadata, captions, the TOC and the journey labels.
+
+### Rules
+- No hairline borders, 1px outlined boxes, gradients, glass, or shadows on anything at rest. Surfaces separate by one tone step. Real tables may keep their lines.
+- No eyebrow labels, pill badges, tiny uppercase tracked labels, or monospace.
+- Wizard steps are vertical and all visible in an `<ol>`, not a carousel.
+- Screenshot cards use the shared image-card `docs` variant: a flat tone frame and a fixed 2.1:1 media box, so lazy images never shift deep links.
+- Search opens from the header trigger, any `[data-search-trigger]` element, or Cmd/Ctrl+K.
+
 ## Do's and Don'ts
 - Do keep the UI predominantly white and slate, with red as the clear action signal.
 - Do use spacing generously so documentation remains readable and calm.

@@ -1,19 +1,29 @@
 (function (global) {
     'use strict';
 
+    const DESKTOP_TOC_QUERY = '(min-width: 1280px)';
+    const HEADER_OFFSET = 140;
+
     class AccountsSidebarTracker {
-        constructor(store, rootListId = 'docSidebarList') {
+        constructor(store, rootListId = 'docsTocList', disclosureId = 'docsPageToc') {
             this.store = store;
             this.rootListId = rootListId;
+            this.disclosureId = disclosureId;
             this.activeId = null;
             this.isProgrammaticScroll = false;
             this.manuallyOpenedIds = new Set();
         }
 
+        getRootList() {
+            const rootList = document.getElementById(this.rootListId);
+            if (!rootList) throw new Error('AccountsSidebarTracker: missing #' + this.rootListId);
+            return rootList;
+        }
+
         createToggleButton(section, childList) {
             const button = document.createElement('button');
             button.type = 'button';
-            button.className = 'sidebar-toggle';
+            button.className = 'docs-toc-tree__toggle';
             button.setAttribute('aria-expanded', 'false');
             button.setAttribute('aria-controls', childList.id);
             button.setAttribute('aria-label', 'Show ' + section.title + ' sections');
@@ -45,66 +55,66 @@
         }
 
         setBranchOpen(sectionId, isOpen) {
-            const sidebar = document.getElementById(this.rootListId);
-            const itemData = sidebar.querySelector('li[data-target="' + sectionId + '"]');
-            const button = itemData.querySelector(':scope > .sidebar-row > .sidebar-toggle');
-            const childList = itemData.querySelector(':scope > .sidebar-children');
+            const itemData = this.getRootList().querySelector('li[data-target="' + sectionId + '"]');
+            const button = itemData.querySelector(':scope > .docs-toc-tree__row > .docs-toc-tree__toggle');
+            const childList = itemData.querySelector(':scope > .docs-toc-tree__children');
             button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
             button.setAttribute('aria-label', (isOpen ? 'Hide ' : 'Show ') + itemData.dataset.title + ' sections');
             childList.hidden = !isOpen;
         }
 
         openActiveBranch(activeItem) {
-            const sidebar = document.getElementById(this.rootListId);
+            const rootList = this.getRootList();
             const ancestorIds = new Set();
             let current = activeItem.parentElement;
-            while (current && current !== sidebar) {
-                if (current.matches('li.sidebar-item.has-children')) {
+            while (current && current !== rootList) {
+                if (current.matches('li.docs-toc-tree__item--branch')) {
                     ancestorIds.add(current.dataset.target);
                 }
                 current = current.parentElement;
             }
 
-            sidebar.querySelectorAll('li.sidebar-item.has-children').forEach(branch => {
+            rootList.querySelectorAll('li.docs-toc-tree__item--branch').forEach(branch => {
                 const branchId = branch.dataset.target;
                 const isInPath = ancestorIds.has(branchId);
-                branch.classList.toggle('is-in-path', isInPath);
+                branch.classList.toggle('docs-toc-tree__item--in-path', isInPath);
                 this.setBranchOpen(branchId, isInPath || branch === activeItem || this.manuallyOpenedIds.has(branchId));
             });
         }
 
         appendItem(section, level, parent) {
             const listItem = document.createElement('li');
-            listItem.className = 'sidebar-item';
+            listItem.className = 'docs-toc-tree__item';
             listItem.dataset.target = section.id;
             listItem.dataset.level = String(level);
             listItem.dataset.title = section.title;
 
             const anchor = document.createElement('a');
-            const indent = level === 0 ? '' : ' pl-' + Math.min(level * 3, 12) + ' border-l border-slate-100';
-            anchor.className = 'sidebar-link block text-slate-600 hover:text-brand transition-colors py-1' + indent;
+            anchor.className = 'docs-toc-tree__link';
+            anchor.style.setProperty('--toc-depth', String(level));
             anchor.href = '#' + section.id;
             anchor.dataset.target = section.id;
             anchor.textContent = section.title;
 
             anchor.addEventListener('click', () => {
                 this.setActive(section.id);
+                this.closeMobileDisclosure();
             });
 
             const rowElement = document.createElement('div');
-            rowElement.className = 'sidebar-row';
+            rowElement.className = 'docs-toc-tree__row';
             rowElement.appendChild(anchor);
             listItem.appendChild(rowElement);
 
             if (section.children && section.children.length) {
                 const childList = document.createElement('ul');
-                childList.className = 'sidebar-children mt-1 space-y-1';
-                childList.id = 'sidebar-children-' + section.id;
+                childList.className = 'docs-toc-tree__children';
+                childList.id = 'docs-toc-children-' + section.id;
                 childList.hidden = true;
                 section.children.forEach(child => {
                     this.appendItem(child, level + 1, childList);
                 });
-                listItem.classList.add('has-children');
+                listItem.classList.add('docs-toc-tree__item--branch');
                 rowElement.appendChild(this.createToggleButton(section, childList));
                 listItem.appendChild(childList);
             }
@@ -113,9 +123,8 @@
         }
 
         render() {
-            const listElement = document.getElementById(this.rootListId);
-            if (!listElement) return;
-            listElement.innerHTML = '';
+            const listElement = this.getRootList();
+            listElement.replaceChildren();
 
             const sections = this.store.getSections();
             sections.forEach(section => {
@@ -123,35 +132,40 @@
             });
         }
 
+        keepActiveLinkVisible(activeLink) {
+            const disclosure = document.getElementById(this.disclosureId);
+            if (!disclosure || !window.matchMedia(DESKTOP_TOC_QUERY).matches) return;
+            const linkTop = activeLink.offsetTop;
+            const visibleTop = disclosure.scrollTop;
+            const visibleBottom = visibleTop + disclosure.clientHeight;
+            if (linkTop < visibleTop + 80 || linkTop > visibleBottom - 80) {
+                disclosure.scrollTop = Math.max(0, linkTop - disclosure.clientHeight / 2);
+            }
+        }
+
         setActive(activeId) {
             if (!activeId || this.activeId === activeId) return;
             this.activeId = activeId;
 
-            const sidebar = document.getElementById(this.rootListId);
-            if (!sidebar) return;
-
-            const links = sidebar.querySelectorAll('a[data-target]');
-            links.forEach(linkElement => {
-                linkElement.classList.remove('active', 'text-brand', 'font-semibold');
-                linkElement.classList.add('text-slate-600');
+            const rootList = this.getRootList();
+            rootList.querySelectorAll('a[data-target]').forEach(linkElement => {
+                linkElement.removeAttribute('aria-current');
             });
 
-            const activeLink = sidebar.querySelector('a[data-target="' + activeId + '"]');
+            const activeLink = rootList.querySelector('a[data-target="' + activeId + '"]');
             if (activeLink) {
-                activeLink.classList.remove('text-slate-600');
-                activeLink.classList.add('active', 'text-brand', 'font-semibold');
-                this.openActiveBranch(activeLink.closest('li.sidebar-item'));
+                activeLink.setAttribute('aria-current', 'location');
+                this.openActiveBranch(activeLink.closest('li.docs-toc-tree__item'));
+                this.keepActiveLinkVisible(activeLink);
             }
+
+            document.dispatchEvent(new CustomEvent('docsectionchange', { detail: { sectionId: activeId } }));
         }
 
         getVisibleTargetId() {
-            const sidebar = document.getElementById(this.rootListId);
-            if (!sidebar) return null;
-
-            const links = Array.from(sidebar.querySelectorAll('a[data-target]'));
+            const links = Array.from(this.getRootList().querySelectorAll('a[data-target]'));
             if (!links.length) return null;
 
-            const headerOffset = 140;
             const scrollY = window.scrollY || window.pageYOffset;
             const isBottom = (window.innerHeight + scrollY) >= (document.documentElement.scrollHeight - 30);
 
@@ -163,13 +177,13 @@
             }
 
             let candidateId = null;
-            for (let index2 = 0; index2 < links.length; index2++) {
-                const targetId = links[index2].dataset.target;
+            for (let linkIndex = 0; linkIndex < links.length; linkIndex++) {
+                const targetId = links[linkIndex].dataset.target;
                 const element = document.getElementById(targetId);
                 if (!element || element.closest('[hidden]')) continue;
 
                 const topOffset = element.getBoundingClientRect().top;
-                if (topOffset <= headerOffset) {
+                if (topOffset <= HEADER_OFFSET) {
                     candidateId = targetId;
                 } else {
                     break;
@@ -187,7 +201,28 @@
             }
         }
 
+        closeMobileDisclosure() {
+            const disclosure = document.getElementById(this.disclosureId);
+            if (disclosure && !window.matchMedia(DESKTOP_TOC_QUERY).matches) disclosure.open = false;
+        }
+
+        bindDisclosure() {
+            const disclosure = document.getElementById(this.disclosureId);
+            if (!disclosure) throw new Error('AccountsSidebarTracker: missing #' + this.disclosureId);
+            const desktopQuery = window.matchMedia(DESKTOP_TOC_QUERY);
+            const syncDisclosure = () => {
+                disclosure.open = desktopQuery.matches;
+            };
+            disclosure.querySelector('summary').addEventListener('click', clickEvent => {
+                if (desktopQuery.matches) clickEvent.preventDefault();
+            });
+            desktopQuery.addEventListener('change', syncDisclosure);
+            syncDisclosure();
+        }
+
         bindListeners() {
+            this.bindDisclosure();
+
             window.addEventListener('scroll', () => {
                 this.updateScrollSpy();
             }, { passive: true });

@@ -145,7 +145,6 @@
         scrollToHash() {
             const targetId = (location.hash || '').replace('#', '');
             if (!targetId) return;
-            this.wizardCarousels.filter(carousel => carousel.hasStep(targetId)).forEach(carousel => carousel.showStep(targetId));
             const element = document.getElementById(targetId);
             if (element) {
                 this.sidebar.setActive(targetId);
@@ -160,16 +159,26 @@
             }
         }
 
+        initializeShell() {
+            global.sharedDocsSidebar.init();
+            return global.sharedDataLoader.init().then(data => {
+                global.sharedDocsPageTree.init(data);
+            });
+        }
+
         initialize() {
             setFooterYear();
+            this.initializeShell().catch(error => {
+                console.error('Error loading documentation navigation:', error);
+            });
             this.renderer.renderAll();
             this.screenshotViewer.bindTo(document.querySelector('main'));
-            this.wizardCarousels = Array.from(document.querySelectorAll('.flow-step-panel')).map(panel => new global.AccountsWizardStepCarousel(panel));
-            this.wizardCarousels.forEach(carousel => carousel.initialize());
             this.sidebar.render();
             this.sidebar.bindListeners();
             populateRbacTable();
             generateRoleCapabilities();
+
+            global.sharedDocsReveal.init('.docs-page-body > .flat-section, .docs-page-body .flat-subsection, .docs-page-body .flow-overview, .docs-page-body .flow-step');
 
             if (location.hash) {
                 this.scrollToHash();

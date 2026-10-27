@@ -165,11 +165,11 @@
             },
 
             trackCurrentStop(journey) {
-                document.addEventListener('flowstepchange', stepEvent => {
+                document.addEventListener('docsectionchange', stepEvent => {
                     const links = Array.from(journey.querySelectorAll('.flow-journey__link'));
-                    if (!links.some(linkElement6 => linkElement6.getAttribute('href') === '#' + stepEvent.detail.stepId)) return;
+                    if (!links.some(linkElement6 => linkElement6.getAttribute('href') === '#' + stepEvent.detail.sectionId)) return;
                     links.forEach(linkElement7 => {
-                        const isCurrent = linkElement7.getAttribute('href') === '#' + stepEvent.detail.stepId;
+                        const isCurrent = linkElement7.getAttribute('href') === '#' + stepEvent.detail.sectionId;
                         if (isCurrent) linkElement7.setAttribute('aria-current', 'step');
                         else linkElement7.removeAttribute('aria-current');
                     });

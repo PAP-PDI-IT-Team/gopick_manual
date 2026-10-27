@@ -1,6 +1,6 @@
 .flow-journey {
-    --journey-top: 2rem;
-    --dot-size: 2rem;
+    --journey-top: 36px;
+    --dot-size: 32px;
     position: relative;
     margin: 0;
     padding: 0;
@@ -12,11 +12,12 @@
 .flow-journey::before {
     content: "";
     position: absolute;
-    top: calc(var(--journey-top) + var(--dot-size) / 2 - 1px);
+    top: calc(var(--journey-top) + var(--dot-size) / 2 - 2px);
     left: calc(50% / var(--stop-total));
     right: calc(50% / var(--stop-total));
-    height: 2px;
-    background: #e2e8f0;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--tone-1);
 }
 
 .flow-journey__stop {
@@ -24,8 +25,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.625rem;
-    padding: var(--journey-top) 0.375rem 0.875rem;
+    gap: 10px;
+    padding: var(--journey-top) 6px 14px;
     text-align: center;
 }
 
@@ -34,42 +35,41 @@
     z-index: 1;
     width: var(--dot-size);
     height: var(--dot-size);
-    border-radius: 9999px;
-    border: 2px solid #cbd5e1;
-    background: #ffffff;
-    color: #475569;
-    font-size: 0.8125rem;
-    font-weight: 700;
+    border-radius: 50%;
+    background: var(--tone-2);
+    color: var(--ink);
+    font-size: var(--step-small);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .flow-journey__label {
-    font-size: 0.8125rem;
+    font-size: var(--step-small);
     line-height: 1.4;
-    color: #475569;
+    color: var(--ink);
 }
 
 .flow-journey__band {
     position: relative;
     grid-column: span var(--band-span);
-    border: 1px solid #fecaca;
-    border-radius: 1rem;
-    background: #fef2f2;
+    border-radius: 8px;
+    background: var(--tone-1);
 }
 
 .flow-journey__band-label {
     position: absolute;
-    top: 0.5rem;
+    top: 8px;
     left: 0;
     right: 0;
     margin: 0;
     text-align: center;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #b3060f;
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--ink);
 }
 
 .flow-journey__band-stops {
@@ -84,63 +84,57 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.625rem;
-    border-radius: 0.5rem;
+    gap: 10px;
+    border-radius: var(--radius);
     text-decoration: none;
 }
 
 .flow-journey__stop--wizard .flow-journey__dot {
-    border-color: #e50914;
-    color: #b3060f;
+    background: var(--ink);
+    color: var(--on-ink);
 }
 
 .flow-journey__stop--wizard .flow-journey__label {
-    font-weight: 600;
-    color: #1e293b;
+    font-weight: 500;
     text-decoration: underline;
     text-decoration-color: transparent;
-    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
 }
 
 .flow-journey__link:hover .flow-journey__label,
 .flow-journey__link:focus-visible .flow-journey__label {
-    color: #b3060f;
-    text-decoration-color: currentColor;
+    text-decoration-color: var(--accent);
 }
 
 .flow-journey__link:hover .flow-journey__dot,
 .flow-journey__link:focus-visible .flow-journey__dot {
-    background: #fee2e2;
+    transform: scale(1.08);
 }
 
 .flow-journey__link[aria-current="step"] .flow-journey__dot {
-    background: #e50914;
+    background: var(--accent);
     color: #ffffff;
-    box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #fca5a5;
-}
-
-.flow-journey__link[aria-current="step"] .flow-journey__label {
-    color: #b3060f;
 }
 
 .flow-journey__link:focus-visible {
-    outline: 2px solid #e50914;
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
 
 @media (max-width: 767px) {
     .flow-journey {
-        --journey-top: 0.5rem;
+        --journey-top: 8px;
         display: flex;
         flex-direction: column;
     }
 
     .flow-journey::before {
-        top: 1rem;
-        bottom: 1rem;
-        left: calc(0.75rem + var(--dot-size) / 2 - 1px);
+        top: 16px;
+        bottom: 16px;
+        left: calc(12px + var(--dot-size) / 2 - 2px);
         right: auto;
-        width: 2px;
+        width: 4px;
         height: auto;
     }
 
@@ -151,15 +145,15 @@
     }
 
     .flow-journey__stop {
-        padding: var(--journey-top) 0.75rem;
+        padding: var(--journey-top) 12px;
     }
 
     .flow-journey__band {
-        padding-top: 1.75rem;
+        padding-top: 28px;
     }
 
     .flow-journey__band-label {
-        left: calc(1.5rem + var(--dot-size));
+        left: calc(24px + var(--dot-size));
         text-align: left;
     }
 
@@ -169,7 +163,7 @@
     }
 
     .flow-journey__band .flow-journey__stop {
-        padding-left: calc(0.75rem - 1px);
+        padding-left: 12px;
     }
 }
 

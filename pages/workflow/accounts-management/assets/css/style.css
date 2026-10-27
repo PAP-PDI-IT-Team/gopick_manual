@@ -1,10 +1,196 @@
-/* Minimal base styles for Accounts Management page - Tailwind handles most styling */
-:root {
-    --brand: #e50914;
+/* ==================== Page Tokens ==================== */
+
+.docs-shell {
+    --rules-mark: #b45309;
+    --result-mark: #047857;
+    --result-ink: #065f46;
+    --content-gap: 28px;
 }
 
-a:focus-visible {
-    outline: 3px solid rgba(34, 139, 230, 0.4);
-    outline-offset: 2px;
-    border-radius: 2px;
+
+/* ==================== Sections ==================== */
+
+.docs-page-body {
+    padding-top: 24px;
+}
+
+.flat-section {
+    margin-top: var(--section-gap);
+}
+
+.flat-section:first-child {
+    margin-top: 56px;
+}
+
+.flat-section__title {
+    margin: 0 0 32px;
+    font-size: var(--step-heading);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.flat-section__content {
+    display: grid;
+    gap: var(--content-gap);
+}
+
+.flat-section__content + .flat-section__content {
+    margin-top: var(--content-gap);
+}
+
+.flat-subsection {
+    margin-top: 72px;
+}
+
+.flat-subsection__title {
+    margin: 0 0 16px;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+
+/* ==================== Legacy Cards ==================== */
+
+.flat-card {
+    padding: 28px 0 0;
+}
+
+.flat-card--nested {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    background: var(--tone-1);
+}
+
+.flat-card__title {
+    margin: 0 0 8px;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.flat-card--nested .flat-card__title {
+    font-size: var(--step-body);
+}
+
+.flat-card__text {
+    max-width: 68ch;
+    margin: 0;
+}
+
+.flat-card__label {
+    margin: 24px 0 8px;
+    color: var(--ink-soft);
+    font-size: var(--step-small);
+    font-weight: 500;
+}
+
+.flat-card__order {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: var(--step-small);
+    font-weight: 600;
+}
+
+.flat-card .manual-image-gallery,
+.flat-card .manual-image-card {
+    margin-top: 20px;
+}
+
+
+/* ==================== Lists and Links ==================== */
+
+.flat-list {
+    display: grid;
+    gap: 8px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.flat-list__item {
+    display: flex;
+    gap: 12px;
+}
+
+.flat-list__marker {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin-top: 0.7em;
+    border-radius: 50%;
+    background: var(--ink-soft);
+}
+
+.flat-list--nested {
+    margin: 4px 0 0 18px;
+}
+
+.flat-actions {
+    display: grid;
+    gap: 4px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.flat-actions .flat-actions {
+    margin-left: 16px;
+}
+
+.flat-link {
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--tone-2);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--duration-fast) ease;
+}
+
+.flat-link:hover {
+    text-decoration-color: var(--accent);
+}
+
+.flat-link--block {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+}
+
+
+/* ==================== Callouts ==================== */
+
+.flat-callout {
+    margin-top: 24px;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    background: var(--tone-1);
+}
+
+.flat-callout--rules {
+    border-left: 4px solid var(--rules-mark);
+}
+
+.flat-callout--result {
+    border-left: 4px solid var(--result-mark);
+}
+
+.flat-callout__title {
+    margin: 0;
+    font-size: var(--step-body);
+    font-weight: 600;
+}
+
+.flat-callout .flat-list {
+    margin-top: 8px;
 }

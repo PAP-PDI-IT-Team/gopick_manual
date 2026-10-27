@@ -30,17 +30,18 @@
 
         createBulletList(items) {
             const listElement = document.createElement('ul');
-            listElement.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
+            listElement.className = 'flat-list';
             items.forEach(itemData => {
                 const listItem = document.createElement('li');
-                listItem.className = 'flex gap-2';
+                listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
-                marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
+                marker.className = 'flat-list__marker';
+                marker.setAttribute('aria-hidden', 'true');
                 const textValue2 = itemData && typeof itemData !== 'string' && itemData.href ? document.createElement('a') : document.createElement('span');
                 textValue2.textContent = typeof itemData === 'string' ? itemData : itemData.label;
                 if (itemData && typeof itemData !== 'string' && itemData.href) {
                     textValue2.href = itemData.href;
-                    textValue2.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+                    textValue2.className = 'flat-link';
                 }
                 listItem.appendChild(marker);
                 listItem.appendChild(textValue2);
@@ -48,13 +49,13 @@
 
                 if (itemData && typeof itemData !== 'string' && itemData.children && itemData.children.length) {
                     const nested = document.createElement('ul');
-                    nested.className = 'ml-7 mt-2 space-y-1 text-sm text-slate-500';
+                    nested.className = 'flat-list flat-list--nested';
                     itemData.children.forEach(child => {
                         const childItem = document.createElement('li');
                         if (child && typeof child !== 'string' && child.href) {
                             const childLink = document.createElement('a');
                             childLink.href = child.href;
-                            childLink.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+                            childLink.className = 'flat-link';
                             childLink.textContent = child.label;
                             childItem.appendChild(childLink);
                         } else {
@@ -70,11 +71,11 @@
 
         createActionLinkList(items) {
             const listElement2 = document.createElement('ul');
-            listElement2.className = 'mt-3 ml-4 space-y-2 border-l border-slate-100 pl-4';
+            listElement2.className = 'flat-actions';
             items.forEach(itemData2 => {
                 const listItem2 = document.createElement('li');
                 const linkElement = document.createElement('a');
-                linkElement.className = 'block text-sm font-semibold text-brand hover:text-brand-dark transition-colors';
+                linkElement.className = 'flat-link flat-link--block';
                 linkElement.href = itemData2.href;
                 linkElement.textContent = itemData2.label;
                 listItem2.appendChild(linkElement);
@@ -86,11 +87,11 @@
             return listElement2;
         }
 
-        createBox(titleText, items, boxClass, titleClass) {
+        createBox(titleText, items, boxClass) {
             if (!items || !items.length) return null;
             const boxElement = document.createElement('div');
-            boxElement.className = boxClass || 'mt-4 rounded-lg border border-amber-100 bg-amber-50 p-4';
-            this.appendText(boxElement, 'h4', titleClass || 'font-semibold text-amber-900 mb-2', titleText);
+            boxElement.className = 'flat-callout flat-callout--' + (boxClass || 'rules');
+            this.appendText(boxElement, 'h4', 'flat-callout__title', titleText);
             boxElement.appendChild(this.createBulletList(items));
             return boxElement;
         }
@@ -98,13 +99,13 @@
         appendSectionMeta(cardElement, section) {
             if (section.actions && section.actions.length) {
                 const hasLinks = section.actions.some(itemData3 => itemData3 && typeof itemData3 !== 'string' && itemData3.href);
-                this.appendText(cardElement, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', hasLinks ? 'Related Features' : 'Controls');
+                this.appendText(cardElement, 'p', 'flat-card__label', hasLinks ? 'Related Features' : 'Controls');
                 cardElement.appendChild(hasLinks ? this.createActionLinkList(section.actions) : this.createBulletList(section.actions));
             }
 
             if (section.actionGroups && section.actionGroups.length) {
                 section.actionGroups.forEach(group => {
-                    this.appendText(cardElement, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
+                    this.appendText(cardElement, 'p', 'flat-card__label', group.title);
                     cardElement.appendChild(this.createActionLinkList(group.links || []));
                 });
             }
@@ -119,12 +120,12 @@
             }
 
             if (section.accessPath) {
-                this.appendText(cardElement, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Access Path');
-                this.appendText(cardElement, 'p', 'mt-1 text-sm text-slate-600 leading-relaxed', section.accessPath);
+                this.appendText(cardElement, 'p', 'flat-card__label', 'Access Path');
+                this.appendText(cardElement, 'p', 'flat-card__text', section.accessPath);
             }
 
             if (section.howToUse && section.howToUse.length) {
-                this.appendText(cardElement, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'How To Use');
+                this.appendText(cardElement, 'p', 'flat-card__label', 'How To Use');
                 cardElement.appendChild(this.createBulletList(section.howToUse));
             }
 
@@ -133,12 +134,12 @@
             }
 
             if (section.expected && section.expected.length) {
-                cardElement.appendChild(this.createBox('Expected Result', section.expected, 'mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4', 'font-semibold text-emerald-900 mb-2'));
+                cardElement.appendChild(this.createBox('Expected Result', section.expected, 'result'));
             }
 
             if (section.notes && section.notes.length) {
                 section.notes.forEach(noteData => {
-                    cardElement.appendChild(this.createBox('Notes: ' + noteData.label, noteData.items, 'mt-4 rounded-lg bg-slate-100/70 p-4', 'font-semibold text-slate-900 mb-2'));
+                    cardElement.appendChild(this.createBox('Notes: ' + noteData.label, noteData.items, 'notes'));
                 });
             }
         }
@@ -147,8 +148,8 @@
             const cardElement2 = document.createElement('article');
             cardElement2.className = level === 'nested' ? 'flat-card flat-card--nested' : 'flat-card';
             if (!section.omitCardId) cardElement2.id = section.id;
-            this.appendText(cardElement2, level === 'nested' ? 'h4' : 'h3', 'font-semibold text-slate-900 mb-2', section.title);
-            this.appendText(cardElement2, 'p', 'text-sm text-slate-600 leading-relaxed', section.detail);
+            this.appendText(cardElement2, level === 'nested' ? 'h4' : 'h3', 'flat-card__title', section.title);
+            this.appendText(cardElement2, 'p', 'flat-card__text', section.detail);
             this.appendSectionMeta(cardElement2, section);
             return cardElement2;
         }
@@ -166,20 +167,15 @@
             steps.forEach((stepData, index) => {
                 if (global.AccountsFlowBuilders.FLOW_STEP_IDS.includes(stepData.id)) {
                     if (!flowPanel) {
-                        flowPanel = document.createElement('div');
-                        flowPanel.className = 'flow-step-panel';
-                        const status = document.createElement('p');
-                        status.className = 'flow-step-panel__status sr-only';
-                        status.setAttribute('aria-live', 'polite');
-                        flowPanel.appendChild(status);
+                        flowPanel = this.createStepList(global.AccountsFlowBuilders.WIZARD_SEQUENCE);
                         container.appendChild(flowPanel);
                     }
-                    flowPanel.appendChild(this.createWizardStep(stepData, index, steps, global.AccountsFlowBuilders.WIZARD_SEQUENCE));
+                    flowPanel.appendChild(this.createStepListItem(this.createWizardStep(stepData, steps)));
                     return;
                 }
                 const cardElement3 = this.createInfoCard(stepData);
                 const badge = document.createElement('div');
-                badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
+                badge.className = 'flat-card__order';
                 badge.textContent = index + 1;
                 cardElement3.insertBefore(badge, cardElement3.firstChild);
                 container.appendChild(cardElement3);
@@ -204,14 +200,24 @@
             return fragment;
         }
 
+        createStepList(sequence) {
+            if (!sequence) throw new Error('Step list requires a sequence');
+            const stepList = document.createElement('ol');
+            stepList.className = 'flow-step-panel';
+            stepList.setAttribute('aria-label', sequence.listLabel);
+            return stepList;
+        }
+
+        createStepListItem(stepArticle) {
+            const listItem = document.createElement('li');
+            listItem.className = 'flow-step-panel__item';
+            listItem.appendChild(stepArticle);
+            return listItem;
+        }
+
         createFlowStepPanel(steps, sequence) {
-            const flowPanel = document.createElement('div');
-            flowPanel.className = 'flow-step-panel';
-            const status = document.createElement('p');
-            status.className = 'flow-step-panel__status sr-only';
-            status.setAttribute('aria-live', 'polite');
-            flowPanel.appendChild(status);
-            steps.forEach((stepData2, index) => flowPanel.appendChild(this.createWizardStep(stepData2, index, steps, sequence)));
+            const flowPanel = this.createStepList(sequence);
+            steps.forEach(stepData2 => flowPanel.appendChild(this.createStepListItem(this.createWizardStep(stepData2, steps))));
             return flowPanel;
         }
 

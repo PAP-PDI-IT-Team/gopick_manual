@@ -372,23 +372,26 @@
 
         var backdrop = document.createElement('button');
         backdrop.type = 'button';
-        backdrop.className = 'hidden fixed inset-0 z-[80] bg-slate-950/45 backdrop-blur-sm';
+        backdrop.className = 'header-search-backdrop hidden fixed inset-0 z-[80] bg-slate-950/45 backdrop-blur-sm';
         backdrop.setAttribute('aria-label', 'Close documentation search');
         document.body.appendChild(backdrop);
 
         var panel = document.createElement('div');
-        panel.className = 'hidden fixed left-1/2 top-[4.5rem] z-[90] w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-900/20 sm:top-20 sm:w-[calc(100%-2rem)] sm:rounded-2xl sm:p-4';
+        panel.className = 'header-search-panel hidden fixed left-1/2 top-[4.5rem] z-[90] w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-900/20 sm:top-20 sm:w-[calc(100%-2rem)] sm:rounded-2xl sm:p-4';
         panel.innerHTML =
-            '<div class="flex items-center gap-3 border-b border-slate-100 pb-3">' +
+            '<div class="header-search-panel__bar flex items-center gap-3 border-b border-slate-100 pb-3">' +
                 '<svg class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"/></svg>' +
                 '<input type="search" id="globalHeaderSearchInput" class="min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0" placeholder="Search page or section">' +
                 '<button type="button" class="header-search-close inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700" aria-label="Close search">' +
                     '<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12"/></svg>' +
                 '</button>' +
             '</div>' +
-            '<p class="mt-3 text-xs text-slate-400">Search results show the page and section where the match lives.</p>' +
+            '<p class="header-search-panel__hint mt-3 text-xs text-slate-400">Search results show the page and section where the match lives.</p>' +
             '<div id="globalHeaderSearchStatus" class="mt-4 text-sm text-slate-500">Type at least ' + SEARCH_PHRASE_MIN_LENGTH + ' characters.</div>' +
             '<div id="globalHeaderSearchResults" class="mt-4 max-h-[50vh] space-y-3 overflow-y-auto sm:max-h-[60vh]"></div>';
+        panel.setAttribute('role', 'dialog');
+        panel.setAttribute('aria-modal', 'true');
+        panel.setAttribute('aria-label', 'Search documentation');
         document.body.appendChild(panel);
 
         return {
@@ -416,18 +419,18 @@
         targets.forEach(function (target) {
             var link = document.createElement('a');
             link.href = target.url;
-            link.className = 'block rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-brand hover:bg-red-50';
+            link.className = 'header-search-result block rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-brand hover:bg-red-50';
 
             var page = document.createElement('div');
-            page.className = 'text-xs font-bold uppercase tracking-wide text-brand';
+            page.className = 'header-search-result__page text-xs font-bold uppercase tracking-wide text-brand';
             page.textContent = target.pageTitle;
 
             var section = document.createElement('div');
-            section.className = 'mt-1 text-sm font-semibold text-slate-900';
+            section.className = 'header-search-result__section mt-1 text-sm font-semibold text-slate-900';
             section.textContent = target.sectionTitle;
 
             var preview = document.createElement('p');
-            preview.className = 'mt-2 text-sm text-slate-500 leading-relaxed';
+            preview.className = 'header-search-result__preview mt-2 text-sm text-slate-500 leading-relaxed';
             preview.textContent = target.body.slice(0, 180) + (target.body.length > 180 ? '...' : '');
 
             link.appendChild(page);
@@ -497,7 +500,12 @@
             renderResults(findMatches(query), elements);
         }
 
+        var pageSearchTriggers = document.querySelectorAll('[data-search-trigger]');
+
         elements.openButton.addEventListener('click', openSearch);
+        Array.prototype.forEach.call(pageSearchTriggers, function (trigger) {
+            trigger.addEventListener('click', openSearch);
+        });
         elements.closeButton.addEventListener('click', closeSearch);
         elements.backdrop.addEventListener('click', closeSearch);
         elements.input.addEventListener('input', handleQueryChange);
@@ -510,6 +518,16 @@
                 closeSearch();
             }
 
+            if ((event.metaKey || event.ctrlKey) && !event.altKey && event.key.toLowerCase() === 'k') {
+                event.preventDefault();
+                if (elements.panel.classList.contains('hidden')) {
+                    openSearch();
+                } else {
+                    closeSearch();
+                }
+                return;
+            }
+
             if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
                 var tagName = document.activeElement && document.activeElement.tagName;
                 if (tagName === 'INPUT' || tagName === 'TEXTAREA') return;
@@ -517,6 +535,10 @@
                 openSearch();
             }
         });
+
+        if (pageSearchTriggers.length) {
+            return;
+        }
 
         if (!rightCluster) {
             rightCluster = document.createElement('div');

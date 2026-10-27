@@ -2,10 +2,16 @@
     'use strict';
 
     var _data = null;
-    var DATA_VERSION = '20260416-meters';
+    var DATA_VERSION = '20261028-docs-nav';
+
+    function getDataUrl() {
+        var dataUrl = document.body.dataset.dataUrl;
+        if (!dataUrl) throw new Error('dataLoader: <body> needs a data-data-url attribute');
+        return dataUrl;
+    }
 
     function init() {
-        return fetch('shared/data/gopick-data.json?v=' + DATA_VERSION, { cache: 'no-store' })
+        return fetch(getDataUrl() + '?v=' + DATA_VERSION, { cache: 'no-store' })
             .then(function (res) {
                 if (!res.ok) throw new Error('Data fetch failed: ' + res.status);
                 return res.json();
