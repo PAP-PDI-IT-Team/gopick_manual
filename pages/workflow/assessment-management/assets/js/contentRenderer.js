@@ -30,8 +30,19 @@
                 const marker = document.createElement('span');
                 marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
 
-                const itemText = document.createElement('span');
-                itemText.textContent = bulletItem;
+                const itemText = document.createElement(typeof bulletItem === 'string' ? 'span' : 'div');
+                itemText.textContent = typeof bulletItem === 'string' ? bulletItem : bulletItem.label;
+
+                if (bulletItem.children && bulletItem.children.length) {
+                    const nestedList = document.createElement('ul');
+                    nestedList.className = 'ml-7 mt-2 list-disc space-y-1 text-sm text-slate-500';
+                    bulletItem.children.forEach(childText => {
+                        const childItem = document.createElement('li');
+                        childItem.textContent = childText;
+                        nestedList.appendChild(childItem);
+                    });
+                    itemText.appendChild(nestedList);
+                }
 
                 listItem.appendChild(marker);
                 listItem.appendChild(itemText);
@@ -113,6 +124,10 @@
                     linkGroup.appendChild(sectionLink);
                     target.appendChild(linkGroup);
                 });
+            }
+
+            if (section.items && section.items.length) {
+                target.appendChild(this.createBulletList(section.items));
             }
 
             [

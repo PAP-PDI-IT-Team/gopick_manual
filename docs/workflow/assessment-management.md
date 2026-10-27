@@ -136,21 +136,129 @@ View Assessment Informations: Description, Dimension, Number of Items, Time Limi
 
 ##### Page Setup
 
+Configures the page setup for the selected assessment.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Config Dropdown` > `Page Setup`
+
+###### How To Use
+
+1. Configure Assessment with the following:
+   - Progress bar
+   - Randomize toggle
+   - Timer Setup
+
 ##### Set Questions
+
+Modify assessment questions and other configurations.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Config Dropdown` > `Set Questions`
+
+###### How To Use
+
+1. Modify questions individually by question number.
+2. Select `Save` to save the changes.
 
 ##### Set Report Template
 
+Configures assessment information and assessment development.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Config Dropdown` > `Set Report Template`
+
+###### How To Use
+
+1. Assessment Information
+   - Name
+   - Description
+   - Meter Deduction
+   - Assessment Category
+   - Status
+2. Assessment Development
+   - Report Template
+   - Amified toggle
+   - Re-upload Assessment import file
+   - Upload Icon
+   - Report Types
+   - Category and Competency
+   - IRT Initial Ability Types
+   - DevNote
+
 ##### Debug Mode
+
+Preview test instructions, item rendering, and candidate view in Debug Mode.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Config Dropdown` > `Debug Mode`
+
+> Expected Result:
+> - Debug Mode displays the custom description provided by the assessment provider, including the description, dimensions, number of items, time limit, test norm, recommended level, and available test norms.
+> - For a test battery, Debug Mode also lists the assessments included in the battery.
 
 #### Settings Dropdown
 
 ##### Update
 
+Updates assessment information and assessment development using the same configuration as Set Report Template.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Settings Dropdown` > `Update`
+
+###### How To Use
+
+1. Assessment Information
+   - Name
+   - Description
+   - Meter Deduction
+   - Assessment Category
+   - Status
+2. Assessment Development
+   - Report Template
+   - Amified toggle
+   - Re-upload Assessment import file
+   - Upload Icon
+   - Report Types
+   - Category and Competency
+   - IRT Initial Ability Types
+   - DevNote
+
 ##### Export Assessment
+
+Exports the assessment as an XLSX file using the assessment template format.
+
+> Expected Result:
+> - An XLSX file is downloaded for the user.
 
 ##### View Scheduled Candidates
 
+Lists candidates scheduled for the selected assessment.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Settings Dropdown` > `View Scheduled Candidates`
+
+> Notes:
+> - This action redirects to another page. The destination page is under construction and its link is not yet available in the manual.
+
 ##### Delete
+
+Deletes the selected assessment.
+
+###### Access Path
+
+- `Assessments` > `View Assessments` > `Assessment Card` > `Settings Dropdown` > `Delete`
+
+###### How To Use
+
+1. Select an assessment.
+2. Open `Settings Dropdown` and select `Delete`.
+3. Confirm the deletion in the confirmation modal.
 
 ## Import Assessment
 

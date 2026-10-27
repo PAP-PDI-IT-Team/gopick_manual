@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Documented assessment deletion through Settings Dropdown, including the access path and confirmation modal steps.
+
+- Documented View Scheduled Candidates with its assessment-specific list description and access path, reusing the shared under-construction image for its future destination page.
+
+- Documented Export Assessment as an XLSX template download with a screenshot placeholder and expected result.
+
+- Documented Settings Dropdown Update with its access path, screenshot placeholder, and How To Use lists for Assessment Information and Assessment Development.
+
+- Documented Debug Mode using the Preview Assessment structure, with its own access path, screenshot placeholder, and expected results.
+
+- Documented Set Report Template with Assessment Information and Assessment Development configuration lists, an access path, and a screenshot placeholder.
+
+- Documented Set Questions with a screenshot placeholder, access path, and instructions to edit questions individually by number and save changes.
+- Documented Page Setup controls for the selected assessment, its access path, and a screenshot placeholder.
+
 - Documented Create Test Battery in the Accounts wizard layout with Assessment List selection, a minimum of two assessments, and Test Battery Configurations inputs and Next, Save, and Back actions.
 - Added a screenshot placeholder for Download Template under Import Assessment.
 - Documented the Preview Assessment expected result covering provider-supplied assessment information, available test norms, and the assessments included in a test battery.

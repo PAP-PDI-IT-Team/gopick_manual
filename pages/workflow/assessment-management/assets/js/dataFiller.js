@@ -207,19 +207,102 @@
                                 children: [
                                     {
                                         id: 'page-setup',
-                                        title: 'Page Setup'
+                                        title: 'Page Setup',
+                                        description: 'Configures the page setup for the selected assessment.',
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown', 'Page Setup'],
+                                        images: [
+                                            {
+                                                title: 'Page Setup',
+                                                caption: 'Selected assessment configuration for the progress bar, randomize toggle, and timer setup.',
+                                                src: '',
+                                                alt: 'Assessment Page Setup Screenshot'
+                                            }
+                                        ],
+                                        steps: [
+                                            {
+                                                label: 'Configure Assessment with the following:',
+                                                children: [
+                                                    'Progress bar',
+                                                    'Randomize toggle',
+                                                    'Timer Setup'
+                                                ]
+                                            }
+                                        ]
                                     },
                                     {
                                         id: 'set-questions',
-                                        title: 'Set Questions'
+                                        title: 'Set Questions',
+                                        description: 'Modify assessment questions and other configurations.',
+                                        images: [
+                                            {
+                                                title: 'Set Questions',
+                                                caption: 'Question editing and configuration for the selected assessment.',
+                                                src: '',
+                                                alt: 'Assessment Set Questions Screenshot'
+                                            }
+                                        ],
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown', 'Set Questions'],
+                                        steps: [
+                                            'Modify questions individually by question number.',
+                                            'Select Save to save the changes.'
+                                        ]
                                     },
                                     {
                                         id: 'set-report-template',
-                                        title: 'Set Report Template'
+                                        title: 'Set Report Template',
+                                        description: 'Configures assessment information and assessment development.',
+                                        images: [
+                                            {
+                                                title: 'Set Report Template',
+                                                caption: 'Assessment Information and Assessment Development configuration.',
+                                                src: '',
+                                                alt: 'Assessment Set Report Template Screenshot'
+                                            }
+                                        ],
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown', 'Set Report Template'],
+                                        steps: [
+                                            {
+                                                label: 'Assessment Information',
+                                                children: [
+                                                    'Name',
+                                                    'Description',
+                                                    'Meter Deduction',
+                                                    'Assessment Category',
+                                                    'Status'
+                                                ]
+                                            },
+                                            {
+                                                label: 'Assessment Development',
+                                                children: [
+                                                    'Report Template',
+                                                    'Amified toggle',
+                                                    'Re-upload Assessment import file',
+                                                    'Upload Icon',
+                                                    'Report Types',
+                                                    'Category and Competency',
+                                                    'IRT Initial Ability Types',
+                                                    'DevNote'
+                                                ]
+                                            }
+                                        ]
                                     },
                                     {
                                         id: 'debug-mode',
-                                        title: 'Debug Mode'
+                                        title: 'Debug Mode',
+                                        description: 'Preview test instructions, item rendering, and candidate view in Debug Mode.',
+                                        images: [
+                                            {
+                                                title: 'Debug Mode',
+                                                caption: 'Assessment preview in Debug Mode.',
+                                                src: '',
+                                                alt: 'Assessment Debug Mode Screenshot'
+                                            }
+                                        ],
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Config Dropdown', 'Debug Mode'],
+                                        expectedResults: [
+                                            'Debug Mode displays the custom description provided by the assessment provider, including the description, dimensions, number of items, time limit, test norm, recommended level, and available test norms.',
+                                            'For a test battery, Debug Mode also lists the assessments included in the battery.'
+                                        ]
                                     }
                                 ]
                             },
@@ -231,19 +314,82 @@
                                 children: [
                                     {
                                         id: 'update',
-                                        title: 'Update'
+                                        title: 'Update',
+                                        description: 'Updates assessment information and assessment development using the same configuration as Set Report Template.',
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Settings Dropdown', 'Update'],
+                                        images: [
+                                            {
+                                                title: 'Update Assessment',
+                                                caption: 'Assessment Information and Assessment Development configuration in Update.',
+                                                src: '',
+                                                alt: 'Update Assessment Screenshot'
+                                            }
+                                        ],
+                                        steps: [
+                                            {
+                                                label: 'Assessment Information',
+                                                children: [
+                                                    'Name',
+                                                    'Description',
+                                                    'Meter Deduction',
+                                                    'Assessment Category',
+                                                    'Status'
+                                                ]
+                                            },
+                                            {
+                                                label: 'Assessment Development',
+                                                children: [
+                                                    'Report Template',
+                                                    'Amified toggle',
+                                                    'Re-upload Assessment import file',
+                                                    'Upload Icon',
+                                                    'Report Types',
+                                                    'Category and Competency',
+                                                    'IRT Initial Ability Types',
+                                                    'DevNote'
+                                                ]
+                                            }
+                                        ]
                                     },
                                     {
                                         id: 'export-assessment',
-                                        title: 'Export Assessment'
+                                        title: 'Export Assessment',
+                                        description: 'Exports the assessment as an XLSX file using the assessment template format.',
+                                        images: [
+                                            {
+                                                title: 'Export Assessment',
+                                                caption: 'Assessment export in XLSX template format.',
+                                                src: '',
+                                                alt: 'Export Assessment Screenshot'
+                                            }
+                                        ],
+                                        expectedResults: [
+                                            'An XLSX file is downloaded for the user.'
+                                        ]
                                     },
                                     {
                                         id: 'view-scheduled-candidates',
-                                        title: 'View Scheduled Candidates'
+                                        title: 'View Scheduled Candidates',
+                                        description: 'Lists candidates scheduled for the selected assessment.',
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Settings Dropdown', 'View Scheduled Candidates'],
+                                        links: [
+                                            {
+                                                label: 'View Scheduled Candidates page under construction',
+                                                image: '../../../shared/img/upload-norm-under-construction.png?v=20261026-page-coming-soon',
+                                                disabled: true
+                                            }
+                                        ]
                                     },
                                     {
                                         id: 'delete',
-                                        title: 'Delete'
+                                        title: 'Delete',
+                                        description: 'Deletes the selected assessment.',
+                                        accessPaths: ['Assessments', 'View Assessments', 'Assessment Card', 'Settings Dropdown', 'Delete'],
+                                        steps: [
+                                            'Select an assessment.',
+                                            'Open Settings Dropdown and select Delete.',
+                                            'Confirm the deletion in the confirmation modal.'
+                                        ]
                                     }
                                 ]
                             }
