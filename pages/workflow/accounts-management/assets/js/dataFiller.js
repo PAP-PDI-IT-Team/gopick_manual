@@ -433,10 +433,28 @@
             detail: 'Updates one account detail section from the account detail page. The available update form depends on the account detail section where the update is triggered.',
             images: [
                 {
-                    title: 'Update Specific Form View',
+                    title: 'Update Specific Form: Account Information',
                     caption: 'Section-isolated update view within the account detail page.',
                     src: 'assets/img/update-specific-account-information.png',
                     alt: 'Update Account: Account Information form with a two-step progress bar, read-only account type, username and parent account, and editable contact fields'
+                },
+                {
+                    title: 'Update Specific Form: Assign Products',
+                    caption: 'Assign Products update form outlined, with the Next button emphasized and the account name blurred.',
+                    src: 'assets/img/update-specific-assign-products.png',
+                    alt: 'Update Account: Assign Products page with the form card outlined, showing the Update Assessment button and assessment category dropdowns; the Next button is emphasized and the account name is blurred'
+                },
+                {
+                    title: 'Update Specific Form: Meter Management',
+                    caption: 'Meter Management update form outlined, with the Review Changes button emphasized.',
+                    src: 'assets/img/update-specific-meter-management.png',
+                    alt: 'Meter Management page with the form card outlined, showing the View Meter Log button, the Metering Management Type option, and Current Meters; the Review Changes button is emphasized'
+                },
+                {
+                    title: 'Update Specific Form: Other Account Settings',
+                    caption: 'Other Account Settings update form outlined, showing the account limits and contact fields.',
+                    src: 'assets/img/update-specific-other-account-settings.png',
+                    alt: 'Account Settings page with the Other Account Settings form card outlined, showing account limit fields, API Access Username, and HRSC and Assessment Specialist fields'
                 }
             ],
             rules: ['Updating the current user own account only opens the Account Information variant.', 'Password fields are not prefilled.'],
