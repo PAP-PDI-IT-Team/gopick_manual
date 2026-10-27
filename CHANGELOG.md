@@ -5,6 +5,23 @@ All notable changes to the GoPick Assessment Center Manual will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-10-22
+
+### Changed
+
+- Aligned the Meters Management sidebar with Accounts Management (collapsible tree, active-branch opening, hash handling, `18rem` column) and applied the flat page styling to the hero, sections, legends, and matrix controls.
+- Applied the Accounts Management flow section pattern to Meters Management: access trail, chip groups, numbered how-to-use steps, rules, and a `What you see` line, using the page-local `flowBuilders.js` and flow stylesheets. Screenshot placeholders are kept.
+- Added the Meter Requests screenshot to Meters Management with the shared screenshot treatment (blurred surroundings and account names, outlined module content) and the click-to-enlarge screenshot viewer.
+- Enabled the window-frame image card on Meters Management.
+- Added the approve and decline confirmation screenshots to Approve Or Reject Request in Meters Management.
+- Added the Order Meters, Transfer Meters, and Meter Records screenshots to Meters Management with the shared screenshot treatment.
+- Added the View Meter Log screenshots to Meters Management, covering both access paths (from Meter Records and from View Meter) and the Meter Log page.
+- Reworked New Discovery And Settings-Changed Notes in Meters Management from flat text lists into one card per event, with Remarks, Target Account, and Addition and Deduction rows, colored Target, Actor, and Parent view badges, highlighted conditions, and a short reading guide.
+- Reworked Remark Meaning Guide in Meters Management into a two-column table (remark you see, what it means) with highlighted placeholders, and aligned the meanings to `docs/workflow/meters-management.md`.
+- Restored the live Meters Management Resolution Paths Matrix on the flow page: the 8-column table with type filter pills, search, the `SHOW_ERROR` column mode switcher, the path counter, and horizontal scroll, with its original section description in `docs/workflow/meters-management.md`.
+- Changed Meters Management How to use steps to a horizontal journey at 1200px and wider that stacks vertically below it, with the final step highlighted.
+- Replaced the inline Tailwind configuration on Meters Management with the shared `shared/js/tailwindConfig.js`.
+
 ## [1.4.0] - 2026-10-21
 
 ### Added

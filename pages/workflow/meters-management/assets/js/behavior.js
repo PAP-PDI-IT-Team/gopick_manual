@@ -12,6 +12,7 @@
             this.store = new global.MetersContentStore(this.content);
             this.renderer = new global.MetersContentRenderer(this.store, global.GoPickImageRenderer);
             this.sidebar = new global.MetersSidebarTracker(this.store);
+            this.screenshotViewer = new global.MetersScreenshotViewer();
         }
 
         scrollToHash() {
@@ -34,6 +35,7 @@
         init() {
             setFooterYear();
             this.renderer.renderAllSections();
+            this.screenshotViewer.bindTo(document.querySelector('main'));
             this.sidebar.render();
             this.sidebar.bindListeners();
 

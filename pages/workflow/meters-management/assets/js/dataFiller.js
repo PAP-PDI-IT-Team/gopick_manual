@@ -15,9 +15,9 @@
                 images: [
                     {
                         title: 'Meter Requests Table View',
-                        caption: 'Pending meter requests queue with actions to review, approve, or reject allocations.',
-                        src: '',
-                        alt: 'Meter Requests Table Screenshot'
+                        caption: 'Meter Requests page with search, Advanced Search, the date range, status, and date completed filters, and the requests table with the Account Name, Meter Value, Request Date, Status, Date Completed, and Actions columns outlined; account names are blurred.',
+                        src: 'assets/img/meter-request.png',
+                        alt: 'Meter Requests page with the search bar, Advanced Search button, filters, and requests table outlined; account names are blurred'
                     }
                 ],
                 children: [
@@ -27,10 +27,16 @@
                         description: 'Review pending meter requests and approve or reject the request.',
                         images: [
                             {
-                                title: 'Approve / Reject Request Dialog',
-                                caption: 'Confirmation prompt to approve or reject meter movement and allocate balances.',
-                                src: '',
-                                alt: 'Approve / Reject Dialog Screenshot'
+                                title: 'Approve Request Confirmation',
+                                caption: 'Approve confirmation dialog on the Meter Requests page with the Yes button emphasized and the No button beside it; account names and the signed-in user are blurred.',
+                                src: 'assets/img/approve-request-dialog.png',
+                                alt: 'Meter Requests page with the approve confirmation dialog outlined and its Yes button emphasized; account names and the signed-in user are blurred'
+                            },
+                            {
+                                title: 'Decline Request Confirmation',
+                                caption: 'Decline confirmation dialog on the Meter Requests page with the Yes button emphasized and the No button beside it; account names and the signed-in user are blurred.',
+                                src: 'assets/img/decline-request-dialog.png',
+                                alt: 'Meter Requests page with the decline confirmation dialog outlined and its Yes button emphasized; account names and the signed-in user are blurred'
                             }
                         ],
                         groups: [
@@ -65,9 +71,9 @@
                 images: [
                     {
                         title: 'Order Meters Form',
-                        caption: 'Form to submit an inbound request for meter balance to higher hierarchy accounts.',
-                        src: '',
-                        alt: 'Order Meters Form Screenshot'
+                        caption: 'Order Meters page with the Meter Order Value field and the note about administrator validation outlined, and the Send Meter Order button emphasized.',
+                        src: 'assets/img/order-meters-form.png',
+                        alt: 'Order Meters page with the form card outlined, showing the Meter Order Value field and the Send Meter Order button emphasized'
                     }
                 ],
                 groups: [
@@ -93,10 +99,10 @@
                 description: 'Transfer meter balances to allowed accounts.',
                 images: [
                     {
-                        title: 'Transfer Meters Modal',
-                        caption: 'Source balance selector, transfer value input, and destination account chooser.',
-                        src: '',
-                        alt: 'Transfer Meters Modal Screenshot'
+                        title: 'Transfer Meters Form',
+                        caption: 'Transfer Meters page with the Source Account, Available Meters, Meter Value, and Destination Account fields outlined, and the Transfer Meter button emphasized.',
+                        src: 'assets/img/transfer-meters-form.png',
+                        alt: 'Transfer Meters page with the form card outlined, showing Source Account, Available Meters, Meter Value, and Destination Account fields and the Transfer Meter button emphasized'
                     }
                 ],
                 groups: [
@@ -135,10 +141,10 @@
                 description: 'View account meter balances, logs, and meter-related actions.',
                 images: [
                     {
-                        title: 'Meter Records Table View',
-                        caption: 'Comprehensive list of accounts with active balances, pending allocation, and actions.',
-                        src: '',
-                        alt: 'Meter Records List Screenshot'
+                        title: 'Meter Records Listing',
+                        caption: 'Meter Records page with search, Advanced Search, and the records table with the Account Name, Available Meters, Validate Meter(s), and Actions columns outlined; account names are blurred.',
+                        src: 'assets/img/meter-records-listing.png',
+                        alt: 'Meter Records page with the search bar, Advanced Search button, and records table outlined; account names are blurred'
                     }
                 ],
                 groups: [
@@ -191,7 +197,27 @@
                         id: 'view-meter-log',
                         title: 'View Meter Log',
                         description: 'View meter history, meter-related activities, and what each remark means for the selected account.',
-                        groups: [
+                        images: [
+                            {
+                            title: 'View Meter Log from Meter Records',
+                            caption: 'Meter Records page with the row actions menu open and the View Meter Log option emphasized; account names are blurred.',
+                            src: 'assets/img/view-meter-log-from-records.png',
+                            alt: 'Meter Records page with the search bar and records table outlined and the View Meter Log option in the row actions menu emphasized; account names are blurred'
+                        },
+                            {
+                            title: 'View Meter Log from View Meter',
+                            caption: 'View Meters page with the Actions menu open and the View Meter Log option emphasized; the account name is blurred.',
+                            src: 'assets/img/view-meter-log-from-view-meter.png',
+                            alt: 'View Meters page with the meter details card outlined and the View Meter Log option in the Actions menu emphasized; the account name is blurred'
+                        },
+                            {
+                            title: 'Meter Log',
+                            caption: 'Meter Log page with the Transaction Type filter and the log table showing Date, Transaction Type, Target Account, Previous Balance, Addition, Deduction, Current Balance, and Remarks columns outlined; the account name is blurred.',
+                            src: 'assets/img/view-meter-log-page.png',
+                            alt: 'Meter Log page with the filter bar and log table outlined; the account name is blurred'
+                        }
+                    ],
+                    groups: [
                             {
                                 title: 'Access Paths',
                                 items: [
@@ -225,79 +251,104 @@
                                 id: 'meter-log-remark-meaning',
                                 title: 'Remark Meaning Guide',
                                 description: 'Use this guide to interpret the remark column in View Meter Log.',
-                                groups: [
-                                    {
-                                        title: 'Expected Remark Meanings',
-                                        items: [
-                                            'Used to Score Assessment: Meter was consumed by assessment completion.',
-                                            'Used to Score Assessment: <account_name>: Assessment consumption is attributed to the shown account.',
-                                            'Sent to <account_name>: Meters were deducted from the current account and transferred to the shown account.',
-                                            'Received from <account_name>: Meters were added to the current account from the shown account.',
-                                            'Initial Meters: Starting meter balance was initialized.',
-                                            'Meter Balance Update: Manual add or deduct adjustment was applied from Update Meter Balance.',
-                                            'Moved to Newly Created Account: <account_name>: Meters were moved to a newly created account.',
-                                            '<type-change-specific-message>: <actor_account_name>: Consumption type-change event showing the action message and actor account.',
-                                            '(not set): Reserved unresolved output for applicable type=4 resolution path.'
-                                        ]
-                                    }
-                                ]
+                                remarkGuide: [
+                                { remark: 'Used to Score Assessment', meaning: 'Meter was consumed by assessment completion.' },
+                                { remark: 'Used to Score Assessment: <account_name>', meaning: 'Assessment consumption is attributed to the shown account.' },
+                                { remark: 'Sent to <account_name>', meaning: 'Meters were deducted from the current account and transferred to the shown account.' },
+                                { remark: 'Received from <account_name>', meaning: 'Meters were added to the current account from the shown account.' },
+                                { remark: 'Initial Meters', meaning: 'Starting meter balance set during account meter initialization.' },
+                                { remark: 'Meter Balance Update', meaning: 'Manual add/deduct adjustment from Update Meter Balance.' },
+                                { remark: 'Moved to Newly Created Account: <account_name>', meaning: 'Meters were moved to a newly created child account.' },
+                                { remark: '<type-change-specific-message>: <actor_account_name>', meaning: 'Consumption-type change event; message identifies the specific type-change action and actor account.' },
+                                { remark: '(not set)', meaning: 'Applicable only to unresolved type=4 fallback output from stored/paired/parent resolution path.' }
+                            ]
                             },
                             {
                                 id: 'new-discovery-settings-changed',
                                 title: 'New Discovery And Settings-Changed Notes',
                                 description: 'Actor is the logged-in user at action time. Actor is not always the parent account.',
-                                groups: [
-                                    {
-                                        title: 'Create New Account',
-                                        items: [
-                                            'Remarks (Target View): Initial Meters',
-                                            'Remarks (Actor View): Moved to Newly Created Account: <target_user_name>',
-                                            'Target Account (Both View): <target_user_name>',
-                                            'Parent deduction with allocated 0: Addition = 0, Deduction = 0',
-                                            'Self deduction with allocated n where n > 0: Addition = n, Deduction = 0'
-                                        ]
-                                    },
-                                    {
-                                        title: 'Update Meter Type',
-                                        items: [
-                                            'Remarks (Target View): Meter Type Update (switched to self/parent deduction) by: <actor_user_name>',
-                                            'Remarks (Actor or Parent View): Meter Type Update (switched to self/parent deduction): <target_user_name>',
-                                            'If switched to self deduction: Target Account (Both View) = <target_user_name>',
-                                            'If switched to parent deduction: Target Account (Both View) = <parent_user_name>',
-                                            'If switched to self deduction: Target Addition = n, Actor Deduction = n',
-                                            'If switched to parent deduction: Target Deduction = n, Actor Addition = n'
-                                        ]
-                                    },
-                                    {
-                                        title: 'Update Meter Balance',
-                                        items: [
-                                            'Remarks (Target View): Meter Balance Update by: <actor_user_name>',
-                                            'Remarks (Parent View): Meter Balance Updated: <target_user_name>',
-                                            'If deduction: Target Account (Both View) = <parent_user_name>',
-                                            'If addition: Target Account (Both View) = <target_user_name>',
-                                            'If deduction: Actor Addition = n, Target Deduction = n',
-                                            'If addition: Actor Deduction = n, Target Addition = n'
-                                        ]
-                                    },
-                                    {
-                                        title: 'Use Meter Balance',
-                                        items: [
-                                            'If own candidate: Remark = Used to Score Assessment',
-                                            'If lower-hierarchy candidate: Remark = Used to Score Assessment: <consumer_user_name>',
-                                            'If own candidate: Target Account = <own_user_name>',
-                                            'If lower-hierarchy candidate: Target Account = <consumer_user_name>'
-                                        ]
-                                    },
-                                    {
-                                        title: 'Request Meter Approved',
-                                        items: [
-                                            'Remarks (Target View): Received from <actor_user_name>',
-                                            'Remarks (Actor View): Sent to <target_user_name>',
-                                            'Target Account: <target_user_name>',
-                                            'Actor Deduction = n, Target Addition = n'
-                                        ]
-                                    }
-                                ]
+                                scenarioGuide: [
+                                { term: 'Target', meaning: 'The account the log entry is about.' },
+                                { term: 'Target, Actor, and Parent views', meaning: 'The Meter Log entry as it appears for that account.' },
+                                { term: 'Both views', meaning: 'The same value appears in both logs.' },
+                                { term: 'n', meaning: 'The amount of meters moved.' }
+                            ],
+                            scenarios: [
+                                {
+                                    title: 'Create New Account',
+                                    rows: [
+                                        { label: 'Remarks', entries: [
+                                            { lines: [{ view: 'Target view', text: 'Initial Meters' }, { view: 'Actor view', text: 'Moved to Newly Created Account: <target_user_name>' }] }
+                                    ] },
+                                        { label: 'Target Account', entries: [
+                                            { lines: [{ view: 'Both views', text: '<target_user_name>' }] }
+                                    ] },
+                                        { label: 'Addition and Deduction', entries: [
+                                            { condition: 'Meter type is parent deduction and allocated value is 0', lines: [{ text: 'Addition = 0, Deduction = 0' }] },
+                                        { condition: 'Meter type is self deduction and allocated value is n, where n > 0', lines: [{ text: 'Addition = n, Deduction = 0' }] }
+                                    ] }
+                                    ]
+                                },
+                                {
+                                    title: 'Update Meter Type',
+                                    rows: [
+                                        { label: 'Remarks', entries: [
+                                            { lines: [{ view: 'Target view', text: 'Meter Type Update (switched to self/parent deduction) by: <actor_user_name>' }, { view: 'Actor or Parent view', text: 'Meter Type Update (switched to self/parent deduction): <target_user_name>' }] }
+                                    ] },
+                                        { label: 'Target Account', entries: [
+                                            { condition: 'Switched to self deduction', lines: [{ view: 'Both views', text: '<target_user_name>' }] },
+                                        { condition: 'Switched to parent deduction', lines: [{ view: 'Both views', text: '<parent_user_name>' }] }
+                                    ] },
+                                        { label: 'Addition and Deduction', entries: [
+                                            { condition: 'Switched to self deduction', lines: [{ view: 'Target view', text: 'Addition = n', note: 'target meter balance value' }, { view: 'Actor view', text: 'Deduction = n', note: 'actor meter balance value' }] },
+                                        { condition: 'Switched to parent deduction', lines: [{ view: 'Target view', text: 'Deduction = n', note: 'target meter balance value' }, { view: 'Actor view', text: 'Addition = n', note: 'actor meter balance value' }] }
+                                    ] }
+                                    ]
+                                },
+                                {
+                                    title: 'Update Meter Balance',
+                                    rows: [
+                                        { label: 'Remarks', entries: [
+                                            { lines: [{ view: 'Target view', text: 'Meter Balance Update by: <actor_user_name>' }, { view: 'Parent view', text: 'Meter Balance Updated: <target_user_name>' }] }
+                                    ] },
+                                        { label: 'Target Account', entries: [
+                                            { condition: 'Deduction', lines: [{ view: 'Both views', text: '<parent_user_name>' }] },
+                                        { condition: 'Addition', lines: [{ view: 'Both views', text: '<target_user_name>' }] }
+                                    ] },
+                                        { label: 'Addition and Deduction', entries: [
+                                            { condition: 'Deduction', lines: [{ view: 'Actor view', text: 'Addition = n' }, { view: 'Target view', text: 'Deduction = n' }] },
+                                        { condition: 'Addition', lines: [{ view: 'Actor view', text: 'Deduction = n' }, { view: 'Target view', text: 'Addition = n' }] }
+                                    ] }
+                                    ]
+                                },
+                                {
+                                    title: 'Use Meter Balance',
+                                    rows: [
+                                        { label: 'Remarks', entries: [
+                                            { condition: 'Own candidate', lines: [{ text: 'Used to Score Assessment' }] },
+                                        { condition: 'Lower-hierarchy candidate', lines: [{ text: 'Used to Score Assessment: <consumer_user_name>' }] }
+                                    ] },
+                                        { label: 'Target Account', entries: [
+                                            { condition: 'Own candidate', lines: [{ text: '<own_user_name>' }] },
+                                        { condition: 'Lower-hierarchy candidate', lines: [{ text: '<consumer_user_name>' }] }
+                                    ] }
+                                    ]
+                                },
+                                {
+                                    title: 'Request Meter Approved',
+                                    rows: [
+                                        { label: 'Remarks', entries: [
+                                            { lines: [{ view: 'Target view', text: 'Received from <actor_user_name>' }, { view: 'Actor view', text: 'Sent to <target_user_name>' }] }
+                                    ] },
+                                        { label: 'Target Account', entries: [
+                                            { lines: [{ text: '<target_user_name>' }] }
+                                    ] },
+                                        { label: 'Addition and Deduction', entries: [
+                                            { lines: [{ view: 'Actor view', text: 'Deduction = n' }, { view: 'Target view', text: 'Addition = n' }] }
+                                    ] }
+                                    ]
+                                }
+                            ]
                             },
                             {
                                 id: 'resolution-paths-matrix',
