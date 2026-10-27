@@ -130,7 +130,119 @@
         return placeholder;
     }
 
+    function createGalleryArrowButton(direction) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'manual-image-gallery__arrow manual-image-gallery__arrow--' + direction;
+        button.setAttribute('aria-label', direction === 'previous' ? 'Previous screenshot' : 'Next screenshot');
+
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', 'currentColor');
+        svg.setAttribute('stroke-width', '2.5');
+        svg.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('stroke-linejoin', 'round');
+        svg.setAttribute('aria-hidden', 'true');
+
+        var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        chevron.setAttribute('d', direction === 'previous' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6');
+        svg.appendChild(chevron);
+        button.appendChild(svg);
+
+        return button;
+    }
+
+    function createImageGallery(imageList, sectionTitle) {
+        if (!imageList || imageList.length < 2) {
+            return createImageOrPlaceholder(imageList && imageList[0], sectionTitle);
+        }
+
+        var gallery = document.createElement('div');
+        gallery.className = 'manual-image-gallery';
+        gallery.setAttribute('role', 'region');
+        gallery.setAttribute('aria-roledescription', 'carousel');
+        gallery.setAttribute('aria-label', (sectionTitle || 'Feature') + ' screenshots');
+        gallery.tabIndex = 0;
+
+        var viewport = document.createElement('div');
+        viewport.className = 'manual-image-gallery__viewport';
+
+        var slideList = imageList.map(function (imageObj) {
+            var slide = createImageOrPlaceholder(imageObj, sectionTitle);
+            slide.classList.add('manual-image-gallery__slide');
+            viewport.appendChild(slide);
+            return slide;
+        });
+
+        var previousButton = createGalleryArrowButton('previous');
+        var nextButton = createGalleryArrowButton('next');
+        viewport.appendChild(previousButton);
+        viewport.appendChild(nextButton);
+        gallery.appendChild(viewport);
+
+        var footer = document.createElement('div');
+        footer.className = 'manual-image-gallery__footer';
+
+        var counter = document.createElement('span');
+        counter.className = 'manual-image-gallery__counter';
+        counter.setAttribute('aria-live', 'polite');
+
+        var dotList = document.createElement('div');
+        dotList.className = 'manual-image-gallery__dots';
+
+        var activeIndex = 0;
+
+        function showSlide(nextIndex) {
+            activeIndex = (nextIndex + slideList.length) % slideList.length;
+            slideList.forEach(function (slide, slideIndex) {
+                slide.hidden = slideIndex !== activeIndex;
+            });
+            Array.prototype.forEach.call(dotList.children, function (dot, dotIndex) {
+                if (dotIndex === activeIndex) {
+                    dot.setAttribute('aria-current', 'true');
+                } else {
+                    dot.removeAttribute('aria-current');
+                }
+            });
+            counter.textContent = (activeIndex + 1) + ' / ' + slideList.length;
+        }
+
+        slideList.forEach(function (slide, slideIndex) {
+            var dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'manual-image-gallery__dot';
+            dot.setAttribute('aria-label', 'Show screenshot ' + (slideIndex + 1) + ' of ' + slideList.length);
+            dot.addEventListener('click', function () {
+                showSlide(slideIndex);
+            });
+            dotList.appendChild(dot);
+        });
+
+        previousButton.addEventListener('click', function () {
+            showSlide(activeIndex - 1);
+        });
+        nextButton.addEventListener('click', function () {
+            showSlide(activeIndex + 1);
+        });
+        gallery.addEventListener('keydown', function (keyEvent) {
+            if (keyEvent.key === 'ArrowLeft') {
+                showSlide(activeIndex - 1);
+            } else if (keyEvent.key === 'ArrowRight') {
+                showSlide(activeIndex + 1);
+            }
+        });
+
+        footer.appendChild(dotList);
+        footer.appendChild(counter);
+        gallery.appendChild(footer);
+        showSlide(0);
+
+        return gallery;
+    }
+
     global.GoPickImageRenderer = {
-        createImageOrPlaceholder: createImageOrPlaceholder
+        createImageOrPlaceholder: createImageOrPlaceholder,
+        createImageGallery: createImageGallery
     };
 })(window);

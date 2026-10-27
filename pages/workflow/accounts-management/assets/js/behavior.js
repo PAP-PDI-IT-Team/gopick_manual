@@ -139,11 +139,13 @@
             this.store = new global.AccountsStore(this.content);
             this.renderer = new global.AccountsRenderer(this.store, global.GoPickImageRenderer);
             this.sidebar = new global.AccountsSidebarTracker(this.store);
+            this.screenshotViewer = new global.AccountsScreenshotViewer();
         }
 
         scrollToHash() {
             const id = (location.hash || '').replace('#', '');
             if (!id) return;
+            this.wizardCarousels.filter(carousel => carousel.hasStep(id)).forEach(carousel => carousel.showStep(id));
             const el = document.getElementById(id);
             if (el) {
                 this.sidebar.setActive(id);
@@ -161,6 +163,9 @@
         init() {
             setFooterYear();
             this.renderer.renderAll();
+            this.screenshotViewer.bindTo(document.querySelector('main'));
+            this.wizardCarousels = Array.from(document.querySelectorAll('.flow-step-panel')).map(panel => new global.AccountsWizardStepCarousel(panel));
+            this.wizardCarousels.forEach(carousel => carousel.init());
             this.sidebar.render();
             this.sidebar.bindListeners();
             populateRbacTable();

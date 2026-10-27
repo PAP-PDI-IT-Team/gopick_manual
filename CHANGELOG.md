@@ -19,13 +19,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a shared screenshot carousel to the image-card component with previous and next arrows, dot indicators, a position counter, and keyboard navigation; sections with a single screenshot render unchanged.
 - Added screenshot placeholders for the remaining Accounts Management wizard steps, update variants, configuration pages, search, row actions, and bulk actions.
 - Added Accounts Management screenshots for the Create Account wizard, the View Account tabs, View Accounts and Advanced Search, and Update Specific, each with blurred surroundings and an outlined focus area and with contact details redacted.
+- Added the Update Specific screenshots for the Account Information, Assigned Assessments, Meter Management, and Other Account Settings groups, each with a blurred surround, an outlined section card, an emphasized Update button, and personal values blurred.
+- Added the Create Account wizard step screenshots for Account Information, Assign Products, Meter Management, Other Account Settings, and Review Account Details, using carousels where a step spans two screens and blurring personal values on the review step.
 
 ### Changed
 
 - Added an opt-in browser-frame presentation for screenshot cards, enabled only on the Accounts Management page, with a window title bar, uncropped images, and no live-reference badge; other pages keep the existing card style.
 - Restored the Dashboard to its standard screenshot cards and page data consumed by its dedicated renderer.
 - Switched the Accounts Management renderer to the shared carousel so sections with multiple screenshots show them in one card.
+- Made the Accounts Management sidebar collapsible with a wider layout, a clearer active state, and softer inactive links.
+- Redesigned the Create Account wizard overview as flat content on the main panel with a journey track that brackets the five wizard steps and highlights the step shown in the carousel, an inline expected result, and Dev and QA notes in a popover, and made every Accounts Management screenshot open enlarged on click.
+- Rebuilt the Accounts Management View Accounts section on the wizard step design: a status legend and row action and page button groups as count-badged chip groups, with linked chips for each action.
+- Added the Account Detail screenshot with a blurred surround, an outlined focus area, and blurred personal values, and rebuilt the Account Detail section on the wizard step design with an access trail, page control chips, and a "What you see" panel that splits Return Button destinations from conditional fields.
+- Added the Update Account Information screenshots with a blurred surround, an outlined focus area, and blurred personal values, and rebuilt Update Account as a wizard overview with a four-step carousel, locked-input chips, a single How to use journey track that brackets the four wizard steps and highlights the step shown in the carousel, grouped guard-rail Rules taken from the Markdown, and Previous and Next controls.
+- Rendered the Review Account Details How to use as a linear, non-clickable journey track.
+- Reflowed the wizard Rules guard rails into two balanced columns with counted group headings, quieter field names, and highlighted limit values.
+- Added the Update Account wizard screenshots for Assign Products, Meter Management, and Other Account Settings with blurred surroundings and an outlined focus area, and blurred the account name.
+- Split the Accounts Management page stylesheet into sidebar, layout, flow overview, wizard, inputs, rules, journey, and screenshot viewer files with no visual change.
+- Added hover and focus tooltips to the View Accounts page buttons, taken from the Markdown descriptions.
+- Added the View Archived Accounts screenshot with a blurred surround and an outlined focus area, and removed the redundant Row Actions chip from the row action groups, leaving the row actions as direct links.
+- Rebuilt Update Specific on the wizard step design: an access trail, a notes popover with the password note recorded as a Dev note as in the Markdown, a How to use journey with a Section variants band linking to each section, a "When you save" result, and a four-variant carousel labeled "Variant N of 4" with input chips, grouped guard-rail Rules, and Previous and Next controls.
+- Rebuilt Privacy Consent on the wizard step design with an access trail, page control chips, a numbered How to use list, and a "When you save" result, and added its screenshot with a blurred surround, an outlined content area, an emphasized Save button, and the account name blurred.
+- Rebuilt Demographics on the wizard step design with an access trail, a notes popover, required and optional field chip groups, a numbered How to use list, Rules, and a "When you save" result, with its description, steps, rules, and expected results taken from the Markdown, and added its screenshot with a blurred surround, an outlined form, and an emphasized Save Changes button.
+- Rebuilt Assessment Completion Page on the wizard step design with an access trail, a notes popover, page control chips, a numbered How to use list, Rules, and a "When you save" result, with its description, steps, rules, and expected results taken from the Markdown, and added its screenshot with a blurred surround, an outlined content area, an emphasized Save button, and the account name blurred.
+- Rebuilt Assessment Center Logo on the wizard step design with an access trail, a notes popover, page control chips, a numbered How to use list, Rules, and a "When you save" result, with its description, steps, rules, and expected results taken from the Markdown, and added its screenshot with a blurred surround, an outlined content area, an emphasized Save button, and the account name blurred.
+- Added `docs/guides/ui-dna.md`, a reusable reference for applying the Create Account flow design to other manual sections.
 - Moved the Dashboard and Accounts Management Tailwind configuration into an external shared script, preserving their existing brand colors and load order.
+- Added the Unblock Account, Manage Assigned Assessment, Search, Advanced Search, View Active Account listing, View Archived Account, Update Account Row Action, Archive, Restore, and Bulk Action Archive, Delete, and Restore screenshots with a blurred surround, an outlined content card, an emphasized Unblock Account option or Save button, and personal values blurred, and rebuilt Unblock Account, Manage Assigned Assessment, Search, Advanced Search, the row actions, and the bulk actions on the view panel design with pending screenshot placeholders, and moved the View Active Account and View Archived Account visible content and conditional results into the Markdown.
+- Rendered every Accounts Management How to use as a horizontal numbered journey, replacing the vertical step list, which stacks vertically below 768px.
+- Removed the Advanced Search dialog screenshot from the View Accounts listing section, which keeps the listing screenshot; Advanced Search has its own screenshot.
 
 ## [1.2.0] - 2026-08-24
 
