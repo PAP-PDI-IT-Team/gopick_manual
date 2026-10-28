@@ -6,7 +6,7 @@
 
 .flow-step-panel__item {
     position: relative;
-    padding: 0 0 56px 36px;
+    padding: 0 0 48px 36px;
 }
 
 .flow-step-panel__item::before {
@@ -42,7 +42,7 @@
 .flow-step {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
 .flow-step__header {

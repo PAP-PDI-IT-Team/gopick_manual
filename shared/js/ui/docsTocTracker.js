@@ -4,7 +4,7 @@
     const DESKTOP_TOC_QUERY = '(min-width: 1280px)';
     const HEADER_OFFSET = 140;
 
-    class AccountsSidebarTracker {
+    class DocsTocTracker {
         constructor(store, rootListId = 'docsTocList', disclosureId = 'docsPageToc') {
             this.store = store;
             this.rootListId = rootListId;
@@ -16,7 +16,7 @@
 
         getRootList() {
             const rootList = document.getElementById(this.rootListId);
-            if (!rootList) throw new Error('AccountsSidebarTracker: missing #' + this.rootListId);
+            if (!rootList) throw new Error('DocsTocTracker: missing #' + this.rootListId);
             return rootList;
         }
 
@@ -201,6 +201,28 @@
             }
         }
 
+        alignHashTarget(targetId, behavior) {
+            const element = document.getElementById(targetId);
+            if (!element) return;
+            element.scrollIntoView({ block: 'start', behavior: behavior });
+        }
+
+        scrollToHash() {
+            const targetId = (location.hash || '').replace('#', '');
+            if (!targetId || !document.getElementById(targetId)) return;
+            this.setActive(targetId);
+            this.isProgrammaticScroll = true;
+            const realign = () => this.alignHashTarget(targetId, 'auto');
+            setTimeout(() => {
+                this.alignHashTarget(targetId, 'smooth');
+                setTimeout(() => {
+                    this.isProgrammaticScroll = false;
+                }, 400);
+            }, 30);
+            document.fonts.ready.then(realign);
+            if (document.readyState !== 'complete') window.addEventListener('load', realign, { once: true });
+        }
+
         closeMobileDisclosure() {
             const disclosure = document.getElementById(this.disclosureId);
             if (disclosure && !window.matchMedia(DESKTOP_TOC_QUERY).matches) disclosure.open = false;
@@ -208,7 +230,7 @@
 
         bindDisclosure() {
             const disclosure = document.getElementById(this.disclosureId);
-            if (!disclosure) throw new Error('AccountsSidebarTracker: missing #' + this.disclosureId);
+            if (!disclosure) throw new Error('DocsTocTracker: missing #' + this.disclosureId);
             const desktopQuery = window.matchMedia(DESKTOP_TOC_QUERY);
             const syncDisclosure = () => {
                 disclosure.open = desktopQuery.matches;
@@ -238,5 +260,5 @@
         }
     }
 
-    global.AccountsSidebarTracker = AccountsSidebarTracker;
+    global.DocsTocTracker = DocsTocTracker;
 })(window);

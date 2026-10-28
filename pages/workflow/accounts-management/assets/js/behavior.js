@@ -138,37 +138,13 @@
             this.content = global.__accountsContent || {};
             this.store = new global.AccountsStore(this.content);
             this.renderer = new global.AccountsRenderer(this.store, global.GoPickImageRenderer);
-            this.sidebar = new global.AccountsSidebarTracker(this.store);
+            this.sidebar = new global.DocsTocTracker(this.store);
             this.screenshotViewer = new global.AccountsScreenshotViewer();
-        }
-
-        scrollToHash() {
-            const targetId = (location.hash || '').replace('#', '');
-            if (!targetId) return;
-            const element = document.getElementById(targetId);
-            if (element) {
-                this.sidebar.setActive(targetId);
-                this.sidebar.isProgrammaticScroll = true;
-                setTimeout(() => {
-                    element.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    element.focus && element.focus();
-                    setTimeout(() => {
-                        this.sidebar.isProgrammaticScroll = false;
-                    }, 400);
-                }, 30);
-            }
-        }
-
-        initializeShell() {
-            global.sharedDocsSidebar.init();
-            return global.sharedDataLoader.init().then(data => {
-                global.sharedDocsPageTree.init(data);
-            });
         }
 
         initialize() {
             setFooterYear();
-            this.initializeShell().catch(error => {
+            global.sharedDocsPageShell.init().catch(error => {
                 console.error('Error loading documentation navigation:', error);
             });
             this.renderer.renderAll();
@@ -181,7 +157,7 @@
             global.sharedDocsReveal.init('.docs-page-body > .flat-section, .docs-page-body .flat-subsection, .docs-page-body .flow-overview, .docs-page-body .flow-step');
 
             if (location.hash) {
-                this.scrollToHash();
+                this.sidebar.scrollToHash();
             } else {
                 this.sidebar.updateScrollSpy();
             }

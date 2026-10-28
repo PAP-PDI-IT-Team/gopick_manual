@@ -5,7 +5,7 @@
 }
 
 .flow-overview + .flow-overview {
-    margin-top: 72px;
+    margin-top: 64px;
 }
 
 .flow-overview__header {
@@ -165,28 +165,19 @@
 }
 
 .flow-notes__panel {
-    --caret-x: 85%;
     position: fixed;
     inset: auto;
     margin: 0;
-    width: min(23rem, calc(100vw - 2rem));
+    width: min(22rem, calc(100vw - 2rem));
     padding: 0;
-    overflow: visible;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     border: 0;
     border-radius: 10px;
     background: var(--ink-field);
     color: var(--on-ink);
-}
-
-.flow-notes__panel::before {
-    content: "";
-    position: absolute;
-    top: -7px;
-    left: calc(var(--caret-x) - 7px);
-    width: 14px;
-    height: 14px;
-    background: #27272a;
-    transform: rotate(45deg);
+    font-size: var(--step-small);
+    line-height: 1.5;
 }
 
 .flow-notes__panel:popover-open {
@@ -199,13 +190,15 @@
 }
 
 .flow-notes__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 10px 8px 10px 18px;
+    padding: 6px 6px 6px 16px;
     background: #27272a;
-    border-radius: 10px 10px 0 0;
 }
 
 .flow-notes__title {
@@ -217,15 +210,17 @@
 
 .flow-notes__close {
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border: 0;
     border-radius: var(--radius);
     background: transparent;
     color: var(--on-ink-soft);
     cursor: pointer;
+    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
 }
 
 .flow-notes__close:hover {
@@ -244,44 +239,45 @@
 }
 
 .flow-notes__group {
-    padding: 14px 18px 16px;
+    padding: 12px 16px;
 }
 
 .flow-notes__group + .flow-notes__group {
-    padding-top: 0;
+    padding-top: 4px;
+}
+
+.flow-notes__group:last-child {
+    padding-bottom: 16px;
 }
 
 .flow-notes__tag {
-    display: block;
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     color: var(--on-ink-soft);
     font-size: var(--step-small);
     font-weight: 500;
 }
 
 .flow-notes__list {
+    display: grid;
+    gap: 4px;
     margin: 0;
     padding: 0;
     list-style: none;
-    display: grid;
-    gap: 8px;
 }
 
 .flow-notes__item {
     position: relative;
-    padding-left: 16px;
-    font-size: var(--step-body);
-    line-height: 1.5;
+    padding-left: 14px;
     color: var(--on-ink);
 }
 
 .flow-notes__item::before {
     content: "";
     position: absolute;
-    left: 2px;
-    top: 0.6em;
-    width: 6px;
-    height: 6px;
+    left: 1px;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--accent);
 }

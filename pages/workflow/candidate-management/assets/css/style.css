@@ -1,4 +1,67 @@
-/* Minimal base styles for Candidate Management page */
-:root {
-    --brand: #e50914;
+/* ==================== Content Blocks ==================== */
+
+.candidate-block {
+    display: grid;
+    gap: 20px;
+    margin-top: 64px;
+}
+
+.candidate-block--top {
+    margin-top: 0;
+}
+
+.candidate-block > .candidate-block {
+    margin-top: 40px;
+    padding-left: 20px;
+    border-left: 4px solid var(--tone-1);
+}
+
+.candidate-block:not([id]):not(.candidate-block--top) {
+    gap: 0;
+}
+
+.candidate-block__title {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.candidate-block__title--h3 {
+    font-size: var(--step-lead);
+}
+
+.candidate-block__title--h4 {
+    font-size: var(--step-body);
+}
+
+.candidate-block__title:focus {
+    outline: none;
+}
+
+.candidate-block__lead {
+    max-width: 68ch;
+    margin: -8px 0 0;
+}
+
+.flat-section__title + .candidate-block .candidate-block__lead {
+    margin-top: -16px;
+}
+
+.candidate-access {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+}
+
+.candidate-groups {
+    display: grid;
+}
+
+.candidate-block .flat-callout {
+    margin-top: 0;
+}
+
+.candidate-block .docs-group .flat-callout {
+    margin-top: 12px;
 }

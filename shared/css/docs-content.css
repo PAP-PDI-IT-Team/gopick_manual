@@ -4,7 +4,7 @@
     --rules-mark: #b45309;
     --result-mark: #047857;
     --result-ink: #065f46;
-    --content-gap: 28px;
+    --content-gap: 24px;
 }
 
 
@@ -19,11 +19,11 @@
 }
 
 .flat-section:first-child {
-    margin-top: 56px;
+    margin-top: 48px;
 }
 
 .flat-section__title {
-    margin: 0 0 32px;
+    margin: 0 0 24px;
     font-size: var(--step-heading);
     font-weight: 600;
     line-height: 1.15;
@@ -40,7 +40,7 @@
 }
 
 .flat-subsection {
-    margin-top: 72px;
+    margin-top: 64px;
 }
 
 .flat-subsection__title {
@@ -112,6 +112,7 @@
 .flat-list {
     display: grid;
     gap: 8px;
+    max-width: 64ch;
     margin: 12px 0 0;
     padding: 0;
     list-style: none;
@@ -172,7 +173,7 @@
 
 .flat-callout {
     margin-top: 24px;
-    padding: 20px 24px;
+    padding: 16px 20px;
     border-radius: var(--radius);
     background: var(--tone-1);
 }
@@ -193,4 +194,154 @@
 
 .flat-callout .flat-list {
     margin-top: 8px;
+}
+
+
+/* ==================== Access Path ==================== */
+
+.docs-access {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.docs-access__label {
+    color: var(--ink-soft);
+}
+
+.docs-access__step {
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.docs-access__step + .docs-access__step::before {
+    content: '\203A';
+    margin-right: 8px;
+    color: var(--ink-soft);
+    font-weight: 400;
+}
+
+
+/* ==================== Section Lead ==================== */
+
+.docs-section-lead {
+    max-width: 68ch;
+    margin: -16px 0 0;
+}
+
+
+/* ==================== Input Chips ==================== */
+
+.docs-group + .docs-group {
+    margin-top: 24px;
+}
+
+.docs-group__title {
+    margin: 0 0 10px;
+    font-size: var(--step-body);
+    font-weight: 600;
+}
+
+.docs-group .flat-list {
+    margin-top: 0;
+}
+
+.docs-chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.docs-chips__item {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    background: var(--tone-1);
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.docs-chips--required .docs-chips__item::after {
+    content: '*';
+    margin-left: 4px;
+    color: var(--accent-press);
+    font-weight: 600;
+}
+
+.docs-chips--locked .docs-chips__item,
+.docs-chips--defaulted .docs-chips__item {
+    background: var(--tone-2);
+}
+
+.docs-chips--locked .docs-chips__item {
+    color: var(--ink-soft);
+}
+
+.docs-chips--conditional .docs-chips__item {
+    gap: 8px;
+}
+
+.docs-chips--conditional .docs-chips__item::before {
+    content: '';
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rules-mark);
+}
+
+
+/* ==================== Steps ==================== */
+
+.docs-steps {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: docs-step;
+}
+
+.docs-steps__item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    counter-increment: docs-step;
+}
+
+.docs-steps__item::before {
+    content: counter(docs-step);
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--tone-2);
+    font-size: var(--step-small);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 1024px) {
+    .docs-steps {
+        display: block;
+        columns: 2;
+        column-gap: 40px;
+    }
+
+    .docs-steps__item {
+        break-inside: avoid;
+        padding: 3px 0;
+    }
 }

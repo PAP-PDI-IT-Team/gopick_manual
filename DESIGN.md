@@ -504,13 +504,14 @@ Manual pages are moving to a documentation shell modeled on the Fumadocs docs la
 - the page in the middle, with a breadcrumb, a large title, and previous/next links at the end;
 - the page's own section tree on the right ("On this page").
 
-`pages/workflow/accounts-management/` is the first page on it. `ui-dna.md` tracks the migration and holds the checklist for the next page.
+Accounts, Dashboard and Candidates are on it. `ui-dna.md` tracks the migration and holds the checklist for the next page.
 
 Shared owners:
 - `shared/css/docs-shell.css`: tokens, base, header, layout, footer, motion.
 - `shared/css/docs-navigation.css`: drawer, search dialog.
 - `shared/css/docs-page.css`: page grid, breadcrumb, folders, "On this page", pager.
-- `shared/js/ui/docsSidebar.js`, `shared/js/ui/docsPageTree.js`, `shared/js/ui/docsReveal.js`.
+- `shared/css/docs-content.css`: section rhythm, lists, links, callouts, access path, input chips, numbered steps.
+- `shared/js/ui/docsSidebar.js`, `docsPageTree.js`, `docsPageShell.js`, `docsTocTracker.js`, `docsReveal.js`.
 - The `docsNav` list in `shared/data/gopick-data.json` is the single source for the tree, breadcrumb and pager.
 
 ### Tokens
@@ -528,7 +529,7 @@ Tokens are scoped to `.docs-shell` and use zinc neutrals in place of slate.
 | `--accent-press` | `#b3060f` | Required asterisk, red text on white |
 | `--radius` | `6px` | One radius for surfaces and controls |
 
-Accounts adds the page tokens `--rules-mark` (`#b45309`) and `--result-mark` (`#047857`) for the 4px marker bars on Rules and Expected Result callouts.
+`docs-content.css` adds `--rules-mark` (`#b45309`) and `--result-mark` (`#047857`) for the 4px marker bars on Rules and Expected Result callouts.
 
 ### Type
 One family, **Geist** (weights 400/500/600), in five sizes:

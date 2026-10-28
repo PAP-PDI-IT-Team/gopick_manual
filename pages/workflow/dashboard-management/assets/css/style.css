@@ -1,10 +1,92 @@
-/* Minimal base styles for Dashboard Management page - Tailwind handles most styling */
-:root {
-    --brand: #e50914;
+/* ==================== Access ==================== */
+
+.dashboard-access {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
 }
 
-a:focus-visible {
-    outline: 3px solid rgba(34, 139, 230, 0.4);
-    outline-offset: 2px;
-    border-radius: 2px;
+
+/* ==================== Metrics ==================== */
+
+.dashboard-metrics {
+    margin: 0;
+}
+
+.dashboard-metrics__row {
+    display: grid;
+    gap: 4px;
+    padding: 16px 14px;
+    border-radius: var(--radius);
+}
+
+.dashboard-metrics__row:nth-child(odd) {
+    background: var(--tone-1);
+}
+
+.dashboard-metrics__label {
+    font-weight: 600;
+}
+
+.dashboard-metrics__detail {
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .dashboard-metrics__row {
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 24px;
+    }
+}
+
+
+/* ==================== Quick Navigation ==================== */
+
+.dashboard-groups {
+    display: grid;
+    gap: 32px;
+}
+
+.dashboard-group__title {
+    margin: 0 0 10px;
+    font-size: var(--step-body);
+    font-weight: 600;
+}
+
+.dashboard-group .flat-list {
+    margin-top: 0;
+}
+
+.dashboard-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dashboard-links__item {
+    display: grid;
+    gap: 2px;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    background: var(--tone-1);
+}
+
+.dashboard-links__title {
+    font-weight: 500;
+}
+
+.dashboard-links__kind {
+    color: var(--ink-soft);
+    font-size: var(--step-small);
+}
+
+@media (min-width: 768px) {
+    .dashboard-groups {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px 48px;
+    }
 }

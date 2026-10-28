@@ -116,21 +116,41 @@
                     panel.appendChild(group);
                 });
 
+                const positionPanel = () => this.positionNotesPanel(panel, trigger);
                 panel.addEventListener('toggle', toggleEvent => {
                     const isOpen = toggleEvent.newState === 'open';
                     trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                    if (!isOpen) return;
-                    const triggerRect = trigger.getBoundingClientRect();
-                    const panelWidth = panel.offsetWidth;
-                    const leftOffset = Math.max(16, Math.min(triggerRect.right - panelWidth, window.innerWidth - panelWidth - 16));
-                    panel.style.top = (triggerRect.bottom + 10) + 'px';
-                    panel.style.left = leftOffset + 'px';
-                    panel.style.setProperty('--caret-x', (triggerRect.left + triggerRect.width / 2 - leftOffset) + 'px');
+                    if (isOpen) {
+                        positionPanel();
+                        window.addEventListener('scroll', positionPanel, { passive: true });
+                        window.addEventListener('resize', positionPanel);
+                    } else {
+                        window.removeEventListener('scroll', positionPanel);
+                        window.removeEventListener('resize', positionPanel);
+                    }
                 });
 
                 wrapper.appendChild(trigger);
                 wrapper.appendChild(panel);
                 return wrapper;
+            },
+
+            positionNotesPanel(panel, trigger) {
+                const VIEWPORT_GAP = 16;
+                const TRIGGER_GAP = 10;
+                const triggerRect = trigger.getBoundingClientRect();
+                const panelWidth = panel.offsetWidth;
+                const leftOffset = Math.max(VIEWPORT_GAP, Math.min(triggerRect.right - panelWidth, window.innerWidth - panelWidth - VIEWPORT_GAP));
+                const spaceBelow = window.innerHeight - triggerRect.bottom - TRIGGER_GAP - VIEWPORT_GAP;
+                const spaceAbove = triggerRect.top - TRIGGER_GAP - VIEWPORT_GAP;
+                const opensAbove = spaceBelow < Math.min(panel.scrollHeight, 320) && spaceAbove > spaceBelow;
+                const availableHeight = Math.max(160, opensAbove ? spaceAbove : spaceBelow);
+
+                panel.style.maxHeight = availableHeight + 'px';
+                panel.style.left = leftOffset + 'px';
+                panel.style.top = opensAbove
+                    ? Math.max(VIEWPORT_GAP, triggerRect.top - TRIGGER_GAP - Math.min(panel.scrollHeight, availableHeight)) + 'px'
+                    : (triggerRect.bottom + TRIGGER_GAP) + 'px';
             },
 
             createExpectedLine(expectedItems, labelText) {

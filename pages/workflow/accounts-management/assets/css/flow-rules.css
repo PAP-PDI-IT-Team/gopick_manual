@@ -1,5 +1,5 @@
 .flow-rules {
-    padding: 20px 24px;
+    padding: 16px 20px;
     border-left: 4px solid var(--rules-mark);
     border-radius: var(--radius);
     background: var(--tone-1);
@@ -78,7 +78,7 @@
 }
 
 .flow-outcome {
-    padding: 20px 24px;
+    padding: 16px 20px;
     border-left: 4px solid var(--result-mark);
     border-radius: var(--radius);
     background: var(--tone-1);

@@ -7,9 +7,9 @@ Working reference for moving a manual page onto the Docs Shell. `pages/workflow/
 | Page | Shell | Content blocks | Inspector |
 |---|---|---|---|
 | Accounts | Done | Done | 0 FAIL at 1440, 768, 390 |
-| Candidates | Pending | Pending | Not run |
+| Dashboard | Done | Done | 0 FAIL (`few-pictures` allowed: the data has two screenshots) |
+| Candidates | Done | Done | 0 FAIL (`few-pictures` allowed: all screenshots are pending placeholders) |
 | Meters | Pending | Pending | Not run |
-| Dashboard | Pending | Pending | Not run |
 | Assessments | Pending | Pending | Not run |
 | Reports | Pending | Pending | Not run |
 | Users | Pending | Pending | Not run |
@@ -27,7 +27,9 @@ Working reference for moving a manual page onto the Docs Shell. `pages/workflow/
 | Drawer (below 1024px) | `#docsSidebarToggle`, `#docsSidebarBackdrop` | `shared/js/ui/docsSidebar.js`, `shared/css/docs-navigation.css` |
 | Breadcrumb | `ol#docsBreadcrumb` (group, then page) | `docsPageTree.js` |
 | Title and description | `h1` and `p` inside `header.docs-page-header` | Page HTML, filled by the page renderer |
-| On this page | `details#docsPageToc` > `ul#docsTocList` | Page tracker (Accounts: `assets/js/sidebarTracker.js`), `docs-page.css` |
+| On this page | `details#docsPageToc` > `ul#docsTocList` | `shared/js/ui/docsTocTracker.js` (`DocsTocTracker`), `docs-page.css` |
+| Shell boot | Drawer, data load, page tree | `shared/js/ui/docsPageShell.js` |
+| Shared content blocks | Section rhythm, lists, links, callouts, access path, input chips, numbered steps | `shared/css/docs-content.css` |
 | Content | `div.docs-page-body` with the page's `<section id>` blocks | Page renderers and page CSS |
 | Pager | `nav#docsPager` (previous and next in `docsNav` order) | `docsPageTree.js` |
 | Footer | `footer.docs-footer` inside the content column | `docs-shell.css` |
@@ -81,13 +83,13 @@ The shared tokens are defined on `.docs-shell` in `shared/css/docs-shell.css`:
 - `--ground`, `--tone-1`, `--tone-2`, `--ink`, `--ink-soft`, `--ink-field`, `--accent`, `--accent-press`, `--radius`;
 - five type steps: display, heading, lead, body, small.
 
-Page-level additions (Accounts `assets/css/style.css`): `--rules-mark`, `--result-mark`, `--result-ink`, `--content-gap`.
+Content tokens in `shared/css/docs-content.css`: `--rules-mark`, `--result-mark`, `--result-ink`, `--content-gap`.
 
 Use tokens only. Do not reintroduce slate hex values, Tailwind border or shadow utilities, or `text-xs uppercase tracking-*` labels in renderers.
 
 ## Behavior Contract
 
-- **Section tracker:** renders the page's section tree into `#docsTocList`.
+- **Section tracker:** `new DocsTocTracker(store)` renders the page store's `getSections()` tree into `#docsTocList`.
   - Active link: `aria-current="location"`.
   - It dispatches `docsectionchange` (`detail.sectionId`) on `document` whenever the active section changes.
 - **Journey highlight:** journeys listen for `docsectionchange` and set `aria-current="step"` on the matching stop.
@@ -104,10 +106,10 @@ Use tokens only. Do not reintroduce slate hex values, Tailwind border or shadow 
    Drop `site-shell.css` and page layout or sidebar CSS.
 3. Replace the header, sidebar and hero markup with the anatomy above. Keep every section `id`, the content container IDs, and the section order.
 4. Set the body contract attributes and confirm the page is listed in `docsNav`.
-5. Point the page tracker at `#docsTocList` and `#docsPageToc`, use `aria-current="location"`, and dispatch `docsectionchange`.
-6. Boot the shell from the page app: `sharedDocsSidebar.init()`, then `sharedDataLoader.init()` and `sharedDocsPageTree.init(data)`, then `sharedDocsReveal.init(<section selector>)`.
-7. Replace Tailwind presentation classes in renderers with BEM classes, and restyle the page CSS to tokens.
-8. Remove `manualNav.js` and any carousel-only scripts once nothing calls them.
+5. Replace the page's own sidebar tracker with `new DocsTocTracker(this.store)` and delete the page tracker file.
+6. Boot the shell from the page app: `sharedDocsPageShell.init()` (drawer, data, page tree), then `sharedDocsReveal.init(<section selector>)` after rendering.
+7. Replace Tailwind presentation classes in renderers with the shared `docs-content.css` classes (`flat-section__title`, `flat-list`, `flat-callout--rules|result|notes`, `docs-access`, `docs-chips--<kind>`, `docs-steps`). Keep page CSS only for page-specific compositions.
+8. Remove `manualNav.js` and any carousel-only scripts once nothing calls them. Keep `manualNav.js` when the page's data contains "Verification is needed": it highlights that phrase inside `#docsContent` or `#section-render-root`.
 9. Gate:
    - run `lint.mjs` on the changed files;
    - run `inspect.mjs` to 0 FAIL at 1440, 768 and 390, and read every screenshot.
