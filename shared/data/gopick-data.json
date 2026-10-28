@@ -36,7 +36,9 @@
     {
       "index": 5,
       "title": "Test Norms",
-      "description": "This feature has not been recorded yet. Document details will be added later."
+      "description": "Norms are used to evaluate test results, provide narratives, and rank test results.",
+      "icon": "bar-chart",
+      "target": "test-norms"
     },
     {
       "index": 6,

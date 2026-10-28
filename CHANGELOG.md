@@ -5,6 +5,18 @@ All notable changes to the GoPick Assessment Center Manual will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-10-26
+
+### Added
+
+- Added the initial Test Norms manual and page with Search Test Norm and Upload Test Norms sections, linked from the home page and global search.
+- Added Search Test Norm subsections for search, company filtering, archived norms, and row functions for viewing, editing, downloading, and archiving a norm.
+- Documented Upload Test Norms with its access path, four required inputs, screenshot placeholder, and Next action.
+
+### Changed
+
+- Renamed short local identifiers in shared documentation search to satisfy the required naming check, preserving its public API and search behavior.
+
 ## [1.4.0] - 2026-10-21
 
 ### Added

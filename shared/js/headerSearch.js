@@ -71,6 +71,14 @@
             docUrl: '../../docs/workflow/activity-log-management.md'
         },
         {
+            pageTitle: 'Test Norms',
+            pageUrl: '../../pages/workflow/test-norms/index.html',
+            docUrl: '../../docs/workflow/test-norms.md',
+            anchorAliases: {
+                'upload-test-norms': 'upload-test-norm'
+            }
+        },
+        {
             pageTitle: 'Assessment Management',
             pageUrl: '../../pages/workflow/assessment-management/index.html',
             docUrl: '../../docs/workflow/assessment-management.md'
@@ -143,8 +151,8 @@
         return new URL(relativePath, scriptUrl || document.baseURI).toString();
     }
 
-    function slugify(text) {
-        return String(text || '')
+    function slugify(sourceText) {
+        return String(sourceText || '')
             .toLowerCase()
             .replace(/&/g, ' and ')
             .replace(/[^a-z0-9]+/g, '-')
@@ -158,8 +166,8 @@
         return resolveAssetUrl(source.pageUrl) + '#' + resolvedId;
     }
 
-    function cleanMarkdownLine(line) {
-        return String(line || '')
+    function cleanMarkdownLine(sourceLine) {
+        return String(sourceLine || '')
             .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
             .replace(/`([^`]+)`/g, '$1')
             .replace(/\*\*([^*]+)\*\*/g, '$1')
@@ -179,8 +187,8 @@
         var currentSection = null;
         var sections = [];
 
-        lines.forEach(function (line) {
-            var headingMatch = line.match(/^(#{1,6})\s+(.*)$/);
+        lines.forEach(function (sourceLine) {
+            var headingMatch = sourceLine.match(/^(#{1,6})\s+(.*)$/);
             if (headingMatch) {
                 var level = headingMatch[1].length;
                 var headingText = cleanMarkdownLine(headingMatch[2]);
@@ -213,7 +221,7 @@
 
             if (!currentSection) return;
 
-            var cleaned = cleanMarkdownLine(line);
+            var cleaned = cleanMarkdownLine(sourceLine);
             if (!cleaned) return;
             currentSection.textParts.push(cleaned);
         });
@@ -234,8 +242,8 @@
         });
     }
 
-    function cleanHtmlText(html) {
-        return String(html || '')
+    function cleanHtmlText(sourceHtml) {
+        return String(sourceHtml || '')
             .replace(/<script[\s\S]*?<\/script>/gi, ' ')
             .replace(/<style[\s\S]*?<\/style>/gi, ' ')
             .replace(/<[^>]+>/g, ' ')
@@ -247,14 +255,14 @@
             .trim();
     }
 
-    function extractHtmlSections(html, source) {
-        var pageTitleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+    function extractHtmlSections(sourceHtml, source) {
+        var pageTitleMatch = sourceHtml.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
         var pageTitle = pageTitleMatch ? cleanHtmlText(pageTitleMatch[1]) : source.pageTitle;
         var sections = [];
         var sectionPattern = /<section\b[^>]*\bid=["']([^"']+)["'][^>]*>([\s\S]*?)<\/section>/gi;
         var sectionMatch;
 
-        while ((sectionMatch = sectionPattern.exec(html)) !== null) {
+        while ((sectionMatch = sectionPattern.exec(sourceHtml)) !== null) {
             var sectionId = sectionMatch[1];
             var sectionHtml = sectionMatch[2];
             var headingMatch = sectionHtml.match(/<h[2-6][^>]*>([\s\S]*?)<\/h[2-6]>/i);
@@ -263,14 +271,14 @@
             var sectionTitle = cleanHtmlText(headingMatch[1]);
             if (!sectionTitle || !isSearchSectionHeading(sectionTitle)) continue;
 
-            var body = cleanHtmlText(sectionHtml);
+            var sectionBody = cleanHtmlText(sectionHtml);
             sections.push({
                 pageTitle: pageTitle,
                 sectionTitle: sectionTitle,
                 level: 2,
                 url: resolveAssetUrl(source.pageUrl) + '#' + sectionId,
-                body: body,
-                searchText: (pageTitle + ' ' + sectionTitle + ' ' + body).toLowerCase()
+                body: sectionBody,
+                searchText: (pageTitle + ' ' + sectionTitle + ' ' + sectionBody).toLowerCase()
             });
         }
 
@@ -305,8 +313,8 @@
                     if (!response.ok) throw new Error('Failed to load ' + source.pageUrl);
                     return response.text();
                 })
-                .then(function (html) {
-                    return extractHtmlSections(html, source);
+                .then(function (sourceHtml) {
+                    return extractHtmlSections(sourceHtml, source);
                 });
 
             return Promise.all([markdownRequest, pageRequest]).then(function (sourceResults) {
@@ -325,11 +333,11 @@
         var score = 0;
         var sectionTitle = entry.sectionTitle.toLowerCase();
         var pageTitle = entry.pageTitle.toLowerCase();
-        var body = entry.body.toLowerCase();
+        var sectionBody = entry.body.toLowerCase();
 
         if (sectionTitle.indexOf(query) !== -1) score += 6;
         if (pageTitle.indexOf(query) !== -1) score += 4;
-        if (body.indexOf(query) !== -1) score += 2;
+        if (sectionBody.indexOf(query) !== -1) score += 2;
         if (entry.searchText.indexOf(query) === 0) score += 1;
 
         return score;
@@ -346,16 +354,16 @@
                     score: scoreEntry(entry, normalized)
                 };
             })
-            .filter(function (item) {
-                return item.score > 0;
+            .filter(function (scoredEntry) {
+                return scoredEntry.score > 0;
             })
-            .sort(function (left, right) {
-                if (right.score !== left.score) return right.score - left.score;
-                return left.entry.sectionTitle.localeCompare(right.entry.sectionTitle);
+            .sort(function (leftEntry, right) {
+                if (right.score !== leftEntry.score) return right.score - leftEntry.score;
+                return leftEntry.entry.sectionTitle.localeCompare(right.entry.sectionTitle);
             })
             .slice(0, 12)
-            .map(function (item) {
-                return item.entry;
+            .map(function (scoredEntry) {
+                return scoredEntry.entry;
             });
     }
 
@@ -414,13 +422,13 @@
         elements.status.textContent = targets.length + ' result' + (targets.length === 1 ? '' : 's') + ' found.';
 
         targets.forEach(function (target) {
-            var link = document.createElement('a');
-            link.href = target.url;
-            link.className = 'block rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-brand hover:bg-red-50';
+            var resultLink = document.createElement('a');
+            resultLink.href = target.url;
+            resultLink.className = 'block rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-brand hover:bg-red-50';
 
-            var page = document.createElement('div');
-            page.className = 'text-xs font-bold uppercase tracking-wide text-brand';
-            page.textContent = target.pageTitle;
+            var pageLabel = document.createElement('div');
+            pageLabel.className = 'text-xs font-bold uppercase tracking-wide text-brand';
+            pageLabel.textContent = target.pageTitle;
 
             var section = document.createElement('div');
             section.className = 'mt-1 text-sm font-semibold text-slate-900';
@@ -430,10 +438,10 @@
             preview.className = 'mt-2 text-sm text-slate-500 leading-relaxed';
             preview.textContent = target.body.slice(0, 180) + (target.body.length > 180 ? '...' : '');
 
-            link.appendChild(page);
-            link.appendChild(section);
-            link.appendChild(preview);
-            elements.results.appendChild(link);
+            resultLink.appendChild(pageLabel);
+            resultLink.appendChild(section);
+            resultLink.appendChild(preview);
+            elements.results.appendChild(resultLink);
         });
     }
 
@@ -443,7 +451,7 @@
         var headerRow = header.querySelector('div');
         if (!headerRow) return;
 
-        var nav = header.querySelector('nav');
+        var headerNavigation = header.querySelector('nav');
         var navToggle = header.querySelector('#navToggle');
         var elements = createSearchShell();
         var activeElementBeforeOpen = null;
@@ -522,8 +530,8 @@
             rightCluster = document.createElement('div');
             rightCluster.className = 'header-search-cluster ml-auto flex items-center gap-3';
 
-            if (nav && nav.parentNode === headerRow) {
-                rightCluster.appendChild(nav);
+            if (headerNavigation && headerNavigation.parentNode === headerRow) {
+                rightCluster.appendChild(headerNavigation);
             }
 
             rightCluster.appendChild(elements.shell);
@@ -538,7 +546,7 @@
         }
     }
 
-    function init() {
+    function initialize() {
         var homeLogoLink = document.querySelector('a[aria-label="GoPick home"]');
         if (homeLogoLink) {
             homeLogoLink.addEventListener('click', function (event) {
@@ -552,12 +560,12 @@
     }
 
     global.sharedHeaderSearch = {
-        init: init
+        init: initialize
     };
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', initialize);
     } else {
-        init();
+        initialize();
     }
 })(window);
