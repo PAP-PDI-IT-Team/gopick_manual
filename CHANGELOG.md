@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a shared block renderer (`docsBlockRenderer.js`, `docsBlockPage.js`, `docsContentStore.js`) that renders Reports, Users, Roles and Permissions, Activity Log, Advisory, Resource Center, Meters Governance, Manual Guides, Page Structure v3 and Dev Rules from content-only `dataFiller.js` files.
 - Added a floating red menu button in the bottom-right corner below 1024px; it turns into a close button while the documentation drawer is open.
 - Added loading skeletons to the sidebar, title arrows, On this page, pager, content and screenshots, with a short message when navigation data cannot load.
+- Added an `in-progress` status to `docsNav` entries: Reports, Users, and Roles and permissions now show in the sidebar as disabled items with a "Soon" badge and a "Documentation in progress" tooltip, and the previous/next arrows and pager skip them.
 
 ### Changed
 

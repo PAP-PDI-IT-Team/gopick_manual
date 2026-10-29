@@ -1,6 +1,8 @@
 (function (global) {
     'use strict';
 
+    var PENDING_STATUS = 'in-progress';
+    var PENDING_TOOLTIP = 'Documentation in progress';
     var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
     var ARROW_PATHS = {
         previous: 'M15 6l-6 6 6 6',
@@ -46,7 +48,7 @@
         var pages = [];
         groups.forEach(function (group) {
             group.items.forEach(function (itemValue) {
-                pages.push({ label: itemValue.label, url: itemValue.url, groupTitle: group.title });
+                pages.push({ label: itemValue.label, url: itemValue.url, groupTitle: group.title, isPending: itemValue.status === PENDING_STATUS });
             });
         });
         return pages;
@@ -58,16 +60,38 @@
         return currentIndex;
     }
 
+    function findReadyPage(pages, startIndex, stepSize) {
+        for (var pageIndex = startIndex; pageIndex >= 0 && pageIndex < pages.length; pageIndex += stepSize) {
+            if (!pages[pageIndex].isPending) return pages[pageIndex];
+        }
+        return null;
+    }
+
     function getNeighbourPages(pages, currentIndex) {
         return {
-            previous: currentIndex > 0 ? pages[currentIndex - 1] : null,
-            next: currentIndex < pages.length - 1 ? pages[currentIndex + 1] : null
+            previous: findReadyPage(pages, currentIndex - 1, -1),
+            next: findReadyPage(pages, currentIndex + 1, 1)
         };
     }
 
 
+    function createPendingItem(itemValue) {
+        var pendingElement = createElement('span', 'docs-nav-group__link docs-nav-group__link--pending');
+        pendingElement.setAttribute('aria-disabled', 'true');
+        pendingElement.tabIndex = 0;
+        pendingElement.dataset.tooltip = PENDING_TOOLTIP;
+        pendingElement.appendChild(createElement('span', '', itemValue.label));
+        pendingElement.appendChild(createElement('span', 'docs-nav-group__badge', 'Soon'));
+        pendingElement.appendChild(createElement('span', 'docs-visually-hidden', PENDING_TOOLTIP));
+        return pendingElement;
+    }
+
     function createTreeLink(itemValue, siteRoot, currentUrl) {
         var listItem = document.createElement('li');
+        if (itemValue.status === PENDING_STATUS && itemValue.url !== currentUrl) {
+            listItem.appendChild(createPendingItem(itemValue));
+            return listItem;
+        }
         var linkElement = createElement('a', 'docs-nav-group__link', itemValue.label);
         linkElement.href = siteRoot + itemValue.url;
         if (itemValue.url === currentUrl) linkElement.setAttribute('aria-current', 'page');

@@ -39,15 +39,18 @@
         },
         {
           "label": "Reports",
-          "url": "pages/workflow/reports-management/index.html"
+          "url": "pages/workflow/reports-management/index.html",
+        "status": "in-progress"
         },
         {
           "label": "Users",
-          "url": "pages/workflow/users-management/index.html"
+          "url": "pages/workflow/users-management/index.html",
+        "status": "in-progress"
         },
         {
           "label": "Roles and permissions",
-          "url": "pages/workflow/roles-premission-management/index.html"
+          "url": "pages/workflow/roles-premission-management/index.html",
+        "status": "in-progress"
         },
         {
           "label": "Activity log",

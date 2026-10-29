@@ -161,6 +161,56 @@
     background: var(--muted);
 }
 
+.docs-nav-group__link--pending {
+    position: relative;
+    justify-content: space-between;
+    gap: 8px;
+    color: #a1a1aa;
+    cursor: not-allowed;
+}
+
+.docs-nav-group__link--pending:hover {
+    color: #a1a1aa;
+    background: transparent;
+}
+
+.docs-nav-group__link--pending:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.docs-nav-group__badge {
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.docs-nav-group__link--pending::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 10px;
+    z-index: 5;
+    padding: 4px 8px;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) ease;
+}
+
+.docs-nav-group__link--pending:hover::after,
+.docs-nav-group__link--pending:focus-visible::after {
+    opacity: 1;
+}
+
 @media (min-width: 1024px) {
     .docs-nav-group__link {
         min-height: 34px;
