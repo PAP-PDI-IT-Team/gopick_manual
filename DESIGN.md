@@ -556,6 +556,7 @@ One family, **Geist** (weights 400/500/600), plus a monospace stack for inline c
 - Screenshot cards use the shared image-card `docs` variant: a bordered frame with title and caption bars, the image on a muted ground, and a fixed 2.1:1 media box, so lazy images never shift deep links.
 - Classified inputs render as an Input | Type table. The data and the classification labels are unchanged.
 - Search opens from the header trigger, any `[data-search-trigger]` element, or Cmd/Ctrl+K.
+- Below 1024px the documentation menu opens from a round red floating button in the bottom-right corner (not in the header). It turns into ✕ while the drawer is open. It is the one floating control besides the notes popover, so it carries a soft shadow.
 - Copy page copies the page's Markdown source (every source listed for it in the search manifest) to the clipboard and reports "Copied" or "Copy failed".
 
 ## Do's and Don'ts

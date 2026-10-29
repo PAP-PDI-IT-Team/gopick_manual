@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="../../../shared/css/docs-shell.css?v=20261029-shadcn-blocks">
-  <link rel="stylesheet" href="../../../shared/css/docs-navigation.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-navigation.css?v=20261029-floating-menu">
   <link rel="stylesheet" href="../../../shared/css/docs-page.css?v=20261029-shadcn-blocks">
   <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261029-shadcn-blocks">
   <link rel="stylesheet" href="../../../shared/css/docs-content.css?v=20261029-shadcn-blocks">
@@ -22,6 +22,11 @@
   <link rel="stylesheet" href="assets/css/meter-scenarios.css?v=20261029-shadcn-blocks">
   <link rel="stylesheet" href="assets/css/meters-headings.css?v=20261029-shadcn-blocks">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <button id="docsSidebarToggle" type="button" class="docs-header__menu docs-menu-fab" aria-controls="docsSidebar" aria-expanded="false" aria-label="Open documentation menu">
+    <svg class="docs-menu-fab__open" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/></svg>
+    <svg class="docs-menu-fab__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="../../../shared/js/tailwindConfig.js?v=20261020-external-config"></script>
 </head>
@@ -32,9 +37,6 @@
   <!-- ==================== Header ==================== -->
   <header class="docs-header" role="banner">
     <div class="docs-header__row">
-      <button id="docsSidebarToggle" type="button" class="docs-header__menu" aria-controls="docsSidebar" aria-expanded="false" aria-label="Open documentation menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
       <a href="../../../index.html" class="docs-header__brand" aria-label="GoPick home">
         <img src="../../../shared/img/gopick-logo.svg" alt="GoPick Solutions" width="120" height="32">
       </a>

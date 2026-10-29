@@ -44,7 +44,7 @@ Every page is inspected at 1440, 768 and 390 with `--allow focal-point,few-pictu
 |---|---|---|
 | Header | `header.docs-header` with brand, three links, search trigger | `shared/css/docs-shell.css` |
 | Page tree | `aside#docsSidebar` > `#docsNavGroups`, one always-open group per `docsNav` group | `shared/js/ui/docsPageTree.js`, `shared/css/docs-navigation.css` |
-| Drawer (below 1024px) | `#docsSidebarToggle`, `#docsSidebarBackdrop` | `shared/js/ui/docsSidebar.js`, `docs-navigation.css` |
+| Drawer (below 1024px) | `#docsSidebarToggle`: a round red 56px floating button fixed bottom-right (16px plus the safe-area inset), placed at the end of `<body>`. It shows ≡, or ✕ while the drawer is open. `#docsSidebarBackdrop` sits behind the drawer. The footer gets extra bottom padding so the button never covers links. | `shared/js/ui/docsSidebar.js`, `docs-navigation.css` (`.docs-menu-fab`) |
 | Title row | `h1.docs-page-title` and `div.docs-page-tools` | Page HTML, `shared/css/docs-page.css` |
 | Copy page | `button#docsCopyPage` | `shared/js/ui/docsCopyPage.js` |
 | Title arrows | `nav#docsTitleNav` (previous and next in `docsNav` order) | `docsPageTree.js` |
