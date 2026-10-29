@@ -1,10 +1,23 @@
 (function (global) {
     'use strict';
 
+    const CALLOUT_VARIANTS = {
+        rules: { title: 'Rules', className: 'rules' },
+        expectedResults: { title: 'Expected Result', className: 'result' }
+    };
+
     class AssessmentContentRenderer {
         constructor(store, imageRenderer) {
             this.store = store;
             this.imageRenderer = imageRenderer || global.GoPickImageRenderer || null;
+        }
+
+        appendText(parent, tagName, className, textValue) {
+            const element = document.createElement(tagName);
+            if (className) element.className = className;
+            element.textContent = textValue;
+            parent.appendChild(element);
+            return element;
         }
 
         renderHero() {
@@ -21,140 +34,85 @@
         }
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
-            items.forEach(function (item) {
-                const li = document.createElement('li');
-                li.className = 'flex gap-2';
-
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemValue => {
+                const listItem = document.createElement('li');
+                listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
-                marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-
-                const text = document.createElement('span');
-                text.textContent = item;
-
-                li.appendChild(marker);
-                li.appendChild(text);
-                list.appendChild(li);
+                marker.className = 'flat-list__marker';
+                marker.setAttribute('aria-hidden', 'true');
+                listItem.appendChild(marker);
+                this.appendText(listItem, 'span', '', itemValue);
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
-        createCallout(title, items, kind) {
-            const wrap = document.createElement('div');
-            const isRules = kind === 'rules';
-            wrap.className = isRules
-                ? 'mt-5 rounded-lg border border-amber-100 bg-amber-50 p-5'
-                : 'mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-5';
-
-            const heading = document.createElement('h3');
-            heading.className = isRules ? 'font-semibold text-amber-900 mb-3' : 'font-semibold text-emerald-900 mb-3';
-            heading.textContent = title;
-
-            wrap.appendChild(heading);
-            wrap.appendChild(this.createBulletList(items));
-            return wrap;
+        createStepList(steps) {
+            return global.sharedDocsComponents.createSteps(steps, stepValue => document.createTextNode(stepValue));
         }
 
-        renderImages(section, target) {
-            if (!section.images || !section.images.length) return;
-            if (!this.imageRenderer || !this.imageRenderer.createImageOrPlaceholder) return;
+        createCallout(variantKey, items) {
+            const variant = CALLOUT_VARIANTS[variantKey];
+            return global.sharedDocsComponents.createCallout(variant.className, variant.title, this.createBulletList(items));
+        }
 
-            section.images.forEach(img => {
-                const card = this.imageRenderer.createImageOrPlaceholder(img, section.title);
-                target.appendChild(card);
-            });
+        createAccessPath(steps) {
+            return global.sharedDocsComponents.createAccessPath(steps);
         }
 
         renderSectionBody(section, target) {
-            this.renderImages(section, target);
+            if (section.description) this.appendText(target, 'p', 'docs-block__lead', section.description);
+            if (section.accessPaths && section.accessPaths.length) target.appendChild(this.createAccessPath(section.accessPaths));
 
-            if (section.accessPaths && section.accessPaths.length) {
-                const pathWrap = document.createElement('div');
-                pathWrap.className = 'mt-3 mb-4 flex items-center gap-1.5 text-xs text-slate-500 font-medium';
-                section.accessPaths.forEach((step, idx) => {
-                    if (idx > 0) {
-                        const arrow = document.createElement('span');
-                        arrow.className = 'text-slate-400';
-                        arrow.textContent = '›';
-                        pathWrap.appendChild(arrow);
-                    }
-                    const stepBadge = document.createElement('span');
-                    stepBadge.className = 'px-2 py-0.5 rounded bg-slate-100 text-slate-700';
-                    stepBadge.textContent = step;
-                    pathWrap.appendChild(stepBadge);
-                });
-                target.appendChild(pathWrap);
+            if (section.images && section.images.length) {
+                if (!this.imageRenderer) throw new Error('Assessment renderer requires GoPickImageRenderer');
+                section.images.forEach(imageData => target.appendChild(this.imageRenderer.createImageOrPlaceholder(imageData, section.title)));
             }
 
             if (section.steps && section.steps.length) {
-                const stepLabel = document.createElement('p');
-                stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-                stepLabel.textContent = 'How To Use';
-                target.appendChild(stepLabel);
-                target.appendChild(this.createBulletList(section.steps));
+                this.appendText(target, 'h4', 'docs-group__title', 'How To Use');
+                target.appendChild(this.createStepList(section.steps));
             }
 
-            if (section.rules && section.rules.length) {
-                target.appendChild(this.createCallout('Rules', section.rules, 'rules'));
-            }
-
-            if (section.expectedResults && section.expectedResults.length) {
-                target.appendChild(this.createCallout('Expected Result', section.expectedResults, 'expected'));
-            }
+            Object.keys(CALLOUT_VARIANTS).forEach(variantKey => {
+                if (section[variantKey] && section[variantKey].length) target.appendChild(this.createCallout(variantKey, section[variantKey]));
+            });
         }
 
-        renderSectionHeader(section, headingLevel, eyebrowText) {
-            const fragment = document.createDocumentFragment();
-            if (eyebrowText) {
-                const eyebrow = document.createElement('div');
-                eyebrow.className = 'text-xs font-bold uppercase tracking-wider text-brand mb-2';
-                eyebrow.textContent = eyebrowText;
-                fragment.appendChild(eyebrow);
-            }
-
-            const headingTag = headingLevel === 2 ? 'h2' : (headingLevel === 3 ? 'h3' : 'h4');
-            const heading = document.createElement(headingTag);
-            heading.id = section.id;
-            heading.className = headingLevel === 2 ? 'text-xl font-bold text-slate-900' : (headingLevel === 3 ? 'text-lg font-bold text-slate-900' : 'text-base font-bold text-slate-900');
-            heading.textContent = section.title;
+        renderChild(section, headingLevel) {
+            const block = document.createElement('article');
+            block.className = 'docs-block';
+            block.id = section.id;
+            const heading = this.appendText(block, 'h' + headingLevel, 'docs-block__title docs-block__title--h' + headingLevel, section.title);
             heading.setAttribute('tabindex', '-1');
-            fragment.appendChild(heading);
-
-            if (section.description) {
-                const desc = document.createElement('p');
-                desc.className = 'text-sm text-slate-500 mt-2 mb-5';
-                desc.textContent = section.description;
-                fragment.appendChild(desc);
-            }
-
-            return fragment;
+            this.renderSectionBody(section, block);
+            (section.children || []).forEach(child => block.appendChild(this.renderChild(child, Math.min(headingLevel + 1, 4))));
+            return block;
         }
 
-        renderSectionTree(section, headingLevel, eyebrowText, isTopLevel) {
-            const sectionEl = document.createElement('section');
-            sectionEl.className = isTopLevel ? 'mb-10 bg-white rounded-xl border border-slate-100 p-6 shadow-sm' : 'mt-6 rounded-lg border border-slate-100 bg-slate-50 p-5';
-            sectionEl.appendChild(this.renderSectionHeader(section, headingLevel, eyebrowText));
-            this.renderSectionBody(section, sectionEl);
+        renderTopSection(section) {
+            const sectionElement = document.createElement('section');
+            sectionElement.className = 'flat-section';
+            const heading = this.appendText(sectionElement, 'h2', 'flat-section__title', section.title);
+            heading.id = section.id;
+            heading.setAttribute('tabindex', '-1');
 
-            if (section.children && section.children.length) {
-                section.children.forEach(child => {
-                    sectionEl.appendChild(this.renderSectionTree(child, Math.min(headingLevel + 1, 4), section.title, false));
-                });
-            }
+            const bodyElement = document.createElement('div');
+            bodyElement.className = 'docs-block docs-block--top';
+            this.renderSectionBody(section, bodyElement);
+            sectionElement.appendChild(bodyElement);
 
-            return sectionEl;
+            (section.children || []).forEach(child => sectionElement.appendChild(this.renderChild(child, 3)));
+            return sectionElement;
         }
 
         renderAllSections() {
-            const root = document.getElementById('section-render-root');
-            if (!root) return;
-            root.innerHTML = '';
-
-            const sections = this.store.getSections();
-            sections.forEach(section => {
-                root.appendChild(this.renderSectionTree(section, 2, null, true));
-            });
+            const rootElement = document.getElementById('section-render-root');
+            if (!rootElement) throw new Error('Assessment render root missing: #section-render-root');
+            rootElement.replaceChildren();
+            this.store.getSections().forEach(section => rootElement.appendChild(this.renderTopSection(section)));
         }
     }
 

@@ -1,213 +1,148 @@
 (function (global) {
     'use strict';
 
+    const CALLOUT_VARIANTS = {
+        rules: { title: 'Rules', className: 'rules' },
+        expected: { title: 'Expected Result', className: 'result' },
+        notes: { title: 'Notes', className: 'notes' },
+        systems: { title: 'System', className: 'notes' }
+    };
+
     class CandidateContentRenderer {
         constructor(store, imageRenderer) {
             this.store = store;
             this.imageRenderer = imageRenderer || global.GoPickImageRenderer || null;
         }
 
+        appendText(parent, tagName, className, textValue) {
+            const element = document.createElement(tagName);
+            if (className) element.className = className;
+            element.textContent = textValue;
+            parent.appendChild(element);
+            return element;
+        }
+
+        createItemContent(itemValue) {
+            if (itemValue && itemValue.href) {
+                const linkElement = document.createElement('a');
+                linkElement.className = 'flat-link';
+                linkElement.href = itemValue.href;
+                linkElement.textContent = itemValue.label;
+                return linkElement;
+            }
+            const textElement = document.createElement('span');
+            textElement.textContent = itemValue && itemValue.label ? itemValue.label : itemValue;
+            return textElement;
+        }
+
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
-            items.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'flex gap-2';
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemValue => {
+                const listItem = document.createElement('li');
+                listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
-                marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-                const content = item && item.href ? document.createElement('a') : document.createElement('span');
-                content.textContent = item && item.label ? item.label : item;
-                if (item && item.href) {
-                    content.href = item.href;
-                    content.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
-                }
-                li.appendChild(marker);
-                li.appendChild(content);
-                list.appendChild(li);
+                marker.className = 'flat-list__marker';
+                marker.setAttribute('aria-hidden', 'true');
+                listItem.appendChild(marker);
+                listItem.appendChild(this.createItemContent(itemValue));
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
-        createCallout(title, items, variant) {
-            const wrap = document.createElement('div');
-            const isRules = variant === 'rules';
-            const isSystem = variant === 'system';
-            const isExpected = variant === 'expected';
-            wrap.className = isRules
-                ? 'mt-4 rounded-lg border border-amber-100 bg-amber-50 p-4'
-                : (isSystem
-                    ? 'mt-4 rounded-lg border border-violet-100 bg-violet-50 p-4'
-                    : (isExpected
-                        ? 'mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4'
-                        : 'mt-4 rounded-lg border border-slate-100 bg-white p-4'));
-
-            const heading = document.createElement('h3');
-            heading.className = isRules
-                ? 'font-semibold text-amber-900 mb-2'
-                : (isSystem ? 'font-semibold text-violet-900 mb-2' : (isExpected ? 'font-semibold text-emerald-900 mb-2' : 'font-semibold text-slate-900 mb-2'));
-            heading.textContent = title;
-
-            wrap.appendChild(heading);
-            wrap.appendChild(this.createBulletList(items));
-            return wrap;
+        createStepList(steps) {
+            return global.sharedDocsComponents.createSteps(steps, stepValue => this.createItemContent(stepValue));
         }
 
-        renderGroups(container, groups) {
-            groups.forEach(group => {
-                const wrap = document.createElement('div');
-                wrap.className = 'rounded-lg border border-slate-100 bg-white p-4';
+        createCallout(variantKey, items) {
+            const variant = CALLOUT_VARIANTS[variantKey];
+            return global.sharedDocsComponents.createCallout(variant.className, variant.title, this.createBulletList(items));
+        }
 
-                const heading = document.createElement('h3');
-                heading.className = 'font-semibold text-slate-900 mb-2';
-                heading.textContent = group.title;
-                wrap.appendChild(heading);
-                wrap.appendChild(this.createBulletList(group.items || []));
+        createAccessPath(accessPath) {
+            return global.sharedDocsComponents.createAccessPath(accessPath.split('>').map(stepValue => stepValue.trim()));
+        }
 
-                if (group.rules && group.rules.length) {
-                    wrap.appendChild(this.createCallout('Rules', group.rules, 'rules'));
-                }
+        createInputTable(groupTitle, items) {
+            return global.sharedDocsComponents.createInputTable([{ title: groupTitle, items: items }], itemValue => this.createItemContent(itemValue));
+        }
 
-                container.appendChild(wrap);
-            });
+        createGroup(group) {
+            const groupElement = document.createElement('div');
+            groupElement.className = 'docs-group';
+            this.appendText(groupElement, 'h4', 'docs-group__title', group.title);
+            const items = group.items || [];
+            groupElement.appendChild(global.sharedDocsComponents.isInputGroupTitle(group.title) ? this.createInputTable(group.title, items) : this.createBulletList(items));
+            if (group.rules && group.rules.length) groupElement.appendChild(this.createCallout('rules', group.rules));
+            return groupElement;
         }
 
         renderSectionBody(section, target) {
-            if (section.accessPath) {
-                const accessLabel = document.createElement('p');
-                accessLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-                accessLabel.textContent = 'Access Path';
-                target.appendChild(accessLabel);
-
-                const accessPath = document.createElement('p');
-                accessPath.className = 'mt-1 mb-5 text-sm text-slate-600 leading-relaxed';
-                accessPath.textContent = section.accessPath;
-                target.appendChild(accessPath);
-            }
+            if (section.description) this.appendText(target, 'p', 'docs-block__lead', section.description);
+            if (section.accessPath) target.appendChild(this.createAccessPath(section.accessPath));
 
             if (section.groups) {
-                const groupsWrap = document.createElement('div');
-                groupsWrap.className = 'space-y-4';
-                this.renderGroups(groupsWrap, section.groups);
-                target.appendChild(groupsWrap);
+                const groups = document.createElement('div');
+                groups.className = 'docs-groups';
+                section.groups.forEach(group => groups.appendChild(this.createGroup(group)));
+                target.appendChild(groups);
             }
 
             if (section.steps) {
-                const stepLabel = document.createElement('p');
-                stepLabel.className = 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400';
-                stepLabel.textContent = 'How To Use';
-                target.appendChild(stepLabel);
-                target.appendChild(this.createBulletList(section.steps));
+                this.appendText(target, 'h4', 'docs-group__title', 'How To Use');
+                target.appendChild(this.createStepList(section.steps));
             }
 
             const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
-            if (section.images && section.images.length && imageRenderer) {
-                section.images.forEach(imageObj => {
-                    target.appendChild(imageRenderer.createImageOrPlaceholder(imageObj, section.title));
-                });
+            if (section.images && section.images.length) {
+                if (!imageRenderer) throw new Error('Candidate renderer requires GoPickImageRenderer');
+                section.images.forEach(imageData => target.appendChild(imageRenderer.createImageOrPlaceholder(imageData, section.title)));
             }
 
-            if (section.rules) {
-                target.appendChild(this.createCallout('Rules', section.rules, 'rules'));
-            }
-
-            if (section.expected) {
-                target.appendChild(this.createCallout('Expected Result', section.expected, 'expected'));
-            }
-
-            if (section.notes) {
-                target.appendChild(this.createCallout('Notes', section.notes, 'notes'));
-            }
-
-            if (section.systems) {
-                target.appendChild(this.createCallout('System', section.systems, 'system'));
-            }
+            Object.keys(CALLOUT_VARIANTS).forEach(variantKey => {
+                if (section[variantKey] && section[variantKey].length) target.appendChild(this.createCallout(variantKey, section[variantKey]));
+            });
         }
 
-        renderSectionHeader(section, headingLevel, eyebrowText) {
-            const fragment = document.createDocumentFragment();
-            const label = eyebrowText || section.eyebrow;
-            if (label) {
-                const eyebrow = document.createElement('div');
-                eyebrow.className = 'text-xs font-bold uppercase tracking-wider text-brand mb-2';
-                eyebrow.textContent = label;
-                fragment.appendChild(eyebrow);
-            }
+        hasDetails(section) {
+            return Boolean(section.description || section.accessPath || section.steps || section.groups || section.rules || section.expected || section.notes || section.systems || (section.images && section.images.length));
+        }
 
-            const headingTag = headingLevel === 2 ? 'h2' : (headingLevel === 3 ? 'h3' : 'h4');
-            const heading = document.createElement(headingTag);
-            heading.id = section.id;
-            heading.className = headingLevel === 2 ? 'text-xl font-bold text-slate-900' : (headingLevel === 3 ? 'text-lg font-bold text-slate-900' : 'text-base font-bold text-slate-900');
-            heading.textContent = section.title;
+        renderChild(section, headingLevel) {
+            const block = document.createElement('article');
+            block.className = 'docs-block';
+            block.id = section.id;
+            const heading = this.appendText(block, 'h' + headingLevel, 'docs-block__title docs-block__title--h' + headingLevel, section.title);
             heading.setAttribute('tabindex', '-1');
-            fragment.appendChild(heading);
-
-            if (section.description) {
-                const desc = document.createElement('p');
-                desc.className = 'text-sm text-slate-500 mt-2 mb-5';
-                desc.textContent = section.description;
-                fragment.appendChild(desc);
-            }
-
-            return fragment;
+            if (this.hasDetails(section)) this.renderSectionBody(section, block);
+            (section.children || []).forEach(child => block.appendChild(this.renderChild(child, Math.min(headingLevel + 1, 4))));
+            return block;
         }
 
-        createSectionCard(section, level, titleOverride, includeId) {
-            const card = document.createElement('article');
-            card.className = level === 'nested'
-                ? 'rounded-lg border border-slate-100 bg-white p-4'
-                : 'rounded-lg border border-slate-100 bg-slate-50 p-5';
-            if (includeId) card.id = section.id;
+        renderTopSection(section) {
+            const sectionElement = document.createElement('section');
+            sectionElement.className = 'flat-section';
+            const heading = this.appendText(sectionElement, 'h2', 'flat-section__title', section.title);
+            heading.id = section.id;
+            heading.setAttribute('tabindex', '-1');
 
-            const title = document.createElement(level === 'nested' ? 'h4' : 'h3');
-            title.className = 'font-semibold text-slate-900 mb-2';
-            title.textContent = titleOverride || section.title;
-            card.appendChild(title);
-
-            if (section.description) {
-                const desc = document.createElement('p');
-                desc.className = 'text-sm text-slate-600 leading-relaxed';
-                desc.textContent = section.description;
-                card.appendChild(desc);
+            if (this.hasDetails(section)) {
+                const bodyElement = document.createElement('div');
+                bodyElement.className = 'docs-block docs-block--top';
+                this.renderSectionBody(section, bodyElement);
+                sectionElement.appendChild(bodyElement);
             }
 
-            this.renderSectionBody(section, card);
-            return card;
-        }
-
-        renderSectionTree(section, headingLevel, eyebrowText, isTopLevel) {
-            const sectionEl = document.createElement('section');
-            sectionEl.className = isTopLevel ? 'mb-10' : 'mt-4';
-
-            const hasParentDetails = section.description || section.accessPath || section.steps || section.groups || section.rules || section.expected || section.notes || section.systems || (section.images && section.images.length);
-            if (isTopLevel) {
-                sectionEl.appendChild(this.renderSectionHeader(section, headingLevel, eyebrowText));
-            }
-
-            if (hasParentDetails && isTopLevel) {
-                const title = section.children && section.children.length ? 'Access, Usage, and Notes' : section.title;
-                sectionEl.appendChild(this.createSectionCard(section, 'root', title, false));
-            } else if (hasParentDetails) {
-                sectionEl.appendChild(this.createSectionCard(section, 'nested', section.title, true));
-            }
-
-            if (section.children) {
-                section.children.forEach(child => {
-                    sectionEl.appendChild(this.renderSectionTree(child, Math.min(headingLevel + 1, 4), section.title, false));
-                });
-            }
-
-            return sectionEl;
+            (section.children || []).forEach(child => sectionElement.appendChild(this.renderChild(child, 3)));
+            return sectionElement;
         }
 
         renderAll(rootElementId = 'section-render-root') {
-            const root = document.getElementById(rootElementId);
-            if (!root) return;
-            root.innerHTML = '';
-
-            const sections = this.store.getSections();
-            sections.forEach(section => {
-                root.appendChild(this.renderSectionTree(section, 2, null, true));
-            });
+            const rootElement = document.getElementById(rootElementId);
+            if (!rootElement) throw new Error('Candidate render root missing: #' + rootElementId);
+            rootElement.replaceChildren();
+            this.store.getSections().forEach(section => rootElement.appendChild(this.renderTopSection(section)));
         }
     }
 

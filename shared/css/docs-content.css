@@ -1,0 +1,243 @@
+.docs-shell {
+    --content-gap: 20px;
+}
+
+
+.docs-page-body {
+    padding-top: 16px;
+}
+
+.flat-section {
+    margin-top: var(--section-gap);
+}
+
+.flat-section:first-child {
+    margin-top: 32px;
+}
+
+.flat-section__title {
+    margin: 0 0 16px;
+    font-size: var(--step-heading);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.flat-section__content {
+    display: grid;
+    gap: var(--content-gap);
+}
+
+.flat-section__content + .flat-section__content {
+    margin-top: var(--content-gap);
+}
+
+.flat-subsection {
+    margin-top: 48px;
+}
+
+.flat-subsection__title {
+    margin: 0 0 12px;
+    font-size: var(--step-subheading);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+
+.flat-card {
+    padding: 24px 0 0;
+}
+
+.flat-card--nested {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
+
+.flat-card__title {
+    margin: 0 0 8px;
+    font-size: var(--step-subheading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.flat-card--nested .flat-card__title {
+    font-size: var(--step-body);
+}
+
+.flat-card__text {
+    max-width: 60ch;
+    margin: 0;
+}
+
+.flat-card__label {
+    margin: 24px 0 8px;
+    color: var(--ink-soft);
+    font-size: var(--step-small);
+    font-weight: 500;
+}
+
+.flat-card__order {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--muted);
+    color: var(--accent-press);
+    font-size: var(--step-small);
+    font-weight: 600;
+}
+
+.flat-card .manual-image-gallery,
+.flat-card .manual-image-card {
+    margin-top: 20px;
+}
+
+
+.flat-list {
+    display: grid;
+    gap: 6px;
+    max-width: 64ch;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.flat-list__item {
+    display: flex;
+    gap: 12px;
+}
+
+.flat-list__marker {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.72em;
+    border-radius: 50%;
+    background: var(--ink);
+}
+
+.flat-list--nested {
+    margin: 4px 0 0 18px;
+}
+
+.flat-actions {
+    display: grid;
+    gap: 4px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.flat-actions .flat-actions {
+    margin-left: 16px;
+}
+
+.flat-link {
+    color: var(--accent-press);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--duration-fast) ease;
+}
+
+.flat-link:hover {
+    text-decoration-color: currentColor;
+}
+
+.flat-link--block {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+}
+
+
+.docs-section-lead {
+    max-width: 60ch;
+    margin: -8px 0 0;
+}
+
+
+.docs-groups {
+    display: grid;
+}
+
+.docs-group + .docs-group {
+    margin-top: 20px;
+}
+
+.docs-group__title {
+    margin: 0 0 10px;
+    font-size: var(--step-body);
+    font-weight: 600;
+}
+
+.docs-group .flat-list {
+    margin-top: 0;
+}
+
+
+.docs-block {
+    display: grid;
+    gap: 16px;
+    margin-top: 48px;
+}
+
+.docs-block--top {
+    margin-top: 0;
+}
+
+.docs-block > .docs-block {
+    margin-top: 36px;
+}
+
+.docs-block:not([id]):not(.docs-block--top) {
+    gap: 0;
+}
+
+.docs-block__title {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+.docs-block__title--h3 {
+    font-size: var(--step-subheading);
+}
+
+.docs-block__title--h4,
+.docs-block__title--h5 {
+    font-size: var(--step-minor);
+}
+
+.docs-block__title:focus {
+    outline: none;
+}
+
+.docs-block__lead {
+    max-width: 68ch;
+    margin: -4px 0 0;
+}
+
+.flat-section__title + .docs-block .docs-block__lead {
+    margin-top: -4px;
+}
+
+.docs-block .docs-group .flat-callout {
+    margin-top: 12px;
+}
+
+.docs-block > *,
+.docs-groups > *,
+.flat-section__content > * {
+    min-width: 0;
+}

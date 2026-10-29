@@ -1,18 +1,10 @@
-(function () {
+(function (global) {
     'use strict';
 
-    function setFooterYear() {
-        var yearSpan = document.getElementById('footerYearSpan');
-        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-    }
+    if (!global.MetersGovernanceBlocks) throw new Error('Meters governance: governanceBlocks.js must load before behavior.js');
 
-    function initPage() {
-        setFooterYear();
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPage);
-    } else {
-        initPage();
-    }
-})();
+    global.sharedDocsBlockPage.start({
+        contentKey: '__metersGovernanceContent',
+        blockBuilders: global.MetersGovernanceBlocks
+    });
+})(window);

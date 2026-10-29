@@ -1,48 +1,61 @@
 (function (global) {
     'use strict';
 
+    const VIEW_PANEL_FUNCTIONS = {
+        'account-detail': {},
+        'privacy-consent': { expectedLabel: 'When you save' },
+        'demographics': { expectedLabel: 'When you save' },
+        'assessment-completion-page': { expectedLabel: 'When you save' },
+        'assessment-center-logo': { expectedLabel: 'When you save' },
+        'unblock-account': {},
+        'manage-assigned-assessment': {}
+    };
+
+    const LISTING_PANEL_OPTIONS = { expectedLabel: 'What you see' };
+
     class AccountsRenderer {
         constructor(store, imageRenderer) {
             this.store = store;
             this.imageRenderer = imageRenderer || global.GoPickImageRenderer || null;
         }
 
-        appendText(parent, tagName, className, text) {
-            if (!text) return null;
+        appendText(parent, tagName, className, textValue) {
+            if (!textValue) return null;
             const element = document.createElement(tagName);
             element.className = className;
-            element.textContent = text;
+            element.textContent = textValue;
             parent.appendChild(element);
             return element;
         }
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'mt-3 space-y-2 text-sm text-slate-600 leading-relaxed';
-            items.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'flex gap-2';
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemData => {
+                const listItem = document.createElement('li');
+                listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
-                marker.className = 'mt-2 h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0';
-                const text = item && typeof item !== 'string' && item.href ? document.createElement('a') : document.createElement('span');
-                text.textContent = typeof item === 'string' ? item : item.label;
-                if (item && typeof item !== 'string' && item.href) {
-                    text.href = item.href;
-                    text.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+                marker.className = 'flat-list__marker';
+                marker.setAttribute('aria-hidden', 'true');
+                const textValue2 = itemData && typeof itemData !== 'string' && itemData.href ? document.createElement('a') : document.createElement('span');
+                textValue2.textContent = typeof itemData === 'string' ? itemData : itemData.label;
+                if (itemData && typeof itemData !== 'string' && itemData.href) {
+                    textValue2.href = itemData.href;
+                    textValue2.className = 'flat-link';
                 }
-                li.appendChild(marker);
-                li.appendChild(text);
-                list.appendChild(li);
+                listItem.appendChild(marker);
+                listItem.appendChild(textValue2);
+                listElement.appendChild(listItem);
 
-                if (item && typeof item !== 'string' && item.children && item.children.length) {
+                if (itemData && typeof itemData !== 'string' && itemData.children && itemData.children.length) {
                     const nested = document.createElement('ul');
-                    nested.className = 'ml-7 mt-2 space-y-1 text-sm text-slate-500';
-                    item.children.forEach(child => {
+                    nested.className = 'flat-list flat-list--nested';
+                    itemData.children.forEach(child => {
                         const childItem = document.createElement('li');
                         if (child && typeof child !== 'string' && child.href) {
                             const childLink = document.createElement('a');
                             childLink.href = child.href;
-                            childLink.className = 'font-semibold text-brand hover:text-brand-dark transition-colors';
+                            childLink.className = 'flat-link';
                             childLink.textContent = child.label;
                             childItem.appendChild(childLink);
                         } else {
@@ -50,99 +63,95 @@
                         }
                         nested.appendChild(childItem);
                     });
-                    list.appendChild(nested);
+                    listElement.appendChild(nested);
                 }
             });
-            return list;
+            return listElement;
         }
 
         createActionLinkList(items) {
-            const list = document.createElement('ul');
-            list.className = 'mt-3 ml-4 space-y-2 border-l border-slate-100 pl-4';
-            items.forEach(item => {
-                const li = document.createElement('li');
-                const link = document.createElement('a');
-                link.className = 'block text-sm font-semibold text-brand hover:text-brand-dark transition-colors';
-                link.href = item.href;
-                link.textContent = item.label;
-                li.appendChild(link);
-                if (item.children && item.children.length) {
-                    li.appendChild(this.createActionLinkList(item.children));
+            const listElement2 = document.createElement('ul');
+            listElement2.className = 'flat-actions';
+            items.forEach(itemData2 => {
+                const listItem2 = document.createElement('li');
+                const linkElement = document.createElement('a');
+                linkElement.className = 'flat-link flat-link--block';
+                linkElement.href = itemData2.href;
+                linkElement.textContent = itemData2.label;
+                listItem2.appendChild(linkElement);
+                if (itemData2.children && itemData2.children.length) {
+                    listItem2.appendChild(this.createActionLinkList(itemData2.children));
                 }
-                list.appendChild(li);
+                listElement2.appendChild(listItem2);
             });
-            return list;
+            return listElement2;
         }
 
-        createBox(titleText, items, boxClass, titleClass) {
+        createBox(titleText, items, boxClass) {
             if (!items || !items.length) return null;
-            const box = document.createElement('div');
-            box.className = boxClass || 'mt-4 rounded-lg border border-amber-100 bg-amber-50 p-4';
-            this.appendText(box, 'h4', titleClass || 'font-semibold text-amber-900 mb-2', titleText);
-            box.appendChild(this.createBulletList(items));
-            return box;
+            const boxElement = document.createElement('div');
+            boxElement.className = 'flat-callout flat-callout--' + (boxClass || 'rules');
+            this.appendText(boxElement, 'h4', 'flat-callout__title', titleText);
+            boxElement.appendChild(this.createBulletList(items));
+            return boxElement;
         }
 
-        appendSectionMeta(card, section) {
+        appendSectionMeta(cardElement, section) {
             if (section.actions && section.actions.length) {
-                const hasLinks = section.actions.some(item => item && typeof item !== 'string' && item.href);
-                this.appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', hasLinks ? 'Related Features' : 'Controls');
-                card.appendChild(hasLinks ? this.createActionLinkList(section.actions) : this.createBulletList(section.actions));
+                const hasLinks = section.actions.some(itemData3 => itemData3 && typeof itemData3 !== 'string' && itemData3.href);
+                this.appendText(cardElement, 'p', 'flat-card__label', hasLinks ? 'Related Features' : 'Controls');
+                cardElement.appendChild(hasLinks ? this.createActionLinkList(section.actions) : this.createBulletList(section.actions));
             }
 
             if (section.actionGroups && section.actionGroups.length) {
                 section.actionGroups.forEach(group => {
-                    this.appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
-                    card.appendChild(this.createActionLinkList(group.links || []));
+                    this.appendText(cardElement, 'p', 'flat-card__label', group.title);
+                    cardElement.appendChild(this.createActionLinkList(group.links || []));
                 });
             }
 
             const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
             if (section.images && section.images.length && imageRenderer) {
-                section.images.forEach(imageObj => {
-                    card.appendChild(imageRenderer.createImageOrPlaceholder(imageObj, section.title));
-                });
+                cardElement.appendChild(imageRenderer.createImageGallery(section.images, section.title));
             }
 
             if (section.items && section.items.length) {
-                card.appendChild(this.createBulletList(section.items));
+                cardElement.appendChild(this.createBulletList(section.items));
             }
 
             if (section.accessPath) {
-                this.appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Access Path');
-                this.appendText(card, 'p', 'mt-1 text-sm text-slate-600 leading-relaxed', section.accessPath);
+                this.appendText(cardElement, 'p', 'flat-card__label', 'Access Path');
+                this.appendText(cardElement, 'p', 'flat-card__text', section.accessPath);
             }
 
             if (section.howToUse && section.howToUse.length) {
-                this.appendText(card, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'How To Use');
-                card.appendChild(this.createBulletList(section.howToUse));
+                this.appendText(cardElement, 'p', 'flat-card__label', 'How To Use');
+                cardElement.appendChild(this.createBulletList(section.howToUse));
             }
 
             if (section.rules && section.rules.length) {
-                card.appendChild(this.createBox('Rules', section.rules));
+                cardElement.appendChild(this.createBox('Rules', section.rules));
             }
 
             if (section.expected && section.expected.length) {
-                card.appendChild(this.createBox('Expected Result', section.expected, 'mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4', 'font-semibold text-emerald-900 mb-2'));
+                cardElement.appendChild(this.createBox('Expected Result', section.expected, 'result'));
             }
 
             if (section.notes && section.notes.length) {
-                section.notes.forEach(note => {
-                    card.appendChild(this.createBox('Notes: ' + note.label, note.items, 'mt-4 rounded-lg border border-slate-100 bg-white p-4', 'font-semibold text-slate-900 mb-2'));
+                section.notes.forEach(noteData => {
+                    cardElement.appendChild(this.createBox('Notes: ' + noteData.label, noteData.items, 'notes'));
                 });
             }
         }
 
         createInfoCard(section, level) {
-            const card = document.createElement('article');
-            card.className = level === 'nested'
-                ? 'rounded-lg border border-slate-100 bg-white p-4'
-                : 'rounded-lg border border-slate-100 bg-slate-50 p-5';
-            if (!section.omitCardId) card.id = section.id;
-            this.appendText(card, level === 'nested' ? 'h4' : 'h3', 'font-semibold text-slate-900 mb-2', section.title);
-            this.appendText(card, 'p', 'text-sm text-slate-600 leading-relaxed', section.detail);
-            this.appendSectionMeta(card, section);
-            return card;
+            const cardElement2 = document.createElement('article');
+            cardElement2.className = level === 'nested' ? 'flat-card flat-card--nested' : 'flat-card';
+            if (!section.omitCardId) cardElement2.id = section.id;
+            this.appendText(cardElement2, level === 'nested' ? 'h4' : 'h3', 'flat-card__title', section.title);
+            this.appendText(cardElement2, 'p', 'flat-card__text', section.detail);
+            this.appendSectionMeta(cardElement2, section);
+            return cardElement2;
         }
 
         renderCreateAccount() {
@@ -151,88 +160,80 @@
             container.innerHTML = '';
 
             const content = this.store.getContent();
-            const summary = this.createInfoCard(Object.assign({}, content.createAccount, {
-                title: 'Wizard Overview',
-                id: 'create-account-summary'
-            }));
-            container.appendChild(summary);
+            container.appendChild(this.createWizardOverview(content.createAccount));
 
-            content.createAccount.steps.forEach((step, index) => {
-                const card = this.createInfoCard(step);
+            const steps = content.createAccount.steps;
+            let flowPanel = null;
+            steps.forEach((stepData, index) => {
+                if (global.AccountsFlowBuilders.FLOW_STEP_IDS.includes(stepData.id)) {
+                    if (!flowPanel) {
+                        flowPanel = this.createStepList(global.AccountsFlowBuilders.WIZARD_SEQUENCE);
+                        container.appendChild(flowPanel);
+                    }
+                    flowPanel.appendChild(this.createStepListItem(this.createWizardStep(stepData, steps)));
+                    return;
+                }
+                const cardElement3 = this.createInfoCard(stepData);
                 const badge = document.createElement('div');
-                badge.className = 'mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white';
+                badge.className = 'flat-card__order';
                 badge.textContent = index + 1;
-                card.insertBefore(badge, card.firstChild);
-                container.appendChild(card);
+                cardElement3.insertBefore(badge, cardElement3.firstChild);
+                container.appendChild(cardElement3);
             });
-        }
-
-        renderLegend(container, items) {
-            const grid = document.createElement('div');
-            grid.className = 'mt-4 grid grid-cols-1 md:grid-cols-2 gap-4';
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'p-3 rounded-lg bg-white border border-slate-100';
-                this.appendText(card, 'div', 'text-sm font-bold text-slate-900', item.label);
-                this.appendText(card, 'div', 'text-xs text-slate-500 leading-relaxed mt-1', item.detail);
-                grid.appendChild(card);
-            });
-            container.appendChild(grid);
         }
 
         renderViewAccounts() {
             const container = document.getElementById('viewAccountsContent');
             if (!container) return;
             container.innerHTML = '';
-            const content = this.store.getContent();
-            this.appendText(container, 'p', 'text-sm text-slate-600 leading-relaxed', content.viewAccounts.detail);
+            const viewAccounts = this.store.getContent().viewAccounts;
+            container.appendChild(this.createViewPanel(viewAccounts, { tagName: 'div', className: 'flow-overview', titleTag: 'h3', title: 'Accounts listing' }));
+            container.appendChild(this.createViewPanel(viewAccounts.archived, { tagName: 'article', id: viewAccounts.archived.id, className: 'flow-overview', titleTag: 'h3', title: viewAccounts.archived.title }));
+        }
 
-            const imageRenderer = this.imageRenderer || global.GoPickImageRenderer;
-            if (content.viewAccounts.images && content.viewAccounts.images.length && imageRenderer) {
-                content.viewAccounts.images.forEach(img => {
-                    container.appendChild(imageRenderer.createImageOrPlaceholder(img, 'View Accounts'));
-                });
+        createUpdateSpecificSection() {
+            const section = this.store.getContent().updateSpecific;
+            const overviewSection = Object.assign({}, section, { steps: section.groups });
+            const fragment = document.createDocumentFragment();
+            fragment.appendChild(this.createViewPanel(overviewSection, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title, bandLabel: 'Section variants', expectedLabel: 'When you save' }));
+            fragment.appendChild(this.createFlowStepPanel(section.groups, global.AccountsFlowBuilders.VARIANT_SEQUENCE));
+            return fragment;
+        }
+
+        createStepList(sequence) {
+            if (!sequence) throw new Error('Step list requires a sequence');
+            const stepList = document.createElement('ol');
+            stepList.className = 'flow-step-panel';
+            stepList.setAttribute('aria-label', sequence.listLabel);
+            return stepList;
+        }
+
+        createStepListItem(stepArticle) {
+            const listItem = document.createElement('li');
+            listItem.className = 'flow-step-panel__item';
+            listItem.appendChild(stepArticle);
+            return listItem;
+        }
+
+        createFlowStepPanel(steps, sequence) {
+            const flowPanel = this.createStepList(sequence);
+            steps.forEach(stepData2 => flowPanel.appendChild(this.createStepListItem(this.createWizardStep(stepData2, steps))));
+            return flowPanel;
+        }
+
+        createUpdateAccountSteps(section) {
+            const groups = this.store.getContent().updateSpecific.groups;
+            if (section.steps.length !== groups.length) {
+                throw new Error('Update Account steps must match Update Specific groups');
             }
-
-            this.appendText(container, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Legends');
-            this.renderLegend(container, content.viewAccounts.legend);
-            content.viewAccounts.actionGroups.forEach(group => {
-                this.appendText(container, 'p', 'mt-6 text-xs font-bold uppercase tracking-wider text-slate-400', group.title);
-                container.appendChild(this.createActionLinkList(group.links || []));
-            });
-            container.appendChild(this.createInfoCard(content.viewAccounts.archived));
-        }
-
-        createUpdateSpecificCard() {
-            const content = this.store.getContent();
-            const section = content.updateSpecific;
-            const intro = this.createInfoCard(section);
-            this.appendText(intro, 'p', 'mt-4 text-xs font-bold uppercase tracking-wider text-slate-400', 'Variants');
-            section.groups.forEach(group => {
-                intro.appendChild(this.createInfoCard(group, 'nested'));
-            });
-            intro.appendChild(this.createBox('Rules', [section.securityRule]));
-            return intro;
-        }
-
-        createUpdateAccountSectionCards() {
-            const content = this.store.getContent();
-            const titleMap = [
-                { id: 'update-account-information', title: 'Update Account Information' },
-                { id: 'update-assigned-products', title: 'Update Assigned Products' },
-                { id: 'update-meter-management', title: 'Update Meter Management' },
-                { id: 'update-other-account-settings', title: 'Update Other Account Settings' }
-            ];
-
-            return content.updateSpecific.groups.map((group, index) => {
-                return this.createInfoCard({
-                    id: titleMap[index].id,
-                    title: titleMap[index].title,
-                    items: group.items,
-                    expected: group.expected,
-                    notes: group.notes
-                }, 'nested');
-            });
+            return section.steps.map((stepData3, index) => ({
+                id: stepData3.id,
+                title: stepData3.title,
+                images: stepData3.images,
+                items: groups[index].items,
+                rules: stepData3.rules,
+                notes: groups[index].notes
+            }));
         }
 
         renderFunctions() {
@@ -241,14 +242,25 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.functions.forEach(section => {
-                container.appendChild(this.createInfoCard(section));
-                if (section.id === 'update-account') {
-                    this.createUpdateAccountSectionCards().forEach(card => {
-                        container.appendChild(card);
-                    });
-                    container.appendChild(this.createUpdateSpecificCard());
+                if (Object.prototype.hasOwnProperty.call(VIEW_PANEL_FUNCTIONS, section.id)) {
+                    const panelOptions = Object.assign({ tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title }, VIEW_PANEL_FUNCTIONS[section.id]);
+                    container.appendChild(this.createViewPanel(section, panelOptions));
+                    return;
                 }
+                if (section.id === 'update-account') {
+                    container.appendChild(this.createViewPanel(section, { tagName: 'article', id: section.id, className: 'flow-overview', titleTag: 'h3', title: section.title, bandLabel: 'Update wizard' }));
+                    container.appendChild(this.createFlowStepPanel(this.createUpdateAccountSteps(section), global.AccountsFlowBuilders.WIZARD_SEQUENCE));
+                    container.appendChild(this.createUpdateSpecificSection());
+                    return;
+                }
+                container.appendChild(this.createInfoCard(section));
             });
+        }
+
+        createListingPanel(section, panelId) {
+            const panelOptions = Object.assign({ tagName: 'article', className: 'flow-overview', titleTag: 'h3', title: section.title }, LISTING_PANEL_OPTIONS);
+            if (panelId) panelOptions.id = panelId;
+            return this.createViewPanel(section, panelOptions);
         }
 
         renderRowActions() {
@@ -257,7 +269,7 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.rowActions.forEach(section => {
-                container.appendChild(this.createInfoCard(section));
+                container.appendChild(this.createListingPanel(section, section.id));
             });
         }
 
@@ -267,8 +279,7 @@
                 const container = document.getElementById(section.id + 'Content');
                 if (!container) return;
                 container.innerHTML = '';
-                const renderedSection = Object.assign({}, section, { omitCardId: true });
-                container.appendChild(this.createInfoCard(renderedSection));
+                container.appendChild(this.createListingPanel(section, null));
             });
         }
 
@@ -278,7 +289,7 @@
             container.innerHTML = '';
             const content = this.store.getContent();
             content.bulkActions.forEach(section => {
-                container.appendChild(this.createInfoCard(section));
+                container.appendChild(this.createListingPanel(section, section.id));
             });
         }
 
@@ -300,6 +311,14 @@
             this.renderBulkActions();
         }
     }
+
+    if (!global.AccountsFlowBuilders) {
+        throw new Error('AccountsRenderer requires AccountsFlowBuilders (flowBuilders.js)');
+    }
+    if (!global.AccountsViewBuilders) {
+        throw new Error('AccountsRenderer requires AccountsViewBuilders (viewBuilders.js)');
+    }
+    Object.assign(AccountsRenderer.prototype, global.AccountsFlowBuilders.methods, global.AccountsViewBuilders.methods);
 
     global.AccountsRenderer = AccountsRenderer;
 })(window);

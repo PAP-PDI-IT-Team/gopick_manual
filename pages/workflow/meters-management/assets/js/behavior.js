@@ -11,48 +11,39 @@
             this.content = global.__metersContent || {};
             this.store = new global.MetersContentStore(this.content);
             this.renderer = new global.MetersContentRenderer(this.store, global.GoPickImageRenderer);
-            this.sidebar = new global.MetersSidebarTracker(this.store);
+            this.sidebar = new global.DocsTocTracker(this.store);
+            this.screenshotViewer = new global.DocsScreenshotViewer();
         }
 
-        scrollToHash() {
-            const id = (location.hash || '').replace('#', '');
-            if (!id) return;
-            const el = document.getElementById(id);
-            if (el) {
-                this.sidebar.setActive(id);
-                this.sidebar.isProgrammaticScroll = true;
-                setTimeout(() => {
-                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    el.focus && el.focus();
-                    setTimeout(() => {
-                        this.sidebar.isProgrammaticScroll = false;
-                    }, 400);
-                }, 30);
-            }
-        }
-
-        init() {
+        initialize() {
             setFooterYear();
+            global.sharedDocsPageShell.init().catch(error => {
+                console.error('Error loading documentation navigation:', error);
+            });
             this.renderer.renderAllSections();
+            this.screenshotViewer.bindTo(document.querySelector('main'));
+            global.sharedDocsSkeleton.clearContent();
             this.sidebar.render();
+            global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();
+            global.sharedDocsReveal.init('#section-render-root > .flat-section, #section-render-root .flat-subsection');
 
             if (location.hash) {
-                this.scrollToHash();
+                this.sidebar.scrollToHash();
             } else {
                 this.sidebar.updateScrollSpy();
             }
         }
     }
 
-    const app = new MetersApp();
+    const pageApp = new MetersApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => pageApp.initialize());
     } else {
-        app.init();
+        pageApp.initialize();
     }
 
     global.MetersApp = MetersApp;
-    global.__metersApp = app;
+    global.__metersApp = pageApp;
 })(window);
