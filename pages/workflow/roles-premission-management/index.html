@@ -4,126 +4,123 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Roles/Permissions Management - GoPick</title>
-  <link rel="stylesheet" href="../../../shared/css/site-shell.css?v=20261020-isolate-image-card">
-  <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261020-isolate-image-card">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/layout.css">
-  <link rel="stylesheet" href="assets/css/table.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="../../../shared/css/docs-shell.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-navigation.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-page.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-content.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-components.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="assets/css/rbac.css?v=20261029-shadcn-blocks">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { DEFAULT: '#e50914', light: '#ff2d38', dark: '#b3060f' }
-          }
-        }
-      }
-    }
-  </script>
+  <script src="../../../shared/js/tailwindConfig.js?v=20261020-external-config"></script>
 </head>
-<body class="manual-page bg-slate-50 text-slate-800 antialiased">
+<body class="docs-shell" data-image-card-variant="docs" data-data-url="../../../shared/data/gopick-data.json" data-site-root="../../../" data-page-url="pages/workflow/roles-premission-management/index.html">
 
-  <header class="manual-header fixed top-0 inset-x-0 z-[100] bg-white/95 backdrop-blur border-b border-slate-100" role="banner">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <a href="../../../index.html" class="inline-flex items-center" aria-label="GoPick home">
-        <img src="../../../shared/img/gopick-logo.svg" alt="GoPick Solutions" class="h-10 w-auto">
+  <a class="docs-skip-link" href="#rolesPageTitle">Skip to content</a>
+
+  <!-- ==================== Header ==================== -->
+  <header class="docs-header" role="banner">
+    <div class="docs-header__row">
+      <button id="docsSidebarToggle" type="button" class="docs-header__menu" aria-controls="docsSidebar" aria-expanded="false" aria-label="Open documentation menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a href="../../../index.html" class="docs-header__brand" aria-label="GoPick home">
+        <img src="../../../shared/img/gopick-logo.svg" alt="GoPick Solutions" width="120" height="32">
       </a>
-      <nav aria-label="Main navigation">
-        <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
-          <li><a class="hover:text-brand transition-colors" href="../../../index.html">Home</a></li>
-          <li><a class="text-brand font-semibold" href="#" aria-current="page">Roles/Permissions</a></li>
+      <nav class="docs-header__nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../../../index.html">Home</a></li>
+          <li><a href="../../../index.html#features">Capabilities</a></li>
+          <li><a href="../../../pages/guides/manual-guides/index.html">Guides</a></li>
         </ul>
       </nav>
+      <div class="header-search-cluster docs-header__actions">
+        <button type="button" class="docs-search-trigger" data-search-trigger aria-label="Search documentation" aria-keyshortcuts="Control+K Meta+K">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"/></svg>
+          <span class="docs-search-trigger__label">Search documentation</span>
+          <span class="docs-search-trigger__keys" aria-hidden="true">Ctrl K</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="manual-main pt-20 pb-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+  <div class="docs-layout docs-layout--page">
 
-      <div class="manual-page-hero mb-10">
-        <span class="manual-page-hero__eyebrow">Manual Page</span>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">Roles/Permissions Module</h1>
-        <p class="mt-3 text-lg text-slate-500 max-w-3xl">RBAC matrix, permission legend, and account hierarchy for GoPick roles and account types.</p>
-      </div>
+    <!-- ==================== Sidebar ==================== -->
+    <aside id="docsSidebar" class="docs-sidebar" aria-label="Documentation">
+      <nav class="docs-sidebar__nav" aria-label="Documentation pages">
+        <div id="docsNavGroups"></div>
+      </nav>
+    </aside>
+    <button id="docsSidebarBackdrop" type="button" class="docs-sidebar-backdrop" aria-label="Close documentation menu" tabindex="-1"></button>
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <aside class="hidden lg:block lg:col-span-1">
-          <nav class="manual-sidebar-panel sticky top-24 p-5">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">On this page</h4>
-            <ul id="docSidebarList" class="space-y-2 text-sm"></ul>
-          </nav>
-        </aside>
+    <main class="docs-page-main">
 
-        <div class="lg:col-span-4 space-y-8">
-          <section id="legend" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Legend</h2>
-            <div id="legendContent" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm"></div>
-          </section>
-
-          <section id="rbac-matrix" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">RBAC Matrix</h2>
-            <p class="text-sm text-slate-500 mb-4">Permissions for each role across account and user functions. Scroll horizontally on smaller screens.</p>
-            <div class="table-scroll rounded-lg border border-slate-100">
-              <table class="rbac-table min-w-full divide-y divide-slate-100 text-sm">
-                <thead class="bg-slate-50">
-                  <tr>
-                    <th class="px-3 py-3 text-left font-semibold text-slate-700 sticky left-0 z-10">Function</th>
-                    <th class="px-3 py-3 text-left font-semibold text-slate-700">CRUD</th>
-                    <th class="px-3 py-3 text-left font-semibold text-slate-700">Limitations</th>
-                    <th class="px-3 py-3 text-left font-semibold text-slate-700">Scope</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Super Admin (IT)</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Super Admin (ASD)</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Test Creator</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">API Access</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Administrator</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Distributor</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Sub Distributor</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Client Account</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Sub Account</th>
-                    <th class="px-3 py-3 text-center font-semibold text-slate-700">Self Registration</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50" id="rbacTableBody"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <section id="hierarchy" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Account Hierarchy</h2>
-            <p class="text-sm text-slate-500 mb-5">GoPick uses a nested account structure. Each level inherits access downward.</p>
-            <div id="hierarchyContent" class="bg-slate-50 rounded-lg p-6 font-mono text-sm text-slate-700 leading-relaxed"></div>
-          </section>
-
-          <section id="roles" class="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4">Role Capabilities</h2>
-            <p class="text-sm text-slate-500 mb-4">Auto-generated summary of available and conditional permissions per role.</p>
-            <div id="roleCapabilities" class="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"></div>
-          </section>
+      <!-- ==================== Page Header ==================== -->
+      <header class="docs-page-header">
+        <div class="docs-page-header__row">
+          <h1 id="rolesPageTitle" class="docs-page-title" tabindex="-1">Roles/Permissions Module</h1>
+          <div class="docs-page-tools">
+            <button id="docsCopyPage" type="button" class="docs-copy-page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <span class="docs-copy-page__label" aria-live="polite">Copy page</span>
+            </button>
+            <nav id="docsTitleNav" class="docs-title-nav" aria-label="Previous and next page shortcuts"></nav>
+          </div>
         </div>
-      </div>
-    </div>
-  </main>
+        <p class="docs-page-description">RBAC matrix, permission legend, and account hierarchy for GoPick roles and account types.</p>
+      </header>
 
-  <footer class="manual-footer py-6">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-      <div class="text-center">
-        <p class="text-slate-400 text-sm">&copy; <span id="footerYearSpan"></span> GoPick - Assessment Center</p>
-        <p class="mt-2 text-xs"><a class="text-slate-400 hover:text-brand transition-colors" href="../../../pages/dev-rules/index.html">Dev Rules</a></p>
-      </div>
-    </div>
-  </footer>
+      <!-- ==================== On This Page ==================== -->
+      <details id="docsPageToc" class="docs-page-toc">
+        <summary class="docs-page-toc__summary">On this page</summary>
+        <nav class="docs-page-toc__nav" aria-label="On this page">
+          <ul id="docsTocList" class="docs-toc-list"></ul>
+        </nav>
+      </details>
 
-  <script src="../../../shared/components/image-card/renderer.js?v=20261020-isolate-image-card" defer></script>
+      <!-- ==================== Content ==================== -->
+      <div class="docs-page-body">
+        <div id="section-render-root"></div>
+
+        <!-- ==================== Pager ==================== -->
+        <nav id="docsPager" class="docs-pager" aria-label="Previous and next pages"></nav>
+
+        <!-- ==================== Footer ==================== -->
+        <footer class="docs-footer">
+          <p class="docs-footer__name">GoPick Assessment Center manual</p>
+          <ul class="docs-footer__links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../pages/dev-rules/index.html">Dev Rules</a></li>
+          </ul>
+          <p class="docs-footer__year">&copy; <span id="footerYearSpan"></span> GoPick</p>
+        </footer>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../../../shared/components/image-card/renderer.js?v=20261020-image-gallery" defer></script>
+  <script src="../../../shared/js/ui/docsComponents.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsContentStore.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsBlockRenderer.js?v=20261029-shadcn-blocks" defer></script>
   <script src="assets/js/dataFiller.js?v=20261013-phase2" defer></script>
-  <script src="assets/js/contentStore.js?v=20261013-phase2" defer></script>
-  <script src="assets/js/contentRenderer.js?v=20261013-phase2" defer></script>
-  <script src="assets/js/sidebarTracker.js?v=20261013-phase2" defer></script>
-  <script src="assets/js/behavior.js?v=20261013-phase2" defer></script>
-  <script src="../../../shared/js/headerSearch.js" defer></script>
-  <script src="../../../shared/js/manualNav.js" defer></script>
+  <script src="assets/js/rbacBlocks.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/dataLoader.js?v=20261028-docs-nav" defer></script>
+  <script src="../../../shared/js/headerSearchManifest.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/headerSearch.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsSidebar.js?v=20261028-docs-page" defer></script>
+  <script src="../../../shared/js/ui/docsPageTree.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsCopyPage.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsPageShell.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsTocTracker.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsHeadingAnchors.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsReveal.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsBlockPage.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="assets/js/behavior.js?v=20261029-shadcn-blocks" defer></script>
 </body>
 </html>
-

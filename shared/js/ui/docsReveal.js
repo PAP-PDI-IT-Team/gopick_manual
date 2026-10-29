@@ -21,10 +21,16 @@
         });
     }
 
+    function getHasSectionHash() {
+        var hashId = decodeURIComponent((global.location.hash || '').replace('#', ''));
+        var hashTarget = hashId ? document.getElementById(hashId) : null;
+        return Boolean(hashTarget && hashTarget.closest('#section-render-root'));
+    }
+
     function init(sectionSelector) {
         if (!sectionSelector) throw new Error('docsReveal: init needs a section selector');
         var sections = Array.prototype.slice.call(document.querySelectorAll(sectionSelector));
-        if (getPrefersReducedMotion() || !('IntersectionObserver' in global)) return;
+        if (getPrefersReducedMotion() || getHasSectionHash() || !('IntersectionObserver' in global)) return;
 
         var partsBySection = new Map();
         var sectionObserver = new IntersectionObserver(function (entries) {

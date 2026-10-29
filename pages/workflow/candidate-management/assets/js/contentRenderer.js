@@ -1,8 +1,6 @@
 (function (global) {
     'use strict';
 
-    const INPUT_KIND_PATTERN = /\b(required|optional|conditional|locked|defaulted|editable)\b/i;
-
     const CALLOUT_VARIANTS = {
         rules: { title: 'Rules', className: 'rules' },
         expected: { title: 'Expected Result', className: 'result' },
@@ -54,62 +52,39 @@
         }
 
         createStepList(steps) {
-            const list = document.createElement('ol');
-            list.className = 'docs-steps';
-            steps.forEach(step => {
-                const listItem = document.createElement('li');
-                listItem.className = 'docs-steps__item';
-                listItem.appendChild(this.createItemContent(step));
-                list.appendChild(listItem);
-            });
-            return list;
+            return global.sharedDocsComponents.createSteps(steps, step => this.createItemContent(step));
         }
 
         createCallout(variantKey, items) {
             const variant = CALLOUT_VARIANTS[variantKey];
-            const callout = document.createElement('div');
-            callout.className = 'flat-callout flat-callout--' + variant.className;
-            this.appendText(callout, 'h4', 'flat-callout__title', variant.title);
-            callout.appendChild(this.createBulletList(items));
-            return callout;
+            return global.sharedDocsComponents.createCallout(variant.className, variant.title, this.createBulletList(items));
         }
 
         createAccessPath(accessPath) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'candidate-access';
-            this.appendText(wrapper, 'span', 'docs-access__label', 'Find it in');
-            const list = document.createElement('ol');
-            list.className = 'docs-access';
-            accessPath.split('>').map(step => step.trim()).forEach(step => this.appendText(list, 'li', 'docs-access__step', step));
-            wrapper.appendChild(list);
-            return wrapper;
+            return global.sharedDocsComponents.createAccessPath(accessPath.split('>').map(step => step.trim()));
         }
 
-        createChipList(items, kind) {
-            const list = document.createElement('ul');
-            list.className = 'docs-chips docs-chips--' + kind;
-            items.forEach(item => this.appendText(list, 'li', 'docs-chips__item', item));
-            return list;
+        createInputTable(groupTitle, items) {
+            return global.sharedDocsComponents.createInputTable([{ title: groupTitle, items: items }], item => this.createItemContent(item));
         }
 
         createGroup(group) {
             const groupElement = document.createElement('div');
             groupElement.className = 'docs-group';
             this.appendText(groupElement, 'h4', 'docs-group__title', group.title);
-            const kindMatch = group.title.match(INPUT_KIND_PATTERN);
             const items = group.items || [];
-            groupElement.appendChild(kindMatch ? this.createChipList(items, kindMatch[1].toLowerCase()) : this.createBulletList(items));
+            groupElement.appendChild(global.sharedDocsComponents.isInputGroupTitle(group.title) ? this.createInputTable(group.title, items) : this.createBulletList(items));
             if (group.rules && group.rules.length) groupElement.appendChild(this.createCallout('rules', group.rules));
             return groupElement;
         }
 
         renderSectionBody(section, target) {
-            if (section.description) this.appendText(target, 'p', 'candidate-block__lead', section.description);
+            if (section.description) this.appendText(target, 'p', 'docs-block__lead', section.description);
             if (section.accessPath) target.appendChild(this.createAccessPath(section.accessPath));
 
             if (section.groups) {
                 const groups = document.createElement('div');
-                groups.className = 'candidate-groups';
+                groups.className = 'docs-groups';
                 section.groups.forEach(group => groups.appendChild(this.createGroup(group)));
                 target.appendChild(groups);
             }
@@ -136,13 +111,11 @@
 
         renderChild(section, headingLevel) {
             const block = document.createElement('article');
-            block.className = 'candidate-block';
-            if (this.hasDetails(section)) {
-                block.id = section.id;
-                const heading = this.appendText(block, 'h' + headingLevel, 'candidate-block__title candidate-block__title--h' + headingLevel, section.title);
-                heading.setAttribute('tabindex', '-1');
-                this.renderSectionBody(section, block);
-            }
+            block.className = 'docs-block';
+            block.id = section.id;
+            const heading = this.appendText(block, 'h' + headingLevel, 'docs-block__title docs-block__title--h' + headingLevel, section.title);
+            heading.setAttribute('tabindex', '-1');
+            if (this.hasDetails(section)) this.renderSectionBody(section, block);
             (section.children || []).forEach(child => block.appendChild(this.renderChild(child, Math.min(headingLevel + 1, 4))));
             return block;
         }
@@ -156,7 +129,7 @@
 
             if (this.hasDetails(section)) {
                 const body = document.createElement('div');
-                body.className = 'candidate-block candidate-block--top';
+                body.className = 'docs-block docs-block--top';
                 this.renderSectionBody(section, body);
                 sectionElement.appendChild(body);
             }

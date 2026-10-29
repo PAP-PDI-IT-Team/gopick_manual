@@ -1,5 +1,3 @@
-/* ==================== Search Dialog ==================== */
-
 .docs-shell .header-search-backdrop {
     background: rgba(9, 9, 11, 0.45);
 }
@@ -62,8 +60,6 @@
     font-size: var(--step-small);
 }
 
-
-/* ==================== Sidebar ==================== */
 
 .docs-sidebar {
     position: fixed;
@@ -129,10 +125,10 @@
 }
 
 .docs-nav-group__title {
-    margin: 0 0 6px;
+    margin: 0 0 4px;
     padding: 0 10px;
-    color: var(--ink);
-    font-size: var(--step-small);
+    color: var(--ink-soft);
+    font-size: 0.8125rem;
     font-weight: 600;
 }
 
@@ -160,9 +156,9 @@
 }
 
 .docs-nav-group__link[aria-current="page"] {
-    color: var(--ink);
+    color: var(--accent-press);
     font-weight: 500;
-    background: var(--tone-1);
+    background: var(--muted);
 }
 
 @media (min-width: 1024px) {
@@ -171,8 +167,6 @@
     }
 }
 
-
-/* ==================== On This Page ==================== */
 
 .docs-toc {
     display: none;

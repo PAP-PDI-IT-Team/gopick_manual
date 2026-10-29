@@ -181,7 +181,6 @@
                 const phases = hasLinkedSteps ? this.splitStepPhases(steps) : { lead: steps, wizard: [], tail: [] };
                 const journey = document.createElement('ol');
                 journey.className = 'flow-journey';
-                journey.style.setProperty('--stop-total', String(steps.length));
                 let stepNumber = 0;
                 const appendStop = (parent, stepData5) => {
                     stepNumber += 1;
@@ -201,7 +200,6 @@
                 if (!bandLabel) throw new Error('Journey band requires a label');
                 const bandElement = document.createElement('li');
                 bandElement.className = 'flow-journey__band';
-                bandElement.style.setProperty('--band-span', String(wizardPhaseSteps.length));
                 this.appendText(bandElement, 'p', 'flow-journey__band-label', bandLabel);
                 const bandStops = document.createElement('ol');
                 bandStops.className = 'flow-journey__band-stops';

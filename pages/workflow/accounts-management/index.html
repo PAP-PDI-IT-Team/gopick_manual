@@ -7,17 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="../../../shared/css/docs-shell.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="../../../shared/css/docs-navigation.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="../../../shared/css/docs-page.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261028-docs-variant">
-  <link rel="stylesheet" href="../../../shared/css/docs-content.css?v=20261028-docs-shared">
-  <link rel="stylesheet" href="assets/css/flow-overview.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="assets/css/flow-wizard.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="assets/css/flow-inputs.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="assets/css/flow-rules.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="assets/css/flow-journey.css?v=20261028-docs-page">
-  <link rel="stylesheet" href="assets/css/screenshot-viewer.css?v=20261028-docs-page">
+  <link rel="stylesheet" href="../../../shared/css/docs-shell.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-navigation.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-page.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-content.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-components.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-flow-overview.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-flow-inputs.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-flow-rules.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-flow-journey.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-screenshot-viewer.css?v=20261028-docs-flow">
+  <link rel="stylesheet" href="assets/css/flow-wizard.css?v=20261029-shadcn-blocks">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="../../../shared/js/tailwindConfig.js?v=20261020-external-config"></script>
@@ -66,10 +67,16 @@
 
       <!-- ==================== Page Header ==================== -->
       <header class="docs-page-header">
-        <nav aria-label="Breadcrumb">
-          <ol id="docsBreadcrumb" class="docs-breadcrumb"></ol>
-        </nav>
-        <h1 id="accountsPageTitle" class="docs-page-title" tabindex="-1">Accounts</h1>
+        <div class="docs-page-header__row">
+          <h1 id="accountsPageTitle" class="docs-page-title" tabindex="-1">Accounts</h1>
+          <div class="docs-page-tools">
+            <button id="docsCopyPage" type="button" class="docs-copy-page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <span class="docs-copy-page__label" aria-live="polite">Copy page</span>
+            </button>
+            <nav id="docsTitleNav" class="docs-title-nav" aria-label="Previous and next page shortcuts"></nav>
+          </div>
+        </div>
         <p id="accountsPageDescription" class="docs-page-description">Provides Access Control and Management of Accounts of GoPick.</p>
       </header>
 
@@ -77,7 +84,7 @@
       <details id="docsPageToc" class="docs-page-toc">
         <summary class="docs-page-toc__summary">On this page</summary>
         <nav class="docs-page-toc__nav" aria-label="On this page">
-          <ul id="docsTocList" class="docs-toc-tree"></ul>
+          <ul id="docsTocList" class="docs-toc-list"></ul>
         </nav>
       </details>
 
@@ -145,19 +152,23 @@
   </div>
 
   <script src="../../../shared/components/image-card/renderer.js?v=20261020-image-gallery" defer></script>
+  <script src="../../../shared/js/ui/docsComponents.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsScreenshotViewer.js?v=20261028-docs-flow" defer></script>
   <script src="assets/js/dataFiller.js?v=20261022-single-listing-image" defer></script>
-  <script src="assets/js/contentStore.js" defer></script>
-  <script src="assets/js/screenshotViewer.js?v=20261021-viewer-arrows" defer></script>
-  <script src="assets/js/flowBuilders.js?v=20261028-docs-page" defer></script>
-  <script src="assets/js/viewBuilders.js?v=20261028-docs-page" defer></script>
-  <script src="assets/js/contentRenderer.js?v=20261028-docs-page" defer></script>
+  <script src="assets/js/contentStore.js?v=20261028-docs-page" defer></script>
+  <script src="assets/js/flowBuilders.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="assets/js/viewBuilders.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="assets/js/contentRenderer.js?v=20261029-shadcn-blocks" defer></script>
   <script src="../../../shared/js/dataLoader.js?v=20261028-docs-nav" defer></script>
+  <script src="../../../shared/js/headerSearchManifest.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/headerSearch.js?v=20261029-shadcn-blocks" defer></script>
   <script src="../../../shared/js/ui/docsSidebar.js?v=20261028-docs-page" defer></script>
-  <script src="../../../shared/js/ui/docsPageTree.js?v=20261028-docs-page" defer></script>
-  <script src="../../../shared/js/ui/docsPageShell.js?v=20261028-docs-shared" defer></script>
-  <script src="../../../shared/js/ui/docsTocTracker.js?v=20261028-docs-shared" defer></script>
-  <script src="../../../shared/js/ui/docsReveal.js?v=20261028-docs-page" defer></script>
-  <script src="assets/js/behavior.js?v=20261028-docs-shared" defer></script>
-  <script src="../../../shared/js/headerSearch.js?v=20261028-docs-page" defer></script>
+  <script src="../../../shared/js/ui/docsPageTree.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsCopyPage.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsPageShell.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsTocTracker.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsHeadingAnchors.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsReveal.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="assets/js/behavior.js?v=20261029-cleanup" defer></script>
 </body>
 </html>

@@ -11,36 +11,24 @@
             this.content = global.__metersContent || {};
             this.store = new global.MetersContentStore(this.content);
             this.renderer = new global.MetersContentRenderer(this.store, global.GoPickImageRenderer);
-            this.sidebar = new global.MetersSidebarTracker(this.store);
-            this.screenshotViewer = new global.MetersScreenshotViewer();
-        }
-
-        scrollToHash() {
-            const targetId = (location.hash || '').replace('#', '');
-            if (!targetId) return;
-            const element = document.getElementById(targetId);
-            if (element) {
-                this.sidebar.setActive(targetId);
-                this.sidebar.isProgrammaticScroll = true;
-                setTimeout(() => {
-                    element.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    element.focus && element.focus();
-                    setTimeout(() => {
-                        this.sidebar.isProgrammaticScroll = false;
-                    }, 400);
-                }, 30);
-            }
+            this.sidebar = new global.DocsTocTracker(this.store);
+            this.screenshotViewer = new global.DocsScreenshotViewer();
         }
 
         initialize() {
             setFooterYear();
+            global.sharedDocsPageShell.init().catch(error => {
+                console.error('Error loading documentation navigation:', error);
+            });
             this.renderer.renderAllSections();
             this.screenshotViewer.bindTo(document.querySelector('main'));
             this.sidebar.render();
+            global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();
+            global.sharedDocsReveal.init('#section-render-root > .flat-section, #section-render-root .flat-subsection');
 
             if (location.hash) {
-                this.scrollToHash();
+                this.sidebar.scrollToHash();
             } else {
                 this.sidebar.updateScrollSpy();
             }

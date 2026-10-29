@@ -11,35 +11,23 @@
             this.content = global.__assessmentContent || {};
             this.store = new global.AssessmentContentStore(this.content);
             this.renderer = new global.AssessmentContentRenderer(this.store, global.GoPickImageRenderer);
-            this.sidebar = new global.AssessmentSidebarTracker(this.store);
-        }
-
-        scrollToHash() {
-            const id = (location.hash || '').replace('#', '');
-            if (!id) return;
-            const el = document.getElementById(id);
-            if (el) {
-                this.sidebar.setActive(id);
-                this.sidebar.isProgrammaticScroll = true;
-                setTimeout(() => {
-                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    el.focus && el.focus();
-                    setTimeout(() => {
-                        this.sidebar.isProgrammaticScroll = false;
-                    }, 400);
-                }, 30);
-            }
+            this.sidebar = new global.DocsTocTracker(this.store);
         }
 
         init() {
             setFooterYear();
+            global.sharedDocsPageShell.init().catch(error => {
+                console.error('Error loading documentation navigation:', error);
+            });
             this.renderer.renderHero();
             this.renderer.renderAllSections();
             this.sidebar.render();
+            global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();
+            global.sharedDocsReveal.init('#section-render-root > .flat-section');
 
             if (location.hash) {
-                this.scrollToHash();
+                this.sidebar.scrollToHash();
             } else {
                 this.sidebar.updateScrollSpy();
             }

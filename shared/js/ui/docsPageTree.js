@@ -1,6 +1,12 @@
 (function (global) {
     'use strict';
 
+    var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+    var ARROW_PATHS = {
+        previous: 'M15 6l-6 6 6 6',
+        next: 'M9 6l6 6-6 6'
+    };
+
     function requireNode(nodeId) {
         var node = document.getElementById(nodeId);
         if (!node) throw new Error('docsPageTree: missing #' + nodeId);
@@ -20,6 +26,21 @@
         return element;
     }
 
+    function createArrowIcon(direction) {
+        var icon = document.createElementNS(SVG_NAMESPACE, 'svg');
+        icon.setAttribute('viewBox', '0 0 24 24');
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
+        icon.setAttribute('stroke-width', '2');
+        icon.setAttribute('stroke-linecap', 'round');
+        icon.setAttribute('stroke-linejoin', 'round');
+        icon.setAttribute('aria-hidden', 'true');
+        var iconPath = document.createElementNS(SVG_NAMESPACE, 'path');
+        iconPath.setAttribute('d', ARROW_PATHS[direction]);
+        icon.appendChild(iconPath);
+        return icon;
+    }
+
 
     function flattenPages(groups) {
         var pages = [];
@@ -37,6 +58,13 @@
         return currentIndex;
     }
 
+    function getNeighbourPages(pages, currentIndex) {
+        return {
+            previous: currentIndex > 0 ? pages[currentIndex - 1] : null,
+            next: currentIndex < pages.length - 1 ? pages[currentIndex + 1] : null
+        };
+    }
+
 
     function createTreeLink(item, siteRoot, currentUrl) {
         var listItem = document.createElement('li');
@@ -47,51 +75,70 @@
         return listItem;
     }
 
-    function createTreeFolder(group, siteRoot, currentUrl) {
-        var folder = createElement('details', 'docs-nav-folder');
-        var summary = createElement('summary', 'docs-nav-folder__title', group.title);
+    function createTreeGroup(group, siteRoot, currentUrl) {
+        var groupNode = createElement('div', 'docs-nav-group');
+        var titleNode = createElement('p', 'docs-nav-group__title', group.title);
         var list = createElement('ul', 'docs-nav-group__list');
-        folder.open = group.items.some(function (item) { return item.url === currentUrl; });
+        titleNode.id = 'docs-nav-group-' + group.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        list.setAttribute('aria-labelledby', titleNode.id);
         group.items.forEach(function (item) {
             list.appendChild(createTreeLink(item, siteRoot, currentUrl));
         });
-        folder.appendChild(summary);
-        folder.appendChild(list);
-        return folder;
+        groupNode.appendChild(titleNode);
+        groupNode.appendChild(list);
+        return groupNode;
     }
 
     function renderTree(groups, siteRoot, currentUrl) {
         var groupsNode = requireNode('docsNavGroups');
         groupsNode.replaceChildren();
         groups.forEach(function (group) {
-            groupsNode.appendChild(createTreeFolder(group, siteRoot, currentUrl));
+            groupsNode.appendChild(createTreeGroup(group, siteRoot, currentUrl));
         });
     }
 
 
-    function renderBreadcrumb(currentPage) {
-        var listNode = requireNode('docsBreadcrumb');
-        var groupItem = createElement('li', 'docs-breadcrumb__item', currentPage.groupTitle);
-        var pageItem = createElement('li', 'docs-breadcrumb__item', currentPage.label);
-        pageItem.setAttribute('aria-current', 'page');
-        listNode.replaceChildren(groupItem, pageItem);
+    function createTitleNavLink(page, direction, siteRoot) {
+        var directionLabel = direction === 'previous' ? 'Previous page: ' : 'Next page: ';
+        var link = createElement('a', 'docs-title-nav__link');
+        link.href = siteRoot + page.url;
+        link.rel = direction === 'previous' ? 'prev' : 'next';
+        link.setAttribute('aria-label', directionLabel + page.label);
+        link.title = page.label;
+        link.appendChild(createArrowIcon(direction));
+        return link;
+    }
+
+    function renderTitleNav(neighbourPages, siteRoot) {
+        var titleNavNode = requireNode('docsTitleNav');
+        var links = [];
+        if (neighbourPages.previous) links.push(createTitleNavLink(neighbourPages.previous, 'previous', siteRoot));
+        if (neighbourPages.next) links.push(createTitleNavLink(neighbourPages.next, 'next', siteRoot));
+        titleNavNode.replaceChildren.apply(titleNavNode, links);
     }
 
 
     function createPagerLink(page, direction, siteRoot) {
+        if (!global.sharedDocsComponents) throw new Error('docsPageTree: docsComponents.js is not loaded');
+        var isPrevious = direction === 'previous';
         var link = createElement('a', 'docs-pager__link docs-pager__link--' + direction);
         link.href = siteRoot + page.url;
-        link.rel = direction === 'previous' ? 'prev' : 'next';
-        link.appendChild(createElement('span', 'docs-pager__direction', direction === 'previous' ? 'Previous' : 'Next'));
-        link.appendChild(createElement('span', 'docs-pager__title', page.label));
+        link.rel = isPrevious ? 'prev' : 'next';
+        var arrow = global.sharedDocsComponents.createIcon(isPrevious ? 'arrowLeft' : 'arrowRight');
+        var directionLabel = createElement('span', 'docs-visually-hidden', isPrevious ? 'Previous page: ' : 'Next page: ');
+        var title = createElement('span', 'docs-pager__title', page.label);
+        if (isPrevious) link.appendChild(arrow);
+        link.appendChild(directionLabel);
+        link.appendChild(title);
+        if (!isPrevious) link.appendChild(arrow);
         return link;
     }
 
-    function renderPager(pages, currentIndex, siteRoot) {
+    function renderPager(neighbourPages, siteRoot) {
         var pagerNode = requireNode('docsPager');
         var links = [];
-        if (currentIndex > 0) links.push(createPagerLink(pages[currentIndex - 1], 'previous', siteRoot));
-        if (currentIndex < pages.length - 1) links.push(createPagerLink(pages[currentIndex + 1], 'next', siteRoot));
+        if (neighbourPages.previous) links.push(createPagerLink(neighbourPages.previous, 'previous', siteRoot));
+        if (neighbourPages.next) links.push(createPagerLink(neighbourPages.next, 'next', siteRoot));
         pagerNode.replaceChildren.apply(pagerNode, links);
     }
 
@@ -101,11 +148,11 @@
         var siteRoot = requireBodyData('siteRoot');
         var currentUrl = requireBodyData('pageUrl');
         var pages = flattenPages(data.docsNav);
-        var currentIndex = findCurrentIndex(pages, currentUrl);
+        var neighbourPages = getNeighbourPages(pages, findCurrentIndex(pages, currentUrl));
 
         renderTree(data.docsNav, siteRoot, currentUrl);
-        renderBreadcrumb(pages[currentIndex]);
-        renderPager(pages, currentIndex, siteRoot);
+        renderTitleNav(neighbourPages, siteRoot);
+        renderPager(neighbourPages, siteRoot);
     }
 
     global.sharedDocsPageTree = {

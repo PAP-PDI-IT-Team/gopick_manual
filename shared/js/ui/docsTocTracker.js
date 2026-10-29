@@ -3,6 +3,7 @@
 
     const DESKTOP_TOC_QUERY = '(min-width: 1280px)';
     const HEADER_OFFSET = 140;
+    const TOC_DEPTH_LIMIT = 2;
 
     class DocsTocTracker {
         constructor(store, rootListId = 'docsTocList', disclosureId = 'docsPageToc') {
@@ -11,7 +12,7 @@
             this.disclosureId = disclosureId;
             this.activeId = null;
             this.isProgrammaticScroll = false;
-            this.manuallyOpenedIds = new Set();
+            this.listedIdBySectionId = new Map();
         }
 
         getRootList() {
@@ -20,111 +21,51 @@
             return rootList;
         }
 
-        createToggleButton(section, childList) {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'docs-toc-tree__toggle';
-            button.setAttribute('aria-expanded', 'false');
-            button.setAttribute('aria-controls', childList.id);
-            button.setAttribute('aria-label', 'Show ' + section.title + ' sections');
-
-            const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            chevron.setAttribute('viewBox', '0 0 24 24');
-            chevron.setAttribute('fill', 'none');
-            chevron.setAttribute('stroke', 'currentColor');
-            chevron.setAttribute('stroke-width', '2');
-            chevron.setAttribute('stroke-linecap', 'round');
-            chevron.setAttribute('stroke-linejoin', 'round');
-            chevron.setAttribute('aria-hidden', 'true');
-            const chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            chevronPath.setAttribute('d', 'M9 6l6 6-6 6');
-            chevron.appendChild(chevronPath);
-            button.appendChild(chevron);
-
-            button.addEventListener('click', () => {
-                const willOpen = button.getAttribute('aria-expanded') !== 'true';
-                this.setBranchOpen(section.id, willOpen);
-                if (willOpen) {
-                    this.manuallyOpenedIds.add(section.id);
-                } else {
-                    this.manuallyOpenedIds.delete(section.id);
-                }
-            });
-
-            return button;
-        }
-
-        setBranchOpen(sectionId, isOpen) {
-            const itemData = this.getRootList().querySelector('li[data-target="' + sectionId + '"]');
-            const button = itemData.querySelector(':scope > .docs-toc-tree__row > .docs-toc-tree__toggle');
-            const childList = itemData.querySelector(':scope > .docs-toc-tree__children');
-            button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            button.setAttribute('aria-label', (isOpen ? 'Hide ' : 'Show ') + itemData.dataset.title + ' sections');
-            childList.hidden = !isOpen;
-        }
-
-        openActiveBranch(activeItem) {
-            const rootList = this.getRootList();
-            const ancestorIds = new Set();
-            let current = activeItem.parentElement;
-            while (current && current !== rootList) {
-                if (current.matches('li.docs-toc-tree__item--branch')) {
-                    ancestorIds.add(current.dataset.target);
-                }
-                current = current.parentElement;
-            }
-
-            rootList.querySelectorAll('li.docs-toc-tree__item--branch').forEach(branch => {
-                const branchId = branch.dataset.target;
-                const isInPath = ancestorIds.has(branchId);
-                branch.classList.toggle('docs-toc-tree__item--in-path', isInPath);
-                this.setBranchOpen(branchId, isInPath || branch === activeItem || this.manuallyOpenedIds.has(branchId));
+        mapHiddenDescendants(section, listedId) {
+            (section.children || []).forEach(child => {
+                this.listedIdBySectionId.set(child.id, listedId);
+                this.mapHiddenDescendants(child, listedId);
             });
         }
 
-        appendItem(section, level, parent) {
-            const listItem = document.createElement('li');
-            listItem.className = 'docs-toc-tree__item';
-            listItem.dataset.target = section.id;
-            listItem.dataset.level = String(level);
-            listItem.dataset.title = section.title;
-
+        createLink(section, level) {
             const anchor = document.createElement('a');
-            anchor.className = 'docs-toc-tree__link';
-            anchor.style.setProperty('--toc-depth', String(level));
+            anchor.className = 'docs-toc-list__link docs-toc-list__link--level-' + level;
             anchor.href = '#' + section.id;
             anchor.dataset.target = section.id;
             anchor.textContent = section.title;
-
             anchor.addEventListener('click', () => {
                 this.setActive(section.id);
                 this.closeMobileDisclosure();
             });
+            return anchor;
+        }
 
-            const rowElement = document.createElement('div');
-            rowElement.className = 'docs-toc-tree__row';
-            rowElement.appendChild(anchor);
-            listItem.appendChild(rowElement);
+        appendItem(section, level, parentList) {
+            const listItem = document.createElement('li');
+            listItem.className = 'docs-toc-list__item';
+            listItem.appendChild(this.createLink(section, level));
+            this.listedIdBySectionId.set(section.id, section.id);
 
-            if (section.children && section.children.length) {
+            const children = section.children || [];
+            if (children.length && level + 1 < TOC_DEPTH_LIMIT) {
                 const childList = document.createElement('ul');
-                childList.className = 'docs-toc-tree__children';
-                childList.id = 'docs-toc-children-' + section.id;
-                childList.hidden = true;
-                section.children.forEach(child => {
+                childList.className = 'docs-toc-list__children';
+                children.forEach(child => {
                     this.appendItem(child, level + 1, childList);
                 });
-                listItem.classList.add('docs-toc-tree__item--branch');
-                rowElement.appendChild(this.createToggleButton(section, childList));
                 listItem.appendChild(childList);
+            } else {
+                this.mapHiddenDescendants(section, section.id);
             }
 
-            parent.appendChild(listItem);
+            parentList.appendChild(listItem);
         }
 
         render() {
             const listElement = this.getRootList();
             listElement.replaceChildren();
+            this.listedIdBySectionId.clear();
 
             const sections = this.store.getSections();
             sections.forEach(section => {
@@ -152,10 +93,10 @@
                 linkElement.removeAttribute('aria-current');
             });
 
-            const activeLink = rootList.querySelector('a[data-target="' + activeId + '"]');
+            const listedId = this.listedIdBySectionId.get(activeId) || activeId;
+            const activeLink = rootList.querySelector('a[data-target="' + listedId + '"]');
             if (activeLink) {
                 activeLink.setAttribute('aria-current', 'location');
-                this.openActiveBranch(activeLink.closest('li.docs-toc-tree__item'));
                 this.keepActiveLinkVisible(activeLink);
             }
 
@@ -207,6 +148,17 @@
             element.scrollIntoView({ block: 'start', behavior: behavior });
         }
 
+        focusHashTarget(targetId) {
+            const element = document.getElementById(targetId);
+            const focusTarget = element.matches('[tabindex], a, button, input, select, textarea, h1, h2, h3, h4, h5, h6')
+                ? element
+                : element.querySelector('h2, h3, h4, h5, h6') || element;
+            if (!focusTarget.hasAttribute('tabindex') && !focusTarget.matches('a, button, input, select, textarea')) {
+                focusTarget.setAttribute('tabindex', '-1');
+            }
+            focusTarget.focus({ preventScroll: true });
+        }
+
         scrollToHash() {
             const targetId = (location.hash || '').replace('#', '');
             if (!targetId || !document.getElementById(targetId)) return;
@@ -215,6 +167,7 @@
             const realign = () => this.alignHashTarget(targetId, 'auto');
             setTimeout(() => {
                 this.alignHashTarget(targetId, 'smooth');
+                this.focusHashTarget(targetId);
                 setTimeout(() => {
                     this.isProgrammaticScroll = false;
                 }, 400);

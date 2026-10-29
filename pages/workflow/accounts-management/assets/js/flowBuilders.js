@@ -202,25 +202,48 @@
                 return overview;
             },
 
+            createInputChipGroup(group) {
+                const toneName = INPUT_GROUP_TONES[group.label] || 'neutral';
+                const block = document.createElement('div');
+                block.className = 'flow-inputs__group flow-inputs__group--' + toneName;
+                const heading = document.createElement('h5');
+                heading.className = 'flow-inputs__heading';
+                heading.textContent = group.label;
+                this.appendText(heading, 'span', 'flow-inputs__count', String(group.children.length));
+                block.appendChild(heading);
+                const chips = document.createElement('ul');
+                const holdsSentences = group.children.some(textValue2 => /\.$/.test(textValue2));
+                chips.className = holdsSentences ? 'flow-inputs__chips flow-inputs__chips--sentences' : 'flow-inputs__chips';
+                group.children.forEach(fieldName => this.appendText(chips, 'li', 'flow-inputs__chip', fieldName));
+                block.appendChild(chips);
+                return block;
+            },
+
+            createInputTableGroup(inputGroups) {
+                const block = document.createElement('div');
+                block.className = 'flow-inputs__group';
+                this.appendText(block, 'h5', 'flow-inputs__heading', 'Inputs');
+                block.appendChild(global.sharedDocsComponents.createInputTable(inputGroups.map(group => ({ title: group.label, items: group.children }))));
+                return block;
+            },
+
             createInputGroups(groups) {
                 const wrapper2 = document.createElement('div');
                 wrapper2.className = 'flow-inputs';
+                let pendingInputGroups = [];
+                const flushInputGroups = () => {
+                    if (pendingInputGroups.length) wrapper2.appendChild(this.createInputTableGroup(pendingInputGroups));
+                    pendingInputGroups = [];
+                };
                 groups.forEach(group => {
-                    const toneName = INPUT_GROUP_TONES[group.label] || 'neutral';
-                    const block = document.createElement('div');
-                    block.className = 'flow-inputs__group flow-inputs__group--' + toneName;
-                    const heading = document.createElement('h5');
-                    heading.className = 'flow-inputs__heading';
-                    heading.textContent = group.label;
-                    this.appendText(heading, 'span', 'flow-inputs__count', String(group.children.length));
-                    block.appendChild(heading);
-                    const chips = document.createElement('ul');
-                    const holdsSentences = group.children.some(textValue2 => /\.$/.test(textValue2));
-                    chips.className = holdsSentences ? 'flow-inputs__chips flow-inputs__chips--sentences' : 'flow-inputs__chips';
-                    group.children.forEach(fieldName => this.appendText(chips, 'li', 'flow-inputs__chip', fieldName));
-                    block.appendChild(chips);
-                    wrapper2.appendChild(block);
+                    if (global.sharedDocsComponents.isInputGroupTitle(group.label)) {
+                        pendingInputGroups.push(group);
+                        return;
+                    }
+                    flushInputGroups();
+                    wrapper2.appendChild(this.createInputChipGroup(group));
                 });
+                flushInputGroups();
                 return wrapper2;
             },
 
@@ -281,7 +304,7 @@
                     columns.appendChild(block);
                 });
                 wrapper3.appendChild(columns);
-                return wrapper3;
+                return global.sharedDocsComponents.addCalloutIcon(wrapper3, 'rules');
             },
 
             createWizardStep(stepData2, steps) {

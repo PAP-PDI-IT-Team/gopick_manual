@@ -50,7 +50,6 @@
         createFlowSteps(steps) {
             const journey = document.createElement('ol');
             journey.className = 'flow-journey';
-            journey.style.setProperty('--stop-total', String(steps.length));
             steps.forEach((stepText, index) => {
                 const stopElement = document.createElement('li');
                 stopElement.className = 'flow-journey__stop';
@@ -90,7 +89,17 @@
         createChipGroups(groups) {
             const wrapper = document.createElement('div');
             wrapper.className = 'flow-inputs';
-            groups.forEach(group => wrapper.appendChild(this.createChipGroup(group.title, group.items)));
+            groups.forEach(group => {
+                if (global.sharedDocsComponents.isInputGroupTitle(group.title)) {
+                    const block = document.createElement('div');
+                    block.className = 'flow-inputs__group';
+                    this.appendText(block, 'h5', 'flow-inputs__heading', group.title);
+                    block.appendChild(global.sharedDocsComponents.createInputTable([{ title: group.title, items: group.items }]));
+                    wrapper.appendChild(block);
+                    return;
+                }
+                wrapper.appendChild(this.createChipGroup(group.title, group.items));
+            });
             return wrapper;
         },
 
@@ -139,7 +148,7 @@
             block.appendChild(listElement);
             columns.appendChild(block);
             wrapper2.appendChild(columns);
-            return wrapper2;
+            return global.sharedDocsComponents.addCalloutIcon(wrapper2, 'rules');
         }
     };
 

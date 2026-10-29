@@ -52,11 +52,10 @@
             }
         }
 
-        renderSectionHeader(section, headingLevel, eyebrowText) {
+        renderSectionHeader(section, headingLevel) {
             const header = document.createElement('div');
             header.className = 'flow-overview__header';
             const titleBlock = document.createElement('div');
-            this.appendText(titleBlock, 'div', 'text-xs font-bold uppercase tracking-wider text-brand mb-2', eyebrowText);
 
             const headingTag = 'h' + headingLevel;
             const heading = this.appendText(titleBlock, headingTag, 'flow-overview__title flow-overview__title--level-' + headingLevel, section.title);
@@ -68,19 +67,19 @@
             return header;
         }
 
-        renderSectionTree(section, headingLevel, eyebrowText, isTopLevel) {
+        renderSectionTree(section, headingLevel, isTopLevel) {
             const sectionEl = document.createElement('section');
             sectionEl.className = isTopLevel ? 'flat-section' : 'flat-subsection';
 
             const panel = document.createElement('div');
             panel.className = 'flow-overview';
-            panel.appendChild(this.renderSectionHeader(section, headingLevel, eyebrowText));
+            panel.appendChild(this.renderSectionHeader(section, headingLevel));
             this.renderSectionBody(section, panel);
             sectionEl.appendChild(panel);
 
             if (section.children && section.children.length) {
                 section.children.forEach(child => {
-                    sectionEl.appendChild(this.renderSectionTree(child, Math.min(headingLevel + 1, 4), section.title, false));
+                    sectionEl.appendChild(this.renderSectionTree(child, Math.min(headingLevel + 1, 4), false));
                 });
             }
 
@@ -103,12 +102,12 @@
         renderAllSections() {
             const rootElement2 = document.getElementById('section-render-root');
             if (!rootElement2) throw new Error('Meters content root #section-render-root is missing');
-            rootElement2.innerHTML = '';
+            rootElement2.replaceChildren();
 
             this.renderLegends(rootElement2);
 
             this.store.getSections().forEach(section => {
-                rootElement2.appendChild(this.renderSectionTree(section, 2, null, true));
+                rootElement2.appendChild(this.renderSectionTree(section, 2, true));
             });
         }
     }
@@ -119,14 +118,14 @@
     if (!global.MetersScenarioBuilders) {
         throw new Error('MetersContentRenderer requires MetersScenarioBuilders (scenarioBuilders.js)');
     }
-    if (!global.MetersMatrixBuilders) {
-        throw new Error('MetersContentRenderer requires MetersMatrixBuilders (matrixBuilders.js)');
+    if (!global.DocsResolutionMatrix) {
+        throw new Error('MetersContentRenderer requires DocsResolutionMatrix (shared/js/ui/docsResolutionMatrix.js)');
     }
     Object.assign(
         MetersContentRenderer.prototype,
         global.MetersFlowBuilders.methods,
         global.MetersScenarioBuilders.methods,
-        global.MetersMatrixBuilders.methods
+        global.DocsResolutionMatrix.methods
     );
 
     global.MetersContentRenderer = MetersContentRenderer;

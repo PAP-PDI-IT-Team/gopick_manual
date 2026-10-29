@@ -21,8 +21,9 @@
             });
             this.renderer.renderAll();
             this.sidebar.render();
+            global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();
-            global.sharedDocsReveal.init('.docs-page-body > .flat-section');
+            global.sharedDocsReveal.init('.docs-page-body > .flat-section, .docs-page-body .flat-section__content');
 
             if (location.hash) {
                 this.sidebar.scrollToHash();

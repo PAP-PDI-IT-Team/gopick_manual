@@ -1,7 +1,7 @@
 (function (global) {
     'use strict';
 
-    var REQUIRED_MODULES = ['sharedDocsSidebar', 'sharedDataLoader', 'sharedDocsPageTree'];
+    var REQUIRED_MODULES = ['sharedDocsSidebar', 'sharedDataLoader', 'sharedDocsPageTree', 'sharedHeaderSearch', 'sharedDocsCopyPage'];
 
     function assertModulesLoaded() {
         REQUIRED_MODULES.forEach(function (moduleName) {
@@ -12,6 +12,7 @@
     function init() {
         assertModulesLoaded();
         global.sharedDocsSidebar.init();
+        global.sharedDocsCopyPage.init();
         return global.sharedDataLoader.init().then(function (data) {
             global.sharedDocsPageTree.init(data);
         });

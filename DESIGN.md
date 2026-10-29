@@ -499,20 +499,25 @@ Inner workflow and documentation pages follow a strict Separation of Concerns (S
    - OOP `class <Module>App` binding store, renderer, and tracker, handling URL hash routing (`#section-id`), and orchestrating any auxiliary widgets (e.g., RBAC tables).
 
 ## Docs Shell
-Manual pages are moving to a documentation shell modeled on the Fumadocs docs layout:
-- a page tree on the left;
-- the page in the middle, with a breadcrumb, a large title, and previous/next links at the end;
-- the page's own section tree on the right ("On this page").
+All 15 inner manual pages use one documentation shell modeled on the shadcn/ui docs layout:
+- a flat page tree on the left, with every `docsNav` group always open;
+- the page in the middle: a title row with **Copy page** and previous/next arrow buttons, the description, the content, and a previous/next pager at the end;
+- the page's own sections on the right ("On this page"): a plain two-level link list.
 
-Accounts, Dashboard and Candidates are on it. `ui-dna.md` tracks the migration and holds the checklist for the next page.
+Inside the page, the content components follow the shadcn docs page (https://ui.shadcn.com/docs/forms/react-hook-form): bordered Steps, Callouts, tables, code blocks and screenshot frames, inline `code` for UI labels, and outline previous/next buttons. Each section heading carries a link-icon anchor that appears on hover and focus. `ui-dna.md` holds the page anatomy, the block mapping and the checklist for adding a page.
 
 Shared owners:
 - `shared/css/docs-shell.css`: tokens, base, header, layout, footer, motion.
-- `shared/css/docs-navigation.css`: drawer, search dialog.
-- `shared/css/docs-page.css`: page grid, breadcrumb, folders, "On this page", pager.
-- `shared/css/docs-content.css`: section rhythm, lists, links, callouts, access path, input chips, numbered steps.
-- `shared/js/ui/docsSidebar.js`, `docsPageTree.js`, `docsPageShell.js`, `docsTocTracker.js`, `docsReveal.js`.
-- The `docsNav` list in `shared/data/gopick-data.json` is the single source for the tree, breadcrumb and pager.
+- `shared/css/docs-navigation.css`: drawer, flat page tree, search dialog.
+- `shared/css/docs-page.css`: page grid, title row and toolbar, heading anchors, "On this page", pager.
+- `shared/css/docs-content.css`: section rhythm, headings, lists, links, groups and nested blocks.
+- `shared/css/docs-components.css` and `shared/js/ui/docsComponents.js`: Steps, Callout, input table, inline code, access path, status, code block, icons.
+- `shared/css/docs-flow-*.css` (overview, inputs, rules, journey) and `docs-screenshot-viewer.css`, with `shared/js/ui/docsScreenshotViewer.js`: the flow blocks shared by Accounts and Meters.
+- `shared/css/docs-resolution-matrix.css` and `shared/js/ui/docsResolutionMatrix.js`: the meter resolution-paths matrix shared by Meters and Meters governance.
+- Shell scripts in `shared/js/ui/`: `docsSidebar.js`, `docsPageTree.js`, `docsCopyPage.js`, `docsPageShell.js`, `docsTocTracker.js`, `docsHeadingAnchors.js`, `docsReveal.js`.
+- Block pages: `docsContentStore.js`, `docsBlockRenderer.js` and `docsBlockPage.js` render any page whose `dataFiller.js` follows the Markdown-to-page mapping.
+- The `docsNav` list in `shared/data/gopick-data.json` is the single source for the tree, the title arrows and the pager.
+- `shared/js/headerSearchManifest.js` maps each page to its Markdown source. Search and Copy page both read it.
 
 ### Tokens
 Tokens are scoped to `.docs-shell` and use zinc neutrals in place of slate.
@@ -520,30 +525,38 @@ Tokens are scoped to `.docs-shell` and use zinc neutrals in place of slate.
 | Token | Value | Use |
 |---|---|---|
 | `--ground` | `#ffffff` | Page ground |
-| `--tone-1` | `#f4f4f5` | First tone step: chips, callouts, screenshot frames, hover fills, mobile "On this page" |
-| `--tone-2` | `#e4e4e7` | Second tone step: hover on tone-1, defaulted and locked inputs, the TOC track |
+| `--tone-1` | `#f4f4f5` | Mobile "On this page" fill and remaining tone surfaces |
+| `--tone-2` | `#e4e4e7` | Second tone step |
+| `--border` | `#e4e4e7` | 1px borders on callouts, tables, code, frames, buttons and chips |
+| `--muted` | `#f4f4f5` | Table headers, inline code, step circles, screenshot ground, hover fills |
 | `--ink` | `#09090b` | All running text |
 | `--ink-soft` | `#52525b` | Secondary notes, metadata, links at rest |
-| `--ink-field` | `#18181b` | Dark surfaces: notes popover, viewer arrows |
-| `--accent` | `#e50914` | Active TOC marker, focus ring, the current journey stop, link underline on hover |
+| `--ink-field` | `#18181b` | Dark surfaces: viewer arrows, tooltips |
+| `--accent` | `#e50914` | Active sidebar page, active "On this page" link, step numbers, inline links, warning icon, focus ring |
 | `--accent-press` | `#b3060f` | Required asterisk, red text on white |
-| `--radius` | `6px` | One radius for surfaces and controls |
+| `--radius` | `6px` | Controls: buttons, inputs, chips |
+| `--radius-lg` | `10px` | Cards, callouts, tables, code blocks, screenshot frames |
+| `--code-font` | ui-monospace stack | Inline code and code blocks |
 
-`docs-content.css` adds `--rules-mark` (`#b45309`) and `--result-mark` (`#047857`) for the 4px marker bars on Rules and Expected Result callouts.
+Callouts are one bordered component. Rules, Warning, Expected result and Notes differ only by their icon: shield, triangle (red), check and info.
 
 ### Type
-One family, **Geist** (weights 400/500/600), in five sizes:
-- display `clamp(2.25rem, 0.9rem + 4.6vw, 5rem)`, used only for the page `h1`;
-- heading 28px; lead 20px; body 17px; small 14px.
-
-Running text, chips, rules and results are set at the body size. Small is for metadata, captions, the TOC and the journey labels.
+One family, **Geist** (weights 400/500/600), plus a monospace stack for inline code and code blocks.
+- Landing: display `clamp(2.25rem, 0.9rem + 4.6vw, 5rem)`; heading 28px; lead 20px; body 17px; small 14px.
+- Inner pages (`.docs-layout--page`), shadcn scale:
+  - title `clamp(1.875rem, 1.6rem + 0.8vw, 2.25rem)`;
+  - H2 24px, H3 20px, H4 18px;
+  - lead 17px, body 15px (line height 1.7), small 14px;
+  - inline code 13px.
 
 ### Rules
-- No hairline borders, 1px outlined boxes, gradients, glass, or shadows on anything at rest. Surfaces separate by one tone step. Real tables may keep their lines.
-- No eyebrow labels, pill badges, tiny uppercase tracked labels, or monospace.
-- Wizard steps are vertical and all visible in an `<ol>`, not a carousel.
-- Screenshot cards use the shared image-card `docs` variant: a flat tone frame and a fixed 2.1:1 media box, so lazy images never shift deep links.
+- Inner pages use shadcn 1px `--border` lines on callouts, tables, code, screenshot frames, chips and buttons. The landing keeps tone steps. Nowhere: gradients, glass, or shadows on anything at rest. Only the notes popover, which floats, has a shadow.
+- No eyebrow labels or tiny uppercase tracked labels. Monospace only for inline UI-label code, code blocks, system output and the account hierarchy tree.
+- How-to-use steps, journeys and wizard steps are vertical Steps in an `<ol>`, with red numbered circles or markers on a 1px line.
+- Screenshot cards use the shared image-card `docs` variant: a bordered frame with title and caption bars, the image on a muted ground, and a fixed 2.1:1 media box, so lazy images never shift deep links.
+- Classified inputs render as an Input | Type table. The data and the classification labels are unchanged.
 - Search opens from the header trigger, any `[data-search-trigger]` element, or Cmd/Ctrl+K.
+- Copy page copies the page's Markdown source (every source listed for it in the search manifest) to the clipboard and reports "Copied" or "Copy failed".
 
 ## Do's and Don'ts
 - Do keep the UI predominantly white and slate, with red as the clear action signal.

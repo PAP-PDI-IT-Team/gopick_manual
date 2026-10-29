@@ -32,22 +32,11 @@
         }
 
         createCallout(title, items, variant) {
-            const callout = document.createElement('div');
-            callout.className = 'flat-callout flat-callout--' + variant;
-            this.appendText(callout, 'h3', 'flat-callout__title', title);
-            callout.appendChild(this.createBulletList(items));
-            return callout;
+            return global.sharedDocsComponents.createCallout(variant, title, this.createBulletList(items));
         }
 
         createAccessPath(steps) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'dashboard-access';
-            this.appendText(wrapper, 'span', 'docs-access__label', 'Find it in');
-            const list = document.createElement('ol');
-            list.className = 'docs-access';
-            steps.forEach(step => this.appendText(list, 'li', 'docs-access__step', step));
-            wrapper.appendChild(list);
-            return wrapper;
+            return global.sharedDocsComponents.createAccessPath(steps);
         }
 
         createMetricRows(metrics) {
