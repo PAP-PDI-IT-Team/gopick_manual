@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restored the live Meters Management Resolution Paths Matrix on the flow page: the 8-column table with type filter pills, search, the `SHOW_ERROR` column mode switcher, the path counter, and horizontal scroll, with its original section description in `docs/workflow/meters-management.md`.
 - Changed Meters Management How to use steps to a horizontal journey at 1200px and wider that stacks vertically below it, with the final step highlighted.
 - Replaced the inline Tailwind configuration on Meters Management with the shared `shared/js/tailwindConfig.js`.
+- Added the Assign Products, Meter Management, and Other Account Settings update form screenshots to the Update Specific carousel in Accounts Management, with blurred surroundings, an outlined form, emphasized Next and Review Changes buttons, and the account name blurred.
 
 ## [1.4.0] - 2026-10-21
 
