@@ -9,7 +9,8 @@
         theme: {
             extend: {
                 colors: {
-                    brand: { DEFAULT: '#e50914', light: '#ff2d38', dark: '#b3060f' }
+                    brand: { DEFAULT: '#e50914', light: '#ff2d38', dark: '#b3060f' },
+                    surface: { DEFAULT: '#ffffff', muted: '#f8fafc', alt: '#f1f5f9' }
                 }
             }
         }

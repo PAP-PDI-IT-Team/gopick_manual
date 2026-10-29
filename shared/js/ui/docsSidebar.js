@@ -8,9 +8,9 @@
     var focusBeforeOpen = null;
 
     function requireNode(nodeId) {
-        var node = document.getElementById(nodeId);
-        if (!node) throw new Error('docsSidebar: missing #' + nodeId);
-        return node;
+        var nodeElement = document.getElementById(nodeId);
+        if (!nodeElement) throw new Error('docsSidebar: missing #' + nodeId);
+        return nodeElement;
     }
 
     function getIsOpen() {
@@ -95,7 +95,7 @@
         updateHeaderTone();
     }
 
-    function init() {
+    function initialize() {
         sidebarElements = {
             sidebar: requireNode('docsSidebar'),
             toggle: requireNode('docsSidebarToggle'),
@@ -106,7 +106,7 @@
     }
 
     global.sharedDocsSidebar = {
-        init: init,
+        init: initialize,
         open: openSidebar,
         close: closeSidebar
     };

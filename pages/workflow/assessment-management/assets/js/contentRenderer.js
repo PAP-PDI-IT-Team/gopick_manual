@@ -34,23 +34,23 @@
         }
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'flat-list';
-            items.forEach(item => {
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemValue => {
                 const listItem = document.createElement('li');
                 listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
                 marker.className = 'flat-list__marker';
                 marker.setAttribute('aria-hidden', 'true');
                 listItem.appendChild(marker);
-                this.appendText(listItem, 'span', '', item);
-                list.appendChild(listItem);
+                this.appendText(listItem, 'span', '', itemValue);
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
         createStepList(steps) {
-            return global.sharedDocsComponents.createSteps(steps, step => document.createTextNode(step));
+            return global.sharedDocsComponents.createSteps(steps, stepValue => document.createTextNode(stepValue));
         }
 
         createCallout(variantKey, items) {
@@ -99,20 +99,20 @@
             heading.id = section.id;
             heading.setAttribute('tabindex', '-1');
 
-            const body = document.createElement('div');
-            body.className = 'docs-block docs-block--top';
-            this.renderSectionBody(section, body);
-            sectionElement.appendChild(body);
+            const bodyElement = document.createElement('div');
+            bodyElement.className = 'docs-block docs-block--top';
+            this.renderSectionBody(section, bodyElement);
+            sectionElement.appendChild(bodyElement);
 
             (section.children || []).forEach(child => sectionElement.appendChild(this.renderChild(child, 3)));
             return sectionElement;
         }
 
         renderAllSections() {
-            const root = document.getElementById('section-render-root');
-            if (!root) throw new Error('Assessment render root missing: #section-render-root');
-            root.replaceChildren();
-            this.store.getSections().forEach(section => root.appendChild(this.renderTopSection(section)));
+            const rootElement = document.getElementById('section-render-root');
+            if (!rootElement) throw new Error('Assessment render root missing: #section-render-root');
+            rootElement.replaceChildren();
+            this.store.getSections().forEach(section => rootElement.appendChild(this.renderTopSection(section)));
         }
     }
 

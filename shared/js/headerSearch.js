@@ -17,8 +17,8 @@
         return new URL(relativePath, scriptUrl || document.baseURI).toString();
     }
 
-    function slugify(text) {
-        return String(text || '')
+    function slugify(sourceText) {
+        return String(sourceText || '')
             .toLowerCase()
             .replace(/&/g, ' and ')
             .replace(/[^a-z0-9]+/g, '-')
@@ -32,8 +32,8 @@
         return resolveAssetUrl(source.pageUrl) + '#' + resolvedId;
     }
 
-    function cleanMarkdownLine(line) {
-        return String(line || '')
+    function cleanMarkdownLine(lineText) {
+        return String(lineText || '')
             .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
             .replace(/`([^`]+)`/g, '$1')
             .replace(/\*\*([^*]+)\*\*/g, '$1')
@@ -53,8 +53,8 @@
         var currentSection = null;
         var sections = [];
 
-        lines.forEach(function (line) {
-            var headingMatch = line.match(/^(#{1,6})\s+(.*)$/);
+        lines.forEach(function (lineText) {
+            var headingMatch = lineText.match(/^(#{1,6})\s+(.*)$/);
             if (headingMatch) {
                 var level = headingMatch[1].length;
                 var headingText = cleanMarkdownLine(headingMatch[2]);
@@ -87,7 +87,7 @@
 
             if (!currentSection) return;
 
-            var cleaned = cleanMarkdownLine(line);
+            var cleaned = cleanMarkdownLine(lineText);
             if (!cleaned) return;
             currentSection.textParts.push(cleaned);
         });
@@ -108,8 +108,8 @@
         });
     }
 
-    function cleanHtmlText(html) {
-        return String(html || '')
+    function cleanHtmlText(htmlText) {
+        return String(htmlText || '')
             .replace(/<script[\s\S]*?<\/script>/gi, ' ')
             .replace(/<style[\s\S]*?<\/style>/gi, ' ')
             .replace(/<[^>]+>/g, ' ')
@@ -121,14 +121,14 @@
             .trim();
     }
 
-    function extractHtmlSections(html, source) {
-        var pageTitleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+    function extractHtmlSections(htmlText, source) {
+        var pageTitleMatch = htmlText.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
         var pageTitle = pageTitleMatch ? cleanHtmlText(pageTitleMatch[1]) : source.pageTitle;
         var sections = [];
         var sectionPattern = /<section\b[^>]*\bid=["']([^"']+)["'][^>]*>([\s\S]*?)<\/section>/gi;
         var sectionMatch;
 
-        while ((sectionMatch = sectionPattern.exec(html)) !== null) {
+        while ((sectionMatch = sectionPattern.exec(htmlText)) !== null) {
             var sectionId = sectionMatch[1];
             var sectionHtml = sectionMatch[2];
             var headingMatch = sectionHtml.match(/<h[2-6][^>]*>([\s\S]*?)<\/h[2-6]>/i);
@@ -137,14 +137,14 @@
             var sectionTitle = cleanHtmlText(headingMatch[1]);
             if (!sectionTitle || !isSearchSectionHeading(sectionTitle)) continue;
 
-            var body = cleanHtmlText(sectionHtml);
+            var bodyText = cleanHtmlText(sectionHtml);
             sections.push({
                 pageTitle: pageTitle,
                 sectionTitle: sectionTitle,
                 level: 2,
                 url: resolveAssetUrl(source.pageUrl) + '#' + sectionId,
-                body: body,
-                searchText: (pageTitle + ' ' + sectionTitle + ' ' + body).toLowerCase()
+                body: bodyText,
+                searchText: (pageTitle + ' ' + sectionTitle + ' ' + bodyText).toLowerCase()
             });
         }
 
@@ -179,8 +179,8 @@
                     if (!response.ok) throw new Error('Failed to load ' + source.pageUrl);
                     return response.text();
                 })
-                .then(function (html) {
-                    return extractHtmlSections(html, source);
+                .then(function (htmlText) {
+                    return extractHtmlSections(htmlText, source);
                 });
 
             return Promise.all([markdownRequest, pageRequest]).then(function (sourceResults) {
@@ -199,11 +199,11 @@
         var score = 0;
         var sectionTitle = entry.sectionTitle.toLowerCase();
         var pageTitle = entry.pageTitle.toLowerCase();
-        var body = entry.body.toLowerCase();
+        var bodyText = entry.body.toLowerCase();
 
         if (sectionTitle.indexOf(query) !== -1) score += 6;
         if (pageTitle.indexOf(query) !== -1) score += 4;
-        if (body.indexOf(query) !== -1) score += 2;
+        if (bodyText.indexOf(query) !== -1) score += 2;
         if (entry.searchText.indexOf(query) === 0) score += 1;
 
         return score;
@@ -220,16 +220,16 @@
                     score: scoreEntry(entry, normalized)
                 };
             })
-            .filter(function (item) {
-                return item.score > 0;
+            .filter(function (itemValue) {
+                return itemValue.score > 0;
             })
-            .sort(function (left, right) {
-                if (right.score !== left.score) return right.score - left.score;
-                return left.entry.sectionTitle.localeCompare(right.entry.sectionTitle);
+            .sort(function (leftEntry, rightEntry) {
+                if (rightEntry.score !== leftEntry.score) return rightEntry.score - leftEntry.score;
+                return leftEntry.entry.sectionTitle.localeCompare(rightEntry.entry.sectionTitle);
             })
             .slice(0, 12)
-            .map(function (item) {
-                return item.entry;
+            .map(function (itemValue) {
+                return itemValue.entry;
             });
     }
 
@@ -291,13 +291,13 @@
         elements.status.textContent = targets.length + ' result' + (targets.length === 1 ? '' : 's') + ' found.';
 
         targets.forEach(function (target) {
-            var link = document.createElement('a');
-            link.href = target.url;
-            link.className = 'header-search-result block rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-brand hover:bg-red-50';
+            var linkElement = document.createElement('a');
+            linkElement.href = target.url;
+            linkElement.className = 'header-search-result block rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-brand hover:bg-red-50';
 
-            var page = document.createElement('div');
-            page.className = 'header-search-result__page text-xs font-bold uppercase tracking-wide text-brand';
-            page.textContent = target.pageTitle;
+            var pageEntry = document.createElement('div');
+            pageEntry.className = 'header-search-result__page text-xs font-bold uppercase tracking-wide text-brand';
+            pageEntry.textContent = target.pageTitle;
 
             var section = document.createElement('div');
             section.className = 'header-search-result__section mt-1 text-sm font-semibold text-slate-900';
@@ -307,10 +307,10 @@
             preview.className = 'header-search-result__preview mt-2 text-sm text-slate-500 leading-relaxed';
             preview.textContent = target.body.slice(0, 180) + (target.body.length > 180 ? '...' : '');
 
-            link.appendChild(page);
-            link.appendChild(section);
-            link.appendChild(preview);
-            elements.results.appendChild(link);
+            linkElement.appendChild(pageEntry);
+            linkElement.appendChild(section);
+            linkElement.appendChild(preview);
+            elements.results.appendChild(linkElement);
         });
     }
 
@@ -320,7 +320,7 @@
         var headerRow = header.querySelector('div');
         if (!headerRow) return;
 
-        var nav = header.querySelector('nav');
+        var navElement = header.querySelector('nav');
         var navToggle = header.querySelector('#navToggle');
         var elements = createSearchShell();
         var activeElementBeforeOpen = null;
@@ -418,8 +418,8 @@
             rightCluster = document.createElement('div');
             rightCluster.className = 'header-search-cluster ml-auto flex items-center gap-3';
 
-            if (nav && nav.parentNode === headerRow) {
-                rightCluster.appendChild(nav);
+            if (navElement && navElement.parentNode === headerRow) {
+                rightCluster.appendChild(navElement);
             }
 
             rightCluster.appendChild(elements.shell);
@@ -434,7 +434,7 @@
         }
     }
 
-    function init() {
+    function initialize() {
         var homeLogoLink = document.querySelector('a[aria-label="GoPick home"]');
         if (homeLogoLink) {
             homeLogoLink.addEventListener('click', function (event) {
@@ -460,13 +460,13 @@
     }
 
     global.sharedHeaderSearch = {
-        init: init,
+        init: initialize,
         getMarkdownUrls: getMarkdownUrls
     };
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', initialize);
     } else {
-        init();
+        initialize();
     }
 })(window);

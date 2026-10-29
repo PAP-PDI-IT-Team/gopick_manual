@@ -10,9 +10,9 @@
     };
 
     function requireNode(nodeId) {
-        var node = document.getElementById(nodeId);
-        if (!node) throw new Error('docsCopyPage: missing #' + nodeId);
-        return node;
+        var nodeElement = document.getElementById(nodeId);
+        if (!nodeElement) throw new Error('docsCopyPage: missing #' + nodeId);
+        return nodeElement;
     }
 
     function getMarkdownUrls() {
@@ -67,7 +67,7 @@
     }
 
 
-    function init() {
+    function initialize() {
         var button = requireNode('docsCopyPage');
         var markdownUrls = getMarkdownUrls();
         if (!navigator.clipboard) throw new Error('docsCopyPage: the Clipboard API is unavailable');
@@ -78,7 +78,7 @@
     }
 
     global.sharedDocsCopyPage = {
-        init: init
+        init: initialize
     };
 
 })(window);

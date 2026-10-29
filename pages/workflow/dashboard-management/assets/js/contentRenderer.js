@@ -16,19 +16,19 @@
         }
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'flat-list';
-            items.forEach(item => {
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemValue => {
                 const listItem = document.createElement('li');
                 listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
                 marker.className = 'flat-list__marker';
                 marker.setAttribute('aria-hidden', 'true');
                 listItem.appendChild(marker);
-                this.appendText(listItem, 'span', '', item);
-                list.appendChild(listItem);
+                this.appendText(listItem, 'span', '', itemValue);
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
         createCallout(title, items, variant) {
@@ -40,36 +40,36 @@
         }
 
         createMetricRows(metrics) {
-            const list = document.createElement('dl');
-            list.className = 'dashboard-metrics';
+            const listElement = document.createElement('dl');
+            listElement.className = 'dashboard-metrics';
             metrics.forEach(metric => {
-                const row = document.createElement('div');
-                row.className = 'dashboard-metrics__row';
-                this.appendText(row, 'dt', 'dashboard-metrics__label', metric.label);
-                this.appendText(row, 'dd', 'dashboard-metrics__detail', metric.detail);
-                list.appendChild(row);
+                const rowElement = document.createElement('div');
+                rowElement.className = 'dashboard-metrics__row';
+                this.appendText(rowElement, 'dt', 'dashboard-metrics__label', metric.label);
+                this.appendText(rowElement, 'dd', 'dashboard-metrics__detail', metric.detail);
+                listElement.appendChild(rowElement);
             });
-            return list;
+            return listElement;
         }
 
         createLinkChips(items) {
-            const list = document.createElement('ul');
-            list.className = 'dashboard-links';
-            items.forEach(item => {
+            const listElement = document.createElement('ul');
+            listElement.className = 'dashboard-links';
+            items.forEach(itemValue => {
                 const listItem = document.createElement('li');
                 listItem.className = 'dashboard-links__item';
-                this.appendText(listItem, 'span', 'dashboard-links__title', item.title);
-                this.appendText(listItem, 'span', 'dashboard-links__kind', item.subTitle.charAt(0) + item.subTitle.slice(1).toLowerCase());
-                list.appendChild(listItem);
+                this.appendText(listItem, 'span', 'dashboard-links__title', itemValue.title);
+                this.appendText(listItem, 'span', 'dashboard-links__kind', itemValue.subTitle.charAt(0) + itemValue.subTitle.slice(1).toLowerCase());
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
         createQuickLinkGroup(group) {
             const groupElement = document.createElement('div');
             groupElement.className = 'dashboard-group';
             this.appendText(groupElement, 'h3', 'dashboard-group__title', group.title);
-            const hasLinkItems = group.items.every(item => typeof item !== 'string');
+            const hasLinkItems = group.items.every(itemValue => typeof itemValue !== 'string');
             groupElement.appendChild(hasLinkItems ? this.createLinkChips(group.items) : this.createBulletList(group.items));
             return groupElement;
         }

@@ -6,9 +6,9 @@
     const NAVIGATION_ERROR_TEXT = 'Navigation could not load. Reload the page.';
 
     function requireNode(nodeId) {
-        const node = document.getElementById(nodeId);
-        if (!node) throw new Error('docsSkeleton: missing #' + nodeId);
-        return node;
+        const nodeElement = document.getElementById(nodeId);
+        if (!nodeElement) throw new Error('docsSkeleton: missing #' + nodeId);
+        return nodeElement;
     }
 
     function clearContent() {

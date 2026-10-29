@@ -59,16 +59,16 @@
 
 
     function createLegend(section, content) {
-        const list = document.createElement('dl');
-        list.className = 'rbac-legend';
+        const listElement = document.createElement('dl');
+        listElement.className = 'rbac-legend';
         content.legends.forEach(legendEntry => {
             const entry = document.createElement('div');
             entry.className = 'rbac-legend__entry';
             appendText(entry, 'dt', 'rbac-symbol rbac-symbol--' + getPermissionTone(legendEntry.sym), legendEntry.sym);
             appendText(entry, 'dd', 'rbac-legend__label', legendEntry.label);
-            list.appendChild(entry);
+            listElement.appendChild(entry);
         });
-        return list;
+        return listElement;
     }
 
     function createMatrixHead() {
@@ -125,14 +125,14 @@
     }
 
     function createFunctionList(functionNames) {
-        const list = document.createElement('ul');
-        list.className = 'rbac-capabilities__list';
+        const listElement = document.createElement('ul');
+        listElement.className = 'rbac-capabilities__list';
         if (!functionNames.length) {
-            appendText(list, 'li', 'rbac-capabilities__empty', 'None');
-            return list;
+            appendText(listElement, 'li', 'rbac-capabilities__empty', 'None');
+            return listElement;
         }
-        functionNames.forEach(functionName => appendText(list, 'li', '', functionName));
-        return list;
+        functionNames.forEach(functionName => appendText(listElement, 'li', '', functionName));
+        return listElement;
     }
 
     function createCapabilities() {

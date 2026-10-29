@@ -4,16 +4,16 @@
     const DEEPEST_HIERARCHY_LEVEL = 4;
 
     function createHierarchyList(hierarchyLevels) {
-        const list = document.createElement('ol');
-        list.className = 'governance-hierarchy';
+        const listElement = document.createElement('ol');
+        listElement.className = 'governance-hierarchy';
         hierarchyLevels.forEach(hierarchyLevel => {
             const levelItem = document.createElement('li');
             const depth = Math.min(hierarchyLevel.level || 0, DEEPEST_HIERARCHY_LEVEL);
             levelItem.className = 'governance-hierarchy__item governance-hierarchy__item--level-' + depth;
             levelItem.textContent = hierarchyLevel.name;
-            list.appendChild(levelItem);
+            listElement.appendChild(levelItem);
         });
-        return list;
+        return listElement;
     }
 
     function createResolutionMatrix(matrixData) {

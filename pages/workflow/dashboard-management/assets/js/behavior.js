@@ -14,7 +14,7 @@
             this.sidebar = new global.DocsTocTracker(this.store);
         }
 
-        init() {
+        initialize() {
             setFooterYear();
             global.sharedDocsPageShell.init().catch(error => {
                 console.error('Error loading documentation navigation:', error);
@@ -34,14 +34,14 @@
         }
     }
 
-    const app = new DashboardApp();
+    const pageApp = new DashboardApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => pageApp.initialize());
     } else {
-        app.init();
+        pageApp.initialize();
     }
 
     global.DashboardApp = DashboardApp;
-    global.__dashboardApp = app;
+    global.__dashboardApp = pageApp;
 })(window);

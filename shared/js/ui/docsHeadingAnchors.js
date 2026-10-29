@@ -9,20 +9,20 @@
     ];
 
     function createLinkIcon() {
-        var icon = document.createElementNS(SVG_NAMESPACE, 'svg');
-        icon.setAttribute('viewBox', '0 0 24 24');
-        icon.setAttribute('fill', 'none');
-        icon.setAttribute('stroke', 'currentColor');
-        icon.setAttribute('stroke-width', '2');
-        icon.setAttribute('stroke-linecap', 'round');
-        icon.setAttribute('stroke-linejoin', 'round');
-        icon.setAttribute('aria-hidden', 'true');
+        var iconElement = document.createElementNS(SVG_NAMESPACE, 'svg');
+        iconElement.setAttribute('viewBox', '0 0 24 24');
+        iconElement.setAttribute('fill', 'none');
+        iconElement.setAttribute('stroke', 'currentColor');
+        iconElement.setAttribute('stroke-width', '2');
+        iconElement.setAttribute('stroke-linecap', 'round');
+        iconElement.setAttribute('stroke-linejoin', 'round');
+        iconElement.setAttribute('aria-hidden', 'true');
         LINK_ICON_PATHS.forEach(function (pathData) {
             var iconPath = document.createElementNS(SVG_NAMESPACE, 'path');
             iconPath.setAttribute('d', pathData);
-            icon.appendChild(iconPath);
+            iconElement.appendChild(iconPath);
         });
-        return icon;
+        return iconElement;
     }
 
     function flattenSections(sections) {
@@ -62,13 +62,13 @@
     }
 
 
-    function init(sections) {
+    function initialize(sections) {
         if (!Array.isArray(sections)) throw new Error('docsHeadingAnchors: init needs the section tree');
         flattenSections(sections).filter(isRendered).forEach(addAnchor);
     }
 
     global.sharedDocsHeadingAnchors = {
-        init: init
+        init: initialize
     };
 
 })(window);

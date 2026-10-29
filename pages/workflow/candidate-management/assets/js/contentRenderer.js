@@ -22,37 +22,37 @@
             return element;
         }
 
-        createItemContent(item) {
-            if (item && item.href) {
-                const link = document.createElement('a');
-                link.className = 'flat-link';
-                link.href = item.href;
-                link.textContent = item.label;
-                return link;
+        createItemContent(itemValue) {
+            if (itemValue && itemValue.href) {
+                const linkElement = document.createElement('a');
+                linkElement.className = 'flat-link';
+                linkElement.href = itemValue.href;
+                linkElement.textContent = itemValue.label;
+                return linkElement;
             }
-            const text = document.createElement('span');
-            text.textContent = item && item.label ? item.label : item;
-            return text;
+            const textElement = document.createElement('span');
+            textElement.textContent = itemValue && itemValue.label ? itemValue.label : itemValue;
+            return textElement;
         }
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'flat-list';
-            items.forEach(item => {
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemValue => {
                 const listItem = document.createElement('li');
                 listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
                 marker.className = 'flat-list__marker';
                 marker.setAttribute('aria-hidden', 'true');
                 listItem.appendChild(marker);
-                listItem.appendChild(this.createItemContent(item));
-                list.appendChild(listItem);
+                listItem.appendChild(this.createItemContent(itemValue));
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
         createStepList(steps) {
-            return global.sharedDocsComponents.createSteps(steps, step => this.createItemContent(step));
+            return global.sharedDocsComponents.createSteps(steps, stepValue => this.createItemContent(stepValue));
         }
 
         createCallout(variantKey, items) {
@@ -61,11 +61,11 @@
         }
 
         createAccessPath(accessPath) {
-            return global.sharedDocsComponents.createAccessPath(accessPath.split('>').map(step => step.trim()));
+            return global.sharedDocsComponents.createAccessPath(accessPath.split('>').map(stepValue => stepValue.trim()));
         }
 
         createInputTable(groupTitle, items) {
-            return global.sharedDocsComponents.createInputTable([{ title: groupTitle, items: items }], item => this.createItemContent(item));
+            return global.sharedDocsComponents.createInputTable([{ title: groupTitle, items: items }], itemValue => this.createItemContent(itemValue));
         }
 
         createGroup(group) {
@@ -128,10 +128,10 @@
             heading.setAttribute('tabindex', '-1');
 
             if (this.hasDetails(section)) {
-                const body = document.createElement('div');
-                body.className = 'docs-block docs-block--top';
-                this.renderSectionBody(section, body);
-                sectionElement.appendChild(body);
+                const bodyElement = document.createElement('div');
+                bodyElement.className = 'docs-block docs-block--top';
+                this.renderSectionBody(section, bodyElement);
+                sectionElement.appendChild(bodyElement);
             }
 
             (section.children || []).forEach(child => sectionElement.appendChild(this.renderChild(child, 3)));
@@ -139,10 +139,10 @@
         }
 
         renderAll(rootElementId = 'section-render-root') {
-            const root = document.getElementById(rootElementId);
-            if (!root) throw new Error('Candidate render root missing: #' + rootElementId);
-            root.replaceChildren();
-            this.store.getSections().forEach(section => root.appendChild(this.renderTopSection(section)));
+            const rootElement = document.getElementById(rootElementId);
+            if (!rootElement) throw new Error('Candidate render root missing: #' + rootElementId);
+            rootElement.replaceChildren();
+            this.store.getSections().forEach(section => rootElement.appendChild(this.renderTopSection(section)));
         }
     }
 

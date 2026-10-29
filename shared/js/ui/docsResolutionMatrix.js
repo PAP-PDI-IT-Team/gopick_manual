@@ -114,10 +114,10 @@
 
         createMatrixTypeBadge(matrixItem) {
             const badge = document.createElement('span');
-            const tone = matrixItem.typeCategory === 'type6'
+            const toneName = matrixItem.typeCategory === 'type6'
                 ? (matrixItem.type.includes('Addition') ? 'addition' : 'deduction')
                 : (TYPE_CATEGORY_TONES[matrixItem.typeCategory] || 'neutral');
-            badge.className = 'matrix-type matrix-type--' + tone;
+            badge.className = 'matrix-type matrix-type--' + toneName;
             badge.textContent = matrixItem.type;
             return badge;
         },

@@ -10,14 +10,14 @@
         return dataUrl;
     }
 
-    function init() {
+    function initialize() {
         return fetch(getDataUrl() + '?v=' + DATA_VERSION, { cache: 'no-store' })
-            .then(function (res) {
-                if (!res.ok) throw new Error('Data fetch failed: ' + res.status);
-                return res.json();
+            .then(function (response) {
+                if (!response.ok) throw new Error('Data fetch failed: ' + response.status);
+                return response.json();
             })
-            .then(function (json) {
-                _data = json;
+            .then(function (jsonValue) {
+                _data = jsonValue;
                 return _data;
             });
     }
@@ -27,7 +27,7 @@
     }
 
     global.sharedDataLoader = {
-        init: init,
+        init: initialize,
         getData: getData
     };
 })(window);

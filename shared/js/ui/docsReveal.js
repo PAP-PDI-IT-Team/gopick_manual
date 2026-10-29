@@ -9,15 +9,15 @@
     }
 
     function prepareParts(parts) {
-        parts.forEach(function (part, partIndex) {
-            part.classList.add('reveal-item', 'reveal-pending');
-            part.style.transitionDelay = (Math.min(partIndex, STAGGER_LIMIT) * STAGGER_STEP_MS) + 'ms';
+        parts.forEach(function (partElement, partIndex) {
+            partElement.classList.add('reveal-item', 'reveal-pending');
+            partElement.style.transitionDelay = (Math.min(partIndex, STAGGER_LIMIT) * STAGGER_STEP_MS) + 'ms';
         });
     }
 
     function revealParts(parts) {
-        parts.forEach(function (part) {
-            part.classList.remove('reveal-pending');
+        parts.forEach(function (partElement) {
+            partElement.classList.remove('reveal-pending');
         });
     }
 
@@ -27,7 +27,7 @@
         return Boolean(hashTarget && hashTarget.closest('#section-render-root'));
     }
 
-    function init(sectionSelector) {
+    function initialize(sectionSelector) {
         if (!sectionSelector) throw new Error('docsReveal: init needs a section selector');
         var sections = Array.prototype.slice.call(document.querySelectorAll(sectionSelector));
         if (getPrefersReducedMotion() || getHasSectionHash() || !('IntersectionObserver' in global)) return;
@@ -50,7 +50,7 @@
     }
 
     global.sharedDocsReveal = {
-        init: init
+        init: initialize
     };
 
 })(window);

@@ -46,48 +46,48 @@
             return element;
         }
 
-        createItemContent(item) {
-            if (item && typeof item === 'object') {
-                if (!item.label) throw new Error('DocsBlockRenderer: link items need a label');
-                if (!item.href) {
+        createItemContent(itemValue) {
+            if (itemValue && typeof itemValue === 'object') {
+                if (!itemValue.label) throw new Error('DocsBlockRenderer: link items need a label');
+                if (!itemValue.href) {
                     const plainText = document.createElement('span');
-                    plainText.textContent = item.label;
+                    plainText.textContent = itemValue.label;
                     return plainText;
                 }
-                const link = document.createElement('a');
-                link.className = 'flat-link';
-                link.href = item.href;
-                link.textContent = item.label;
-                return link;
+                const linkElement = document.createElement('a');
+                linkElement.className = 'flat-link';
+                linkElement.href = itemValue.href;
+                linkElement.textContent = itemValue.label;
+                return linkElement;
             }
-            const text = document.createElement('span');
-            text.textContent = item;
-            return text;
+            const textElement = document.createElement('span');
+            textElement.textContent = itemValue;
+            return textElement;
         }
 
 
         createBulletList(items) {
-            const list = document.createElement('ul');
-            list.className = 'flat-list';
-            items.forEach(item => {
+            const listElement = document.createElement('ul');
+            listElement.className = 'flat-list';
+            items.forEach(itemValue => {
                 const listItem = document.createElement('li');
                 listItem.className = 'flat-list__item';
                 const marker = document.createElement('span');
                 marker.className = 'flat-list__marker';
                 marker.setAttribute('aria-hidden', 'true');
                 listItem.appendChild(marker);
-                listItem.appendChild(this.createItemContent(item));
-                list.appendChild(listItem);
+                listItem.appendChild(this.createItemContent(itemValue));
+                listElement.appendChild(listItem);
             });
-            return list;
+            return listElement;
         }
 
         createStepList(steps) {
-            return this.components.createSteps(steps, step => this.createItemContent(step));
+            return this.components.createSteps(steps, stepValue => this.createItemContent(stepValue));
         }
 
         createInputTable(inputGroups) {
-            return this.components.createInputTable(inputGroups, item => this.createItemContent(item));
+            return this.components.createInputTable(inputGroups, itemValue => this.createItemContent(itemValue));
         }
 
         createCallout(title, variant, items) {
@@ -197,16 +197,16 @@
             const heading = this.appendText(sectionElement, 'h2', 'flat-section__title', section.title);
             heading.id = section.id;
 
-            const body = document.createElement('div');
-            body.className = 'docs-block docs-block--top';
-            this.renderSectionBody(section, body);
-            sectionElement.appendChild(body);
+            const bodyElement = document.createElement('div');
+            bodyElement.className = 'docs-block docs-block--top';
+            this.renderSectionBody(section, bodyElement);
+            sectionElement.appendChild(bodyElement);
 
             (section.children || []).forEach(child => sectionElement.appendChild(this.renderChild(child, 3)));
             return sectionElement;
         }
 
-        renderPageCallouts(root) {
+        renderPageCallouts(rootElement) {
             const content = this.store.getContent();
             const pageCallouts = [
                 { key: 'tldr', title: 'TL;DR', variant: 'result' },
@@ -214,16 +214,16 @@
                 { key: 'notes', title: 'Notes', variant: 'notes' }
             ];
             pageCallouts.forEach(calloutBlock => {
-                if (hasEntries(content[calloutBlock.key])) root.appendChild(this.createCallout(calloutBlock.title, calloutBlock.variant, content[calloutBlock.key]));
+                if (hasEntries(content[calloutBlock.key])) rootElement.appendChild(this.createCallout(calloutBlock.title, calloutBlock.variant, content[calloutBlock.key]));
             });
         }
 
         renderAllSections() {
-            const root = document.getElementById(this.rootId);
-            if (!root) throw new Error('DocsBlockRenderer: missing #' + this.rootId);
-            root.replaceChildren();
-            this.renderPageCallouts(root);
-            this.store.getSections().forEach(section => root.appendChild(this.renderTopSection(section)));
+            const rootElement = document.getElementById(this.rootId);
+            if (!rootElement) throw new Error('DocsBlockRenderer: missing #' + this.rootId);
+            rootElement.replaceChildren();
+            this.renderPageCallouts(rootElement);
+            this.store.getSections().forEach(section => rootElement.appendChild(this.renderTopSection(section)));
         }
     }
 

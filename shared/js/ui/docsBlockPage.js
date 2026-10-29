@@ -62,13 +62,13 @@
 
     function start(pageOptions) {
         if (!pageOptions || !pageOptions.contentKey) throw new Error('docsBlockPage: start needs a contentKey');
-        const page = new DocsBlockPage(pageOptions);
+        const pageEntry = new DocsBlockPage(pageOptions);
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => page.initialize());
+            document.addEventListener('DOMContentLoaded', () => pageEntry.initialize());
         } else {
-            page.initialize();
+            pageEntry.initialize();
         }
-        return page;
+        return pageEntry;
     }
 
     global.sharedDocsBlockPage = {

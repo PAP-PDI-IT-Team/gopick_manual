@@ -8,52 +8,52 @@
     };
 
     function requireNode(nodeId) {
-        var node = document.getElementById(nodeId);
-        if (!node) throw new Error('docsPageTree: missing #' + nodeId);
-        return node;
+        var nodeElement = document.getElementById(nodeId);
+        if (!nodeElement) throw new Error('docsPageTree: missing #' + nodeId);
+        return nodeElement;
     }
 
-    function requireBodyData(key) {
-        var value = document.body.dataset[key];
-        if (value === undefined) throw new Error('docsPageTree: <body> needs data-' + key.replace(/[A-Z]/g, function (letter) { return '-' + letter.toLowerCase(); }));
+    function requireBodyData(dataKey) {
+        var value = document.body.dataset[dataKey];
+        if (value === undefined) throw new Error('docsPageTree: <body> needs data-' + dataKey.replace(/[A-Z]/g, function (letter) { return '-' + letter.toLowerCase(); }));
         return value;
     }
 
-    function createElement(tagName, className, text) {
+    function createElement(tagName, className, textElement) {
         var element = document.createElement(tagName);
         if (className) element.className = className;
-        if (text !== undefined) element.textContent = text;
+        if (textElement !== undefined) element.textContent = textElement;
         return element;
     }
 
     function createArrowIcon(direction) {
-        var icon = document.createElementNS(SVG_NAMESPACE, 'svg');
-        icon.setAttribute('viewBox', '0 0 24 24');
-        icon.setAttribute('fill', 'none');
-        icon.setAttribute('stroke', 'currentColor');
-        icon.setAttribute('stroke-width', '2');
-        icon.setAttribute('stroke-linecap', 'round');
-        icon.setAttribute('stroke-linejoin', 'round');
-        icon.setAttribute('aria-hidden', 'true');
+        var iconElement = document.createElementNS(SVG_NAMESPACE, 'svg');
+        iconElement.setAttribute('viewBox', '0 0 24 24');
+        iconElement.setAttribute('fill', 'none');
+        iconElement.setAttribute('stroke', 'currentColor');
+        iconElement.setAttribute('stroke-width', '2');
+        iconElement.setAttribute('stroke-linecap', 'round');
+        iconElement.setAttribute('stroke-linejoin', 'round');
+        iconElement.setAttribute('aria-hidden', 'true');
         var iconPath = document.createElementNS(SVG_NAMESPACE, 'path');
         iconPath.setAttribute('d', ARROW_PATHS[direction]);
-        icon.appendChild(iconPath);
-        return icon;
+        iconElement.appendChild(iconPath);
+        return iconElement;
     }
 
 
     function flattenPages(groups) {
         var pages = [];
         groups.forEach(function (group) {
-            group.items.forEach(function (item) {
-                pages.push({ label: item.label, url: item.url, groupTitle: group.title });
+            group.items.forEach(function (itemValue) {
+                pages.push({ label: itemValue.label, url: itemValue.url, groupTitle: group.title });
             });
         });
         return pages;
     }
 
     function findCurrentIndex(pages, currentUrl) {
-        var currentIndex = pages.findIndex(function (page) { return page.url === currentUrl; });
+        var currentIndex = pages.findIndex(function (pageEntry) { return pageEntry.url === currentUrl; });
         if (currentIndex === -1) throw new Error('docsPageTree: ' + currentUrl + ' is not listed in docsNav');
         return currentIndex;
     }
@@ -66,26 +66,26 @@
     }
 
 
-    function createTreeLink(item, siteRoot, currentUrl) {
+    function createTreeLink(itemValue, siteRoot, currentUrl) {
         var listItem = document.createElement('li');
-        var link = createElement('a', 'docs-nav-group__link', item.label);
-        link.href = siteRoot + item.url;
-        if (item.url === currentUrl) link.setAttribute('aria-current', 'page');
-        listItem.appendChild(link);
+        var linkElement = createElement('a', 'docs-nav-group__link', itemValue.label);
+        linkElement.href = siteRoot + itemValue.url;
+        if (itemValue.url === currentUrl) linkElement.setAttribute('aria-current', 'page');
+        listItem.appendChild(linkElement);
         return listItem;
     }
 
     function createTreeGroup(group, siteRoot, currentUrl) {
         var groupNode = createElement('div', 'docs-nav-group');
         var titleNode = createElement('p', 'docs-nav-group__title', group.title);
-        var list = createElement('ul', 'docs-nav-group__list');
+        var listElement = createElement('ul', 'docs-nav-group__list');
         titleNode.id = 'docs-nav-group-' + group.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        list.setAttribute('aria-labelledby', titleNode.id);
-        group.items.forEach(function (item) {
-            list.appendChild(createTreeLink(item, siteRoot, currentUrl));
+        listElement.setAttribute('aria-labelledby', titleNode.id);
+        group.items.forEach(function (itemValue) {
+            listElement.appendChild(createTreeLink(itemValue, siteRoot, currentUrl));
         });
         groupNode.appendChild(titleNode);
-        groupNode.appendChild(list);
+        groupNode.appendChild(listElement);
         return groupNode;
     }
 
@@ -98,15 +98,15 @@
     }
 
 
-    function createTitleNavLink(page, direction, siteRoot) {
+    function createTitleNavLink(pageEntry, direction, siteRoot) {
         var directionLabel = direction === 'previous' ? 'Previous page: ' : 'Next page: ';
-        var link = createElement('a', 'docs-title-nav__link');
-        link.href = siteRoot + page.url;
-        link.rel = direction === 'previous' ? 'prev' : 'next';
-        link.setAttribute('aria-label', directionLabel + page.label);
-        link.title = page.label;
-        link.appendChild(createArrowIcon(direction));
-        return link;
+        var linkElement = createElement('a', 'docs-title-nav__link');
+        linkElement.href = siteRoot + pageEntry.url;
+        linkElement.rel = direction === 'previous' ? 'prev' : 'next';
+        linkElement.setAttribute('aria-label', directionLabel + pageEntry.label);
+        linkElement.title = pageEntry.label;
+        linkElement.appendChild(createArrowIcon(direction));
+        return linkElement;
     }
 
     function renderTitleNav(neighbourPages, siteRoot) {
@@ -118,20 +118,20 @@
     }
 
 
-    function createPagerLink(page, direction, siteRoot) {
+    function createPagerLink(pageEntry, direction, siteRoot) {
         if (!global.sharedDocsComponents) throw new Error('docsPageTree: docsComponents.js is not loaded');
         var isPrevious = direction === 'previous';
-        var link = createElement('a', 'docs-pager__link docs-pager__link--' + direction);
-        link.href = siteRoot + page.url;
-        link.rel = isPrevious ? 'prev' : 'next';
+        var linkElement = createElement('a', 'docs-pager__link docs-pager__link--' + direction);
+        linkElement.href = siteRoot + pageEntry.url;
+        linkElement.rel = isPrevious ? 'prev' : 'next';
         var arrow = global.sharedDocsComponents.createIcon(isPrevious ? 'arrowLeft' : 'arrowRight');
         var directionLabel = createElement('span', 'docs-visually-hidden', isPrevious ? 'Previous page: ' : 'Next page: ');
-        var title = createElement('span', 'docs-pager__title', page.label);
-        if (isPrevious) link.appendChild(arrow);
-        link.appendChild(directionLabel);
-        link.appendChild(title);
-        if (!isPrevious) link.appendChild(arrow);
-        return link;
+        var title = createElement('span', 'docs-pager__title', pageEntry.label);
+        if (isPrevious) linkElement.appendChild(arrow);
+        linkElement.appendChild(directionLabel);
+        linkElement.appendChild(title);
+        if (!isPrevious) linkElement.appendChild(arrow);
+        return linkElement;
     }
 
     function renderPager(neighbourPages, siteRoot) {
@@ -143,20 +143,20 @@
     }
 
 
-    function init(data) {
-        if (!data || !Array.isArray(data.docsNav)) throw new Error('docsPageTree: data.docsNav is missing');
+    function initialize(pageData) {
+        if (!pageData || !Array.isArray(pageData.docsNav)) throw new Error('docsPageTree: data.docsNav is missing');
         var siteRoot = requireBodyData('siteRoot');
         var currentUrl = requireBodyData('pageUrl');
-        var pages = flattenPages(data.docsNav);
+        var pages = flattenPages(pageData.docsNav);
         var neighbourPages = getNeighbourPages(pages, findCurrentIndex(pages, currentUrl));
 
-        renderTree(data.docsNav, siteRoot, currentUrl);
+        renderTree(pageData.docsNav, siteRoot, currentUrl);
         renderTitleNav(neighbourPages, siteRoot);
         renderPager(neighbourPages, siteRoot);
     }
 
     global.sharedDocsPageTree = {
-        init: init
+        init: initialize
     };
 
 })(window);

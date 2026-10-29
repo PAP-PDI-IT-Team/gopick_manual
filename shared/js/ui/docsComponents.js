@@ -26,21 +26,21 @@
     function createIcon(iconName) {
         const iconPaths = ICON_PATHS[iconName];
         if (!iconPaths) throw new Error('docsComponents: unknown icon ' + iconName);
-        const icon = document.createElementNS(SVG_NAMESPACE, 'svg');
-        icon.setAttribute('viewBox', '0 0 24 24');
-        icon.setAttribute('fill', 'none');
-        icon.setAttribute('stroke', 'currentColor');
-        icon.setAttribute('stroke-width', '2');
-        icon.setAttribute('stroke-linecap', 'round');
-        icon.setAttribute('stroke-linejoin', 'round');
-        icon.setAttribute('aria-hidden', 'true');
-        icon.setAttribute('class', 'docs-icon');
+        const iconElement = document.createElementNS(SVG_NAMESPACE, 'svg');
+        iconElement.setAttribute('viewBox', '0 0 24 24');
+        iconElement.setAttribute('fill', 'none');
+        iconElement.setAttribute('stroke', 'currentColor');
+        iconElement.setAttribute('stroke-width', '2');
+        iconElement.setAttribute('stroke-linecap', 'round');
+        iconElement.setAttribute('stroke-linejoin', 'round');
+        iconElement.setAttribute('aria-hidden', 'true');
+        iconElement.setAttribute('class', 'docs-icon');
         iconPaths.forEach(pathData => {
             const iconPath = document.createElementNS(SVG_NAMESPACE, 'path');
             iconPath.setAttribute('d', pathData);
-            icon.appendChild(iconPath);
+            iconElement.appendChild(iconPath);
         });
-        return icon;
+        return iconElement;
     }
 
 
@@ -66,43 +66,43 @@
 
 
     function createSteps(stepItems, createItemContent) {
-        const list = document.createElement('ol');
-        list.className = 'docs-steps';
+        const listElement = document.createElement('ol');
+        listElement.className = 'docs-steps';
         stepItems.forEach(stepItem => {
             const listItem = document.createElement('li');
             listItem.className = 'docs-steps__item';
             listItem.appendChild(createItemContent(stepItem));
-            list.appendChild(listItem);
+            listElement.appendChild(listItem);
         });
-        return list;
+        return listElement;
     }
 
 
     function createInlineCode(content) {
-        const code = document.createElement('code');
-        code.className = 'docs-inline-code';
+        const codeElement = document.createElement('code');
+        codeElement.className = 'docs-inline-code';
         if (typeof content === 'string') {
-            code.textContent = content;
+            codeElement.textContent = content;
         } else {
-            code.appendChild(content);
+            codeElement.appendChild(content);
         }
-        return code;
+        return codeElement;
     }
 
     function createAccessPath(pathSteps, createStepContent) {
-        const line = document.createElement('div');
-        line.className = 'docs-access-line';
-        appendText(line, 'span', 'docs-access__label', 'Find it in');
-        const list = document.createElement('ol');
-        list.className = 'docs-access';
+        const lineElement = document.createElement('div');
+        lineElement.className = 'docs-access-line';
+        appendText(lineElement, 'span', 'docs-access__label', 'Find it in');
+        const listElement = document.createElement('ol');
+        listElement.className = 'docs-access';
         pathSteps.forEach(pathStep => {
             const stepItem = document.createElement('li');
             stepItem.className = 'docs-access__step';
             stepItem.appendChild(createInlineCode(createStepContent ? createStepContent(pathStep) : String(pathStep)));
-            list.appendChild(stepItem);
+            listElement.appendChild(stepItem);
         });
-        line.appendChild(list);
-        return line;
+        lineElement.appendChild(listElement);
+        return lineElement;
     }
 
 
