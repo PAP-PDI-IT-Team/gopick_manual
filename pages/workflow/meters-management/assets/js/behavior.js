@@ -22,6 +22,7 @@
             });
             this.renderer.renderAllSections();
             this.screenshotViewer.bindTo(document.querySelector('main'));
+            global.sharedDocsSkeleton.clearContent();
             this.sidebar.render();
             global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();

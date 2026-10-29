@@ -56,6 +56,7 @@ Every page is inspected at 1440, 768 and 390 with `--allow focal-point,few-pictu
 | Footer | `footer.docs-footer` inside the content column | `docs-shell.css` |
 | Shell boot | Drawer, Copy page, data load, page tree | `shared/js/ui/docsPageShell.js` |
 | Entrance motion | Staggered reveal of section parts | `shared/js/ui/docsReveal.js` |
+| Loading skeletons | Static pulse bars in `#docsNavGroups`, `#docsTitleNav`, `#docsTocList`, `#docsPager` (replaced when those render) and `#docsContentSkeleton` at the top of `.docs-page-body`, which hides the content until `sharedDocsSkeleton.clearContent()` runs after rendering. If navigation data fails, the navigation skeletons become "Navigation could not load. Reload the page." Screenshots pulse until loaded. Pulse is off under reduced motion. | `shared/css/docs-skeleton.css`, `shared/js/ui/docsSkeleton.js` |
 
 The grid lives on `.docs-layout.docs-layout--page`. `main.docs-page-main` uses `display: contents`, so the header, the TOC disclosure and the body take named grid areas:
 - Below 1024px: one column. Header, then the closed "On this page" disclosure, then the body.

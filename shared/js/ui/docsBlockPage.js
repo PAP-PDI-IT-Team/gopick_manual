@@ -45,6 +45,7 @@
             setFooterYear();
             loadPageShell();
             this.renderer.renderAllSections();
+            global.sharedDocsSkeleton.clearContent();
             if (this.afterRender) this.afterRender(this.store);
             this.tocTracker.render();
             this.tocTracker.bindListeners();

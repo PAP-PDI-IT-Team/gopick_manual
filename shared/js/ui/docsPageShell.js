@@ -1,7 +1,7 @@
 (function (global) {
     'use strict';
 
-    var REQUIRED_MODULES = ['sharedDocsSidebar', 'sharedDataLoader', 'sharedDocsPageTree', 'sharedHeaderSearch', 'sharedDocsCopyPage'];
+    var REQUIRED_MODULES = ['sharedDocsSidebar', 'sharedDataLoader', 'sharedDocsPageTree', 'sharedHeaderSearch', 'sharedDocsCopyPage', 'sharedDocsSkeleton'];
 
     function assertModulesLoaded() {
         REQUIRED_MODULES.forEach(function (moduleName) {
@@ -15,6 +15,9 @@
         global.sharedDocsCopyPage.init();
         return global.sharedDataLoader.init().then(function (data) {
             global.sharedDocsPageTree.init(data);
+        }).catch(function (error) {
+            global.sharedDocsSkeleton.showNavigationError();
+            throw error;
         });
     }
 

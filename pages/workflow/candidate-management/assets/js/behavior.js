@@ -20,6 +20,7 @@
                 console.error('Error loading documentation navigation:', error);
             });
             this.renderer.renderAll();
+            global.sharedDocsSkeleton.clearContent();
             this.sidebar.render();
             global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();

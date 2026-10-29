@@ -21,6 +21,7 @@
             });
             this.renderer.renderHero();
             this.renderer.renderAllSections();
+            global.sharedDocsSkeleton.clearContent();
             this.sidebar.render();
             global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();

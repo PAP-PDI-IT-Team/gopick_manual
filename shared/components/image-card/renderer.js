@@ -85,6 +85,9 @@
             imageElement.src = srcText;
             imageElement.alt = altText;
             imageElement.loading = 'lazy';
+            imageElement.addEventListener('load', function () {
+                imageElement.classList.add('is-loaded');
+            });
             imageElement.addEventListener('error', function () {
                 bodyElement.innerHTML = '';
                 bodyElement.appendChild(renderPlaceholderBox(titleText, captionText));

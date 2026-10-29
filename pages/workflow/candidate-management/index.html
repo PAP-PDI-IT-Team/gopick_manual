@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../../../shared/components/image-card/style.css?v=20261029-shadcn-blocks">
   <link rel="stylesheet" href="../../../shared/css/docs-content.css?v=20261029-shadcn-blocks">
   <link rel="stylesheet" href="../../../shared/css/docs-components.css?v=20261029-shadcn-blocks">
+  <link rel="stylesheet" href="../../../shared/css/docs-skeleton.css?v=20261029-skeleton">
   <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
   <button id="docsSidebarToggle" type="button" class="docs-header__menu docs-menu-fab" aria-controls="docsSidebar" aria-expanded="false" aria-label="Open documentation menu">
     <svg class="docs-menu-fab__open" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -54,7 +55,7 @@
     <!-- ==================== Sidebar ==================== -->
     <aside id="docsSidebar" class="docs-sidebar" aria-label="Documentation">
       <nav class="docs-sidebar__nav" aria-label="Documentation pages">
-        <div id="docsNavGroups"></div>
+        <div id="docsNavGroups"><div class="docs-skeleton docs-skeleton--nav" aria-hidden="true"><span class="docs-skeleton__bar docs-skeleton__bar--short"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span><span class="docs-skeleton__bar docs-skeleton__bar--short"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span><span class="docs-skeleton__bar docs-skeleton__bar--short"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span></div></div>
       </nav>
     </aside>
     <button id="docsSidebarBackdrop" type="button" class="docs-sidebar-backdrop" aria-label="Close documentation menu" tabindex="-1"></button>
@@ -70,7 +71,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
               <span class="docs-copy-page__label" aria-live="polite">Copy page</span>
             </button>
-            <nav id="docsTitleNav" class="docs-title-nav" aria-label="Previous and next page shortcuts"></nav>
+            <nav id="docsTitleNav" class="docs-title-nav" aria-label="Previous and next page shortcuts"><span class="docs-skeleton docs-skeleton--row" aria-hidden="true"><span class="docs-skeleton__bar docs-skeleton__bar--button"></span><span class="docs-skeleton__bar docs-skeleton__bar--button"></span></span></nav>
           </div>
         </div>
         <p class="docs-page-description">Scheduling, data encoding, candidate assessment viewing, and assessment update rules in the GoPick platform.</p>
@@ -80,16 +81,26 @@
       <details id="docsPageToc" class="docs-page-toc">
         <summary class="docs-page-toc__summary">On this page</summary>
         <nav class="docs-page-toc__nav" aria-label="On this page">
-          <ul id="docsTocList" class="docs-toc-list"></ul>
+          <ul id="docsTocList" class="docs-toc-list"><li class="docs-skeleton" aria-hidden="true"><span class="docs-skeleton__bar docs-skeleton__bar--line"></span><span class="docs-skeleton__bar docs-skeleton__bar--short"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span><span class="docs-skeleton__bar docs-skeleton__bar--short"></span><span class="docs-skeleton__bar docs-skeleton__bar--line"></span></li></ul>
         </nav>
       </details>
 
       <!-- ==================== Content ==================== -->
-      <div class="docs-page-body">
+      <div class="docs-page-body" aria-busy="true">
+        <div id="docsContentSkeleton" class="docs-skeleton docs-skeleton--content" aria-hidden="true">
+          <span class="docs-skeleton__bar docs-skeleton__bar--heading"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--line"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--short"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--block"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--heading"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--line"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--line"></span>
+          <span class="docs-skeleton__bar docs-skeleton__bar--short"></span>
+        </div>
         <div id="section-render-root"></div>
 
         <!-- ==================== Pager ==================== -->
-        <nav id="docsPager" class="docs-pager" aria-label="Previous and next pages"></nav>
+        <nav id="docsPager" class="docs-pager" aria-label="Previous and next pages"><div class="docs-skeleton docs-skeleton--row" aria-hidden="true"><span class="docs-skeleton__bar docs-skeleton__bar--pager"></span><span class="docs-skeleton__bar docs-skeleton__bar--pager"></span></div></nav>
 
         <!-- ==================== Footer ==================== -->
         <footer class="docs-footer">
@@ -105,8 +116,9 @@
     </main>
   </div>
 
-  <script src="../../../shared/components/image-card/renderer.js?v=20261020-image-gallery" defer></script>
+  <script src="../../../shared/components/image-card/renderer.js?v=20261029-skeleton" defer></script>
   <script src="../../../shared/js/ui/docsComponents.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsSkeleton.js?v=20261029-skeleton" defer></script>
   <script src="assets/js/dataFiller.js?v=20261013-phase2" defer></script>
   <script src="assets/js/contentStore.js?v=20261013-phase2" defer></script>
   <script src="assets/js/contentRenderer.js?v=20261029-cleanup" defer></script>
@@ -116,10 +128,10 @@
   <script src="../../../shared/js/ui/docsSidebar.js?v=20261028-docs-page" defer></script>
   <script src="../../../shared/js/ui/docsPageTree.js?v=20261029-shadcn-blocks" defer></script>
   <script src="../../../shared/js/ui/docsCopyPage.js?v=20261029-shadcn-blocks" defer></script>
-  <script src="../../../shared/js/ui/docsPageShell.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="../../../shared/js/ui/docsPageShell.js?v=20261029-skeleton" defer></script>
   <script src="../../../shared/js/ui/docsTocTracker.js?v=20261029-shadcn-blocks" defer></script>
   <script src="../../../shared/js/ui/docsHeadingAnchors.js?v=20261029-shadcn-blocks" defer></script>
   <script src="../../../shared/js/ui/docsReveal.js?v=20261029-shadcn-blocks" defer></script>
-  <script src="assets/js/behavior.js?v=20261029-shadcn-blocks" defer></script>
+  <script src="assets/js/behavior.js?v=20261029-skeleton" defer></script>
 </body>
 </html>
