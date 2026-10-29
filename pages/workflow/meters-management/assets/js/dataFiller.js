@@ -155,6 +155,14 @@
                         id: 'view-meter',
                         title: 'View Meter',
                         description: 'View meter balance and meter details for the selected account.',
+                        images: [
+                            {
+                                title: 'View Meter Details',
+                                caption: 'Capture the selected account’s View Meter page with the meter balance and details outlined; blur account names.',
+                                src: '',
+                                alt: 'View Meter page showing the selected account meter balance and details',
+                            }
+                        ],
                         groups: [
                             { title: 'Access Path', items: ['Meters > Meter Records > View Meter'] }
                         ],
@@ -175,6 +183,14 @@
                         id: 'transfer-meter',
                         title: 'Transfer Meter',
                         description: 'Transfer meters directly from the selected account.',
+                        images: [
+                            {
+                                title: 'Transfer Meter from View Meter',
+                                caption: 'Capture Transfer Meter opened from View Meter, with the transfer details and Transfer Meter button outlined; blur account names.',
+                                src: '',
+                                alt: 'Transfer Meter form opened from the selected account View Meter page',
+                            }
+                        ],
                         groups: [
                             { title: 'Access Path', items: ['Meters > Meter Records > View Meter > Transfer Meter'] }
                         ],
@@ -550,6 +566,14 @@
                         id: 'update-meter-balance',
                         title: 'Update Meter Balance',
                         description: 'Add or deduct meter balances for the selected account.',
+                        images: [
+                            {
+                                title: 'Update Meter Balance Form',
+                                caption: 'Capture the selected account’s Update Meter Balance form with the adjustment value and save action outlined; blur account names.',
+                                src: '',
+                                alt: 'Update Meter Balance form showing the adjustment value and save action',
+                            }
+                        ],
                         groups: [
                             { title: 'Access Path', items: ['Meters > Meter Records > Update Meter Balance'] }
                         ],
@@ -576,6 +600,14 @@
                 id: 'meter-consumption',
                 title: 'Meter Consumption',
                 description: 'Meters are consumed during assessment completion. Generated reports may later be viewed, downloaded, emailed, or revisited without additional meter deduction.',
+                images: [
+                    {
+                        title: 'Meter Consumption Diagram',
+                        caption: 'Create a flow diagram showing: candidate completes an assessment → meters are deducted once per candidate per assessment → generated report becomes available. Show a follow-up branch for viewing, downloading, emailing, or revisiting the report, labeled "No additional meter deduction".',
+                        src: '',
+                        alt: 'Diagram showing assessment completion, a single meter deduction per candidate per assessment, and later report access without additional deduction',
+                    }
+                ],
                 rules: [
                     'Meter deduction occurs once per candidate per assessment.',
                     'Generated reports remain accessible after creation.',

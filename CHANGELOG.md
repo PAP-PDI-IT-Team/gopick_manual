@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Added image placeholders for View Meter, Transfer Meter, Update Meter Balance, and Meter Consumption in Meters Management, including a diagram brief explaining consumption and later report access without additional deduction.
+
 - Moved the Meters resolution-paths matrix and the Accounts and Meters journey styles into shared files, used by Meters Management and Meters Governance.
 - Moved the search page list into `shared/js/headerSearchManifest.js` and added Dashboard, Page Structure v3 and Dev Rules to search.
 - Moved the landing page Tailwind configuration into `shared/js/tailwindConfig.js` and renamed short JavaScript identifiers to satisfy the pull-request checks.
