@@ -5,9 +5,32 @@ All notable changes to the GoPick Assessment Center Manual will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.0] - 2026-10-22
+## [1.5.0] - 2026-10-29 - PR #63
+
+### Added
+
+- Added a shadcn-style documentation shell to all 15 inner manual pages:
+  - an always-open page tree;
+  - a title row with Copy page, which copies the page's Markdown source, and previous/next arrows;
+  - a two-level On this page rail;
+  - link anchors on section headings;
+  - an outline previous/next pager.
+- Added shared content components (`shared/js/ui/docsComponents.js`, `shared/css/docs-components.css`):
+  - Steps with numbered circles;
+  - bordered Rules, Warning, Expected result and Notes callouts with icons;
+  - an Input | Type table for classified inputs;
+  - inline-code access paths;
+  - bordered screenshot frames, code blocks and tables.
+- Added a shared block renderer (`docsBlockRenderer.js`, `docsBlockPage.js`, `docsContentStore.js`) that renders Reports, Users, Roles and Permissions, Activity Log, Advisory, Resource Center, Meters Governance, Manual Guides, Page Structure v3 and Dev Rules from content-only `dataFiller.js` files.
+- Added a floating red menu button in the bottom-right corner below 1024px; it turns into a close button while the documentation drawer is open.
+- Added loading skeletons to the sidebar, title arrows, On this page, pager, content and screenshots, with a short message when navigation data cannot load.
 
 ### Changed
+
+- Moved the Meters resolution-paths matrix and the Accounts and Meters journey styles into shared files, used by Meters Management and Meters Governance.
+- Moved the search page list into `shared/js/headerSearchManifest.js` and added Dashboard, Page Structure v3 and Dev Rules to search.
+- Moved the landing page Tailwind configuration into `shared/js/tailwindConfig.js` and renamed short JavaScript identifiers to satisfy the pull-request checks.
+- Set inner pages to the shadcn type scale (15px body, 24/20/18px headings) with zinc neutrals and the GoPick red for the active page, active section, step numbers and links.
 
 - Aligned the Meters Management sidebar with Accounts Management (collapsible tree, active-branch opening, hash handling, `18rem` column) and applied the flat page styling to the hero, sections, legends, and matrix controls.
 - Applied the Accounts Management flow section pattern to Meters Management: access trail, chip groups, numbered how-to-use steps, rules, and a `What you see` line, using the page-local `flowBuilders.js` and flow stylesheets. Screenshot placeholders are kept.
@@ -22,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed Meters Management How to use steps to a horizontal journey at 1200px and wider that stacks vertically below it, with the final step highlighted.
 - Replaced the inline Tailwind configuration on Meters Management with the shared `shared/js/tailwindConfig.js`.
 - Added the Assign Products, Meter Management, and Other Account Settings update form screenshots to the Update Specific carousel in Accounts Management, with blurred surroundings, an outlined form, emphasized Next and Review Changes buttons, and the account name blurred.
+
+### Removed
+
+- Removed the per-page sidebar trackers, layout stylesheets, `shared/js/manualNav.js`, and the unused Accounts Management RBAC table code and files.
 
 ## [1.4.0] - 2026-10-21
 
