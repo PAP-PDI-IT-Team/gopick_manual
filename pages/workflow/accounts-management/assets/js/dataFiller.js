@@ -431,32 +431,6 @@
             id: 'update-specific',
             title: 'Update Specific',
             detail: 'Updates one account detail section from the account detail page. The available update form depends on the account detail section where the update is triggered.',
-            images: [
-                {
-                    title: 'Update Specific Form: Account Information',
-                    caption: 'Section-isolated update view within the account detail page.',
-                    src: 'assets/img/update-specific-account-information.png',
-                    alt: 'Update Account: Account Information form with a two-step progress bar, read-only account type, username and parent account, and editable contact fields'
-                },
-                {
-                    title: 'Update Specific Form: Assign Products',
-                    caption: 'Assign Products update form outlined, with the Next button emphasized and the account name blurred.',
-                    src: 'assets/img/update-specific-assign-products.png',
-                    alt: 'Update Account: Assign Products page with the form card outlined, showing the Update Assessment button and assessment category dropdowns; the Next button is emphasized and the account name is blurred'
-                },
-                {
-                    title: 'Update Specific Form: Meter Management',
-                    caption: 'Meter Management update form outlined, with the Review Changes button emphasized.',
-                    src: 'assets/img/update-specific-meter-management.png',
-                    alt: 'Meter Management page with the form card outlined, showing the View Meter Log button, the Metering Management Type option, and Current Meters; the Review Changes button is emphasized'
-                },
-                {
-                    title: 'Update Specific Form: Other Account Settings',
-                    caption: 'Other Account Settings update form outlined, showing the account limits and contact fields.',
-                    src: 'assets/img/update-specific-other-account-settings.png',
-                    alt: 'Account Settings page with the Other Account Settings form card outlined, showing account limit fields, API Access Username, and HRSC and Assessment Specialist fields'
-                }
-            ],
             rules: ['Updating the current user own account only opens the Account Information variant.', 'Password fields are not prefilled.'],
             accessPath: 'Accounts > View Accounts > Row Actions > View > Section > Update',
             howToUse: [
@@ -479,12 +453,20 @@
                 {
                     id: 'update-specific-account-information',
                     title: 'Account Information',
-                    images: [{
-                        title: 'Update Specific: Account Information',
-                        caption: 'Account Information tab with the section card and the Update button outlined.',
-                        src: 'assets/img/update-specific-group-account-information.png',
-                        alt: 'View Account page with the Account Information card and its Update button outlined; personal values are blurred'
-                    }],
+                    images: [
+                        {
+                            title: 'Update Specific: Account Information',
+                            caption: 'Account Information tab with the section card and the Update button outlined.',
+                            src: 'assets/img/update-specific-group-account-information.png',
+                            alt: 'View Account page with the Account Information card and its Update button outlined; personal values are blurred'
+                        },
+                        {
+                            title: 'Update Specific Form: Account Information',
+                            caption: 'Account Information update form opened after selecting Update.',
+                            src: 'assets/img/update-specific-account-information.png',
+                            alt: 'Update Account: Account Information form with a two-step progress bar, read-only account type, username and parent account, and editable contact fields'
+                        }
+                    ],
                     items: [
                         {
                             label: 'Locked inputs',
@@ -528,12 +510,20 @@
                 {
                     id: 'update-specific-assigned-assessments',
                     title: 'Assigned Assessments',
-                    images: [{
-                        title: 'Update Specific: Assigned Assessments',
-                        caption: 'Assigned Assessments tab with the assessment list and the Update button outlined.',
-                        src: 'assets/img/update-specific-group-assigned-assessments.png',
-                        alt: 'View Account page with the Assigned Assessments card, its Manage and Change Log actions, and the Update button outlined'
-                    }],
+                    images: [
+                        {
+                            title: 'Update Specific: Assigned Assessments',
+                            caption: 'Assigned Assessments tab with the assessment list and the Update button outlined.',
+                            src: 'assets/img/update-specific-group-assigned-assessments.png',
+                            alt: 'View Account page with the Assigned Assessments card, its Manage and Change Log actions, and the Update button outlined'
+                        },
+                        {
+                            title: 'Update Specific Form: Assign Products',
+                            caption: 'Assign Products update form outlined, with the Next button emphasized and the account name blurred.',
+                            src: 'assets/img/update-specific-assign-products.png',
+                            alt: 'Update Account: Assign Products page with the form card outlined, showing the Update Assessment button and assessment category dropdowns; the Next button is emphasized and the account name is blurred'
+                        }
+                    ],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -548,12 +538,20 @@
                 {
                     id: 'update-specific-meter-management',
                     title: 'Meter Management',
-                    images: [{
-                        title: 'Update Specific: Meter Management',
-                        caption: 'Meter Management tab with the section card and the Update button outlined next to View Meter Logs.',
-                        src: 'assets/img/update-specific-group-meter-management.png',
-                        alt: 'View Account page with the Meter Management card and its Update and View Meter Logs buttons, with the Update button outlined'
-                    }],
+                    images: [
+                        {
+                            title: 'Update Specific: Meter Management',
+                            caption: 'Meter Management tab with the section card and the Update button outlined next to View Meter Logs.',
+                            src: 'assets/img/update-specific-group-meter-management.png',
+                            alt: 'View Account page with the Meter Management card and its Update and View Meter Logs buttons, with the Update button outlined'
+                        },
+                        {
+                            title: 'Update Specific Form: Meter Management',
+                            caption: 'Meter Management update form outlined, with the Review Changes button emphasized.',
+                            src: 'assets/img/update-specific-meter-management.png',
+                            alt: 'Meter Management page with the form card outlined, showing the View Meter Log button, the Metering Management Type option, and Current Meters; the Review Changes button is emphasized'
+                        }
+                    ],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -575,12 +573,20 @@
                 {
                     id: 'update-specific-other-account-settings',
                     title: 'Other Account Settings',
-                    images: [{
-                        title: 'Update Specific: Other Account Settings',
-                        caption: 'Other Account Settings tab with the section card and the Update button outlined.',
-                        src: 'assets/img/update-specific-group-other-account-settings.png',
-                        alt: 'View Account page with the Other Account Settings card showing user limits, usage settings, and contract settings, with the Update button outlined'
-                    }],
+                    images: [
+                        {
+                            title: 'Update Specific: Other Account Settings',
+                            caption: 'Other Account Settings tab with the section card and the Update button outlined.',
+                            src: 'assets/img/update-specific-group-other-account-settings.png',
+                            alt: 'View Account page with the Other Account Settings card showing user limits, usage settings, and contract settings, with the Update button outlined'
+                        },
+                        {
+                            title: 'Update Specific Form: Other Account Settings',
+                            caption: 'Other Account Settings update form outlined, showing the account limits and contact fields.',
+                            src: 'assets/img/update-specific-other-account-settings.png',
+                            alt: 'Account Settings page with the Other Account Settings form card outlined, showing account limit fields, API Access Username, and HRSC and Assessment Specialist fields'
+                        }
+                    ],
                     items: [
                         {
                             label: 'Editable inputs',
@@ -837,19 +843,19 @@
                 title: 'Demographics',
                 images: [{
                     title: 'Demographics',
-                    caption: 'Content Manager: Demographics with the Manage Demographics Form outlined, showing the five required fields checked, the optional field checkboxes, and the Save Changes button emphasized.',
+                    caption: 'Content Manager: Demographics with the Manage Demographics Form outlined, showing the five locked fields checked, the editable field checkboxes, and the Save Changes button emphasized.',
                     src: 'assets/img/demographics.png',
-                    alt: 'Content Manager Demographics page with the Manage Demographics Form outlined, required fields checked, optional field checkboxes, and the Save Changes button emphasized'
+                    alt: 'Content Manager Demographics page with the Manage Demographics Form outlined, locked fields checked, editable field checkboxes, and the Save Changes button emphasized'
                 }],
                 detail: 'Manages which demographic fields appear in the candidate-side demographics form.',
                 actions: ['Save Button'],
                 items: [
                     {
-                        label: 'Required inputs',
+                        label: 'Locked inputs',
                         children: ['First Name', 'Last Name', 'Gender', 'Email', 'Position Applied']
                     },
                     {
-                        label: 'Optional inputs',
+                        label: 'Editable inputs',
                         children: [
                             'Birthdate',
                             'Civil Status',
@@ -873,7 +879,7 @@
                 accessPath: 'Accounts > View Accounts > Row Actions > View > Account Configuration Dropdown > Demographics',
                 howToUse: ['Open Demographics.', 'Toggle demographic fields that should appear.', 'Save changes.'],
                 rules: [
-                    'First Name, Last Name, Gender, Email, and Position Applied are required by default and cannot be toggled off.',
+                    'First Name, Last Name, Gender, Email, and Position Applied are locked on and cannot be toggled off.',
                     'This page can be hidden for a specific account group by Super Admin configuration.'
                 ],
                 expected: ['Demographic data gathering is updated.', 'If the page is not visible, the account is not allowed to use this function.'],

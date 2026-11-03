@@ -463,8 +463,8 @@ Manages which demographic fields appear in the candidate-side demographics form.
 3. Save changes.
 
 > Rules:
-> - `First Name`, `Last Name`, `Gender`, `Email`, and `Position Applied` are required by default and cannot be toggled off.
-> - Optional toggle fields include `Birthdate`, `Civil Status`, `Alternative/Work Email`, `Phone Number`, `Educational Attainment`, `Work Experience`, `Level of Position Applying For`, `Course`, `Priority Course`, `Region of Residence`, `Agency Visited`, `Service Availed`, `Customer Type`, `Age`, `Transaction Type`, and `School`.
+> - `First Name`, `Last Name`, `Gender`, `Email`, and `Position Applied` are locked on and cannot be toggled off.
+> - Editable toggle fields include `Birthdate`, `Civil Status`, `Alternative/Work Email`, `Phone Number`, `Educational Attainment`, `Work Experience`, `Level of Position Applying For`, `Course`, `Priority Course`, `Region of Residence`, `Agency Visited`, `Service Availed`, `Customer Type`, `Age`, `Transaction Type`, and `School`.
 > - This page can be hidden for a specific account group by Super Admin configuration.
 
 > Expected Result:
