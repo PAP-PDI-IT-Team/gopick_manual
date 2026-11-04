@@ -1,0 +1,51 @@
+.governance-hierarchy {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--ground);
+    list-style: none;
+}
+
+.governance-hierarchy__item {
+    position: relative;
+    padding: 4px 0 4px 18px;
+    font-weight: 500;
+}
+
+.governance-hierarchy__item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink);
+    transform: translateY(-50%);
+}
+
+.governance-hierarchy__item--level-1 {
+    margin-left: 24px;
+}
+
+.governance-hierarchy__item--level-2 {
+    margin-left: 48px;
+}
+
+.governance-hierarchy__item--level-3 {
+    margin-left: 72px;
+}
+
+.governance-hierarchy__item--level-4 {
+    margin-left: 96px;
+}
+
+.governance-hierarchy__item--level-1::before,
+.governance-hierarchy__item--level-2::before,
+.governance-hierarchy__item--level-3::before,
+.governance-hierarchy__item--level-4::before {
+    background: var(--ink-soft);
+}

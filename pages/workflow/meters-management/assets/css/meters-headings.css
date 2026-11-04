@@ -1,0 +1,8 @@
+.flow-overview__title--level-2 {
+    font-size: var(--step-heading);
+    letter-spacing: -0.02em;
+}
+
+.flow-overview__title--level-4 {
+    font-size: var(--step-body);
+}

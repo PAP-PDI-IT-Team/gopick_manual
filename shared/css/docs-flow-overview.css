@@ -1,0 +1,307 @@
+.flow-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.flow-overview + .flow-overview {
+    margin-top: 64px;
+}
+
+.flow-overview__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.flow-overview__title {
+    margin: 0;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+.flow-overview__lead {
+    max-width: 60ch;
+    margin: 8px 0 0;
+    color: var(--ink);
+}
+
+.flow-overview__subtitle {
+    margin: 8px 0 0;
+    font-size: var(--step-body);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.flow-overview .manual-image-gallery,
+.flow-overview .manual-image-card {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.flow-access {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    margin: 0;
+    font-size: var(--step-body);
+}
+
+.flow-access__label {
+    color: var(--ink-soft);
+}
+
+.flow-access__step {
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--muted);
+    color: var(--ink);
+    font-family: var(--code-font);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.flow-access__separator {
+    color: var(--ink-soft);
+}
+
+.flow-notes__trigger:focus-visible,
+.manual-image-card__img.is-enlargeable:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.flow-result {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--ground);
+}
+
+.flow-result__icon {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+    color: var(--ink-soft);
+}
+
+.flow-result__label {
+    margin: 0;
+    font-size: var(--step-body);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.flow-result__text {
+    margin: 2px 0 0;
+    color: var(--ink);
+}
+
+.flow-notes {
+    position: relative;
+}
+
+.flow-notes__trigger {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--ground);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.flow-notes__trigger:hover,
+.flow-notes__trigger[aria-expanded="true"] {
+    background: var(--muted);
+}
+
+.flow-notes__trigger:active {
+    transform: scale(0.94);
+}
+
+.flow-notes__icon {
+    width: 22px;
+    height: 22px;
+}
+
+.flow-notes__tooltip {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: var(--step-small);
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(2px);
+    pointer-events: none;
+    transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.flow-notes__trigger:hover .flow-notes__tooltip,
+.flow-notes__trigger:focus-visible .flow-notes__tooltip {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.flow-notes__trigger[aria-expanded="true"] .flow-notes__tooltip {
+    opacity: 0;
+}
+
+.flow-notes__panel {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    width: min(22rem, calc(100vw - 2rem));
+    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--ground);
+    color: var(--ink);
+    font-size: var(--step-small);
+    line-height: 1.5;
+    box-shadow: 0 10px 30px -12px rgba(9, 9, 11, 0.25);
+}
+
+.flow-notes__panel:popover-open {
+    animation: flow-notes-in 0.16s ease-out;
+}
+
+@keyframes flow-notes-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.flow-notes__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 6px 6px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--ground);
+}
+
+.flow-notes__title {
+    margin: 0;
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.flow-notes__close {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.flow-notes__close:hover {
+    background: var(--muted);
+    color: var(--ink);
+}
+
+.flow-notes__close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.flow-notes__close-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.flow-notes__group {
+    padding: 12px 16px;
+}
+
+.flow-notes__group + .flow-notes__group {
+    padding-top: 4px;
+}
+
+.flow-notes__group:last-child {
+    padding-bottom: 16px;
+}
+
+.flow-notes__tag {
+    margin: 0 0 6px;
+    color: var(--ink-soft);
+    font-size: var(--step-small);
+    font-weight: 500;
+}
+
+.flow-notes__list {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.flow-notes__item {
+    position: relative;
+    padding-left: 14px;
+    color: var(--ink);
+}
+
+.flow-notes__item::before {
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flow-notes__panel:popover-open {
+        animation: none;
+    }
+}
+
+.screenshot-viewer__arrow:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+    .flow-overview__header {
+        flex-direction: column;
+    }
+}

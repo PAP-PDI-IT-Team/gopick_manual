@@ -463,8 +463,8 @@ Manages which demographic fields appear in the candidate-side demographics form.
 3. Save changes.
 
 > Rules:
-> - `First Name`, `Last Name`, `Gender`, `Email`, and `Position Applied` are required by default and cannot be toggled off.
-> - Optional toggle fields include `Birthdate`, `Civil Status`, `Alternative/Work Email`, `Phone Number`, `Educational Attainment`, `Work Experience`, `Level of Position Applying For`, `Course`, `Priority Course`, `Region of Residence`, `Agency Visited`, `Service Availed`, `Customer Type`, `Age`, `Transaction Type`, and `School`.
+> - `First Name`, `Last Name`, `Gender`, `Email`, and `Position Applied` are locked on and cannot be toggled off.
+> - Editable toggle fields include `Birthdate`, `Civil Status`, `Alternative/Work Email`, `Phone Number`, `Educational Attainment`, `Work Experience`, `Level of Position Applying For`, `Course`, `Priority Course`, `Region of Residence`, `Agency Visited`, `Service Availed`, `Customer Type`, `Age`, `Transaction Type`, and `School`.
 > - This page can be hidden for a specific account group by Super Admin configuration.
 
 > Expected Result:
@@ -795,6 +795,16 @@ Opens view account for an active, non-archived account.
 
 - `Accounts` > `View Accounts` > `Row Actions` > `View`
 
+##### Visible Content
+
+- `Return Button`: Returns the user to `View Accounts`.
+- `Account Configuration Dropdown`: `Privacy Consent`, `Demographics`, `Assessment Completion Page`, `Assessment Center Logo`, `Unblock Account`.
+- `Account Information`: `Active Badge`, `Account Type`, `Parent Account`, `Account Name`, `Username`, `Password`, `Confirm Password`, `Primary Contact Name`, `Primary Contact Email`, `Country`, `Business Phone Number`, `Business Address`, `Billing Address`, `Expiry Date and Time`, `Actual Account Expiration`, `Update Specific`.
+- `Assigned Assessments`: Shows the list of all assessments for the account by categories, with `Update Specific`, `Manage`, and `Change Log`.
+- `Meter Management`: `Metering Management Type`, `Allocated Meter`, `Parent Meter`, `Update Specific`, `View Meter Logs`.
+- `Other Account Settings`: Account limits, `API Access Username`, HRSC details, Assessment Specialist details, Client Contact details, `Site Billing`, `Contract Type`, `Contract Meters`, `Addendum`, `Base Meter`, `Update Specific`.
+- `List of Users`: Table list of account users under the selected account.
+
 ##### How To Use
 
 1. Open `View Accounts`.
@@ -802,6 +812,10 @@ Opens view account for an active, non-archived account.
 
 > Expected Result:
 > - The active view account page opens.
+> - If `Metering Management Type` is not `Deduct usage from this account`, `Parent Meter` appears.
+> - If `Site Billing Amount (PHP)(Type)` is `Included in package`, `Site Billing Amount (PHP)` appears.
+> - If `Contract Type` is `Volume-based`, `Addendum` and `Contract Meters` appear.
+> - If `Contract Type` is `Per Usage`, `Base Meter` appears.
 
 #### View Archived Account
 
@@ -811,6 +825,15 @@ Opens view account for an archived account.
 
 - `Accounts` > `View Accounts` > `View Archived Accounts` > `Row Actions` > `View`
 
+##### Visible Content
+
+- `Return Button`: Returns the user to `View Archived Accounts`.
+- `Account Information`: `Active Badge`, `Account Type`, `Parent Account`, `Account Name`, `Username`, `Password`, `Confirm Password`, `Primary Contact Name`, `Primary Contact Email`, `Country`, `Business Phone Number`, `Business Address`, `Billing Address`, `Expiry Date and Time`, `Actual Account Expiration`.
+- `Assigned Assessments`: Shows the list of all assessments for the account by categories.
+- `Meter Management`: `Metering Management Type`, `Allocated Meter`, `Parent Meter`.
+- `Other Account Settings`: Account limits, `API Access Username`, HRSC details, Assessment Specialist details, Client Contact details, `Site Billing`, `Contract Type`, `Contract Meters`, `Addendum`, `Base Meter`.
+- `List of Users`: Table list of account users under the selected account.
+
 ##### How To Use
 
 1. Open `View Archived Accounts`.
@@ -818,6 +841,10 @@ Opens view account for an archived account.
 
 > Expected Result:
 > - The archived view account page opens.
+> - If `Metering Management Type` is not `Deduct usage from this account`, `Parent Meter` appears.
+> - If `Site Billing Amount (PHP)(Type)` is `Included in package`, `Site Billing Amount (PHP)` appears.
+> - If `Contract Type` is `Volume-based`, `Addendum` and `Contract Meters` appear.
+> - If `Contract Type` is `Per Usage`, `Base Meter` appears.
 
 #### Update Account Row Action
 

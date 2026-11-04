@@ -1,7 +1,0 @@
-/* Component-level styles for Dashboard Management page */
-
-/* Sidebar active link */
-aside nav a.active {
-    color: var(--brand, #e50914);
-    font-weight: 600;
-}

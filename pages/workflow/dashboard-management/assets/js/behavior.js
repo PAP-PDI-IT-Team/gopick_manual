@@ -11,48 +11,37 @@
             this.content = global.__dashboardContent || {};
             this.store = new global.DashboardContentStore(this.content);
             this.renderer = new global.DashboardContentRenderer(this.store, global.GoPickImageRenderer);
-            this.sidebar = new global.DashboardSidebarTracker(this.store);
+            this.sidebar = new global.DocsTocTracker(this.store);
         }
 
-        scrollToHash() {
-            const id = (location.hash || '').replace('#', '');
-            if (!id) return;
-            const el = document.getElementById(id);
-            if (el) {
-                this.sidebar.setActive(id);
-                this.sidebar.isProgrammaticScroll = true;
-                setTimeout(() => {
-                    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                    el.focus && el.focus();
-                    setTimeout(() => {
-                        this.sidebar.isProgrammaticScroll = false;
-                    }, 400);
-                }, 30);
-            }
-        }
-
-        init() {
+        initialize() {
             setFooterYear();
+            global.sharedDocsPageShell.init().catch(error => {
+                console.error('Error loading documentation navigation:', error);
+            });
             this.renderer.renderAll();
+            global.sharedDocsSkeleton.clearContent();
             this.sidebar.render();
+            global.sharedDocsHeadingAnchors.init(this.store.getSections());
             this.sidebar.bindListeners();
+            global.sharedDocsReveal.init('.docs-page-body > .flat-section, .docs-page-body .flat-section__content');
 
             if (location.hash) {
-                this.scrollToHash();
+                this.sidebar.scrollToHash();
             } else {
                 this.sidebar.updateScrollSpy();
             }
         }
     }
 
-    const app = new DashboardApp();
+    const pageApp = new DashboardApp();
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => pageApp.initialize());
     } else {
-        app.init();
+        pageApp.initialize();
     }
 
     global.DashboardApp = DashboardApp;
-    global.__dashboardApp = app;
+    global.__dashboardApp = pageApp;
 })(window);

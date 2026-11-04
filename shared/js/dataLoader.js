@@ -2,16 +2,22 @@
     'use strict';
 
     var _data = null;
-    var DATA_VERSION = '20260416-meters';
+    var DATA_VERSION = '20261028-docs-nav';
 
-    function init() {
-        return fetch('shared/data/gopick-data.json?v=' + DATA_VERSION, { cache: 'no-store' })
-            .then(function (res) {
-                if (!res.ok) throw new Error('Data fetch failed: ' + res.status);
-                return res.json();
+    function getDataUrl() {
+        var dataUrl = document.body.dataset.dataUrl;
+        if (!dataUrl) throw new Error('dataLoader: <body> needs a data-data-url attribute');
+        return dataUrl;
+    }
+
+    function initialize() {
+        return fetch(getDataUrl() + '?v=' + DATA_VERSION, { cache: 'no-store' })
+            .then(function (response) {
+                if (!response.ok) throw new Error('Data fetch failed: ' + response.status);
+                return response.json();
             })
-            .then(function (json) {
-                _data = json;
+            .then(function (jsonValue) {
+                _data = jsonValue;
                 return _data;
             });
     }
@@ -21,7 +27,7 @@
     }
 
     global.sharedDataLoader = {
-        init: init,
+        init: initialize,
         getData: getData
     };
 })(window);

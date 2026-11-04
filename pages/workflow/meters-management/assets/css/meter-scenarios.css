@@ -1,0 +1,241 @@
+.meter-guide {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--ground);
+}
+
+.meter-guide__item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: var(--step-small);
+}
+
+.meter-guide__term {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.meter-guide__meaning {
+    margin: 0;
+    color: var(--ink-soft);
+}
+
+
+.meter-scenarios {
+    display: grid;
+    gap: 16px;
+}
+
+.meter-scenario {
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--ground);
+}
+
+.meter-scenario__title {
+    margin: 0;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--muted);
+    font-size: var(--step-body);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.meter-scenario__row {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 16px;
+    padding: 14px 16px;
+}
+
+.meter-scenario__row + .meter-scenario__row {
+    padding-top: 0;
+}
+
+.meter-scenario__label {
+    margin: 0;
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.meter-scenario__entries {
+    display: grid;
+    gap: 12px;
+}
+
+.meter-scenario__condition {
+    margin: 0 0 6px;
+    font-size: var(--step-small);
+    color: #92400e;
+}
+
+.meter-scenario__condition-keyword {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #fef3c7;
+    font-weight: 600;
+}
+
+.meter-scenario__lines {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.meter-scenario__line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.meter-scenario__view {
+    flex: 0 0 auto;
+    min-width: 5.5rem;
+    padding: 1px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--muted);
+    color: var(--ink);
+    font-size: var(--step-small);
+    font-weight: 600;
+    text-align: center;
+}
+
+.meter-scenario__view--target {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.meter-scenario__view--actor {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.meter-scenario__view--parent {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.meter-scenario__value {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--ground);
+    font-size: var(--step-small);
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+.meter-scenario__note {
+    font-size: var(--step-small);
+    color: var(--ink-soft);
+}
+
+
+.meter-remarks {
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--ground);
+}
+
+.meter-remarks__header,
+.meter-remark {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1.2fr);
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+}
+
+.meter-remarks__header {
+    border-bottom: 1px solid var(--border);
+    background: var(--muted);
+}
+
+.meter-remarks__column {
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.meter-remarks__column:last-child {
+    grid-column: 3;
+}
+
+.meter-remarks__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.meter-remark:nth-child(even) {
+    background: var(--ground);
+}
+
+.meter-remark__text {
+    justify-self: start;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--ground);
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+.meter-remark:nth-child(even) .meter-remark__text {
+    background: var(--muted);
+}
+
+.meter-remark__placeholder {
+    padding: 0 4px;
+    border-radius: 4px;
+    background: #eff6ff;
+    color: #1e40af;
+    font-weight: 500;
+}
+
+.meter-remark__arrow {
+    width: 20px;
+    height: 20px;
+    color: var(--ink-soft);
+}
+
+.meter-remark__meaning {
+    margin: 0;
+    font-size: var(--step-body);
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+@media (max-width: 767px) {
+    .meter-remarks__header {
+        display: none;
+    }
+
+    .meter-remark {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .meter-remark__arrow {
+        display: none;
+    }
+
+    .meter-scenario__row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+}

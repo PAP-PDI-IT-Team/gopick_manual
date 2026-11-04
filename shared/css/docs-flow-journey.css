@@ -1,0 +1,122 @@
+.flow-journey,
+.flow-journey__band-stops {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.flow-journey {
+    position: relative;
+    display: grid;
+    gap: 14px;
+}
+
+.flow-journey::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    bottom: 14px;
+    left: 13px;
+    width: 1px;
+    background: var(--border);
+}
+
+.flow-journey__stop {
+    position: relative;
+}
+
+.flow-journey__stop,
+.flow-journey__link {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.flow-journey__dot {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    flex: 0 0 28px;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--muted);
+    color: var(--accent-press);
+    font-size: var(--step-small);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.flow-journey__label {
+    padding-top: 2px;
+    color: var(--ink);
+    line-height: 1.6;
+}
+
+.flow-journey__band {
+    position: relative;
+    z-index: 1;
+    margin-left: 40px;
+    padding: 12px 16px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--ground);
+}
+
+.flow-journey__band-label {
+    margin: 0 0 10px;
+    color: var(--ink-soft);
+    font-size: var(--step-small);
+    font-weight: 600;
+}
+
+.flow-journey__band-stops {
+    display: grid;
+    gap: 10px;
+}
+
+.flow-journey__link {
+    border-radius: var(--radius);
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.flow-journey__stop--wizard .flow-journey__label {
+    color: var(--accent-press);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+}
+
+.flow-journey__link:hover .flow-journey__label,
+.flow-journey__link:focus-visible .flow-journey__label {
+    text-decoration-color: currentColor;
+}
+
+.flow-journey__link:hover .flow-journey__dot,
+.flow-journey__link:focus-visible .flow-journey__dot {
+    transform: scale(1.08);
+}
+
+.flow-journey__link[aria-current="step"] .flow-journey__dot,
+.flow-journey__stop[aria-current="step"] .flow-journey__dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.flow-journey__link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flow-journey__dot {
+        transition: none;
+    }
+}
