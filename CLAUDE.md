@@ -9,3 +9,7 @@ For GoPick commit requests or commit-message reviews, read and follow [.agents/s
 For requested Code Maintenance and Quality Checks, read and follow [CMQC](.agents/skills/cmqc/SKILL.md).
 
 The project skills under `.claude/skills/` link to the shared sources. Maintain skills under `.agents/skills/`; do not create user-level copies. Loading these instructions does not authorize a commit, push, or merge.
+
+## Attribution
+
+Do not add Claude as an author, contributor, or collaborator. Commit messages, pull request titles and descriptions, changelog entries, and documentation must not include `Co-Authored-By: Claude` trailers, "Generated with Claude Code" lines, or other AI attribution.
