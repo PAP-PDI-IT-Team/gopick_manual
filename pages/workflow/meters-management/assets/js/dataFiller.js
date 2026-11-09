@@ -157,10 +157,16 @@
                         description: 'View meter balance and meter details for the selected account.',
                         images: [
                             {
+                                title: 'View Meter from Meter Records',
+                                caption: 'Meter Records table with the row action menu open, showing View Meter and View Meter Log; account names are blurred.',
+                                src: 'assets/img/view-meter-from-records.png',
+                                alt: 'Meter Records table with the Actions menu open on the first row, listing View Meter and View Meter Log'
+                            },
+                            {
                                 title: 'View Meter Details',
-                                caption: 'Capture the selected account’s View Meter page with the meter balance and details outlined; blur account names.',
-                                src: '',
-                                alt: 'View Meter page showing the selected account meter balance and details',
+                                caption: 'View Meters page for the selected account with Available Meters, Last Acquired Meters, Meter Warning, and the Actions button.',
+                                src: 'assets/img/view-meter-details.png',
+                                alt: 'View Meters page for the selected account, with the account name blurred, showing Available Meters 500, Last Acquired Meters, Meter Warning 10, and an Actions button'
                             }
                         ],
                         groups: [
@@ -186,9 +192,9 @@
                         images: [
                             {
                                 title: 'Transfer Meter from View Meter',
-                                caption: 'Capture Transfer Meter opened from View Meter, with the transfer details and Transfer Meter button outlined; blur account names.',
-                                src: '',
-                                alt: 'Transfer Meter form opened from the selected account View Meter page',
+                                caption: 'Transfer Meters form with the Source Account, Available Meters, Meter Value, and Destination Account fields and the Transfer Meter button; account names are blurred.',
+                                src: 'assets/img/transfer-meter-from-view-meter.png',
+                                alt: 'Transfer Meters form with Source Account selected, Available Meters 1000, a blank Meter Value with its validation message, Destination Account selected, and the Transfer Meter button'
                             }
                         ],
                         groups: [
@@ -568,10 +574,16 @@
                         description: 'Add or deduct meter balances for the selected account.',
                         images: [
                             {
+                                title: 'Update Meter from Meter Records',
+                                caption: 'Meter Records table with the edit button on the first row outlined; account names are blurred.',
+                                src: 'assets/img/update-meter-from-records.png',
+                                alt: 'Meter Records table with the blue edit button in the first row Actions column outlined in red; account names are blurred'
+                            },
+                            {
                                 title: 'Update Meter Balance Form',
-                                caption: 'Capture the selected account’s Update Meter Balance form with the adjustment value and save action outlined; blur account names.',
-                                src: '',
-                                alt: 'Update Meter Balance form showing the adjustment value and save action',
+                                caption: 'Update Meter page with Available Meters, Meter Warning, the read-only Last Acquired Meters (Date), and the Save button; the account name is blurred.',
+                                src: 'assets/img/update-meter-balance-form.png',
+                                alt: 'Update Meter page with Available Meters 500, Meter Warning 10, a read-only Last Acquired Meters date, and a Save button; the account name is blurred'
                             }
                         ],
                         groups: [
@@ -599,15 +611,249 @@
             {
                 id: 'meter-consumption',
                 title: 'Meter Consumption',
-                description: 'Meters are consumed during assessment completion. Generated reports may later be viewed, downloaded, emailed, or revisited without additional meter deduction.',
-                images: [
-                    {
-                        title: 'Meter Consumption Diagram',
-                        caption: 'Create a flow diagram showing: candidate completes an assessment → meters are deducted once per candidate per assessment → generated report becomes available. Show a follow-up branch for viewing, downloading, emailing, or revisiting the report, labeled "No additional meter deduction".',
-                        src: '',
-                        alt: 'Diagram showing assessment completion, a single meter deduction per candidate per assessment, and later report access without additional deduction',
-                    }
-                ],
+                description: 'Meters are consumed when an assessment report is generated or scored. Generated reports may later be viewed, downloaded, emailed, or revisited without additional meter deduction.',
+                meterFlow: {
+                    title: 'Meter flow sequence',
+                    scrollHint: 'Scroll sideways to see the full diagram.',
+                    defaultFlowId: 'scoring',
+                    flows: [
+                        {
+                            id: 'scoring',
+                            label: 'Scoring',
+                            participants: [
+                                { id: 'candidate', label: 'Candidate' },
+                                { id: 'app', label: 'GoPick app' },
+                                { id: 'owner', label: 'Candidate owner account' },
+                                { id: 'log', label: 'Meter log' }
+                            ],
+                            messages: [
+                                { from: 'candidate', to: 'app', text: 'Complete assessment' },
+                                { from: 'app', to: 'app', text: 'Generate or score report' },
+                                {
+                                    alt: [
+                                        {
+                                            guard: 'first report for this candidate and assessment',
+                                            messages: [
+                                                { from: 'app', to: 'owner', text: 'Check balance (Balance 500)' },
+                                                {
+                                                    alt: [
+                                                        {
+                                                            guard: 'enough meters',
+                                                            messages: [
+                                                                { from: 'app', to: 'owner', text: 'Deduct assessment meter value' },
+                                                                { from: 'owner', to: 'app', text: 'Balance 500 to 499', kind: 'return' },
+                                                                { from: 'app', to: 'log', text: 'Write scored assessment deduction' },
+                                                                { from: 'app', to: 'candidate', text: 'Report ready', kind: 'return' }
+                                                            ]
+                                                        },
+                                                        {
+                                                            guard: 'insufficient meters',
+                                                            messages: [
+                                                                { from: 'app', to: 'candidate', text: 'Blocked: insufficient meters left', kind: 'return' }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            guard: 'already deducted: view, download, email, or revisit',
+                                            messages: [
+                                                { from: 'app', to: 'candidate', text: 'Report opened, balance stays 499', kind: 'return' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            effects: [{ account: 'Candidate owner account', change: '- assessment meter value' }]
+                        },
+                        {
+                            id: 'request',
+                            label: 'Request',
+                            participants: [
+                                { id: 'requester', label: 'Requesting account' },
+                                { id: 'app', label: 'GoPick app' },
+                                { id: 'approver', label: 'Approving account' },
+                                { id: 'log', label: 'Meter log' }
+                            ],
+                            messages: [
+                                { from: 'requester', to: 'app', text: 'Order meters' },
+                                { from: 'app', to: 'approver', text: 'Show pending request' },
+                                { from: 'approver', to: 'app', text: 'Review request' },
+                                {
+                                    alt: [
+                                        {
+                                            guard: 'approve',
+                                            messages: [
+                                                {
+                                                    alt: [
+                                                        {
+                                                            guard: 'approver has enough meters or is Super Admin',
+                                                            messages: [
+                                                                { from: 'app', to: 'app', text: 'Move meters: approver -N, requester +N' },
+                                                                { from: 'app', to: 'log', text: 'Write received and source deduction entries' },
+                                                                { from: 'app', to: 'requester', text: 'Request approved', kind: 'return' }
+                                                            ]
+                                                        },
+                                                        {
+                                                            guard: 'insufficient meters',
+                                                            messages: [
+                                                                { from: 'app', to: 'approver', text: 'Blocked: not enough meters to approve', kind: 'return' }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            guard: 'reject or cancel',
+                                            messages: [
+                                                { from: 'app', to: 'requester', text: 'Request closed, no balance change', kind: 'return' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            effects: [{ account: 'Requesting account', change: '+ requested meters' }, { account: 'Approving account', change: '- requested meters (Super Admin exempt)' }]
+                        },
+                        {
+                            id: 'transfer',
+                            label: 'Transfer',
+                            participants: [
+                                { id: 'user', label: 'Account user' },
+                                { id: 'app', label: 'GoPick app' },
+                                { id: 'source', label: 'Source account' },
+                                { id: 'destination', label: 'Destination account' },
+                                { id: 'log', label: 'Meter log' }
+                            ],
+                            messages: [
+                                { from: 'user', to: 'app', text: 'Submit source, meter value, destination' },
+                                { from: 'app', to: 'source', text: 'Check balance' },
+                                { from: 'source', to: 'app', text: 'Available meters', kind: 'return' },
+                                {
+                                    alt: [
+                                        {
+                                            guard: 'enough meters',
+                                            messages: [
+                                                { from: 'app', to: 'source', text: 'Deduct meter value' },
+                                                { from: 'app', to: 'destination', text: 'Add meter value' },
+                                                { from: 'app', to: 'log', text: 'Write transfer entries' },
+                                                { from: 'app', to: 'user', text: 'Transfer complete', kind: 'return' }
+                                            ]
+                                        },
+                                        {
+                                            guard: 'insufficient meters',
+                                            messages: [
+                                                { from: 'app', to: 'user', text: 'Blocked: not enough meters', kind: 'return' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            effects: [{ account: 'Source account', change: '- meter value' }, { account: 'Destination account', change: '+ meter value' }]
+                        },
+                        {
+                            id: 'update',
+                            label: 'Update balance',
+                            participants: [
+                                { id: 'user', label: 'Higher account user' },
+                                { id: 'app', label: 'GoPick app' },
+                                { id: 'target', label: 'Selected account' },
+                                { id: 'log', label: 'Meter log' }
+                            ],
+                            messages: [
+                                { from: 'user', to: 'app', text: 'Click edit on Meter Records' },
+                                { from: 'app', to: 'user', text: 'Update Meter form', kind: 'return' },
+                                { from: 'user', to: 'app', text: 'Save new Available Meters' },
+                                {
+                                    alt: [
+                                        {
+                                            guard: 'enough meters',
+                                            messages: [
+                                                { from: 'app', to: 'target', text: 'Set new balance' },
+                                                { from: 'app', to: 'log', text: 'Write meter balance update' },
+                                                { from: 'app', to: 'user', text: 'Saved', kind: 'return' }
+                                            ]
+                                        },
+                                        {
+                                            guard: 'insufficient meters',
+                                            messages: [
+                                                { from: 'app', to: 'user', text: 'Blocked: source does not have enough meters', kind: 'return' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            effects: [{ account: 'Selected account', change: '+ or - adjusted meters' }]
+                        },
+                        {
+                            id: 'account-creation',
+                            label: 'Account creation',
+                            participants: [
+                                { id: 'creator', label: 'Creating account' },
+                                { id: 'app', label: 'GoPick app' },
+                                { id: 'created', label: 'New account' },
+                                { id: 'log', label: 'Meter log' }
+                            ],
+                            messages: [
+                                { from: 'creator', to: 'app', text: 'Create account with initial meters' },
+                                {
+                                    alt: [
+                                        {
+                                            guard: 'enough meters',
+                                            messages: [
+                                                { from: 'app', to: 'created', text: 'Set initial balance' },
+                                                { from: 'app', to: 'log', text: 'Write initial balance entries' },
+                                                { from: 'app', to: 'creator', text: 'Account created, initial meters deducted', kind: 'return' }
+                                            ]
+                                        },
+                                        {
+                                            guard: 'insufficient meters',
+                                            messages: [
+                                                { from: 'app', to: 'creator', text: 'Blocked: not enough meters', kind: 'return' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            effects: [{ account: 'New account', change: '+ initial meters' }, { account: 'Creating account', change: '- initial meters' }]
+                        },
+                        {
+                            id: 'type-change',
+                            label: 'Type change',
+                            participants: [
+                                { id: 'user', label: 'Account making the change' },
+                                { id: 'app', label: 'GoPick app' },
+                                { id: 'changed', label: 'Changed account' },
+                                { id: 'log', label: 'Meter log' }
+                            ],
+                            messages: [
+                                { from: 'user', to: 'app', text: 'Change consumption type' },
+                                {
+                                    alt: [
+                                        {
+                                            guard: 'Self to Parent',
+                                            messages: [
+                                                { from: 'app', to: 'changed', text: 'Move existing balance out' },
+                                                { from: 'app', to: 'log', text: 'Write type change update' },
+                                                { from: 'app', to: 'user', text: 'Balance returned', kind: 'return' }
+                                            ]
+                                        },
+                                        {
+                                            guard: 'Parent to Self',
+                                            messages: [
+                                                { from: 'app', to: 'changed', text: 'Set new balance' },
+                                                { from: 'app', to: 'log', text: 'Write type change update' },
+                                                { from: 'app', to: 'user', text: 'Balance deducted', kind: 'return' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            effects: [{ account: 'Account making the change', change: '+ or - balance moved' }]
+                        }
+                    ]
+                },
                 rules: [
                     'Meter deduction occurs once per candidate per assessment.',
                     'Generated reports remain accessible after creation.',

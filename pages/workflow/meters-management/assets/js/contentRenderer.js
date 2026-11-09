@@ -18,6 +18,11 @@
             groupParts.accessPaths.forEach(pathText => target.appendChild(this.createAccessTrail(pathText)));
             this.renderImages(section, target);
 
+            if (section.meterFlow) {
+                if (!global.MetersFlowDiagram) throw new Error('Meters meterFlow requires MetersFlowDiagram (meterFlowDiagram.js)');
+                target.appendChild(global.MetersFlowDiagram.create(section.meterFlow));
+            }
+
             if (section.remarkGuide && section.remarkGuide.length) {
                 target.appendChild(this.createRemarkGuide(section.remarkGuide));
             }

@@ -61,8 +61,8 @@ Generated reports remain permanently accessible after creation.
 
 ## Consumption Trigger
 
-Meter deduction occurs during:
-- assessment completion
+Meter deduction occurs when:
+- the assessment report is generated or scored
 
 Consumption occurs:
 - once per candidate
@@ -455,6 +455,26 @@ The system enforces:
 
   Current concern:
   - Ownership and operational management responsibility becomes unclear for Distributor-managed candidates.
+
+---
+
+- **Consumption Trigger Wording**
+
+  Earlier documentation described meter deduction as occurring at assessment completion.
+
+  Current observed behavior:
+  - Deduction runs when the assessment report is generated or scored.
+  - A completed assessment whose report has not been generated has not deducted meters yet.
+
+---
+
+- **Parent Consumption Routing**
+
+  The current scoring payer lookup always charges the candidate owner account.
+
+  Current concern:
+  - Parent Consumption is documented, but scoring deduction is not routed to the parent account.
+  - Confirm whether Parent Consumption is still intended for scoring deduction.
 
 ---
 
