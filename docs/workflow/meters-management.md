@@ -340,7 +340,24 @@ Add or deduct meter balances for the selected account.
 
 # Meter Consumption
 
-Meters are consumed during assessment completion.
+Meters are consumed when an assessment report is generated or scored.
+
+Meter flow:
+
+Account hierarchy: Super Admin > Distributor > Sub Distributor > Client Account > Sub-Account / Self Registered.
+Meters move down the hierarchy. Super Admins can move meters to any account.
+
+- Scoring: the candidate completes the assessment, the report is generated or scored, and the candidate owner account pays the assessment meter value once. Viewing, downloading, emailing, or revisiting the report does not deduct again.
+- Request: a lower hierarchy account orders meters, and a higher account approves, rejects, or cancels. On approval the requester gains the meters and the approver loses them. Super Admins are exempt from the deduction.
+- Transfer: meters move immediately from the source account to the destination account without approval.
+- Update balance: a higher hierarchy account adds or deducts meters for the selected account from Meter Records.
+- Account creation: the new account receives its initial meters from the creating account.
+- Type change: Self to Parent returns the balance to the account making the change. Parent to Self deducts the balance from that account.
+
+> Notes:
+> - Balances can never go below 0. Scoring, approval, transfer, update, and account creation are blocked when the paying account does not have enough meters.
+> - Unlimited accounts are not deducted.
+> - Every balance change writes a meter log entry.
 
 Generated reports may later be:
 - Viewed
