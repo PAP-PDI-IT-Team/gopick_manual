@@ -5,6 +5,19 @@ All notable changes to the GoPick Assessment Center Manual will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-11-09 - PR #67
+
+### Added
+
+- Added Meters workflow screenshots, with account names blurred, for View Meter (from Meter Records and the View Meters page), Transfer Meter, and Update Meter Balance (the edit action in Meter Records and the Update Meter form).
+- Added a tabbed meter flow sequence diagram to Meter Consumption. It covers Scoring, Request, Transfer, Update balance, Account creation, and Type change, with alt/else frames, return arrows, activation bars, and per-account balance effects.
+- Added an Attribution rule to `CLAUDE.md` that forbids AI attribution in commits, pull requests, and documentation.
+
+### Changed
+
+- Changed the Meter Consumption trigger wording in the Meters workflow page and Markdown sources from assessment completion to report generation or scoring, to match the GoPick backend.
+- Added two Meter governance gaps: the consumption trigger wording, and Parent Consumption not being routed by the scoring payer lookup.
+
 ## [1.5.0] - 2026-10-29 - PR #63
 
 ### Added
