@@ -13,7 +13,7 @@
                     {
                         title: 'Assessment Catalog Gallery View',
                         caption: 'Interactive catalog of available assessments with search, category filtering, and direct action triggers.',
-                        src: '',
+                        src: 'assets/img/view-assessments-catalog.png',
                         alt: 'View Assessments Catalog Screenshot'
                     }
                 ],
@@ -111,7 +111,7 @@
                             {
                                 title: 'Assessment Details & Parameters View',
                                 caption: 'Modal view detailing assessment dimensions, item count, norms, and configuration dropdowns.',
-                                src: '',
+                                src: 'assets/img/view-specific-assessment.png',
                                 alt: 'Specific Assessment Information Screenshot'
                             }
                         ],
@@ -157,7 +157,7 @@
                     {
                         title: 'Import Assessment Wizard',
                         caption: 'File upload zone with template validator and batch ingest controls.',
-                        src: '',
+                        src: 'assets/img/import-assessment.png',
                         alt: 'Import Assessment Wizard Screenshot'
                     }
                 ],
@@ -187,7 +187,7 @@
                     {
                         title: 'Create Test Battery Configuration',
                         caption: 'Battery builder combining multiple cognitive, behavioral, or skills assessments.',
-                        src: '',
+                        src: 'assets/img/create-test-battery.png',
                         alt: 'Create Test Battery Screenshot'
                     }
                 ]
